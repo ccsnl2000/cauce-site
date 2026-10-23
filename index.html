@@ -30,7 +30,7 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
 :root[data-theme="dark"] { --sheet: #1D1D1B; --faint: #5E5B56; --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --sheet: #1D1D1B; --faint: #5E5B56; --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; } }
+body.intel-light { --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18; color-scheme: light; }
 body.intel { --bg: #1A1B19; --card: #1F201E; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, p { margin: 0; }
@@ -58,11 +58,16 @@ h1, h2, h3, .verdict, .cover b, .foot .big { font-weight: 800 !important; text-w
 a:hover .ph, .zoom:hover .ph { }
 .ph { transition: transform .5s var(--ease); }
 a.card-link:hover .ph { transform: scale(.985); }
+.ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.ph .credit { position: relative; z-index: 1; background: rgba(20,20,18,.55); color: #F1EEE9; padding: 3px 7px; border-radius: 5px; font-size: 10px; }
+.ph.ill { background: var(--fill); }
+.ph.ill::before { opacity: .35; }
+.ph svg.ill { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); }
 
 /* intro loader */
 #intro { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: grid; place-items: center; transition: opacity .5s var(--ease), visibility .5s; }
 #intro.done { opacity: 0; visibility: hidden; }
-#intro .w { font-weight: 800; font-size: clamp(64px, 12vw, 160px); letter-spacing: -0.07em; line-height: 1; clip-path: inset(0 100% 0 0); animation: wipe .9s var(--ease) forwards; }
+#intro .w { padding: 0 .14em; font-weight: 800; font-size: clamp(64px, 12vw, 160px); letter-spacing: -0.07em; line-height: 1; clip-path: inset(0 100% 0 0); animation: wipe .9s var(--ease) forwards; }
 @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
 #intro p { margin-top: 14px; font-size: 12px; color: var(--soft); text-align: center; opacity: 0; animation: fade .4s .6s forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
@@ -209,7 +214,11 @@ form.f select option { background: var(--card); }
 .plans-h h1 { font-family: var(--serif); font-size: clamp(44px, 5.5vw, 72px); line-height: 1; }
 .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 40px; }
 .plan { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: grid; gap: 12px; align-content: start; transition: border-color .3s, transform .3s var(--ease); }
-.plan.hl { border-color: var(--ink); transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,.06); }
+.plan { cursor: pointer; }
+.plan:hover { border-color: var(--soft); }
+.plan.sel { background: var(--ink); color: var(--bg); border-color: var(--ink); transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,.12); }
+.plan.sel .lab, .plan.sel .sm, .plan.sel .price small, .plan.sel li::before { color: color-mix(in srgb, var(--bg) 70%, var(--ink)); }
+.plan.sel .btn { background: var(--bg); color: var(--ink); border-color: var(--bg); }
 .plan .price { font: 700 34px var(--mono); letter-spacing: -0.05em; }
 .plan .price small { font: 400 13px var(--sans); color: var(--soft); letter-spacing: 0; }
 .plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 13px; }
@@ -232,6 +241,7 @@ body.auth header.top, body.auth footer { display: none; }
 .auth input[type=email], .auth input[type=password], .auth input[type=text] { width: 100%; min-width: 0; height: clamp(68px, 7vw, 96px); border: 1.5px solid var(--ink); border-radius: 18px; background: transparent; color: var(--ink); font: 400 clamp(20px, 2vw, 28px) var(--sans); letter-spacing: -0.02em; text-align: center; padding: 0 56px; }
 .auth input::placeholder { color: var(--faint); }
 .auth input:focus { outline: none; box-shadow: 0 0 0 4px var(--fill); }
+.auth-lang { position: fixed; top: calc(36px + env(safe-area-inset-top, 0px)); right: max(40px, env(safe-area-inset-right, 0px)); z-index: 3; font-size: 14px; }
 .pw { position: relative; }
 .pw .help { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--faint); background: none; color: var(--faint); font: 400 15px var(--sans); cursor: pointer; }
 .pw .help:hover { color: var(--ink); border-color: var(--ink); }
@@ -294,7 +304,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <header class="top"><div class="wrap">
   <div class="bar">
     <div class="brand"><a class="wm" href="#mercado" aria-label="Cauce, inicio">cauce</a><a class="about" href="#sobre">Sobre Cauce →</a></div>
-    <nav class="main" aria-label="Principal"><a href="#mercado" data-n="mercado">Mercado</a><a href="#propiedades" data-n="propiedades">Propiedades</a><a href="#analizar" data-n="inteligencia">Inteligencia</a></nav>
+    <nav class="main" aria-label="Principal"><a href="#mercado" data-n="mercado">Mercado</a><a href="#propiedades" data-n="propiedades">Propiedades</a><a href="#datos" data-n="inteligencia">Inteligencia</a></nav>
     <div class="r">
       <a class="btn" href="#planes">Suscríbete</a>
       <a class="in" href="#entrar" data-mode="login">Iniciar sesión</a>
@@ -302,7 +312,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <button type="button" class="theme" id="theme" aria-label="Cambiar a modo noche"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 1 0 0 13z" fill="currentColor"/><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor"/></svg></button>
     </div>
   </div>
-  <nav class="sub" id="sub" aria-label="Inteligencia" hidden><a href="#analizar" data-s="analizar">Propiedad</a><a href="#datos" data-s="datos">Mercado</a></nav>
+  <nav class="sub" id="sub" aria-label="Inteligencia" hidden><a href="#datos" data-s="datos">Mercado</a><a href="#analizar" data-s="analizar">Propiedad</a></nav>
 </div></header>
 
 <main class="wrap" id="main">
@@ -311,7 +321,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <section class="view" id="v-mercado">
   <div class="hero">
     <a class="lead card-link" href="#articulo">
-      <div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 160V110h40V70h30v40h20V50h50v60h30V90h40v20h30V60h60v50h40V80h60v80z" fill="currentColor"/></svg><span>Foto: el terreno en Porlamar, frente a la calle</span></div>
+      <div class="ph ill" data-ill="lote"><span>Ilustración: el terreno en Porlamar</span></div>
       <div class="sticker spin" style="width:96px;height:96px;top:-22px;right:-18px"><svg viewBox="0 0 100 100" width="96" height="96" aria-label="Datos con fuente"><defs><path id="c" d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0"/></defs><text font-size="10.5" letter-spacing="2" fill="currentColor"><textPath href="#c">DATOS CON FUENTE · CARACAS · </textPath></text><path d="M38 51c3-4 7 4 12 0s9 4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
       <span class="lab">Estudio de factibilidad · 8 min</span>
       <h1>2.363 m² en Porlamar por $500.000. ¿Es rentable construir y vender?</h1>
@@ -353,7 +363,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <h1>2.363 m² en Porlamar por $500.000. ¿Es rentable construir y vender?</h1>
       <p class="dek">Un terreno con proyecto de uso mixto. En Porlamar, los inmuebles usados se piden a $1.003 por m².</p>
       <div class="by"><div class="avatar">c</div><span>Equipo Cauce</span><span>20 oct 2026</span><span>8 min</span></div>
-      <div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 160V120h60V90h80v30h40V70h90v50h40V100h90v60z" fill="currentColor"/></svg><span>Foto: el terreno, la calle, el vecindario</span></div>
+      <div class="ph ill" data-ill="lote"><span>Ilustración: el terreno, la calle, el vecindario</span></div>
       <div class="blk"><span class="lab">La noticia</span><p>Vertical Real Estate ofrece 2.363 m² en Porlamar por $500.000, con un proyecto de uso mixto. Suponemos 1,5 m² construibles por cada m² de terreno. De esa área, el 80% sería vendible.</p></div>
       <div class="blk"><span class="lab">Lo que sabemos</span><p>Con un costo de obra de $800 por m², el proyecto cuesta unos $4 millones. El terreno es solo el 12% de ese total. El resultado depende del costo de obra y del precio de venta.</p>
         <div class="bars" aria-label="Punto de equilibrio frente al mercado"><div><span>Para no perder</span><i style="width:100%"></i><span>$1.501</span></div><div><span>Porlamar hoy</span><i class="g" style="width:67%"></i><span>$1.003</span></div></div></div>
@@ -363,7 +373,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     </article>
     <aside class="rail">
       <div class="panel"><span class="lab">Datos de la zona</span><b class="num" style="font-size:26px;font-weight:500">$1.003<span class="sm"> /m²</span></b><span class="sm">Porlamar · n=18 · ago 2026</span><a class="sm" href="#datos" style="text-decoration:underline">Ver en Inteligencia</a></div>
-      <div class="panel"><span class="lab">Propiedades en esta zona</span><a href="#propiedad"><div class="ph" style="aspect-ratio:16/9"><span>Foto</span></div></a><span class="sm">Terreno · 2.363 m² · $500.000</span></div>
+      <div class="panel"><span class="lab">Propiedades en esta zona</span><a href="#propiedad"><div class="ph ill" data-ill="lote" style="aspect-ratio:16/9"></div></a><span class="sm">Terreno · 2.363 m² · $500.000</span></div>
       <div class="panel"><span class="lab">Habla con nuestro equipo</span><span class="sm">45 minutos sobre tu inmueble o terreno. Si luego encargas un estudio, te descontamos el precio de la consulta.</span><a class="btn" href="#planes" data-plan="consulta" style="justify-self:start">Agendar</a></div>
     </aside>
   </div>
@@ -381,7 +391,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <!-- PROPERTY DETAIL -->
 <section class="view" id="v-propiedad" hidden>
   <a class="sm" href="#propiedades">← Propiedades</a>
-  <div class="gal" style="margin-top:18px"><div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 160V100h120V60h60v40h80V80h140v80z" fill="currentColor"/></svg><span>Foto principal</span></div><div class="ph"><span>Foto</span></div><div class="ph"><span>Plano</span></div></div>
+  <div class="gal" style="margin-top:18px"><div class="ph ill" data-ill="lote"><span>Ilustración del terreno</span></div><div class="ph"><span>Foto</span></div><div class="ph"><span>Plano</span></div></div>
   <div class="pd">
     <div><span class="lab">Terreno · Porlamar</span><h1>2.363 m² con proyecto de uso mixto</h1><p class="sm" style="font-size:15px">Anuncio de Vertical Real Estate. Cauce no cobra comisión por esta operación.</p>
       <div class="facts"><div><span class="sm">Precio</span><b>$500.000</b></div><div><span class="sm">Terreno</span><b>2.363 m²</b></div><div><span class="sm">Por m²</span><b>$212</b></div><div><span class="sm">Construible</span><b>1,5×</b></div></div>
@@ -449,6 +459,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <!-- ENTRAR / REGISTRARME -->
 <section class="view auth" id="v-entrar" hidden>
   <a class="auth-back" href="#mercado">← Volver</a>
+  <div class="tog auth-lang" role="group" aria-label="Idioma"><button type="button" data-lang="es" aria-pressed="true">ES</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
   <p class="auth-hello">Bienvenido a Cauce</p>
   <div class="auth-card">
     <div class="auth-tabs" role="group" aria-label="Cuenta"><button type="button" data-m="login" aria-pressed="true">Iniciar sesión</button><button type="button" data-m="join" aria-pressed="false">Registrarme</button></div>
@@ -503,7 +514,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <footer><div class="wrap">
   <div class="foot">
     <div><div class="big">cauce</div><p class="sm" style="margin-top:12px;max-width:24em">Datos inmobiliarios con fuente. Boletín cada jueves.</p></div>
-    <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#analizar">Inteligencia</a></nav>
+    <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#datos">Inteligencia</a></nav>
     <nav aria-label="Cauce"><span class="lab">Cauce</span><a href="#sobre">Sobre Cauce</a><a href="#planes">Planes</a><a href="#planes" data-plan="consulta">Consulta 1:1</a></nav>
   </div>
   <div class="foot-bar"><span class="live"><i></i><span id="clock">Caracas</span> · Dólar BCV 500,46</span><span>No es asesoría de inversión</span></div>
@@ -513,14 +524,14 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 (function () {
   'use strict';
   const FEED = [
-    ['Análisis', 'Una fuente dice $1.551 por m² y otra $547. ¿Cuál usar?', '6 min', 0],
-    ['Zonas', 'Bello Monte y Colinas: zonas vecinas, $243 de diferencia por m²', '4 min', 0],
-    ['Estudio', 'La Boyera, 18.000 m²: townhouses con margen, si se venden', '9 min', 1],
-    ['Análisis', 'Airbnb a $63 la noche: ¿conviene más que alquilar por año?', '5 min', 0],
-    ['Guía', 'Comprar desde el exterior: pasos, costos y riesgos', '10 min', 0],
-    ['Estudio', '¿Convertir un local de 5.380 m² en vivienda?', '7 min', 1],
-    ['Análisis', 'Rendimiento bruto de 12%: cuánto queda después de gastos', '7 min', 1],
-    ['Zonas', 'Desde $15.000: qué se compra en la costa con cada presupuesto', '5 min', 0]
+    ['Análisis', 'Una fuente dice $1.551 por m² y otra $547. ¿Cuál usar?', '6 min', 0, 'p:Vista_aérea_de_la_Plaza_Altamira_de_Caracas.jpg'],
+    ['Zonas', 'Bello Monte y Colinas: zonas vecinas, $243 de diferencia por m²', '4 min', 0, 'p:Bello_Monte,_Caracas.jpg'],
+    ['Estudio', 'La Boyera, 18.000 m²: townhouses con margen, si se venden', '9 min', 1, null],
+    ['Análisis', 'Airbnb a $63 la noche: ¿conviene más que alquilar por año?', '5 min', 0, 'p:Caracas_(El_Rosal,_Chacao).jpg'],
+    ['Guía', 'Comprar desde el exterior: pasos, costos y riesgos', '10 min', 0, 'i:llave'],
+    ['Estudio', '¿Convertir un local de 5.380 m² en vivienda?', '7 min', 1, null],
+    ['Análisis', 'Rendimiento bruto de 12%: cuánto queda después de gastos', '7 min', 1, 'i:avila'],
+    ['Zonas', 'Desde $15.000: qué se compra en la costa con cada presupuesto', '5 min', 0, 'i:costa']
   ];
   /* Propiedades. PAID = destacados pagados (sin etiqueta por decisión editorial; aviso general abajo).
      DEALS = top 5 por precio/m² bajo la mediana de su zona. DATOS DE EJEMPLO hasta conectar Rent-A-House. */
@@ -528,12 +539,12 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     { t: 'Espacio destacado', s: 'Tu propiedad aquí · $150 por 30 días', href: '#planes', plan: 'duenos' }
   ];
   const DEALS = [
-    { t: 'Apartamento · Altamira', zone: 'Altamira', m2: 110, price: 260000 },
-    { t: 'Apartamento · La Castellana', zone: 'La Castellana', m2: 140, price: 480000 },
-    { t: 'Casa · Campo Alegre', zone: 'Campo Alegre', m2: 200, price: 590000 },
-    { t: 'Apartamento · Los Palos Grandes', zone: 'Los Palos Grandes', m2: 95, price: 165000 },
-    { t: 'Apartamento · Bello Monte', zone: 'Bello Monte', m2: 80, price: 98000 },
-    { t: 'Apartamento · El Marqués', zone: 'El Marqués', m2: 90, price: 81000 }
+    { t: 'Apartamento · Altamira', img: 'p:Caracas_Altamira.jpg', zone: 'Altamira', m2: 110, price: 260000 },
+    { t: 'Apartamento · La Castellana', img: 'p:Altamira,_La_Castellana_en_Caracas,_Venezuela.jpg', zone: 'La Castellana', m2: 140, price: 480000 },
+    { t: 'Casa · Campo Alegre', img: 'p:Bella_Caracas.JPG', zone: 'Campo Alegre', m2: 200, price: 590000 },
+    { t: 'Apartamento · Los Palos Grandes', img: 'p:Los_Palos_Grandes_2000_000.jpg', zone: 'Los Palos Grandes', m2: 95, price: 165000 },
+    { t: 'Apartamento · Bello Monte', img: 'p:Torre_Savoy,_Bello_Monte,_Caracas,_Venezuela.jpg', zone: 'Bello Monte', m2: 80, price: 98000 },
+    { t: 'Apartamento · El Marqués', img: 'i:avila', zone: 'El Marqués', m2: 90, price: 81000 }
   ];
   const STUDIES = [
     { t: 'Terreno · La Boyera', s: '18.000 m² · $5,5 M', tag: 'Viable con condiciones', ok: 1 },
@@ -552,12 +563,23 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const int = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   const ph = (i, cap) => `<div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="${SIL[i % 3]}" fill="currentColor"/></svg><span>${cap || ''}</span></div>`;
+
+  /* Original line illustrations (drawn for Cauce; free to use). */
+  const ILL = {
+    avila: '<path d="M0 205 C60 150 95 120 140 132 S220 70 270 96 S350 120 400 104" fill="none" stroke="currentColor" stroke-width="2"/><path d="M0 205 C60 150 95 120 140 132 S220 70 270 96 S350 120 400 104 V300 H0z" fill="var(--bg)" opacity=".55"/><g fill="var(--bg)" stroke="currentColor" stroke-width="2"><rect x="40" y="170" width="44" height="130"/><rect x="96" y="140" width="34" height="160"/><rect x="142" y="186" width="58" height="114"/><rect x="212" y="120" width="30" height="180"/><rect x="254" y="160" width="52" height="140"/><rect x="318" y="190" width="40" height="110"/></g><g stroke="currentColor" stroke-width="1.4" opacity=".7">' + Array.from({length: 8}, (_, i) => `<line x1="${50 + i * 4}" y1="${184 + i * 14}" x2="${74}" y2="${184 + i * 14}"/>`).join('') + '<line x1="104" y1="160" x2="122" y2="160"/><line x1="104" y1="180" x2="122" y2="180"/><line x1="104" y1="200" x2="122" y2="200"/><line x1="262" y1="180" x2="298" y2="180"/><line x1="262" y1="204" x2="298" y2="204"/></g><path d="M0 286 C80 270 150 296 230 280 S350 270 400 284" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>',
+    lote: '<path d="M70 190 L200 120 L340 180 L210 255 Z" fill="var(--bg)" stroke="currentColor" stroke-width="2"/><path d="M70 190 L70 202 L210 267 L340 192 L340 180" fill="none" stroke="currentColor" stroke-width="2"/><path d="M110 196 L200 148 L296 186 L206 236 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="6 6"/><g stroke="currentColor" stroke-width="1.4"><line x1="60" y1="214" x2="200" y2="286"/><line x1="60" y1="208" x2="60" y2="220"/><line x1="200" y1="280" x2="200" y2="292"/></g><g fill="var(--bg)" stroke="currentColor" stroke-width="2"><circle cx="300" cy="140" r="16"/><line x1="300" y1="156" x2="300" y2="176"/><circle cx="96" cy="160" r="11"/><line x1="96" y1="171" x2="96" y2="186"/></g><path d="M215 60 l0 34 M205 84 l10 10 10-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    llave: '<rect x="70" y="60" width="260" height="180" fill="var(--bg)" stroke="currentColor" stroke-width="2"/><g stroke="currentColor" stroke-width="2" fill="none"><path d="M70 150 H180 V60"/><path d="M180 120 H330"/><path d="M250 120 V240"/><path d="M140 150 a30 30 0 0 1 30 -30" stroke-dasharray="4 4"/></g><g stroke="currentColor" stroke-width="2.4" fill="var(--fill)" stroke-linecap="round"><circle cx="292" cy="214" r="22"/><path d="M276 230 L214 292 M236 270 l12 12 M224 282 l10 10" fill="none"/></g>',
+    costa: '<circle cx="300" cy="90" r="34" fill="var(--bg)" stroke="currentColor" stroke-width="2"/><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M0 220 C40 210 60 230 100 220 S160 210 200 220 S260 230 300 220 S360 210 400 220"/><path d="M0 248 C40 238 60 258 100 248 S160 238 200 248 S260 258 300 248 S360 238 400 248"/><path d="M90 200 C96 150 104 120 98 96"/><path d="M98 96 c-20 -10 -40 -4 -50 8 M98 96 c18 -14 40 -10 50 0 M98 96 c-8 -20 -2 -36 10 -44 M98 96 c-24 2 -36 16 -38 30"/></g><rect x="200" y="150" width="120" height="60" fill="var(--bg)" stroke="currentColor" stroke-width="2"/><g stroke="currentColor" stroke-width="1.4"><line x1="220" y1="170" x2="250" y2="170"/><line x1="270" y1="170" x2="300" y2="170"/><line x1="220" y1="190" x2="250" y2="190"/><line x1="270" y1="190" x2="300" y2="190"/></g>'
+  };
+  const ill = (k, cap) => `<div class="ph ill"><svg class="ill" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${ILL[k]}</svg>${cap ? `<span>${cap}</span>` : ''}</div>`;
+  const photo = (file, cap) => `<div class="ph"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=1000" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span class="credit">${cap || 'Imagen de referencia'} · Wikimedia Commons</span></div>`;
+  const media = (m, i) => !m ? ph(i, 'Foto') : m.startsWith('i:') ? ill(m.slice(2)) : photo(m.slice(2));
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* feed */
   function feed(f) {
     $('#feed').innerHTML = FEED.filter((x) => f === 'all' || x[0] === f).map((x, i) => {
-      const img = x[0] === 'Estudio' ? `<div class="cover"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(x[1].split(':')[0])}</b></div>` : ph(i, 'Foto');
+      const img = x[0] === 'Estudio' ? `<div class="cover"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(x[1].split(':')[0])}</b></div>` : media(x[4], i);
       return `<a class="card-link" href="#articulo">${img}<span class="lab">${esc(x[0])} · ${esc(x[2])}${x[3] ? '<span class="pro">PRO</span>' : ''}</span><h3>${esc(x[1])}</h3></a>`;
     }).join('');
     applyLang();
@@ -571,13 +593,13 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     let html = '';
     if (k === 'destacados') {
       const ranked = DEALS.map((d) => Object.assign({ per: d.price / d.m2, med: ZONES[d.zone] }, d)).map((d) => Object.assign(d, { off: d.per / d.med - 1 })).filter((d) => d.off < 0).sort((a, b) => a.off - b.off).slice(0, 5);
-      const items = ranked.map((d, i) => `<a class="card-link" href="#propiedad" style="position:relative"><span class="rank">Nº ${i + 1}</span>${ph(i, 'Foto')}<div class="row"><b>${esc(d.t)}</b><span class="tag ok">−${Math.round(-d.off * 100)}% vs zona</span></div><span class="sm">${int(d.m2)} m² · $${int(d.price)} · $${int(d.per)}/m²</span></a>`);
-      const paid = PAID.map((p, i) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}">${ph(i + 2, 'Foto')}<div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`);
+      const items = ranked.map((d, i) => `<a class="card-link" href="#propiedad" style="position:relative"><span class="rank">Nº ${i + 1}</span>${media(d.img, i)}<div class="row"><b>${esc(d.t)}</b><span class="tag ok">−${Math.round(-d.off * 100)}% vs zona</span></div><span class="sm">${int(d.m2)} m² · $${int(d.price)} · $${int(d.per)}/m²</span></a>`);
+      const paid = PAID.map((p, i) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}">${ill('llave')}<div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`);
       items.splice(2, 0, paid[0]);
       html = items.join('');
     } else {
       const L = k === 'estudios' ? STUDIES : OWN;
-      html = L.map((p, i) => `<a class="card-link" href="#propiedad">${k === 'estudios' ? `<div class="cover" style="aspect-ratio:4/5"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(p.t.split(' · ')[1])}</b></div>` : ph(i, 'Foto')}<div class="row"><b>${esc(p.t)}</b><span class="tag${p.ok ? ' ok' : ''}">${esc(p.tag)}</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
+      html = L.map((p, i) => `<a class="card-link" href="#propiedad">${k === 'estudios' ? `<div class="cover" style="aspect-ratio:4/5"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(p.t.split(' · ')[1])}</b></div>` : ill(i ? 'avila' : 'lote')}<div class="row"><b>${esc(p.t)}</b><span class="tag${p.ok ? ' ok' : ''}">${esc(p.tag)}</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
     }
     $('#grid').innerHTML = html;
     $('#p-intro').textContent = PINTRO[k]; $('#p-note').textContent = PNOTE[k];
@@ -620,6 +642,11 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    'Imagen de referencia · Wikimedia Commons': 'Reference image · Wikimedia Commons',
+    'Imagen de referencia': 'Reference image',
+    'Ilustración: el terreno en Porlamar': 'Illustration: the lot in Porlamar',
+    'Ilustración: el terreno, la calle, el vecindario': 'Illustration: the lot, the street, the neighborhood',
+    'Ilustración del terreno': 'Illustration of the lot',
     '← Volver': '← Back',
     'Bienvenido a Cauce': 'Welcome to Cauce',
     'Cuenta': 'Account',
@@ -824,17 +851,29 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
   /* theme: follows the device until the reader picks one */
   const root = document.documentElement;
-  function isDark() { const t = root.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+  let intelDark = true;
+  const inIntel = () => document.body.dataset.view === 'intel';
+  function isDark() { return inIntel() ? intelDark : root.getAttribute('data-theme') === 'dark'; }
   function syncThemeBtn() { const d = isDark(); $('#theme').setAttribute('data-es-aria-label', d ? 'Cambiar a modo día' : 'Cambiar a modo noche'); $('#theme').setAttribute('aria-label', lang === 'es' ? (d ? 'Cambiar a modo día' : 'Cambiar a modo noche') : (d ? 'Switch to day mode' : 'Switch to night mode')); }
-  try { const t = localStorage.getItem('cauce-theme'); if (t) root.setAttribute('data-theme', t); } catch (e) {}
-  $('#theme').addEventListener('click', () => { const t = isDark() ? 'light' : 'dark'; root.setAttribute('data-theme', t); try { localStorage.setItem('cauce-theme', t); } catch (e) {} syncThemeBtn(); });
+  try { const t = localStorage.getItem('cauce-theme-v2'); if (t) root.setAttribute('data-theme', t); } catch (e) {}
+  $('#theme').addEventListener('click', () => {
+    if (inIntel()) { intelDark = !intelDark; applyIntelTheme(); }
+    else { const t = isDark() ? 'light' : 'dark'; root.setAttribute('data-theme', t); try { localStorage.setItem('cauce-theme-v2', t); } catch (e) {} }
+    syncThemeBtn();
+  });
+  function applyIntelTheme() { const on = inIntel(); document.body.classList.toggle('intel', on && intelDark); document.body.classList.toggle('intel-light', on && !intelDark); }
   syncThemeBtn();
 
+  /* plans: click a card to select it; selection starts from where the reader came from */
+  function selectPlan(key) { $$('#plans .plan').forEach((p) => { const on = p.dataset.plan === key; p.classList.toggle('sel', on); p.setAttribute('aria-pressed', String(on)); }); }
+  $$('#plans .plan').forEach((p) => { p.setAttribute('role', 'button'); p.setAttribute('tabindex', '0');
+    p.addEventListener('click', (e) => { if (!e.target.closest('a,button')) { selectPlan(p.dataset.plan); planIntent = p.dataset.plan; } });
+    p.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === p) { e.preventDefault(); selectPlan(p.dataset.plan); planIntent = p.dataset.plan; } }); });
   /* plans: highlight by where the reader came from */
   let lastArea = 'publicacion', planIntent = null;
   function highlightPlans() {
     const key = planIntent || (lastArea === 'inteligencia' ? 'inteligencia' : 'boletin');
-    $$('#plans .plan').forEach((p) => p.classList.toggle('hl', p.dataset.plan === key));
+    selectPlan(key);
   }
   document.addEventListener('click', (e) => {
     const a = e.target.closest('[data-plan]');
@@ -925,7 +964,8 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     VIEWS.forEach((v) => { const el = document.getElementById('v-' + v); const ghost = authView && v === 'mercado'; el.hidden = !(v === h || ghost); el.classList.toggle('ghost', ghost); el.setAttribute('aria-hidden', ghost ? 'true' : 'false'); if (v === h) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); } });
     document.body.classList.toggle('auth', authView);
     const intel = h === 'analizar' || h === 'datos';
-    document.body.classList.toggle('intel', intel);
+    document.body.dataset.view = intel ? 'intel' : 'pub';
+    applyIntelTheme(); syncThemeBtn();
     $('#sub').hidden = !intel;
     $$('nav.main a').forEach((a) => { if (a.dataset.n === AREA[h]) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     $$('#sub a').forEach((a) => { if (a.dataset.s === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
@@ -942,6 +982,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
   }
   window.addEventListener('hashchange', show);
+  $$('[data-ill]').forEach((el) => el.insertAdjacentHTML('afterbegin', `<svg class="ill" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${ILL[el.dataset.ill]}</svg>`));
   feed('all'); grid('destacados'); show();
   setTimeout(() => $('#intro').classList.add('done'), reduce ? 0 : 1300);
 })();
