@@ -6,19 +6,21 @@
 <meta name="description" content="Cauce: inteligencia inmobiliaria con fuente. Mercado, propiedades y análisis de precios.">
 <meta property="og:title" content="Cauce">
 <meta property="og:description" content="Datos claros para invertir en bienes raíces, contados por personas.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23161615'/%3E%3Cpath d='M5 16c4-5 7 5 11 0s7 5 11 0' fill='none' stroke='%23F6F5F1' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#F1EEE9">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%231B1A18'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial' font-weight='800' font-size='18' text-anchor='middle' fill='%23F1EEE9'%3Ec%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="/fonts/hnd-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/hnd-800.woff2" as="font" type="font/woff2" crossorigin>
 <title>Cauce</title>
 <style>
+/* Draft v1. Paper and ink. Helvetica Now Display only: regular for headlines with tight tracking,
+   extra bold for the join screen, thin for big figures. Character lives in stickers (Switchyards), numbered pillars (super.la), article sections
+   (Semafor), book-like study covers (Stripe Press). Inteligencia turns graphite. */
 @font-face { font-family: "HND"; src: url("/fonts/hnd-200.woff2") format("woff2"); font-weight: 100 300; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-400.woff2") format("woff2"); font-weight: 400 500; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-700.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-800.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }
-/* Draft v1. Paper and ink. Helvetica Now Display only: regular for headlines with tight tracking,
-   extra bold for the join screen, thin for big figures. Character lives in stickers (Switchyards), numbered pillars (super.la), article sections
-   (Semafor), book-like study covers (Stripe Press). Inteligencia turns graphite. */
 :root {
-  --bg: #F6F5F1; --card: #FFFFFF; --ink: #161615; --soft: #6F6E69; --line: #DEDCD6; --fill: #E9E7E1; --sage: #DCE4D2; --sage-ink: #2F4A3E;
+  --bg: #F1EEE9; --card: #F1EEE9; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18;
   --sans: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --serif: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --mono: "HND", "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(.2,.7,.2,1);
   color-scheme: light;
@@ -27,13 +29,15 @@
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
-body.dark { --bg: #151615; --card: #1D1E1C; --ink: #ECECE8; --soft: #8F908A; --line: #2D2E2B; --fill: #232421; --sage: #2C3A31; --sage-ink: #CFE0C2; color-scheme: dark; }
+:root[data-theme="dark"] { --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; } }
+body.intel { --bg: #1A1B19; --card: #1F201E; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, p { margin: 0; }
-h1, h2, h3 { font-weight: 400; text-wrap: balance; letter-spacing: -0.04em; }
+h1, h2, h3, .verdict, .cover b, .foot .big { font-weight: 800 !important; text-wrap: balance; letter-spacing: -0.045em; }
 .serif { font-family: var(--serif); letter-spacing: -0.035em; }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 6px; }
-.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1480px; margin: 0 auto; padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(40px, env(safe-area-inset-right, 0px)); }
 .sm { font-size: 13px; color: var(--soft); }
 .lab { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); }
 .num { font-family: var(--mono); letter-spacing: -0.02em; }
@@ -58,30 +62,41 @@ a.card-link:hover .ph { transform: scale(.985); }
 /* intro loader */
 #intro { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: grid; place-items: center; transition: opacity .5s var(--ease), visibility .5s; }
 #intro.done { opacity: 0; visibility: hidden; }
-#intro svg { width: 120px; }
-#intro path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw 1s var(--ease) forwards; }
+#intro .w { font-weight: 800; font-size: clamp(64px, 12vw, 160px); letter-spacing: -0.07em; line-height: 1; clip-path: inset(0 100% 0 0); animation: wipe .9s var(--ease) forwards; }
+@keyframes wipe { to { clip-path: inset(0 0 0 0); } }
 #intro p { margin-top: 14px; font-size: 12px; color: var(--soft); text-align: center; opacity: 0; animation: fade .4s .6s forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes fade { to { opacity: 1; } }
 
-/* top pill nav */
-header.top { position: sticky; top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 20; padding-top: 10px; }
+/* header: plain bar, no pill */
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background .35s var(--ease); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
-.navpill { display: flex; align-items: center; gap: 8px; border: 1px solid var(--ink); border-radius: 999px; padding: 6px; background: color-mix(in srgb, var(--card) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); max-width: 860px; margin: 0 auto; }
-.logo { display: inline-flex; align-items: center; gap: 0; height: 40px; padding: 0 14px; border-radius: 999px; background: var(--ink); color: var(--bg); overflow: hidden; }
-.logo svg { width: 30px; height: 14px; flex: none; }
-.logo .about { max-width: 0; opacity: 0; white-space: nowrap; font-size: 13px; transition: max-width .45s var(--ease), opacity .3s var(--ease), margin .45s var(--ease); }
-.logo:hover .about, .logo:focus-visible .about { max-width: 140px; opacity: 1; margin-left: 10px; }
-nav.main { flex: 1; display: flex; justify-content: center; gap: 4px; }
-nav.main a { font-size: 14px; padding: 9px 14px; border-radius: 999px; color: var(--soft); transition: color .2s, background .2s; }
-nav.main a:hover { color: var(--ink); }
-nav.main a[aria-current] { color: var(--ink); background: var(--fill); }
-.navpill .btn { padding: 10px 18px; }
-.navpill .in { font-size: 14px; color: var(--soft); padding: 0 8px; }
-.sub { display: flex; justify-content: center; gap: 4px; margin-top: 10px; }
-.sub a { font-size: 13px; padding: 7px 16px; border-radius: 999px; color: var(--soft); border: 1px solid var(--line); background: var(--card); }
+.bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 76px; }
+.brand { display: flex; align-items: baseline; gap: 0; }
+.wm { font-weight: 800; font-size: 26px; letter-spacing: -0.06em; line-height: 1; }
+.brand .about { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; font-size: 14px; color: var(--soft); transition: max-width .5s var(--ease), opacity .35s var(--ease), margin .5s var(--ease); }
+.brand:hover .about, .brand:focus-within .about { max-width: 160px; opacity: 1; margin-left: 14px; }
+.brand .about:hover { color: var(--ink); }
+nav.main { display: flex; gap: 32px; }
+nav.main a { font-size: 15px; color: var(--soft); transition: color .2s; position: relative; }
+nav.main a:hover, nav.main a[aria-current] { color: var(--ink); }
+nav.main a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1.5px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+nav.main a[aria-current]::after { transform: scaleX(1); }
+.bar .r { justify-self: end; display: flex; align-items: center; gap: 18px; font-size: 15px; }
+.bar .r .in { color: var(--ink); }
+.tog { display: inline-flex; align-items: center; gap: 2px; font-size: 13px; }
+.tog button { background: none; border: 0; padding: 4px 3px; font: inherit; color: var(--soft); cursor: pointer; }
+.tog button[aria-pressed=true] { color: var(--ink); }
+.theme { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: none; color: var(--ink); cursor: pointer; display: grid; place-items: center; }
+.theme svg { width: 16px; height: 16px; }
+.sub { display: flex; justify-content: center; gap: 4px; padding-bottom: 12px; }
+.sub a { font-size: 13px; padding: 7px 16px; border-radius: 999px; color: var(--soft); border: 1px solid var(--line); }
 .sub a[aria-current] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-
+.ptabs { display: flex; gap: 28px; margin-top: 28px; border-bottom: 1px solid var(--line); }
+.ptabs button { background: none; border: 0; padding: 0 0 12px; font: 800 20px var(--sans); letter-spacing: -0.04em; color: var(--soft); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.ptabs button[aria-pressed=true] { color: var(--ink); border-color: var(--ink); }
+.rank { position: absolute; top: 12px; left: 12px; z-index: 2; background: var(--bg); color: var(--ink); border-radius: 999px; font-size: 12px; padding: 4px 10px; font-weight: 700; }
+.note { font-size: 13px; color: var(--soft); margin-top: 28px; }
 main { min-height: 70vh; }
 .view { padding-top: 40px; padding-bottom: 80px; }
 .view.enter { animation: enter .45s var(--ease); }
@@ -237,11 +252,11 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   .feed { grid-template-columns: 1fr 1fr; } .grid, .plans { grid-template-columns: 1fr 1fr; }
   .m3, .pillars { grid-template-columns: 1fr; } .foot { grid-template-columns: 1fr 1fr; }
   .rail { position: static; } .gal { height: 320px; }
-  nav.main a { padding: 9px 9px; font-size: 13px; } .navpill .in { display: none; }
+  .bar { grid-template-columns: auto 1fr; height: auto; padding-block: 14px; row-gap: 10px; } nav.main { grid-column: 1 / -1; grid-row: 2; gap: 20px; } .bar .r { gap: 12px; } .bar .r .in { display: none; }
 }
 @media (max-width: 560px) {
   .feed, .grid, .plans, .two, .kpis, .facts { grid-template-columns: 1fr; }
-  .navpill .btn { padding: 10px 12px; font-size: 13px; } .logo { padding: 0 10px; }
+  .wrap { padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); } .bar .r .btn { padding: 8px 12px; font-size: 13px; }
   .bars div { grid-template-columns: 100px 1fr 60px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } #intro { display: none; } }
@@ -250,14 +265,18 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <body>
 
 
-<div id="intro" aria-hidden="true"><div><svg viewBox="0 0 28 13"><path d="M1 6.5c4-5 9 5 13 0s9 5 13 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><p>Datos con fuente, desde Caracas.</p></div></div>
+<div id="intro" aria-hidden="true"><div><div class="w">cauce</div><p>Datos con fuente, desde Caracas.</p></div></div>
 
 <header class="top"><div class="wrap">
-  <div class="navpill">
-    <a class="logo" href="#sobre" aria-label="Sobre Cauce"><svg viewBox="0 0 28 13" aria-hidden="true"><path d="M1 6.5c4-5 9 5 13 0s9 5 13 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="about">Sobre Cauce →</span></a>
+  <div class="bar">
+    <div class="brand"><a class="wm" href="#mercado" aria-label="Cauce, inicio">cauce</a><a class="about" href="#sobre">Sobre Cauce →</a></div>
     <nav class="main" aria-label="Principal"><a href="#mercado" data-n="mercado">Mercado</a><a href="#propiedades" data-n="propiedades">Propiedades</a><a href="#analizar" data-n="inteligencia">Inteligencia</a></nav>
-    <a class="in" href="#entrar" data-mode="login">Entrar</a>
-    <a class="btn" href="#planes">Suscríbete</a>
+    <div class="r">
+      <a class="btn" href="#planes">Suscríbete</a>
+      <a class="in" href="#entrar" data-mode="login">Iniciar sesión</a>
+      <div class="tog" role="group" aria-label="Idioma"><button type="button" data-lang="es" aria-pressed="true">ES</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <button type="button" class="theme" id="theme" aria-label="Cambiar a modo noche"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 1 0 0 13z" fill="currentColor"/><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor"/></svg></button>
+    </div>
   </div>
   <nav class="sub" id="sub" aria-label="Inteligencia" hidden><a href="#analizar" data-s="analizar">Propiedad</a><a href="#datos" data-s="datos">Mercado</a></nav>
 </div></header>
@@ -330,8 +349,10 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <!-- PROPIEDADES -->
 <section class="view" id="v-propiedades" hidden>
   <div class="phead"><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div>
-  <div class="chips" style="margin-top:24px" role="group" aria-label="Filtrar"><button class="chip" aria-pressed="true" data-k="all">Todo</button><button class="chip" aria-pressed="false" data-k="venta">En venta</button><button class="chip" aria-pressed="false" data-k="estudio">Terrenos con estudio</button><button class="chip" aria-pressed="false" data-k="cauce">Proyecto Cauce</button></div>
+  <div class="ptabs" role="group" aria-label="Secciones"><button type="button" aria-pressed="true" data-k="destacados">Destacados</button><button type="button" aria-pressed="false" data-k="estudios">Estudios</button><button type="button" aria-pressed="false" data-k="cauce">Proyectos Cauce</button></div>
+  <p class="sm" id="p-intro" style="margin-top:16px"></p>
   <div class="grid" id="grid"></div>
+  <p class="note" id="p-note"></p>
 </section>
 
 <!-- PROPERTY DETAIL -->
@@ -421,7 +442,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="pillars">
     <div><span class="n">(01)</span><h3>Cada cifra con su fuente.</h3><p class="sm">Fecha, muestra y tipo de inmueble. Si dos fuentes no coinciden, publicamos las dos.</p></div>
     <div><span class="n">(02)</span><h3>Supuestos a la vista.</h3><p class="sm">En cada estudio mostramos qué asumimos y cómo cambia el resultado si nos equivocamos.</p></div>
-    <div><span class="n">(03)</span><h3>Independientes.</h3><p class="sm">Los destacados se pagan y lo decimos. Las conclusiones no se negocian.</p></div>
+    <div><span class="n">(03)</span><h3>Independientes.</h3><p class="sm">Algunos destacados son espacios pagados. Nuestras lecturas y conclusiones no se venden.</p></div>
   </div>
   <div class="duo" style="position:relative">
     <div class="sticker flat drag" id="drag" style="top:-30px;right:8%">Hecho en Caracas ↝<br><span style="opacity:.6">arrástrame</span></div>
@@ -454,13 +475,28 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     ['Análisis', 'Rendimiento de 12%: lo que queda después de gastos', '7 min', 1],
     ['Zonas', 'Desde $15.000: qué compra cada presupuesto en la costa', '5 min', 0]
   ];
-  const PROPS = [
-    ['Terreno · La Boyera', '18.000 m² · $5,5 M', 'Viable con condiciones', 'estudio', 1],
-    ['Apartamento · Valle Arriba', '285 m² · $390.000', 'Muestra', 'venta', 0],
-    ['Terreno · Porlamar', '2.363 m² · $500.000', 'No viable hoy', 'estudio', 0],
-    ['Apartamento · La Boyera', '119 m² · $269.000', 'Muestra', 'venta', 0],
-    ['Proyecto Cauce 01', 'En estructuración', 'Propio', 'cauce', 1],
-    ['Espacio destacado', '$150 por 30 días', 'Disponible', 'venta', 0]
+  /* Propiedades. PAID = destacados pagados (sin etiqueta por decisión editorial; aviso general abajo).
+     DEALS = top 5 por precio/m² bajo la mediana de su zona. DATOS DE EJEMPLO hasta conectar Rent-A-House. */
+  const PAID = [
+    { t: 'Espacio destacado', s: 'Tu propiedad aquí · $150 por 30 días', href: '#planes', plan: 'duenos' }
+  ];
+  const DEALS = [
+    { t: 'Apartamento · Altamira', zone: 'Altamira', m2: 110, price: 260000 },
+    { t: 'Apartamento · La Castellana', zone: 'La Castellana', m2: 140, price: 480000 },
+    { t: 'Casa · Campo Alegre', zone: 'Campo Alegre', m2: 200, price: 590000 },
+    { t: 'Apartamento · Los Palos Grandes', zone: 'Los Palos Grandes', m2: 95, price: 165000 },
+    { t: 'Apartamento · Bello Monte', zone: 'Bello Monte', m2: 80, price: 98000 },
+    { t: 'Apartamento · El Marqués', zone: 'El Marqués', m2: 90, price: 81000 }
+  ];
+  const STUDIES = [
+    { t: 'Terreno · La Boyera', s: '18.000 m² · $5,5 M', tag: 'Viable con condiciones', ok: 1 },
+    { t: 'Local · Colinas de Bello Monte', s: '5.380 m² · $2,1 M', tag: 'Ajustado', ok: 0 },
+    { t: 'Terreno · Porlamar', s: '2.363 m² · $500.000', tag: 'No viable hoy', ok: 0 },
+    { t: 'Posada · Playa El Agua', s: '7.216 m² · $1,2 M', tag: 'En estudio', ok: 0 }
+  ];
+  const OWN = [
+    { t: 'Proyecto Cauce 01', s: 'En estructuración · memorando para Inversionistas', tag: 'Propio', ok: 1 },
+    { t: 'Proyecto Cauce 02', s: 'Buscando terreno', tag: 'Próximamente', ok: 0 }
   ];
   const ZONES = { 'Las Mercedes': 4458, 'La Castellana': 4200, 'Campo Alegre': 3543, 'Altamira': 2969, 'Los Palos Grandes': 2054, 'Bello Monte': 1410, 'Colinas de Bello Monte': 1250, 'El Marqués': 875 };
   const SIL = ['M0 160V110h40V70h30v40h20V50h50v60h30V90h40v20h30V60h60v50h40V80h60v80z', 'M0 160V120h60V90h80v30h40V70h90v50h40V100h90v60z', 'M0 160V100h120V60h60v40h80V80h140v80z'];
@@ -477,14 +513,30 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       const img = x[0] === 'Estudio' ? `<div class="cover"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(x[1].split(':')[0])}</b></div>` : ph(i, 'Foto');
       return `<a class="card-link" href="#articulo">${img}<span class="lab">${esc(x[0])} · ${esc(x[2])}${x[3] ? '<span class="pro">PRO</span>' : ''}</span><h3>${esc(x[1])}</h3></a>`;
     }).join('');
+    applyLang();
   }
   $$('#v-mercado .chips .chip').forEach((b) => b.addEventListener('click', () => { $$('#v-mercado .chips .chip').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); feed(b.dataset.f); }));
 
   /* properties */
+  const PINTRO = { destacados: 'Las cinco mejores oportunidades de la semana por precio por m² frente a su zona, y espacios destacados.', estudios: 'Terrenos y edificios estudiados con los números a la vista.', cauce: 'Proyectos que estructuramos con inversores de la comunidad Cauce.' };
+  const PNOTE = { destacados: 'Datos de ejemplo hasta conectar Rent-A-House. Algunos destacados son espacios pagados.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.', cauce: 'Acceso anticipado para el plan Inversionista.' };
   function grid(k) {
-    $('#grid').innerHTML = PROPS.filter((p) => k === 'all' || p[3] === k).map((p, i) => `<a class="card-link" href="#propiedad">${ph(i, 'Foto')}<div class="row"><b>${esc(p[0])}</b><span class="tag${p[4] ? ' ok' : ''}">${esc(p[2])}</span></div><span class="sm">${esc(p[1])}</span></a>`).join('');
+    let html = '';
+    if (k === 'destacados') {
+      const ranked = DEALS.map((d) => Object.assign({ per: d.price / d.m2, med: ZONES[d.zone] }, d)).map((d) => Object.assign(d, { off: d.per / d.med - 1 })).filter((d) => d.off < 0).sort((a, b) => a.off - b.off).slice(0, 5);
+      const items = ranked.map((d, i) => `<a class="card-link" href="#propiedad" style="position:relative"><span class="rank">Nº ${i + 1}</span>${ph(i, 'Foto')}<div class="row"><b>${esc(d.t)}</b><span class="tag ok">−${Math.round(-d.off * 100)}% vs zona</span></div><span class="sm">${int(d.m2)} m² · $${int(d.price)} · $${int(d.per)}/m²</span></a>`);
+      const paid = PAID.map((p, i) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}">${ph(i + 2, 'Foto')}<div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`);
+      items.splice(2, 0, paid[0]);
+      html = items.join('');
+    } else {
+      const L = k === 'estudios' ? STUDIES : OWN;
+      html = L.map((p, i) => `<a class="card-link" href="#propiedad">${k === 'estudios' ? `<div class="cover" style="aspect-ratio:4/5"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(p.t.split(' · ')[1])}</b></div>` : ph(i, 'Foto')}<div class="row"><b>${esc(p.t)}</b><span class="tag${p.ok ? ' ok' : ''}">${esc(p.tag)}</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
+    }
+    $('#grid').innerHTML = html;
+    $('#p-intro').textContent = PINTRO[k]; $('#p-note').textContent = PNOTE[k];
+    applyLang();
   }
-  $$('#v-propiedades .chip').forEach((b) => b.addEventListener('click', () => { $$('#v-propiedades .chip').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); grid(b.dataset.k); }));
+  $$('#v-propiedades .ptabs button').forEach((b) => b.addEventListener('click', () => { $$('#v-propiedades .ptabs button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); grid(b.dataset.k); }));
 
   /* analyzer */
   $('#z').innerHTML = Object.keys(ZONES).map((z) => `<option>${esc(z)}</option>`).join('');
@@ -502,6 +554,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <div class="kpis"><div><span class="sm">vs zona</span><b>${d >= 0 ? '+' : '−'}${Math.abs(Math.round(d * 100))}%</b></div><div><span class="sm">Rend. bruto</span><b>${y}</b></div><div class="lock"><div class="blur"><span class="sm">Rango justo</span><b>$000.000</b></div><a href="#planes" data-plan="inteligencia" aria-label="Desbloquear rango justo"></a></div></div>
       <p class="sm">Precio pedido por m², agosto 2026. Referencia de ciudad: 12% de rendimiento bruto.</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="#planes" data-plan="inteligencia">Informe completo</a><a class="btn o" href="#planes" data-plan="consulta">Consulta 1:1</a></div>`;
+    applyLang();
   }
   $('#f-prop').addEventListener('submit', (e) => { e.preventDefault(); analyze(); });
   document.addEventListener('animationend', (e) => { if (e.target.classList && e.target.classList.contains('scan')) e.target.remove(); });
@@ -517,6 +570,152 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     location.hash = 'analizar';
     if (zone || nums.length >= 2) setTimeout(analyze, 350);
   });
+
+  /* ---------- language (ES default, EN) and theme ---------- */
+  const EN = {
+    'Datos con fuente, desde Caracas.': 'Sourced data, from Caracas.',
+    'Cauce, inicio': 'Cauce, home', 'Sobre Cauce →': 'About Cauce →', 'Sobre Cauce': 'About Cauce',
+    'Principal': 'Main', 'Mercado': 'Market', 'Propiedades': 'Properties', 'Inteligencia': 'Intelligence',
+    'Suscríbete': 'Subscribe', 'Iniciar sesión': 'Log in', 'Idioma': 'Language', 'Cambiar a modo noche': 'Switch to night mode', 'Cambiar a modo día': 'Switch to day mode',
+    'Propiedad': 'Property',
+    'Foto: el terreno en Porlamar, frente a la calle': 'Photo: the lot in Porlamar, from the street',
+    'Estudio de factibilidad · 8 min': 'Feasibility study · 8 min',
+    '2.363 m² en Porlamar por $500.000. ¿Da para construir y vender?': '2,363 m² in Porlamar for $500,000. Does building to sell pay off?',
+    'A los precios de hoy, edificar para vender pierde dinero. Cada m² tendría que venderse a $1.501; la zona pide $1.003.': 'At today’s prices, building to sell loses money. Each m² would need to sell for $1,501; the area asks $1,003.',
+    'Analiza un inmueble': 'Check a property', 'Enlace o datos': 'Link or details',
+    'Pega un enlace o escribe zona + m² + precio': 'Paste a link or type area + m² + price', 'Analizar': 'Check',
+    'Ej.: Los Palos Grandes 120 m² 210000. Un análisis gratis.': 'E.g. Los Palos Grandes 120 m² 210000. One free check.',
+    'Cifras de la semana': 'This week in numbers', 'Mediana venta': 'Median sale', 'por m²': 'per m²', 'Dólar BCV': 'BCV dollar',
+    'Rend. bruto': 'Gross yield', 'alquiler largo': 'long-term rent', 'ocupación': 'occupancy',
+    'Editor jefe. Escribe cada jueves. Respóndele: lee todo.': 'Editor in chief. Writes every Thursday. Reply: he reads everything.',
+    'Lo último': 'Latest', 'Filtrar': 'Filter', 'Todo': 'All', 'Análisis': 'Analysis', 'Estudios': 'Studies', 'Estudio': 'Study', 'Zonas': 'Areas', 'Guías': 'Guides', 'Guía': 'Guide',
+    'Boletín de los jueves': 'The Thursday letter', 'Una cifra, una historia y un terreno. Cada semana.': 'One number, one story and one lot. Every week.',
+    'Correo': 'Email', 'tu@correo.com': 'you@email.com', 'Unirme': 'Join',
+    'Gratis. Al unirte recibes un estudio completo de regalo.': 'Free. Join and get one full study as a gift.',
+    'Luis, editor jefe': 'Luis, editor in chief',
+    '«Si tienes un terreno o una duda, escríbeme. Muchas historias empiezan así.»': '“If you have a lot or a question, write to me. Many stories start that way.”',
+    'Agendar una consulta 1:1': 'Book a 1:1 consult', '← Mercado': '← Market', '← Propiedades': '← Properties',
+    'Estudio de factibilidad · Porlamar': 'Feasibility study · Porlamar',
+    'Un terreno con proyecto de uso mixto, en una ciudad donde el usado se pide a $1.003 por m².': 'A lot with a mixed-use project, in a city where resale asks $1,003 per m².',
+    'Foto: el terreno, la calle, el vecindario': 'Photo: the lot, the street, the neighborhood',
+    'La noticia': 'The news', 'Lo que sabemos': 'What we know', 'La lectura de Cauce': 'Cauce’s read', 'La otra mirada': 'The other view',
+    'Vertical Real Estate ofrece 2.363 m² en Porlamar por US$500.000, con un proyecto de uso mixto. Suponemos 1,5 m² construibles por cada m² de terreno, y 80% vendible.': 'Vertical Real Estate is offering 2,363 m² in Porlamar for US$500,000, with a mixed-use project. We assume 1.5 m² buildable per m² of land, 80% of it sellable.',
+    'Con obra a $800 por m², el proyecto cuesta unos $4 millones. El terreno es apenas el 12%: lo que decide el resultado es el costo de obra y el precio de venta.': 'With construction at $800 per m², the project costs about $4 million. The land is only 12%: construction cost and sale price decide the outcome.',
+    'Equilibrio frente al mercado': 'Break-even against the market', 'Para no perder': 'Break-even', 'Porlamar hoy': 'Porlamar today',
+    'A los precios de hoy no da los números. Funciona si la obra se contrata por debajo de $650 por m², o si la costa se acerca a $1.400.': 'At today’s prices the numbers don’t work. It works if construction comes in under $650 per m², or if coastal prices approach $1,400.',
+    'El vendedor podría argumentar que la obra nueva en la costa pide más que el usado. Es probable, pero no hay suficientes anuncios para medirlo.': 'The seller could argue that new builds on the coast ask more than resale. Likely, but there aren’t enough listings to measure it.',
+    'Para suscriptores': 'For subscribers', 'El modelo completo: costos, sensibilidad y calculadora.': 'The full model: costs, sensitivity and calculator.', 'Ver planes': 'See plans',
+    'Datos de la zona': 'Area data', 'Ver en Inteligencia': 'See in Intelligence', 'Propiedades en esta zona': 'Properties in this area', 'Foto': 'Photo',
+    'Terreno · 2.363 m² · $500.000': 'Lot · 2,363 m² · $500,000', 'Habla con Luis': 'Talk to Luis',
+    '45 minutos sobre tu inmueble o terreno. Se descuenta si encargas un estudio.': '45 minutes on your property or lot. Credited if you commission a study.', 'Agendar': 'Book',
+    'Inmuebles y terrenos,': 'Homes and lots,', 'con nuestra lectura.': 'with our read.', 'Estudia mi terreno': 'Study my lot', 'Secciones': 'Sections',
+    'Destacados': 'Featured', 'Proyectos Cauce': 'Cauce projects',
+    'Las cinco mejores oportunidades de la semana por precio por m² frente a su zona, y espacios destacados.': 'The week’s five best deals by price per m² against their area, plus featured spots.',
+    'Terrenos y edificios estudiados con los números a la vista.': 'Lots and buildings studied with the numbers in view.',
+    'Proyectos que estructuramos con inversores de la comunidad Cauce.': 'Projects we structure with investors from the Cauce community.',
+    'Datos de ejemplo hasta conectar Rent-A-House. Algunos destacados son espacios pagados.': 'Sample data until Rent-A-House is connected. Some featured spots are paid.',
+    'Estudios preliminares con datos públicos. No son tasaciones.': 'Preliminary studies with public data. Not appraisals.',
+    'Acceso anticipado para el plan Inversionista.': 'Early access on the Investor plan.',
+    'Espacio destacado': 'Featured spot', 'Tu propiedad aquí · $150 por 30 días': 'Your property here · $150 for 30 days',
+    'Viable con condiciones': 'Viable with conditions', 'Ajustado': 'Tight', 'No viable hoy': 'Not viable today', 'En estudio': 'Under study',
+    'Propio': 'Our own', 'Próximamente': 'Coming soon', 'En estructuración · memorando para Inversionistas': 'Being structured · memo for Investors', 'Buscando terreno': 'Looking for land',
+    'Foto principal': 'Main photo', 'Plano': 'Floor plan', 'Terreno · Porlamar': 'Lot · Porlamar', '2.363 m² con proyecto de uso mixto': '2,363 m² with a mixed-use project',
+    'Anuncio de Vertical Real Estate. Cauce no cobra comisión por esta operación.': 'Listing by Vertical Real Estate. Cauce takes no commission on this deal.',
+    'Precio': 'Price', 'Terreno': 'Land', 'Por m²': 'Per m²', 'Construible': 'Buildable', 'Lectura de Cauce': 'Cauce’s read', 'Leer el estudio completo': 'Read the full study',
+    '¿Te interesa?': 'Interested?', 'Nombre': 'Name', 'Pedir información': 'Request information', 'Te ponemos en contacto con el vendedor o un agente aliado.': 'We’ll connect you with the seller or a partner agent.',
+    '¿Es buen precio?': 'Is it a good price?', 'Un análisis gratis. Pega el enlace del anuncio o escribe los datos.': 'One free check. Paste the listing link or type the details.',
+    'Enlace': 'Link', 'https://… enlace del anuncio': 'https://… listing link', 'Leer': 'Read', 'o completa': 'or fill in', 'Zona': 'Area', 'Tipo': 'Type',
+    'Apartamento': 'Apartment', 'Casa': 'House', 'Área (m²)': 'Area (m²)', 'Precio (US$)': 'Price (US$)', 'Alquiler mensual, opcional': 'Monthly rent, optional',
+    'Resultado': 'Result', 'Completa los datos y pulsa Analizar.': 'Fill in the details and press Check.',
+    'Caro para la zona.': 'Expensive for the area.', 'Por debajo de la zona.': 'Below the area.', 'En línea con la zona.': 'In line with the area.',
+    'Este inmueble': 'This property', 'Mediana de la zona': 'Area median', 'vs zona': 'vs area', 'Rango justo': 'Fair range',
+    'Precio pedido por m², agosto 2026. Referencia de ciudad: 12% de rendimiento bruto.': 'Asking price per m², August 2026. City reference: 12% gross yield.',
+    'Informe completo': 'Full report', 'Leer enlaces llega pronto.': 'Reading links is coming soon.', 'Por ahora, completa los datos a la izquierda.': 'For now, fill in the details on the left.',
+    'Revisa el área y el precio.': 'Check the area and price.',
+    'Mediana de venta, apartamentos': 'Median sale, apartments', 'Dólar oficial': 'Official dollar', 'Bs. por US$ · BCV': 'Bs. per US$ · BCV', 'Rendimiento bruto': 'Gross yield',
+    'Precio por m², serie semanal': 'Price per m², weekly series', 'Ranking · 151 zonas': 'Ranking · 151 areas', 'Comparar dos zonas': 'Compare two areas', 'Alquiler y Airbnb por zona': 'Rent and Airbnb by area',
+    'Únete para ver todos los datos': 'Join to see all the data', 'Únete para ver las 151 zonas →': 'Join to see all 151 areas →',
+    'Planes': 'Plans', 'Elige cómo quieres leer el mercado.': 'Choose how you read the market.', 'Empieza gratis. Paga cuando necesites decidir.': 'Start free. Pay when you need to decide.',
+    'Boletín': 'Newsletter', 'siempre': 'always', 'Para seguir el mercado cada jueves.': 'To follow the market every Thursday.',
+    'Historias de mercado y zonas': 'Market and area stories', 'Un estudio completo de regalo': 'One full study as a gift', 'Gratis': 'Free', 'Más': 'Most', 'elegido': 'chosen',
+    '/mes, anual': '/mo, billed yearly', 'Para quien compra o ya tiene inmuebles.': 'For buyers and owners.', 'Estudios completos y calculadora': 'Full studies and calculator',
+    '151 zonas, serie semanal': '151 areas, weekly series', 'Análisis de propiedades ilimitados': 'Unlimited property checks', 'Datos en CSV': 'CSV data', 'Suscribirme': 'Subscribe',
+    'Consulta 1:1': '1:1 consult', 'Con Luis, sobre tu inmueble o terreno.': 'With Luis, about your property or lot.', 'Revisión de precio y zona': 'Price and area review',
+    'Notas por escrito': 'Written notes', 'Se descuenta de un estudio': 'Credited toward a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
+    'Pon tu terreno frente a inversores.': 'Put your lot in front of investors.', 'Estudio de factibilidad publicado': 'Published feasibility study',
+    'Destacado 30 días · $150 solo': 'Featured 30 days · $150 alone', 'Contactos de lectores': 'Reader leads', 'Estudio · Destacado': 'Study · Featured',
+    'Precios en US$ de prueba. Sin comisiones por ventas. Cancela cuando quieras.': 'Test prices in US$. No sales commissions. Cancel anytime.',
+    'Únete': 'Join', 'a Cauce.': 'Cauce.', 'Hola': 'Welcome', 'otra vez.': 'back.', 'Contraseña': 'Password', 'Plan': 'Plan',
+    'Boletín · gratis': 'Newsletter · free', 'Inteligencia · $10/mes': 'Intelligence · $10/mo', 'Dueños y agentes': 'Owners and agents', 'Continuar': 'Continue',
+    '¿Ya tienes cuenta? Entrar': 'Already a member? Log in', '¿Nuevo aquí? Únete': 'New here? Join',
+    'Borrador: el registro y el pago se conectan al lanzar.': 'Draft: sign-up and payment connect at launch.',
+    'Listo. Borrador: el registro se conecta al lanzar.': 'Done. Draft: sign-up connects at launch.',
+    'Recibido. Borrador: el envío se conecta al lanzar.': 'Received. Draft: sending connects at launch.',
+    'Datos claros para invertir en Venezuela, contados por personas.': 'Clear data for investing in Venezuela, told by people.',
+    'Cauce es una publicación y una herramienta. Cada semana explicamos qué pasa con los precios, estudiamos terrenos con los números a la vista y conectamos a quien invierte con quien construye. No cobramos comisión por ventas.': 'Cauce is a publication and a tool. Every week we explain what’s happening with prices, study lots with the numbers in view, and connect investors with builders. We take no commission on sales.',
+    'Cada cifra con su fuente.': 'Every number sourced.', 'Fecha, muestra y tipo de inmueble. Si dos fuentes no coinciden, publicamos las dos.': 'Date, sample size and property type. If two sources disagree, we publish both.',
+    'Supuestos a la vista.': 'Assumptions in view.', 'En cada estudio mostramos qué asumimos y cómo cambia el resultado si nos equivocamos.': 'Every study shows what we assumed and how the result changes if we’re wrong.',
+    'Independientes.': 'Independent.', 'Algunos destacados son espacios pagados. Nuestras lecturas y conclusiones no se venden.': 'Some featured spots are paid. Our reads and conclusions are not for sale.',
+    'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
+    'Inteligencia inmobiliaria con fuente. Boletín cada jueves.': 'Sourced real estate intelligence. Newsletter every Thursday.',
+    'Leer': 'Read', 'Consultas': 'Consults', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
+    'Una fuente dice $1.551 por m² y otra $547. ¿Cuál usar?': 'One source says $1,551 per m² and another $547. Which to use?',
+    'Bello Monte y Colinas: la misma montaña, $243 de diferencia por m²': 'Bello Monte and Colinas: same hill, $243 apart per m²',
+    'La Boyera, 18.000 m²: townhouses con margen, si se venden': 'La Boyera, 18,000 m²: townhouses with margin, if they sell',
+    'Airbnb a $63 la noche: ¿conviene más que alquilar por año?': 'Airbnb at $63 a night: better than a yearly lease?',
+    'Comprar desde el exterior: pasos, costos y riesgos': 'Buying from abroad: steps, costs and risks',
+    'Un local de 5.380 m² convertido en vivienda': 'A 5,380 m² commercial building turned into homes',
+    'Rendimiento de 12%: lo que queda después de gastos': 'A 12% yield: what’s left after costs',
+    'Desde $15.000: qué compra cada presupuesto en la costa': 'From $15,000: what each budget buys on the coast'
+  };
+  const ATTRS = ['placeholder', 'aria-label', 'title'];
+  const orig = new WeakMap();
+  let lang = 'es';
+  try { lang = localStorage.getItem('cauce-lang') || 'es'; } catch (e) {}
+  function tr(es) {
+    if (lang === 'es') return es;
+    const k = es.trim();
+    if (EN[k]) return es.replace(k, EN[k]);
+    let m = k.match(/^(Estudio|Análisis|Zonas|Guía) · (\d+ min)$/);
+    if (m) return es.replace(k, EN[m[1]] + ' · ' + m[2]);
+    m = k.match(/^Estudio Nº (\d+)$/); if (m) return es.replace(k, 'Study Nº ' + m[1]);
+    m = k.match(/^Resultado · (.+)$/); if (m) return es.replace(k, 'Result · ' + m[1]);
+    m = k.match(/^−(\d+)% vs zona$/); if (m) return es.replace(k, '−' + m[1] + '% vs area');
+    m = k.match(/^(Apartamento|Casa|Terreno|Local|Posada) · (.+)$/); if (m) return es.replace(k, ({ Apartamento: 'Apartment', Casa: 'House', Terreno: 'Lot', Local: 'Commercial', Posada: 'Inn' })[m[1]] + ' · ' + m[2]);
+    return es;
+  }
+  let applying = false;
+  function applyLang() {
+    if (applying) return; applying = true;
+    document.documentElement.lang = lang;
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+    let n;
+    while ((n = w.nextNode())) {
+      if (!/[A-Za-zÁÉÍÓÚáéíóúñ]/.test(n.nodeValue)) continue;
+      if (!orig.has(n) || (lang === 'es' && n.nodeValue !== orig.get(n) && n.nodeValue !== tr(orig.get(n)))) orig.set(n, n.nodeValue);
+      const want = lang === 'es' ? orig.get(n) : tr(orig.get(n));
+      if (n.nodeValue !== want) n.nodeValue = want;
+    }
+    $$('[placeholder],[aria-label],[title]').forEach((el) => ATTRS.forEach((a) => {
+      if (!el.hasAttribute(a)) return;
+      const key = 'data-es-' + a;
+      if (!el.hasAttribute(key)) el.setAttribute(key, el.getAttribute(a));
+      const es = el.getAttribute(key), want = lang === 'es' ? es : (EN[es] || es);
+      if (el.getAttribute(a) !== want) el.setAttribute(a, want);
+    }));
+    $$('.tog button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    applying = false;
+  }
+  $$('.tog button').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); }));
+  new MutationObserver(() => { if (!applying) requestAnimationFrame(applyLang); }).observe(document.body, { childList: true, subtree: true });
+
+  /* theme: follows the device until the reader picks one */
+  const root = document.documentElement;
+  function isDark() { const t = root.getAttribute('data-theme'); return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+  function syncThemeBtn() { const d = isDark(); $('#theme').setAttribute('data-es-aria-label', d ? 'Cambiar a modo día' : 'Cambiar a modo noche'); $('#theme').setAttribute('aria-label', lang === 'es' ? (d ? 'Cambiar a modo día' : 'Cambiar a modo noche') : (d ? 'Switch to day mode' : 'Switch to night mode')); }
+  try { const t = localStorage.getItem('cauce-theme'); if (t) root.setAttribute('data-theme', t); } catch (e) {}
+  $('#theme').addEventListener('click', () => { const t = isDark() ? 'light' : 'dark'; root.setAttribute('data-theme', t); try { localStorage.setItem('cauce-theme', t); } catch (e) {} syncThemeBtn(); });
+  syncThemeBtn();
 
   /* plans: highlight by where the reader came from */
   let lastArea = 'publicacion', planIntent = null;
@@ -538,6 +737,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   function setMode(m) {
     mode = m;
     $('#j-h').innerHTML = m === 'join' ? 'Únete<br>a Cauce.' : 'Hola<br>otra vez.';
+    applyLang();
     $('#j-plans').hidden = m !== 'join';
     $('#j-switch').textContent = m === 'join' ? '¿Ya tienes cuenta? Entrar' : '¿Nuevo aquí? Únete';
     $('#j-msg').textContent = '';
@@ -576,12 +776,13 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   function render(h) {
     VIEWS.forEach((v) => { const el = document.getElementById('v-' + v); el.hidden = v !== h; if (v === h) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); } });
     const intel = h === 'analizar' || h === 'datos';
-    document.body.classList.toggle('dark', intel);
+    document.body.classList.toggle('intel', intel);
     $('#sub').hidden = !intel;
     $$('nav.main a').forEach((a) => { if (a.dataset.n === AREA[h]) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     $$('#sub a').forEach((a) => { if (a.dataset.s === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     if (h === 'planes') highlightPlans();
     if (h === 'mercado') countUp();
+    applyLang();
     window.scrollTo(0, 0);
   }
   function show() {
@@ -592,7 +793,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
   }
   window.addEventListener('hashchange', show);
-  feed('all'); grid('all'); show();
+  feed('all'); grid('destacados'); show();
   setTimeout(() => $('#intro').classList.add('done'), reduce ? 0 : 1300);
 })();
 </script>
