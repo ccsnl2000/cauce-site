@@ -13,14 +13,14 @@
 <title>Cauce</title>
 <style>
 /* Draft v1. Paper and ink. Helvetica Now Display only: regular for headlines with tight tracking,
-   extra bold for the join screen, thin for big figures. Character lives in stickers (Switchyards), numbered pillars (super.la), article sections
+   bold for figures, extra bold for titles. Character lives in stickers (Switchyards), numbered pillars (super.la), article sections
    (Semafor), book-like study covers (Stripe Press). Inteligencia turns graphite. */
 @font-face { font-family: "HND"; src: url("/fonts/hnd-200.woff2") format("woff2"); font-weight: 100 300; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-400.woff2") format("woff2"); font-weight: 400 500; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-700.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-800.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }
 :root {
-  --bg: #F1EEE9; --card: #F1EEE9; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18;
+  --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18;
   --sans: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --serif: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --mono: "HND", "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(.2,.7,.2,1);
   color-scheme: light;
@@ -29,8 +29,8 @@
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
-:root[data-theme="dark"] { --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; } }
+:root[data-theme="dark"] { --sheet: #1D1D1B; --faint: #5E5B56; --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --sheet: #1D1D1B; --faint: #5E5B56; --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; } }
 body.intel { --bg: #1A1B19; --card: #1F201E; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, p { margin: 0; }
@@ -120,7 +120,7 @@ main { min-height: 70vh; }
 .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 14px; }
 .figs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
 .figs div { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 2px; }
-.figs b { font: 200 24px var(--mono); letter-spacing: -0.04em; }
+.figs b { font: 700 24px var(--mono); letter-spacing: -0.04em; }
 .editor { display: flex; gap: 14px; align-items: center; }
 .avatar { width: 54px; height: 54px; border-radius: 50%; background: var(--fill); display: grid; place-items: center; font-family: var(--serif); font-size: 24px; flex: none; }
 .secthead { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin: 64px 0 18px; }
@@ -176,7 +176,7 @@ main { min-height: 70vh; }
 .pd h1 { font-family: var(--serif); font-size: 46px; line-height: 1; margin: 10px 0 14px; }
 .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
 .facts div { border-top: 1px solid var(--line); padding-top: 8px; }
-.facts b { display: block; font: 200 18px var(--mono); margin-top: 2px; }
+.facts b { display: block; font: 700 18px var(--mono); margin-top: 2px; }
 
 /* INTELIGENCIA */
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
@@ -191,7 +191,7 @@ form.f select option { background: var(--card); }
 .verdict { font-family: var(--serif); font-size: 44px; line-height: 1; letter-spacing: -0.045em; }
 .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 .kpis div { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 4px; }
-.kpis b { font: 200 24px var(--mono); letter-spacing: -0.04em; }
+.kpis b { font: 700 24px var(--mono); letter-spacing: -0.04em; }
 .scan { position: absolute; left: 0; right: 0; height: 2px; background: var(--ink); opacity: .5; animation: scan 1s var(--ease) forwards; pointer-events: none; }
 @keyframes scan { from { top: 0; } to { top: 100%; opacity: 0; } }
 .lock { position: relative; }
@@ -200,7 +200,7 @@ form.f select option { background: var(--card); }
 .lock > a span { background: var(--ink); color: var(--bg); padding: 11px 18px; border-radius: 999px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
 .m3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .m3 div { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 6px; }
-.m3 b { font: 200 52px/1 var(--mono); letter-spacing: -0.05em; }
+.m3 b { font: 700 52px/1 var(--mono); letter-spacing: -0.05em; }
 .mgrid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
 .mgrid .panel { min-height: 160px; }
 
@@ -210,7 +210,7 @@ form.f select option { background: var(--card); }
 .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 40px; }
 .plan { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: grid; gap: 12px; align-content: start; transition: border-color .3s, transform .3s var(--ease); }
 .plan.hl { border-color: var(--ink); transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,.06); }
-.plan .price { font: 200 34px var(--mono); letter-spacing: -0.05em; }
+.plan .price { font: 700 34px var(--mono); letter-spacing: -0.05em; }
 .plan .price small { font: 400 13px var(--sans); color: var(--soft); letter-spacing: 0; }
 .plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 13px; }
 .plan li::before { content: "— "; color: var(--soft); }
@@ -218,16 +218,40 @@ form.f select option { background: var(--card); }
 .plan .sticker { top: -16px; right: 14px; width: 66px; height: 66px; transform: rotate(10deg); }
 
 /* JOIN (extra large, centered) */
-.join { min-height: calc(100vh - 120px); display: grid; align-content: center; justify-items: center; text-align: center; padding-top: 72px; }
-.join h1 { font-family: var(--sans); font-weight: 800; font-size: clamp(56px, 9vw, 128px); line-height: .92; letter-spacing: -0.065em; }
-.join form { margin-top: 44px; display: grid; gap: 2px; width: min(860px, 100%); min-width: 0; }
-.join input { font: 700 clamp(30px, 5.4vw, 68px)/1.1 var(--sans); letter-spacing: -0.045em; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: 10px 0; border-radius: 0; text-align: center; width: 100%; min-width: 0; }
-.join input::placeholder { color: #C9C7C0; }
-.join input:focus { outline: none; border-color: var(--ink); }
-.join .chips { justify-content: center; margin-top: 26px; }
-.join .chip { font-size: 14px; padding: 9px 16px; }
-.join .go { margin-top: 26px; display: grid; gap: 14px; justify-items: center; }
-.join .switch { background: none; border: 0; color: var(--soft); font: inherit; font-size: 14px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.view.ghost { position: fixed; inset: 0; z-index: 0; overflow: hidden; padding-top: 40px; filter: blur(26px) saturate(.85); transform: scale(1.06); opacity: .9; pointer-events: none; user-select: none; }
+body.auth header.top, body.auth footer { display: none; }
+.auth { position: relative; z-index: 2; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; padding-block: 44px 32px; }
+.auth-back { font-size: 14px; color: var(--soft); position: fixed; top: calc(36px + env(safe-area-inset-top, 0px)); left: max(40px, env(safe-area-inset-left, 0px)); z-index: 3; }
+.auth-back:hover { color: var(--ink); }
+.auth-hello { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.025em; }
+.auth-card { align-self: center; width: 640px; max-width: 100%; background: var(--sheet); border-radius: 22px; padding: clamp(28px, 4vw, 56px); box-shadow: 0 40px 90px rgba(27,26,24,.10); }
+.auth-tabs { display: flex; justify-content: space-between; align-items: baseline; }
+.auth-tabs button { background: none; border: 0; padding: 0; font: 400 clamp(22px, 2.2vw, 30px) var(--sans); letter-spacing: -0.02em; color: var(--faint); cursor: pointer; }
+.auth-tabs button[aria-pressed=true] { color: var(--ink); }
+.auth form { display: grid; gap: 26px; margin-top: 34px; }
+.auth input[type=email], .auth input[type=password], .auth input[type=text] { width: 100%; min-width: 0; height: clamp(68px, 7vw, 96px); border: 1.5px solid var(--ink); border-radius: 18px; background: transparent; color: var(--ink); font: 400 clamp(20px, 2vw, 28px) var(--sans); letter-spacing: -0.02em; text-align: center; padding: 0 56px; }
+.auth input::placeholder { color: var(--faint); }
+.auth input:focus { outline: none; box-shadow: 0 0 0 4px var(--fill); }
+.pw { position: relative; }
+.pw .help { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--faint); background: none; color: var(--faint); font: 400 15px var(--sans); cursor: pointer; }
+.pw .help:hover { color: var(--ink); border-color: var(--ink); }
+.auth-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 10px; }
+.auth-row button { background: none; border: 0; padding: 0; font: 400 clamp(18px, 1.9vw, 26px) var(--sans); letter-spacing: -0.02em; color: var(--ink); cursor: pointer; }
+.auth-row .go { display: inline-flex; align-items: center; gap: 14px; }
+.auth-row .go svg { width: 28px; height: 20px; transition: transform .3s var(--ease); }
+.auth-row .go:hover svg { transform: translateX(4px); }
+.auth-row .alt { color: var(--soft); }
+.auth-row .alt:hover { color: var(--ink); }
+.auth-plan { text-align: center; font-size: 14px; color: var(--soft); }
+.auth-plan b { color: var(--ink); font-weight: 700; }
+.auth-plan a { text-decoration: underline; text-underline-offset: 3px; }
+.auth-q { font-size: 16px; color: var(--soft); text-align: center; }
+.auth .chips { justify-content: center; }
+.auth .chip { font-size: 14px; padding: 9px 14px; }
+.auth-done { display: grid; gap: 18px; margin-top: 34px; text-align: center; justify-items: center; }
+.auth-done p.big { font-size: clamp(22px, 2.2vw, 30px); letter-spacing: -0.02em; }
+.auth-note { font-size: 12px; color: var(--soft); text-align: center; max-width: 36em; }
+.auth-msg { text-align: center; font-size: 14px; color: var(--soft); min-height: 1.2em; }
 
 /* SOBRE */
 .about h1 { font-family: var(--serif); font-size: clamp(48px, 7vw, 104px); line-height: .95; max-width: 12em; }
@@ -422,15 +446,29 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <p class="sm" style="text-align:center;margin-top:22px">Precios de prueba, en US$. No cobramos comisión por ventas. Cancela cuando quieras.</p>
 </section>
 
-<!-- ENTRAR / UNIRSE -->
-<section class="view join" id="v-entrar" hidden>
-  <h1 id="j-h">Únete<br>a Cauce.</h1>
-  <form id="f-join" autocomplete="on">
-    <label for="j-email" hidden>Correo</label><input id="j-email" type="email" placeholder="Correo" required autocomplete="email">
-    <label for="j-pass" hidden>Contraseña</label><input id="j-pass" type="password" placeholder="Contraseña" required autocomplete="current-password">
-    <div class="chips" id="j-plans" role="group" aria-label="Plan"><button type="button" class="chip" aria-pressed="false" data-p="boletin">Boletín · gratis</button><button type="button" class="chip" aria-pressed="true" data-p="inteligencia">Inteligencia · $10/mes</button><button type="button" class="chip" aria-pressed="false" data-p="consulta">Consulta 1:1</button><button type="button" class="chip" aria-pressed="false" data-p="duenos">Dueños y agentes</button></div>
-    <div class="go"><button class="btn" type="submit" style="padding:14px 28px;font-size:16px">Continuar</button><button class="switch" type="button" id="j-switch">¿Ya tienes cuenta? Inicia sesión</button><span class="sm" id="j-msg" aria-live="polite"></span></div>
-  </form>
+<!-- ENTRAR / REGISTRARME -->
+<section class="view auth" id="v-entrar" hidden>
+  <a class="auth-back" href="#mercado">← Volver</a>
+  <p class="auth-hello">Bienvenido a Cauce</p>
+  <div class="auth-card">
+    <div class="auth-tabs" role="group" aria-label="Cuenta"><button type="button" data-m="login" aria-pressed="true">Iniciar sesión</button><button type="button" data-m="join" aria-pressed="false">Registrarme</button></div>
+    <form id="f-auth" autocomplete="on" novalidate>
+      <label for="a-email" hidden>Correo</label><input id="a-email" type="email" placeholder="Correo" required autocomplete="email">
+      <div class="pw"><label for="a-pass" hidden>Contraseña</label><input id="a-pass" type="password" placeholder="Contraseña" required minlength="8" autocomplete="current-password"><button type="button" class="help" id="a-help" aria-label="¿Olvidaste tu contraseña?" title="¿Olvidaste tu contraseña?">?</button></div>
+      <p class="auth-plan" id="a-plan" hidden>Plan: <b id="a-plan-name">Boletín · gratis</b> · <a href="#planes">Cambiar</a></p>
+      <p class="auth-msg" id="a-msg" aria-live="polite"></p>
+      <div class="auth-row"><button type="button" class="alt" id="a-alt">Enviar enlace mágico</button><button type="submit" class="go"><span id="a-go">Entrar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
+    </form>
+    <form id="f-perfil" hidden>
+      <p class="auth-q">Cuéntanos un poco. Es opcional y puedes cambiarlo cuando quieras.</p>
+      <div class="chips" role="group" aria-label="¿Qué te trae a Cauce?"><button type="button" class="chip" aria-pressed="false" data-r="vivir">Comprar para vivir</button><button type="button" class="chip" aria-pressed="false" data-r="invertir">Invertir</button><button type="button" class="chip" aria-pressed="false" data-r="vender">Vender o desarrollar</button><button type="button" class="chip" aria-pressed="false" data-r="agente">Soy agente</button></div>
+      <label for="a-pais" hidden>País donde vives</label><input id="a-pais" type="text" placeholder="País donde vives" autocomplete="country-name">
+      <label for="a-zonas" hidden>Zonas que te interesan</label><input id="a-zonas" type="text" placeholder="Zonas que te interesan">
+      <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
+    </form>
+    <div class="auth-done" id="a-done" hidden><p class="big" id="d-title"></p><p class="sm" id="d-text"></p><a class="btn" id="d-btn" href="#mercado"></a></div>
+  </div>
+  <p class="auth-note">Borrador: las cuentas, los pagos y las reservas se activan al lanzar el sitio.</p>
 </section>
 
 <!-- SOBRE -->
@@ -582,6 +620,50 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    '← Volver': '← Back',
+    'Bienvenido a Cauce': 'Welcome to Cauce',
+    'Cuenta': 'Account',
+    'Registrarme': 'Sign up',
+    'Enviar enlace mágico': 'Send magic link',
+    'Entrar': 'Log in',
+    'Crear cuenta': 'Create account',
+    'Ya tengo cuenta': 'I have an account',
+    '¿Olvidaste tu contraseña?': 'Forgot your password?',
+    'Contraseña (8 caracteres o más)': 'Password (8+ characters)',
+    'Plan:': 'Plan:',
+    'Cambiar': 'Change',
+    'Boletín · gratis': 'Newsletter · free',
+    'Inteligencia · $10/mes': 'Intelligence · $10/mo',
+    'Consulta 1:1 · $60': '1:1 consult · $60',
+    'Estudio para dueños · $450': 'Owner study · $450',
+    'Cuéntanos un poco. Es opcional y puedes cambiarlo cuando quieras.': 'Tell us a little. It’s optional and you can change it anytime.',
+    '¿Qué te trae a Cauce?': 'What brings you to Cauce?',
+    'Comprar para vivir': 'Buying a home',
+    'Invertir': 'Investing',
+    'Vender o desarrollar': 'Selling or developing',
+    'Soy agente': 'I’m an agent',
+    'País donde vives': 'Country you live in',
+    'Zonas que te interesan': 'Areas you’re interested in',
+    'Omitir': 'Skip',
+    'Continuar': 'Continue',
+    'Listo. Ya eres parte de Cauce.': 'Done. You’re part of Cauce.',
+    'Tu primer boletín llega el jueves. Puedes pasar a Inteligencia cuando quieras desde Mi cuenta.': 'Your first newsletter arrives Thursday. You can move to Intelligence anytime from My account.',
+    'Ir a Mercado': 'Go to Market',
+    'Cuenta creada. Falta el pago.': 'Account created. Payment is next.',
+    'Te llevamos al pago seguro con Stripe. Puedes cambiar o cancelar tu plan cuando quieras desde Mi cuenta.': 'We’ll take you to secure checkout with Stripe. You can change or cancel your plan anytime from My account.',
+    'Ir al pago': 'Go to checkout',
+    'Cuenta creada. Elige tu horario.': 'Account created. Pick a time.',
+    'Escoge día y hora para tu consulta de 45 minutos. El pago se hace al reservar.': 'Choose a day and time for your 45-minute consult. You pay when you book.',
+    'Elegir horario': 'Pick a time',
+    'Cuenta creada. Cuéntanos del inmueble.': 'Account created. Tell us about the property.',
+    'Necesitamos ubicación, área, precio y zonificación. Te respondemos en dos días hábiles.': 'We need location, size, price and zoning. We reply within two business days.',
+    'Enviar datos': 'Send details',
+    'Borrador: las cuentas, los pagos y las reservas se activan al lanzar el sitio.': 'Draft: accounts, payments and bookings go live at launch.',
+    'Escribe tu correo y te enviamos un enlace para entrar sin contraseña.': 'Enter your email and we’ll send a link to log in without a password.',
+    'Borrador: el enlace para entrar se enviará a tu correo al lanzar el sitio.': 'Draft: the login link will be emailed once the site launches.',
+    'Revisa tu correo.': 'Check your email address.',
+    'La contraseña necesita 8 caracteres o más.': 'Your password needs 8 or more characters.',
+    'Borrador: el inicio de sesión se activa al lanzar el sitio.': 'Draft: login goes live at launch.',
     '¿Tienes un inmueble, un terreno o una duda? Revisémoslo juntos.': 'Have a property, a lot or a question? Let’s review it together.',
     'Agendar una consulta': 'Book a consult',
     'Equipo Cauce': 'Cauce team',
@@ -762,19 +844,53 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     const login = e.target.closest('[data-mode="login"]');
     if (login) setMode('login');
   });
-  function setPick(p) { $$('#j-plans .chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.p === p))); setMode('join'); }
-  $$('#j-plans .chip').forEach((c) => c.addEventListener('click', () => setPick(c.dataset.p)));
-  let mode = 'join';
+  /* accounts: one account for everyone; plan and profile can change later */
+  const PLAN_NAME = { boletin: 'Boletín · gratis', inteligencia: 'Inteligencia · $10/mes', consulta: 'Consulta 1:1 · $60', duenos: 'Estudio para dueños · $450' };
+  const NEXT = {
+    boletin: ['Listo. Ya eres parte de Cauce.', 'Tu primer boletín llega el jueves. Puedes pasar a Inteligencia cuando quieras desde Mi cuenta.', 'Ir a Mercado', '#mercado'],
+    inteligencia: ['Cuenta creada. Falta el pago.', 'Te llevamos al pago seguro con Stripe. Puedes cambiar o cancelar tu plan cuando quieras desde Mi cuenta.', 'Ir al pago', '#entrar'],
+    consulta: ['Cuenta creada. Elige tu horario.', 'Escoge día y hora para tu consulta de 45 minutos. El pago se hace al reservar.', 'Elegir horario', '#entrar'],
+    duenos: ['Cuenta creada. Cuéntanos del inmueble.', 'Necesitamos ubicación, área, precio y zonificación. Te respondemos en dos días hábiles.', 'Enviar datos', '#entrar']
+  };
+  const auth = { mode: 'login', plan: 'boletin' };
+  function setPick(p) { auth.plan = p; setMode('join'); }
   function setMode(m) {
-    mode = m;
-    $('#j-h').innerHTML = m === 'join' ? 'Únete<br>a Cauce.' : 'Hola<br>otra vez.';
-    applyLang();
-    $('#j-plans').hidden = m !== 'join';
-    $('#j-switch').textContent = m === 'join' ? '¿Ya tienes cuenta? Inicia sesión' : '¿Nuevo aquí? Únete';
-    $('#j-msg').textContent = '';
+    auth.mode = m;
+    $$('.auth-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
+    $('#f-auth').hidden = false; $('#f-perfil').hidden = true; $('#a-done').hidden = true;
+    $('#a-plan').hidden = m !== 'join';
+    $('#a-plan-name').textContent = PLAN_NAME[auth.plan];
+    $('#a-alt').textContent = m === 'join' ? 'Ya tengo cuenta' : 'Enviar enlace mágico';
+    $('#a-go').textContent = m === 'join' ? 'Crear cuenta' : 'Entrar';
+    $('#a-pass').setAttribute('autocomplete', m === 'join' ? 'new-password' : 'current-password');
+    $('#a-pass').placeholder = m === 'join' ? 'Contraseña (8 caracteres o más)' : 'Contraseña';
+    $('#a-pass').removeAttribute('data-es-placeholder');
+    $('#a-help').hidden = m === 'join';
+    $('#a-msg').textContent = '';
   }
-  $('#j-switch').addEventListener('click', () => setMode(mode === 'join' ? 'login' : 'join'));
-  $('#f-join').addEventListener('submit', (e) => { e.preventDefault(); $('#j-msg').textContent = 'Borrador: el registro y el pago se activan al lanzar el sitio.'; });
+  $$('.auth-tabs button').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.m)));
+  const validEmail = () => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('#a-email').value.trim());
+  function magic() {
+    if (!validEmail()) { $('#a-msg').textContent = 'Escribe tu correo y te enviamos un enlace para entrar sin contraseña.'; $('#a-email').focus(); return; }
+    $('#a-msg').textContent = 'Borrador: el enlace para entrar se enviará a tu correo al lanzar el sitio.';
+  }
+  $('#a-alt').addEventListener('click', () => (auth.mode === 'join' ? setMode('login') : magic()));
+  $('#a-help').addEventListener('click', magic);
+  $('#f-auth').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validEmail()) { $('#a-msg').textContent = 'Revisa tu correo.'; return; }
+    if ($('#a-pass').value.length < 8) { $('#a-msg').textContent = 'La contraseña necesita 8 caracteres o más.'; return; }
+    if (auth.mode === 'login') { $('#a-msg').textContent = 'Borrador: el inicio de sesión se activa al lanzar el sitio.'; return; }
+    $('#f-auth').hidden = true; $('#f-perfil').hidden = false;
+  });
+  $$('#f-perfil .chip').forEach((c) => c.addEventListener('click', () => c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'))));
+  function done() {
+    const n = NEXT[auth.plan];
+    $('#f-perfil').hidden = true; $('#a-done').hidden = false;
+    $('#d-title').textContent = n[0]; $('#d-text').textContent = n[1]; $('#d-btn').textContent = n[2]; $('#d-btn').setAttribute('href', n[3]);
+  }
+  $('#f-perfil').addEventListener('submit', (e) => { e.preventDefault(); done(); });
+  $('#p-skip').addEventListener('click', done);
   $$('form.nl').forEach((f) => f.addEventListener('submit', (e) => { e.preventDefault(); const m = f.parentElement.querySelector('.nlmsg'); if (m) m.textContent = 'Listo. Borrador: el registro se activa al lanzar el sitio.'; }));
   $$('form.pinfo').forEach((f) => f.addEventListener('submit', (e) => { e.preventDefault(); $('.pmsg').textContent = 'Recibido. Borrador: el envío se activa al lanzar el sitio.'; }));
 
@@ -805,7 +921,9 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   const AREA = { mercado: 'mercado', articulo: 'mercado', propiedades: 'propiedades', propiedad: 'propiedades', analizar: 'inteligencia', datos: 'inteligencia' };
   let current = null;
   function render(h) {
-    VIEWS.forEach((v) => { const el = document.getElementById('v-' + v); el.hidden = v !== h; if (v === h) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); } });
+    const authView = h === 'entrar';
+    VIEWS.forEach((v) => { const el = document.getElementById('v-' + v); const ghost = authView && v === 'mercado'; el.hidden = !(v === h || ghost); el.classList.toggle('ghost', ghost); el.setAttribute('aria-hidden', ghost ? 'true' : 'false'); if (v === h) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); } });
+    document.body.classList.toggle('auth', authView);
     const intel = h === 'analizar' || h === 'datos';
     document.body.classList.toggle('intel', intel);
     $('#sub').hidden = !intel;
