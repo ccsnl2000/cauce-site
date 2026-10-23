@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Cauce: inteligencia inmobiliaria con fuente. Mercado, propiedades y análisis de precios.">
+<meta property="og:title" content="Cauce">
+<meta property="og:description" content="Datos claros para invertir en bienes raíces, contados por personas.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23161615'/%3E%3Cpath d='M5 16c4-5 7 5 11 0s7 5 11 0' fill='none' stroke='%23F6F5F1' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preload" href="/fonts/hnd-400.woff2" as="font" type="font/woff2" crossorigin>
+<title>Cauce</title>
+<style>
+@font-face { font-family: "HND"; src: url("/fonts/hnd-200.woff2") format("woff2"); font-weight: 100 300; font-display: swap; }
+@font-face { font-family: "HND"; src: url("/fonts/hnd-400.woff2") format("woff2"); font-weight: 400 500; font-display: swap; }
+@font-face { font-family: "HND"; src: url("/fonts/hnd-700.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
+@font-face { font-family: "HND"; src: url("/fonts/hnd-800.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }
+/* Draft v1. Paper and ink. Helvetica Now Display only: regular for headlines with tight tracking,
+   extra bold for the join screen, thin for big figures. Character lives in stickers (Switchyards), numbered pillars (super.la), article sections
+   (Semafor), book-like study covers (Stripe Press). Inteligencia turns graphite. */
+:root {
+  --bg: #F6F5F1; --card: #FFFFFF; --ink: #161615; --soft: #6F6E69; --line: #DEDCD6; --fill: #E9E7E1; --sage: #DCE4D2; --sage-ink: #2F4A3E;
+  --sans: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --serif: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --mono: "HND", "Helvetica Neue", Arial, sans-serif;
+  --ease: cubic-bezier(.2,.7,.2,1);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
+body.dark { --bg: #151615; --card: #1D1E1C; --ink: #ECECE8; --soft: #8F908A; --line: #2D2E2B; --fill: #232421; --sage: #2C3A31; --sage-ink: #CFE0C2; color-scheme: dark; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-weight: 400; text-wrap: balance; letter-spacing: -0.04em; }
+.serif { font-family: var(--serif); letter-spacing: -0.035em; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.sm { font-size: 13px; color: var(--soft); }
+.lab { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); }
+.num { font-family: var(--mono); letter-spacing: -0.02em; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: 500 14px var(--sans); padding: 10px 18px; border-radius: 999px; background: var(--ink); color: var(--bg); border: 1px solid var(--ink); cursor: pointer; white-space: nowrap; transition: transform .2s var(--ease); }
+.btn:hover { transform: translateY(-1px); }
+.btn.o { background: transparent; color: var(--ink); border-color: var(--line); }
+.chip { display: inline-flex; align-items: center; font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; color: var(--soft); background: none; cursor: pointer; font-family: var(--sans); }
+.chip[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pillfield { display: flex; align-items: center; gap: 8px; border: 1px solid var(--ink); border-radius: 999px; padding: 6px 6px 6px 22px; background: var(--card); }
+.pillfield input { flex: 1; min-width: 0; border: 0; background: transparent; font: 400 16px var(--sans); color: var(--ink); padding: 8px 0; }
+.pillfield input:focus { outline: none; }
+
+/* photo placeholder: warm grain + caption, so pages read as "photos go here" */
+.ph { position: relative; background: var(--fill); border-radius: 10px; overflow: hidden; display: flex; align-items: flex-end; padding: 12px; font-size: 11px; color: var(--soft); }
+.ph::before { content: ""; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity: .6; }
+.ph svg.sil { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 70%; color: var(--line); }
+.ph span { position: relative; }
+a:hover .ph, .zoom:hover .ph { }
+.ph { transition: transform .5s var(--ease); }
+a.card-link:hover .ph { transform: scale(.985); }
+
+/* intro loader */
+#intro { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: grid; place-items: center; transition: opacity .5s var(--ease), visibility .5s; }
+#intro.done { opacity: 0; visibility: hidden; }
+#intro svg { width: 120px; }
+#intro path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw 1s var(--ease) forwards; }
+#intro p { margin-top: 14px; font-size: 12px; color: var(--soft); text-align: center; opacity: 0; animation: fade .4s .6s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes fade { to { opacity: 1; } }
+
+/* top pill nav */
+header.top { position: sticky; top: calc(10px + env(safe-area-inset-top, 0px)); z-index: 20; padding-top: 10px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.navpill { display: flex; align-items: center; gap: 8px; border: 1px solid var(--ink); border-radius: 999px; padding: 6px; background: color-mix(in srgb, var(--card) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); max-width: 860px; margin: 0 auto; }
+.logo { display: inline-flex; align-items: center; gap: 0; height: 40px; padding: 0 14px; border-radius: 999px; background: var(--ink); color: var(--bg); overflow: hidden; }
+.logo svg { width: 30px; height: 14px; flex: none; }
+.logo .about { max-width: 0; opacity: 0; white-space: nowrap; font-size: 13px; transition: max-width .45s var(--ease), opacity .3s var(--ease), margin .45s var(--ease); }
+.logo:hover .about, .logo:focus-visible .about { max-width: 140px; opacity: 1; margin-left: 10px; }
+nav.main { flex: 1; display: flex; justify-content: center; gap: 4px; }
+nav.main a { font-size: 14px; padding: 9px 14px; border-radius: 999px; color: var(--soft); transition: color .2s, background .2s; }
+nav.main a:hover { color: var(--ink); }
+nav.main a[aria-current] { color: var(--ink); background: var(--fill); }
+.navpill .btn { padding: 10px 18px; }
+.navpill .in { font-size: 14px; color: var(--soft); padding: 0 8px; }
+.sub { display: flex; justify-content: center; gap: 4px; margin-top: 10px; }
+.sub a { font-size: 13px; padding: 7px 16px; border-radius: 999px; color: var(--soft); border: 1px solid var(--line); background: var(--card); }
+.sub a[aria-current] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+main { min-height: 70vh; }
+.view { padding-top: 40px; padding-bottom: 80px; }
+.view.enter { animation: enter .45s var(--ease); }
+@keyframes enter { from { opacity: 0; transform: translateY(10px); } }
+
+/* stickers */
+.sticker { position: absolute; z-index: 3; display: grid; place-items: center; border-radius: 50%; background: var(--sage); color: var(--sage-ink); font: 500 11px/1.1 var(--sans); text-align: center; box-shadow: 0 6px 18px rgba(0,0,0,.08); user-select: none; }
+.sticker.spin svg { animation: spin 22s linear infinite; }
+.sticker.flat { border-radius: 10px; padding: 8px 12px; transform: rotate(-6deg); }
+.sticker.drag { cursor: grab; touch-action: none; }
+.sticker.drag:active { cursor: grabbing; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* MERCADO */
+.hero { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 28px; }
+.hero .lead { position: relative; display: grid; gap: 14px; }
+.hero .lead .ph { aspect-ratio: 16/10; }
+.hero h1 { font-family: var(--serif); font-size: clamp(36px, 4.4vw, 58px); line-height: 1; letter-spacing: -0.045em; }
+.hero .dek { color: var(--soft); font-size: 16px; max-width: 38em; }
+.side { display: grid; gap: 16px; align-content: start; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 14px; }
+.figs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+.figs div { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 2px; }
+.figs b { font: 200 24px var(--mono); letter-spacing: -0.04em; }
+.editor { display: flex; gap: 14px; align-items: center; }
+.avatar { width: 54px; height: 54px; border-radius: 50%; background: var(--fill); display: grid; place-items: center; font-family: var(--serif); font-size: 24px; flex: none; }
+.secthead { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin: 64px 0 18px; }
+.secthead h2 { font-family: var(--serif); font-size: 32px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.feed { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 20px; }
+.feed a { display: grid; gap: 10px; align-content: start; position: relative; }
+.feed .ph { aspect-ratio: 4/3; }
+.feed h3 { font-family: var(--serif); font-size: 22px; line-height: 1.12; }
+.feed a:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.pro { font-size: 10px; border: 1px solid currentColor; border-radius: 999px; padding: 1px 6px; margin-left: 6px; letter-spacing: .06em; }
+.cover { aspect-ratio: 4/3; border-radius: 10px; background: var(--ink); color: var(--bg); padding: 14px; display: flex; flex-direction: column; justify-content: space-between; }
+.cover b { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1; }
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
+.duo h2 { font-family: var(--serif); font-size: 34px; line-height: 1.05; margin: 8px 0 18px; }
+
+/* ARTICLE (Semafor-style sections) */
+.art { display: grid; grid-template-columns: minmax(0, 680px) 280px; gap: 64px; justify-content: center; }
+.art h1 { font-family: var(--serif); font-size: clamp(38px, 4.6vw, 60px); line-height: 1; margin: 14px 0 16px; }
+.art .dek { font-size: 18px; color: var(--soft); }
+.by { display: flex; gap: 14px; align-items: center; margin: 22px 0; padding: 12px 0; border-block: 1px solid var(--line); font-size: 13px; color: var(--soft); }
+.by .avatar { width: 34px; height: 34px; font-size: 16px; }
+.art .ph { aspect-ratio: 16/10; }
+.blk { margin-top: 32px; }
+.blk .lab { color: var(--ink); display: flex; gap: 8px; align-items: center; }
+.blk .lab::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sage-ink); }
+.blk p { margin-top: 10px; font-size: 17px; line-height: 1.7; }
+.bars { display: grid; gap: 9px; margin-top: 16px; font-size: 13px; }
+.bars div { display: grid; grid-template-columns: 150px 1fr 70px; gap: 10px; align-items: center; }
+.bars i { display: block; height: 8px; border-radius: 9px; background: var(--ink); transform-origin: left; animation: grow .9s var(--ease) both; }
+.bars i.g { background: #BDBBB4; }
+.bars span:last-child { text-align: right; font-family: var(--mono); }
+@keyframes grow { from { transform: scaleX(0); } }
+.wall { margin-top: 32px; border: 1px dashed var(--soft); border-radius: 16px; padding: 24px; text-align: center; display: grid; gap: 12px; justify-items: center; }
+.rail { position: sticky; top: 100px; align-self: start; display: grid; gap: 14px; }
+.rail .panel { padding: 16px; gap: 10px; }
+
+/* PROPIEDADES */
+.phead { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+.phead h1 { font-family: var(--serif); font-size: clamp(40px, 5vw, 64px); line-height: 1; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 20px; margin-top: 28px; }
+.grid a { display: grid; gap: 10px; position: relative; }
+.grid .ph { aspect-ratio: 4/5; }
+.grid .row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.grid .row b { font-weight: 500; }
+.tag { font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 3px 8px; color: var(--soft); white-space: nowrap; }
+.tag.ok { background: var(--sage); color: var(--sage-ink); border-color: transparent; }
+
+/* PROPERTY DETAIL */
+.gal { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px; height: 460px; }
+.gal .ph:first-child { grid-row: span 2; }
+.pd { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 56px; margin-top: 32px; }
+.pd h1 { font-family: var(--serif); font-size: 46px; line-height: 1; margin: 10px 0 14px; }
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; }
+.facts div { border-top: 1px solid var(--line); padding-top: 8px; }
+.facts b { display: block; font: 200 18px var(--mono); margin-top: 2px; }
+
+/* INTELIGENCIA */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.bigq { font-family: var(--serif); font-size: clamp(44px, 5vw, 68px); line-height: 1; }
+form.f { display: grid; gap: 14px; }
+form.f label { display: grid; gap: 6px; font-size: 12px; color: var(--soft); }
+form.f input, form.f select { font: 400 17px var(--sans); color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: 8px 0; border-radius: 0; }
+form.f input:focus, form.f select:focus { outline: none; border-color: var(--ink); }
+form.f select option { background: var(--card); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+.out { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: grid; gap: 18px; align-content: start; min-height: 420px; position: relative; overflow: hidden; }
+.verdict { font-family: var(--serif); font-size: 44px; line-height: 1; letter-spacing: -0.045em; }
+.kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.kpis div { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 4px; }
+.kpis b { font: 200 24px var(--mono); letter-spacing: -0.04em; }
+.scan { position: absolute; left: 0; right: 0; height: 2px; background: var(--ink); opacity: .5; animation: scan 1s var(--ease) forwards; pointer-events: none; }
+@keyframes scan { from { top: 0; } to { top: 100%; opacity: 0; } }
+.lock { position: relative; }
+.lock > .blur { filter: blur(6px); opacity: .5; pointer-events: none; user-select: none; }
+.lock > a { position: absolute; inset: 0; display: grid; place-items: center; }
+.lock > a span { background: var(--ink); color: var(--bg); padding: 11px 18px; border-radius: 999px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.m3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.m3 div { border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 6px; }
+.m3 b { font: 200 52px/1 var(--mono); letter-spacing: -0.05em; }
+.mgrid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.mgrid .panel { min-height: 160px; }
+
+/* PLANES */
+.plans-h { text-align: center; display: grid; gap: 10px; justify-items: center; }
+.plans-h h1 { font-family: var(--serif); font-size: clamp(44px, 5.5vw, 72px); line-height: 1; }
+.plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 40px; }
+.plan { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: grid; gap: 12px; align-content: start; transition: border-color .3s, transform .3s var(--ease); }
+.plan.hl { border-color: var(--ink); transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,.06); }
+.plan .price { font: 200 34px var(--mono); letter-spacing: -0.05em; }
+.plan .price small { font: 400 13px var(--sans); color: var(--soft); letter-spacing: 0; }
+.plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 13px; }
+.plan li::before { content: "— "; color: var(--soft); }
+.plan .btn { justify-self: start; margin-top: 6px; }
+.plan .sticker { top: -16px; right: 14px; width: 66px; height: 66px; transform: rotate(10deg); }
+
+/* JOIN (extra large, centered) */
+.join { min-height: calc(100vh - 120px); display: grid; align-content: center; justify-items: center; text-align: center; padding-top: 72px; }
+.join h1 { font-family: var(--sans); font-weight: 800; font-size: clamp(56px, 9vw, 128px); line-height: .92; letter-spacing: -0.065em; }
+.join form { margin-top: 44px; display: grid; gap: 2px; width: min(860px, 100%); min-width: 0; }
+.join input { font: 700 clamp(30px, 5.4vw, 68px)/1.1 var(--sans); letter-spacing: -0.045em; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: 10px 0; border-radius: 0; text-align: center; width: 100%; min-width: 0; }
+.join input::placeholder { color: #C9C7C0; }
+.join input:focus { outline: none; border-color: var(--ink); }
+.join .chips { justify-content: center; margin-top: 26px; }
+.join .chip { font-size: 14px; padding: 9px 16px; }
+.join .go { margin-top: 26px; display: grid; gap: 14px; justify-items: center; }
+.join .switch { background: none; border: 0; color: var(--soft); font: inherit; font-size: 14px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+/* SOBRE */
+.about h1 { font-family: var(--serif); font-size: clamp(48px, 7vw, 104px); line-height: .95; max-width: 12em; }
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 64px; }
+.pillars div { border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 8px; }
+.pillars .n { font-family: var(--mono); font-size: 13px; color: var(--soft); }
+.pillars h3 { font-family: var(--serif); font-size: 28px; line-height: 1.05; }
+
+/* footer: bottom navigation bar */
+footer { border-top: 1px solid var(--line); margin-top: 40px; }
+.foot { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 24px; padding-block: 36px 24px; font-size: 14px; }
+.foot nav { display: grid; gap: 6px; align-content: start; }
+.foot nav a { color: var(--soft); } .foot nav a:hover { color: var(--ink); }
+.foot .big { font-family: var(--serif); font-size: 64px; line-height: .9; }
+.foot-bar { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 14px 40px; font-size: 12px; color: var(--soft); border-top: 1px solid var(--line); }
+.live { display: inline-flex; align-items: center; gap: 8px; }
+.live i { width: 7px; height: 7px; border-radius: 50%; background: #6FA36A; animation: pulse 2s infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+
+@media (max-width: 900px) {
+  .hero, .duo, .split, .pd, .mgrid, .art { grid-template-columns: 1fr; }
+  .feed { grid-template-columns: 1fr 1fr; } .grid, .plans { grid-template-columns: 1fr 1fr; }
+  .m3, .pillars { grid-template-columns: 1fr; } .foot { grid-template-columns: 1fr 1fr; }
+  .rail { position: static; } .gal { height: 320px; }
+  nav.main a { padding: 9px 9px; font-size: 13px; } .navpill .in { display: none; }
+}
+@media (max-width: 560px) {
+  .feed, .grid, .plans, .two, .kpis, .facts { grid-template-columns: 1fr; }
+  .navpill .btn { padding: 10px 12px; font-size: 13px; } .logo { padding: 0 10px; }
+  .bars div { grid-template-columns: 100px 1fr 60px; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } #intro { display: none; } }
+</style>
+</head>
+<body>
+
+
+<div id="intro" aria-hidden="true"><div><svg viewBox="0 0 28 13"><path d="M1 6.5c4-5 9 5 13 0s9 5 13 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><p>Datos con fuente, desde Caracas.</p></div></div>
+
+<header class="top"><div class="wrap">
+  <div class="navpill">
+    <a class="logo" href="#sobre" aria-label="Sobre Cauce"><svg viewBox="0 0 28 13" aria-hidden="true"><path d="M1 6.5c4-5 9 5 13 0s9 5 13 0" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="about">Sobre Cauce →</span></a>
+    <nav class="main" aria-label="Principal"><a href="#mercado" data-n="mercado">Mercado</a><a href="#propiedades" data-n="propiedades">Propiedades</a><a href="#analizar" data-n="inteligencia">Inteligencia</a></nav>
+    <a class="in" href="#entrar" data-mode="login">Entrar</a>
+    <a class="btn" href="#planes">Suscríbete</a>
+  </div>
+  <nav class="sub" id="sub" aria-label="Inteligencia" hidden><a href="#analizar" data-s="analizar">Propiedad</a><a href="#datos" data-s="datos">Mercado</a></nav>
+</div></header>
+
+<main class="wrap" id="main">
+
+<!-- MERCADO (home) -->
+<section class="view" id="v-mercado">
+  <div class="hero">
+    <a class="lead card-link" href="#articulo">
+      <div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 160V110h40V70h30v40h20V50h50v60h30V90h40v20h30V60h60v50h40V80h60v80z" fill="currentColor"/></svg><span>Foto: el terreno en Porlamar, frente a la calle</span></div>
+      <div class="sticker spin" style="width:96px;height:96px;top:-22px;right:-18px"><svg viewBox="0 0 100 100" width="96" height="96" aria-label="Datos con fuente"><defs><path id="c" d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0"/></defs><text font-size="10.5" letter-spacing="2" fill="currentColor"><textPath href="#c">DATOS CON FUENTE · CARACAS · </textPath></text><path d="M38 51c3-4 7 4 12 0s9 4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <span class="lab">Estudio de factibilidad · 8 min</span>
+      <h1>2.363 m² en Porlamar por $500.000. ¿Da para construir y vender?</h1>
+      <p class="dek">A los precios de hoy, edificar para vender pierde dinero. Cada m² tendría que venderse a $1.501; la zona pide $1.003.</p>
+    </a>
+    <div class="side">
+      <div class="panel"><span class="lab">Analiza un inmueble</span>
+        <form class="pillfield" id="quick"><label for="q" hidden>Enlace o datos</label><input id="q" placeholder="Pega un enlace o escribe zona + m² + precio"><button class="btn">Analizar</button></form>
+        <span class="sm">Ej.: Los Palos Grandes 120 m² 210000. Un análisis gratis.</span>
+      </div>
+      <div class="panel"><div style="display:flex;justify-content:space-between"><span class="lab">Cifras de la semana</span><span class="sm">20 oct</span></div>
+        <div class="figs">
+          <div><span class="sm">Mediana venta</span><b data-count="1551" data-pre="$">$1.551</b><span class="sm">por m²</span></div>
+          <div><span class="sm">Dólar BCV</span><b>500,46</b><span class="sm">Bs.</span></div>
+          <div><span class="sm">Rend. bruto</span><b>12,0%</b><span class="sm">alquiler largo</span></div>
+          <div><span class="sm">Airbnb</span><b>32%</b><span class="sm">ocupación</span></div>
+        </div>
+      </div>
+      <div class="panel"><div class="editor"><div class="avatar">L</div><div><b style="font-weight:500">Luis</b><div class="sm">Editor jefe. Escribe cada jueves. Respóndele: lee todo.</div></div></div></div>
+    </div>
+  </div>
+
+  <div class="secthead"><h2>Lo último</h2><div class="chips" role="group" aria-label="Filtrar"><button class="chip" aria-pressed="true" data-f="all">Todo</button><button class="chip" aria-pressed="false" data-f="Análisis">Análisis</button><button class="chip" aria-pressed="false" data-f="Estudio">Estudios</button><button class="chip" aria-pressed="false" data-f="Zonas">Zonas</button><button class="chip" aria-pressed="false" data-f="Guía">Guías</button></div></div>
+  <div class="feed" id="feed"></div>
+
+  <div class="duo">
+    <div><span class="lab">Boletín de los jueves</span><h2>Una cifra, una historia y un terreno. Cada semana.</h2>
+      <form class="pillfield nl"><label for="nl1" hidden>Correo</label><input id="nl1" type="email" required placeholder="tu@correo.com"><button class="btn">Unirme</button></form>
+      <p class="sm nlmsg" style="margin-top:10px">Gratis. Al unirte recibes un estudio completo de regalo.</p></div>
+    <div><span class="lab">Luis, editor jefe</span><h2>«Si tienes un terreno o una duda, escríbeme. Muchas historias empiezan así.»</h2><a class="btn o" href="#planes" data-plan="consulta">Agendar una consulta 1:1</a></div>
+  </div>
+</section>
+
+<!-- ARTICULO -->
+<section class="view" id="v-articulo" hidden>
+  <div class="art">
+    <article>
+      <a class="sm" href="#mercado">← Mercado</a>
+      <p class="lab" style="margin-top:28px">Estudio de factibilidad · Porlamar</p>
+      <h1>2.363 m² en Porlamar por $500.000. ¿Da para construir y vender?</h1>
+      <p class="dek">Un terreno con proyecto de uso mixto, en una ciudad donde el usado se pide a $1.003 por m².</p>
+      <div class="by"><div class="avatar">L</div><span>Luis, editor jefe</span><span>20 oct 2026</span><span>8 min</span></div>
+      <div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 160V120h60V90h80v30h40V70h90v50h40V100h90v60z" fill="currentColor"/></svg><span>Foto: el terreno, la calle, el vecindario</span></div>
+      <div class="blk"><span class="lab">La noticia</span><p>Vertical Real Estate ofrece 2.363 m² en Porlamar por US$500.000, con un proyecto de uso mixto. Suponemos 1,5 m² construibles por cada m² de terreno, y 80% vendible.</p></div>
+      <div class="blk"><span class="lab">Lo que sabemos</span><p>Con obra a $800 por m², el proyecto cuesta unos $4 millones. El terreno es apenas el 12%: lo que decide el resultado es el costo de obra y el precio de venta.</p>
+        <div class="bars" aria-label="Equilibrio frente al mercado"><div><span>Para no perder</span><i style="width:100%"></i><span>$1.501</span></div><div><span>Porlamar hoy</span><i class="g" style="width:67%"></i><span>$1.003</span></div></div></div>
+      <div class="blk"><span class="lab">La lectura de Cauce</span><p>A los precios de hoy no da los números. Funciona si la obra se contrata por debajo de $650 por m², o si la costa se acerca a $1.400.</p></div>
+      <div class="blk"><span class="lab">La otra mirada</span><p>El vendedor podría argumentar que la obra nueva en la costa pide más que el usado. Es probable, pero no hay suficientes anuncios para medirlo.</p></div>
+      <div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El modelo completo: costos, sensibilidad y calculadora.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>
+    </article>
+    <aside class="rail">
+      <div class="panel"><span class="lab">Datos de la zona</span><b class="num" style="font-size:26px;font-weight:500">$1.003<span class="sm"> /m²</span></b><span class="sm">Porlamar · n=18 · ago 2026</span><a class="sm" href="#datos" style="text-decoration:underline">Ver en Inteligencia</a></div>
+      <div class="panel"><span class="lab">Propiedades en esta zona</span><a href="#propiedad"><div class="ph" style="aspect-ratio:16/9"><span>Foto</span></div></a><span class="sm">Terreno · 2.363 m² · $500.000</span></div>
+      <div class="panel"><span class="lab">Habla con Luis</span><span class="sm">45 minutos sobre tu inmueble o terreno. Se descuenta si encargas un estudio.</span><a class="btn" href="#planes" data-plan="consulta" style="justify-self:start">Agendar</a></div>
+    </aside>
+  </div>
+</section>
+
+<!-- PROPIEDADES -->
+<section class="view" id="v-propiedades" hidden>
+  <div class="phead"><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div>
+  <div class="chips" style="margin-top:24px" role="group" aria-label="Filtrar"><button class="chip" aria-pressed="true" data-k="all">Todo</button><button class="chip" aria-pressed="false" data-k="venta">En venta</button><button class="chip" aria-pressed="false" data-k="estudio">Terrenos con estudio</button><button class="chip" aria-pressed="false" data-k="cauce">Proyecto Cauce</button></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- PROPERTY DETAIL -->
+<section class="view" id="v-propiedad" hidden>
+  <a class="sm" href="#propiedades">← Propiedades</a>
+  <div class="gal" style="margin-top:18px"><div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 160V100h120V60h60v40h80V80h140v80z" fill="currentColor"/></svg><span>Foto principal</span></div><div class="ph"><span>Foto</span></div><div class="ph"><span>Plano</span></div></div>
+  <div class="pd">
+    <div><span class="lab">Terreno · Porlamar</span><h1>2.363 m² con proyecto de uso mixto</h1><p class="sm" style="font-size:15px">Anuncio de Vertical Real Estate. Cauce no cobra comisión por esta operación.</p>
+      <div class="facts"><div><span class="sm">Precio</span><b>$500.000</b></div><div><span class="sm">Terreno</span><b>2.363 m²</b></div><div><span class="sm">Por m²</span><b>$212</b></div><div><span class="sm">Construible</span><b>1,5×</b></div></div>
+      <div class="panel" style="margin-top:28px"><div style="display:flex;justify-content:space-between;align-items:center"><span class="lab">Lectura de Cauce</span><span class="tag">No viable hoy</span></div>
+        <div class="bars" style="margin-top:0"><div><span>Para no perder</span><i style="width:100%"></i><span>$1.501</span></div><div><span>Mercado</span><i class="g" style="width:67%"></i><span>$1.003</span></div></div>
+        <a class="sm" href="#articulo" style="text-decoration:underline">Leer el estudio completo</a></div>
+    </div>
+    <div class="side"><div class="panel"><span class="lab">¿Te interesa?</span><form class="f pinfo"><label>Nombre<input required></label><label>Correo<input type="email" required></label><button class="btn" style="justify-self:start">Pedir información</button></form><span class="sm pmsg">Te ponemos en contacto con el vendedor o un agente aliado.</span></div></div>
+  </div>
+</section>
+
+<!-- INTELIGENCIA · PROPIEDAD -->
+<section class="view" id="v-analizar" hidden>
+  <div class="split">
+    <div>
+      <h1 class="bigq">¿Es buen precio?</h1>
+      <p class="sm" style="margin-top:12px;font-size:15px">Un análisis gratis. Pega el enlace del anuncio o escribe los datos.</p>
+      <form class="pillfield" id="f-link" style="margin-top:28px"><label for="lnk" hidden>Enlace</label><input id="lnk" type="url" placeholder="https://… enlace del anuncio"><button class="btn">Leer</button></form>
+      <p class="sm" style="margin:22px 0 10px">o completa</p>
+      <form class="f" id="f-prop">
+        <div class="two">
+          <label>Zona<select id="z"></select></label>
+          <label>Tipo<select><option>Apartamento</option><option>Casa</option></select></label>
+          <label>Área (m²)<input id="a" inputmode="numeric" value="120"></label>
+          <label>Precio (US$)<input id="p" inputmode="numeric" value="210000"></label>
+          <label>Alquiler mensual, opcional<input id="r" inputmode="numeric" placeholder="—"></label>
+        </div>
+        <button class="btn" style="justify-self:start;margin-top:6px">Analizar</button>
+      </form>
+    </div>
+    <div class="out" id="out"><span class="lab">Resultado</span><p class="serif" style="font-size:30px;line-height:1.1;color:var(--soft)">Completa los datos y pulsa Analizar.</p></div>
+  </div>
+</section>
+
+<!-- INTELIGENCIA · MERCADO -->
+<section class="view" id="v-datos" hidden>
+  <div class="m3">
+    <div><span class="lab">Mediana de venta, apartamentos</span><b>$1.551</b><span class="sm">por m² · n=980 · ago 2026</span></div>
+    <div><span class="lab">Dólar oficial</span><b>500,46</b><span class="sm">Bs. por US$ · BCV</span></div>
+    <div><span class="lab">Rendimiento bruto</span><b>12,0%</b><span class="sm">alquiler largo · 80–180 m²</span></div>
+  </div>
+  <div class="lock" style="margin-top:36px">
+    <div class="blur" aria-hidden="true"><div class="mgrid">
+      <div class="panel"><span class="lab">Precio por m², serie semanal</span><svg viewBox="0 0 400 120" style="width:100%;height:170px"><path d="M0 100 C60 90 90 92 140 75 S240 60 280 48 S360 36 400 30" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+      <div class="panel"><span class="lab">Ranking · 151 zonas</span><div class="bars"><div><span>█████</span><i style="width:100%"></i><span>████</span></div><div><span>█████</span><i style="width:82%"></i><span>████</span></div><div><span>█████</span><i style="width:64%"></i><span>████</span></div><div><span>█████</span><i style="width:41%"></i><span>████</span></div></div></div>
+      <div class="panel"><span class="lab">Comparar dos zonas</span></div>
+      <div class="panel"><span class="lab">Alquiler y Airbnb por zona</span></div>
+    </div></div>
+    <a href="#planes" data-plan="inteligencia" aria-label="Únete para ver todos los datos"><span>Únete para ver las 151 zonas →</span></a>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section class="view" id="v-planes" hidden>
+  <div class="plans-h"><span class="lab">Planes</span><h1>Elige cómo quieres leer el mercado.</h1><p class="sm" style="font-size:15px">Empieza gratis. Paga cuando necesites decidir.</p></div>
+  <div class="plans" id="plans">
+    <div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado cada jueves.</p><ul><li>Cifras de la semana</li><li>Historias de mercado y zonas</li><li>Un estudio completo de regalo</li></ul><a class="btn" href="#entrar" data-pick="boletin">Gratis</a></div>
+    <div class="plan" data-plan="inteligencia"><div class="sticker" aria-hidden="true">Más<br>elegido</div><span class="lab">Inteligencia</span><div class="price">$10<small> /mes, anual</small></div><p class="sm">Para quien compra o ya tiene inmuebles.</p><ul><li>Estudios completos y calculadora</li><li>151 zonas, serie semanal</li><li>Análisis de propiedades ilimitados</li><li>Datos en CSV</li></ul><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
+    <div class="plan" data-plan="consulta"><span class="lab">Consulta 1:1</span><div class="price">$60<small> / 45 min</small></div><p class="sm">Con Luis, sobre tu inmueble o terreno.</p><ul><li>Revisión de precio y zona</li><li>Notas por escrito</li><li>Se descuenta de un estudio</li></ul><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
+    <div class="plan" data-plan="duenos"><span class="lab">Para dueños y agentes</span><div class="price">$450<small> por estudio</small></div><p class="sm">Pon tu terreno frente a inversores.</p><ul><li>Estudio de factibilidad publicado</li><li>Destacado 30 días · $150 solo</li><li>Contactos de lectores</li></ul><a class="btn" href="#entrar" data-pick="duenos">Estudio · Destacado</a></div>
+  </div>
+  <p class="sm" style="text-align:center;margin-top:22px">Precios en US$ de prueba. Sin comisiones por ventas. Cancela cuando quieras.</p>
+</section>
+
+<!-- ENTRAR / UNIRSE -->
+<section class="view join" id="v-entrar" hidden>
+  <h1 id="j-h">Únete<br>a Cauce.</h1>
+  <form id="f-join" autocomplete="on">
+    <label for="j-email" hidden>Correo</label><input id="j-email" type="email" placeholder="Correo" required autocomplete="email">
+    <label for="j-pass" hidden>Contraseña</label><input id="j-pass" type="password" placeholder="Contraseña" required autocomplete="current-password">
+    <div class="chips" id="j-plans" role="group" aria-label="Plan"><button type="button" class="chip" aria-pressed="false" data-p="boletin">Boletín · gratis</button><button type="button" class="chip" aria-pressed="true" data-p="inteligencia">Inteligencia · $10/mes</button><button type="button" class="chip" aria-pressed="false" data-p="consulta">Consulta 1:1</button><button type="button" class="chip" aria-pressed="false" data-p="duenos">Dueños y agentes</button></div>
+    <div class="go"><button class="btn" type="submit" style="padding:14px 28px;font-size:16px">Continuar</button><button class="switch" type="button" id="j-switch">¿Ya tienes cuenta? Entrar</button><span class="sm" id="j-msg" aria-live="polite"></span></div>
+  </form>
+</section>
+
+<!-- SOBRE -->
+<section class="view about" id="v-sobre" hidden>
+  <span class="lab">Sobre Cauce</span>
+  <h1 style="margin-top:14px">Datos claros para invertir en Venezuela, contados por personas.</h1>
+  <p style="font-size:18px;max-width:40em;margin-top:24px;color:var(--soft)">Cauce es una publicación y una herramienta. Cada semana explicamos qué pasa con los precios, estudiamos terrenos con los números a la vista y conectamos a quien invierte con quien construye. No cobramos comisión por ventas.</p>
+  <div class="pillars">
+    <div><span class="n">(01)</span><h3>Cada cifra con su fuente.</h3><p class="sm">Fecha, muestra y tipo de inmueble. Si dos fuentes no coinciden, publicamos las dos.</p></div>
+    <div><span class="n">(02)</span><h3>Supuestos a la vista.</h3><p class="sm">En cada estudio mostramos qué asumimos y cómo cambia el resultado si nos equivocamos.</p></div>
+    <div><span class="n">(03)</span><h3>Independientes.</h3><p class="sm">Los destacados se pagan y lo decimos. Las conclusiones no se negocian.</p></div>
+  </div>
+  <div class="duo" style="position:relative">
+    <div class="sticker flat drag" id="drag" style="top:-30px;right:8%">Hecho en Caracas ↝<br><span style="opacity:.6">arrástrame</span></div>
+    <div class="editor"><div class="avatar" style="width:84px;height:84px;font-size:38px">L</div><div><b style="font-weight:500;font-size:18px">Luis</b><div class="sm">Editor jefe, Cauce</div></div></div>
+    <div><p class="sm" style="font-size:15px">Escríbenos: <span style="user-select:all;color:var(--ink)">hola@cauce.blog</span></p><a class="btn" href="#planes" style="margin-top:14px">Ver planes</a></div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot">
+    <div><div class="big">cauce</div><p class="sm" style="margin-top:12px;max-width:24em">Inteligencia inmobiliaria con fuente. Boletín cada jueves.</p></div>
+    <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#analizar">Inteligencia</a></nav>
+    <nav aria-label="Cauce"><span class="lab">Cauce</span><a href="#sobre">Sobre Cauce</a><a href="#planes">Planes</a><a href="#planes" data-plan="consulta">Consultas</a></nav>
+    <nav aria-label="Seguir"><span class="lab">Seguir</span><a href="#mercado">Boletín</a><a href="#sobre">Instagram</a><a href="#sobre">LinkedIn</a></nav>
+  </div>
+  <div class="foot-bar"><span class="live"><i></i><span id="clock">Caracas</span> · Dólar BCV 500,46</span><span>No es asesoría de inversión</span></div>
+</div></footer>
+
+<script>
+(function () {
+  'use strict';
+  const FEED = [
+    ['Análisis', 'Una fuente dice $1.551 por m² y otra $547. ¿Cuál usar?', '6 min', 0],
+    ['Zonas', 'Bello Monte y Colinas: la misma montaña, $243 de diferencia por m²', '4 min', 0],
+    ['Estudio', 'La Boyera, 18.000 m²: townhouses con margen, si se venden', '9 min', 1],
+    ['Análisis', 'Airbnb a $63 la noche: ¿conviene más que alquilar por año?', '5 min', 0],
+    ['Guía', 'Comprar desde el exterior: pasos, costos y riesgos', '10 min', 0],
+    ['Estudio', 'Un local de 5.380 m² convertido en vivienda', '7 min', 1],
+    ['Análisis', 'Rendimiento de 12%: lo que queda después de gastos', '7 min', 1],
+    ['Zonas', 'Desde $15.000: qué compra cada presupuesto en la costa', '5 min', 0]
+  ];
+  const PROPS = [
+    ['Terreno · La Boyera', '18.000 m² · $5,5 M', 'Viable con condiciones', 'estudio', 1],
+    ['Apartamento · Valle Arriba', '285 m² · $390.000', 'Muestra', 'venta', 0],
+    ['Terreno · Porlamar', '2.363 m² · $500.000', 'No viable hoy', 'estudio', 0],
+    ['Apartamento · La Boyera', '119 m² · $269.000', 'Muestra', 'venta', 0],
+    ['Proyecto Cauce 01', 'En estructuración', 'Propio', 'cauce', 1],
+    ['Espacio destacado', '$150 por 30 días', 'Disponible', 'venta', 0]
+  ];
+  const ZONES = { 'Las Mercedes': 4458, 'La Castellana': 4200, 'Campo Alegre': 3543, 'Altamira': 2969, 'Los Palos Grandes': 2054, 'Bello Monte': 1410, 'Colinas de Bello Monte': 1250, 'El Marqués': 875 };
+  const SIL = ['M0 160V110h40V70h30v40h20V50h50v60h30V90h40v20h30V60h60v50h40V80h60v80z', 'M0 160V120h60V90h80v30h40V70h90v50h40V100h90v60z', 'M0 160V100h120V60h60v40h80V80h140v80z'];
+  const $ = (s, el) => (el || document).querySelector(s);
+  const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
+  const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const int = (n) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const ph = (i, cap) => `<div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="${SIL[i % 3]}" fill="currentColor"/></svg><span>${cap || ''}</span></div>`;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* feed */
+  function feed(f) {
+    $('#feed').innerHTML = FEED.filter((x) => f === 'all' || x[0] === f).map((x, i) => {
+      const img = x[0] === 'Estudio' ? `<div class="cover"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(x[1].split(':')[0])}</b></div>` : ph(i, 'Foto');
+      return `<a class="card-link" href="#articulo">${img}<span class="lab">${esc(x[0])} · ${esc(x[2])}${x[3] ? '<span class="pro">PRO</span>' : ''}</span><h3>${esc(x[1])}</h3></a>`;
+    }).join('');
+  }
+  $$('#v-mercado .chips .chip').forEach((b) => b.addEventListener('click', () => { $$('#v-mercado .chips .chip').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); feed(b.dataset.f); }));
+
+  /* properties */
+  function grid(k) {
+    $('#grid').innerHTML = PROPS.filter((p) => k === 'all' || p[3] === k).map((p, i) => `<a class="card-link" href="#propiedad">${ph(i, 'Foto')}<div class="row"><b>${esc(p[0])}</b><span class="tag${p[4] ? ' ok' : ''}">${esc(p[2])}</span></div><span class="sm">${esc(p[1])}</span></a>`).join('');
+  }
+  $$('#v-propiedades .chip').forEach((b) => b.addEventListener('click', () => { $$('#v-propiedades .chip').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); grid(b.dataset.k); }));
+
+  /* analyzer */
+  $('#z').innerHTML = Object.keys(ZONES).map((z) => `<option>${esc(z)}</option>`).join('');
+  $('#z').value = 'Los Palos Grandes';
+  const num = (s) => parseFloat(String(s).replace(/\./g, '').replace(',', '.').replace(/[^\d.]/g, ''));
+  function analyze() {
+    const z = $('#z').value, a = num($('#a').value), p = num($('#p').value), r = num($('#r').value);
+    const out = $('#out');
+    if (!(a > 0 && p > 0)) { out.innerHTML = '<span class="lab">Resultado</span><p class="sm">Revisa el área y el precio.</p>'; return; }
+    const per = p / a, med = ZONES[z], d = per / med - 1, mx = Math.max(per, med);
+    const v = d > 0.1 ? 'Caro para la zona.' : d < -0.1 ? 'Por debajo de la zona.' : 'En línea con la zona.';
+    const y = r > 0 ? (r * 12 / p * 100).toFixed(1).replace('.', ',') + '%' : '—';
+    out.innerHTML = `${reduce ? '' : '<div class="scan"></div>'}<span class="lab">Resultado · ${esc(z)}</span><p class="verdict">${v}</p>
+      <div class="bars" style="margin-top:0"><div><span>Este inmueble</span><i style="width:${(per / mx * 100).toFixed(1)}%"></i><span>$${int(per)}</span></div><div><span>Mediana de la zona</span><i class="g" style="width:${(med / mx * 100).toFixed(1)}%"></i><span>$${int(med)}</span></div></div>
+      <div class="kpis"><div><span class="sm">vs zona</span><b>${d >= 0 ? '+' : '−'}${Math.abs(Math.round(d * 100))}%</b></div><div><span class="sm">Rend. bruto</span><b>${y}</b></div><div class="lock"><div class="blur"><span class="sm">Rango justo</span><b>$000.000</b></div><a href="#planes" data-plan="inteligencia" aria-label="Desbloquear rango justo"></a></div></div>
+      <p class="sm">Precio pedido por m², agosto 2026. Referencia de ciudad: 12% de rendimiento bruto.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="#planes" data-plan="inteligencia">Informe completo</a><a class="btn o" href="#planes" data-plan="consulta">Consulta 1:1</a></div>`;
+  }
+  $('#f-prop').addEventListener('submit', (e) => { e.preventDefault(); analyze(); });
+  document.addEventListener('animationend', (e) => { if (e.target.classList && e.target.classList.contains('scan')) e.target.remove(); });
+  $('#f-link').addEventListener('submit', (e) => { e.preventDefault(); $('#out').innerHTML = '<span class="lab">Resultado</span><p class="serif" style="font-size:30px;line-height:1.1">Leer enlaces llega pronto.</p><p class="sm">Por ahora, completa los datos a la izquierda.</p>'; });
+  /* home quick field: "Los Palos Grandes 120 m2 210000" → prefill */
+  $('#quick').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = $('#q').value;
+    const zone = Object.keys(ZONES).sort((a, b) => b.length - a.length).find((z) => q.toLowerCase().includes(z.toLowerCase()));
+    const nums = (q.match(/\d[\d.,]*/g) || []).map(num).filter((n) => n > 0);
+    if (zone) $('#z').value = zone;
+    if (nums.length >= 2) { $('#a').value = Math.min(nums[0], nums[1]); $('#p').value = Math.max(nums[0], nums[1]); }
+    location.hash = 'analizar';
+    if (zone || nums.length >= 2) setTimeout(analyze, 350);
+  });
+
+  /* plans: highlight by where the reader came from */
+  let lastArea = 'publicacion', planIntent = null;
+  function highlightPlans() {
+    const key = planIntent || (lastArea === 'inteligencia' ? 'inteligencia' : 'boletin');
+    $$('#plans .plan').forEach((p) => p.classList.toggle('hl', p.dataset.plan === key));
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-plan]');
+    if (a && a.tagName === 'A') planIntent = a.dataset.plan;
+    const pick = e.target.closest('[data-pick]');
+    if (pick) setPick(pick.dataset.pick);
+    const login = e.target.closest('[data-mode="login"]');
+    if (login) setMode('login');
+  });
+  function setPick(p) { $$('#j-plans .chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.p === p))); setMode('join'); }
+  $$('#j-plans .chip').forEach((c) => c.addEventListener('click', () => setPick(c.dataset.p)));
+  let mode = 'join';
+  function setMode(m) {
+    mode = m;
+    $('#j-h').innerHTML = m === 'join' ? 'Únete<br>a Cauce.' : 'Hola<br>otra vez.';
+    $('#j-plans').hidden = m !== 'join';
+    $('#j-switch').textContent = m === 'join' ? '¿Ya tienes cuenta? Entrar' : '¿Nuevo aquí? Únete';
+    $('#j-msg').textContent = '';
+  }
+  $('#j-switch').addEventListener('click', () => setMode(mode === 'join' ? 'login' : 'join'));
+  $('#f-join').addEventListener('submit', (e) => { e.preventDefault(); $('#j-msg').textContent = 'Borrador: el registro y el pago se conectan al lanzar.'; });
+  $$('form.nl').forEach((f) => f.addEventListener('submit', (e) => { e.preventDefault(); const m = f.parentElement.querySelector('.nlmsg'); if (m) m.textContent = 'Listo. Borrador: el registro se conecta al lanzar.'; }));
+  $$('form.pinfo').forEach((f) => f.addEventListener('submit', (e) => { e.preventDefault(); $('.pmsg').textContent = 'Recibido. Borrador: el envío se conecta al lanzar.'; }));
+
+  /* count-up for figures */
+  function countUp() {
+    if (reduce) return;
+    $$('[data-count]').forEach((el) => {
+      const end = +el.dataset.count, pre = el.dataset.pre || '', t0 = performance.now();
+      const step = (t) => { const k = Math.min(1, (t - t0) / 900), v = end * (1 - Math.pow(1 - k, 3)); el.textContent = pre + int(v); if (k < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* draggable sticker */
+  (function () {
+    const s = $('#drag'); let sx, sy, ox = 0, oy = 0, on = false;
+    s.addEventListener('pointerdown', (e) => { on = true; sx = e.clientX - ox; sy = e.clientY - oy; s.setPointerCapture(e.pointerId); });
+    s.addEventListener('pointermove', (e) => { if (!on) return; ox = e.clientX - sx; oy = e.clientY - sy; s.style.transform = `translate(${ox}px,${oy}px) rotate(-6deg)`; });
+    s.addEventListener('pointerup', () => { on = false; });
+  })();
+
+  /* clock */
+  function tick() { try { $('#clock').textContent = 'Caracas ' + new Date().toLocaleTimeString('es-VE', { timeZone: 'America/Caracas', hour: '2-digit', minute: '2-digit' }); } catch (e) {} }
+  tick(); setInterval(tick, 30000);
+
+  /* router */
+  const VIEWS = ['mercado', 'articulo', 'propiedades', 'propiedad', 'analizar', 'datos', 'planes', 'entrar', 'sobre'];
+  const AREA = { mercado: 'mercado', articulo: 'mercado', propiedades: 'propiedades', propiedad: 'propiedades', analizar: 'inteligencia', datos: 'inteligencia' };
+  let current = null;
+  function render(h) {
+    VIEWS.forEach((v) => { const el = document.getElementById('v-' + v); el.hidden = v !== h; if (v === h) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); } });
+    const intel = h === 'analizar' || h === 'datos';
+    document.body.classList.toggle('dark', intel);
+    $('#sub').hidden = !intel;
+    $$('nav.main a').forEach((a) => { if (a.dataset.n === AREA[h]) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    $$('#sub a').forEach((a) => { if (a.dataset.s === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    if (h === 'planes') highlightPlans();
+    if (h === 'mercado') countUp();
+    window.scrollTo(0, 0);
+  }
+  function show() {
+    let h = location.hash.slice(1); if (VIEWS.indexOf(h) < 0) h = 'mercado';
+    if (current && AREA[current]) lastArea = AREA[current];
+    if (h !== 'planes' && h !== 'entrar') planIntent = null;
+    current = h;
+    if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
+  }
+  window.addEventListener('hashchange', show);
+  feed('all'); grid('all'); show();
+  setTimeout(() => $('#intro').classList.add('done'), reduce ? 0 : 1300);
+})();
+</script>
+
+</body>
+</html>
