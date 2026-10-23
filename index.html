@@ -238,7 +238,7 @@ form.f select option { background: var(--card); }
 
 /* footer: bottom navigation bar */
 footer { border-top: 1px solid var(--line); margin-top: 40px; }
-.foot { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 24px; padding-block: 36px 24px; font-size: 14px; }
+.foot { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; padding-block: 36px 24px; font-size: 14px; }
 .foot nav { display: grid; gap: 6px; align-content: start; }
 .foot nav a { color: var(--soft); } .foot nav a:hover { color: var(--ink); }
 .foot .big { font-family: var(--serif); font-size: 64px; line-height: .9; }
@@ -306,7 +306,6 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
           <div><span class="sm">Airbnb</span><b>32%</b><span class="sm">ocupación</span></div>
         </div>
       </div>
-      <div class="panel"><div class="editor"><div class="avatar">L</div><div><b style="font-weight:500">Luis</b><div class="sm">Editor jefe. Escribe el boletín de cada jueves y lee todas las respuestas.</div></div></div></div>
     </div>
   </div>
 
@@ -317,7 +316,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <div><span class="lab">Boletín de los jueves</span><h2>Una cifra, una historia y un terreno. Cada semana.</h2>
       <form class="pillfield nl"><label for="nl1" hidden>Correo</label><input id="nl1" type="email" required placeholder="tu@correo.com"><button class="btn">Unirme</button></form>
       <p class="sm nlmsg" style="margin-top:10px">Gratis. Al unirte, recibes un estudio completo de regalo.</p></div>
-    <div><span class="lab">Luis, editor jefe</span><h2>«Si tienes un terreno o una duda, escríbeme. Muchas de nuestras historias empiezan así.»</h2><a class="btn o" href="#planes" data-plan="consulta">Agendar una consulta 1:1</a></div>
+    <div><span class="lab">Consulta 1:1</span><h2>¿Tienes un inmueble, un terreno o una duda? Revisémoslo juntos.</h2><a class="btn o" href="#planes" data-plan="consulta">Agendar una consulta</a></div>
   </div>
 </section>
 
@@ -329,7 +328,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <p class="lab" style="margin-top:28px">Estudio de factibilidad · Porlamar</p>
       <h1>2.363 m² en Porlamar por $500.000. ¿Es rentable construir y vender?</h1>
       <p class="dek">Un terreno con proyecto de uso mixto. En Porlamar, los inmuebles usados se piden a $1.003 por m².</p>
-      <div class="by"><div class="avatar">L</div><span>Luis, editor jefe</span><span>20 oct 2026</span><span>8 min</span></div>
+      <div class="by"><div class="avatar">c</div><span>Equipo Cauce</span><span>20 oct 2026</span><span>8 min</span></div>
       <div class="ph"><svg class="sil" viewBox="0 0 400 160" preserveAspectRatio="none" aria-hidden="true"><path d="M0 160V120h60V90h80v30h40V70h90v50h40V100h90v60z" fill="currentColor"/></svg><span>Foto: el terreno, la calle, el vecindario</span></div>
       <div class="blk"><span class="lab">La noticia</span><p>Vertical Real Estate ofrece 2.363 m² en Porlamar por $500.000, con un proyecto de uso mixto. Suponemos 1,5 m² construibles por cada m² de terreno. De esa área, el 80% sería vendible.</p></div>
       <div class="blk"><span class="lab">Lo que sabemos</span><p>Con un costo de obra de $800 por m², el proyecto cuesta unos $4 millones. El terreno es solo el 12% de ese total. El resultado depende del costo de obra y del precio de venta.</p>
@@ -341,7 +340,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <aside class="rail">
       <div class="panel"><span class="lab">Datos de la zona</span><b class="num" style="font-size:26px;font-weight:500">$1.003<span class="sm"> /m²</span></b><span class="sm">Porlamar · n=18 · ago 2026</span><a class="sm" href="#datos" style="text-decoration:underline">Ver en Inteligencia</a></div>
       <div class="panel"><span class="lab">Propiedades en esta zona</span><a href="#propiedad"><div class="ph" style="aspect-ratio:16/9"><span>Foto</span></div></a><span class="sm">Terreno · 2.363 m² · $500.000</span></div>
-      <div class="panel"><span class="lab">Habla con Luis</span><span class="sm">45 minutos sobre tu inmueble o terreno. Si luego encargas un estudio, te descontamos el precio de la consulta.</span><a class="btn" href="#planes" data-plan="consulta" style="justify-self:start">Agendar</a></div>
+      <div class="panel"><span class="lab">Habla con nuestro equipo</span><span class="sm">45 minutos sobre tu inmueble o terreno. Si luego encargas un estudio, te descontamos el precio de la consulta.</span><a class="btn" href="#planes" data-plan="consulta" style="justify-self:start">Agendar</a></div>
     </aside>
   </div>
 </section>
@@ -417,7 +416,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="plans" id="plans">
     <div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado cada jueves.</p><ul><li>Cifras de la semana</li><li>Historias de mercado y zonas</li><li>Un estudio completo de regalo</li></ul><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
     <div class="plan" data-plan="inteligencia"><div class="sticker" aria-hidden="true">Más<br>elegido</div><span class="lab">Inteligencia</span><div class="price">$10<small> /mes, pago anual</small></div><p class="sm">Para quien compra o ya tiene inmuebles.</p><ul><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
-    <div class="plan" data-plan="consulta"><span class="lab">Consulta 1:1</span><div class="price">$60<small> / 45 min</small></div><p class="sm">Con Luis, sobre tu inmueble o terreno.</p><ul><li>Revisión de precio y zona</li><li>Notas por escrito</li><li>Se descuenta si encargas un estudio</li></ul><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
+    <div class="plan" data-plan="consulta"><span class="lab">Consulta 1:1</span><div class="price">$60<small> / 45 min</small></div><p class="sm">Con nuestro equipo, sobre tu inmueble o terreno.</p><ul><li>Revisión de precio y zona</li><li>Notas por escrito</li><li>Se descuenta si encargas un estudio</li></ul><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
     <div class="plan" data-plan="duenos"><span class="lab">Para dueños y agentes</span><div class="price">$450<small> por estudio</small></div><p class="sm">Muestra tu terreno a inversionistas.</p><ul><li>Estudio de factibilidad publicado</li><li>Solo destacado: $150 por 30 días</li><li>Contactos de lectores interesados</li></ul><a class="btn" href="#entrar" data-pick="duenos">Empezar</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Precios de prueba, en US$. No cobramos comisión por ventas. Cancela cuando quieras.</p>
@@ -437,16 +436,27 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <!-- SOBRE -->
 <section class="view about" id="v-sobre" hidden>
   <span class="lab">Sobre Cauce</span>
-  <h1 style="margin-top:14px">Datos claros para invertir en Venezuela, explicados por personas.</h1>
-  <p style="font-size:18px;max-width:40em;margin-top:24px;color:var(--soft)">Cauce es una publicación y una herramienta de datos. Cada semana explicamos qué pasa con los precios. Estudiamos terrenos con los números a la vista. También conectamos a inversionistas con constructores. No cobramos comisión por ventas.</p>
-  <div class="pillars">
+  <h1 style="margin-top:14px">Invertir en Venezuela, con los números claros.</h1>
+  <div style="display:grid;gap:16px;max-width:40em;margin-top:28px;font-size:18px;line-height:1.55">
+    <p>Comprar un inmueble en Venezuela suele empezar con un precio que nadie sabe explicar. Cauce existe para cambiar eso.</p>
+    <p style="color:var(--soft)">Reunimos los precios publicados, los ordenamos por zona y te decimos de dónde sale cada número. Cuando un terreno sale a la venta, hacemos las cuentas: cuánto cuesta construir, a cuánto habría que vender y si vale la pena.</p>
+    <p style="color:var(--soft)">Escribimos para quien vive aquí y para quien mira desde afuera. Para quien busca su primer apartamento y para quien evalúa un edificio entero.</p>
+  </div>
+  <div class="secthead" style="margin-top:72px"><h2>Qué hacemos</h2></div>
+  <div class="pillars" style="margin-top:0">
+    <div><span class="n">(01)</span><h3>Mercado</h3><p class="sm">Cada jueves, una historia con datos sobre precios, alquileres y zonas. Gratis.</p></div>
+    <div><span class="n">(02)</span><h3>Inteligencia</h3><p class="sm">El precio por m² de 151 zonas, una herramienta para saber si un inmueble está bien de precio y estudios de factibilidad completos.</p></div>
+    <div><span class="n">(03)</span><h3>Propiedades</h3><p class="sm">Inmuebles y terrenos con nuestra lectura de precio, y proyectos que estructuramos con nuestra comunidad.</p></div>
+  </div>
+  <div class="secthead" style="margin-top:72px"><h2>Cómo trabajamos</h2></div>
+  <div class="pillars" style="margin-top:0">
     <div><span class="n">(01)</span><h3>Cada cifra con su fuente.</h3><p class="sm">Fecha, muestra y tipo de inmueble. Si dos fuentes no coinciden, publicamos las dos.</p></div>
     <div><span class="n">(02)</span><h3>Supuestos a la vista.</h3><p class="sm">En cada estudio mostramos qué asumimos y cómo cambia el resultado si nos equivocamos.</p></div>
-    <div><span class="n">(03)</span><h3>Independientes.</h3><p class="sm">Algunos destacados son espacios pagados. Nuestras lecturas y conclusiones no se venden.</p></div>
+    <div><span class="n">(03)</span><h3>Independientes.</h3><p class="sm">No cobramos comisión por ventas. Algunos destacados son espacios pagados; nuestras conclusiones no se venden.</p></div>
   </div>
   <div class="duo" style="position:relative">
     <div class="sticker flat drag" id="drag" style="top:-30px;right:8%">Hecho en Caracas ↝<br><span style="opacity:.6">arrástrame</span></div>
-    <div class="editor"><div class="avatar" style="width:84px;height:84px;font-size:38px">L</div><div><b style="font-weight:500;font-size:18px">Luis</b><div class="sm">Editor jefe, Cauce</div></div></div>
+    <div><span class="lab">El nombre</span><h2>Un cauce es el camino que abre el agua.</h2><p class="sm" style="font-size:16px;max-width:30em">Queremos que el capital encuentre el suyo: con información clara, hacia proyectos que mejoren las ciudades.</p></div>
     <div><p class="sm" style="font-size:15px">Escríbenos: <span style="user-select:all;color:var(--ink)">hola@cauce.blog</span></p><a class="btn" href="#planes" style="margin-top:14px">Ver planes</a></div>
   </div>
 </section>
@@ -457,7 +467,6 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <div><div class="big">cauce</div><p class="sm" style="margin-top:12px;max-width:24em">Datos inmobiliarios con fuente. Boletín cada jueves.</p></div>
     <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#analizar">Inteligencia</a></nav>
     <nav aria-label="Cauce"><span class="lab">Cauce</span><a href="#sobre">Sobre Cauce</a><a href="#planes">Planes</a><a href="#planes" data-plan="consulta">Consulta 1:1</a></nav>
-    <nav aria-label="Seguir"><span class="lab">Seguir</span><a href="#mercado">Boletín</a><a href="#sobre">Instagram</a><a href="#sobre">LinkedIn</a></nav>
   </div>
   <div class="foot-bar"><span class="live"><i></i><span id="clock">Caracas</span> · Dólar BCV 500,46</span><span>No es asesoría de inversión</span></div>
 </div></footer>
@@ -573,6 +582,24 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    '¿Tienes un inmueble, un terreno o una duda? Revisémoslo juntos.': 'Have a property, a lot or a question? Let’s review it together.',
+    'Agendar una consulta': 'Book a consult',
+    'Equipo Cauce': 'Cauce team',
+    'Habla con nuestro equipo': 'Talk to our team',
+    'Con nuestro equipo, sobre tu inmueble o terreno.': 'With our team, about your property or lot.',
+    'Invertir en Venezuela, con los números claros.': 'Investing in Venezuela, with clear numbers.',
+    'Comprar un inmueble en Venezuela suele empezar con un precio que nadie sabe explicar. Cauce existe para cambiar eso.': 'Buying property in Venezuela often starts with a price nobody can explain. Cauce exists to change that.',
+    'Reunimos los precios publicados, los ordenamos por zona y te decimos de dónde sale cada número. Cuando un terreno sale a la venta, hacemos las cuentas: cuánto cuesta construir, a cuánto habría que vender y si vale la pena.': 'We gather published prices, sort them by area and tell you where every number comes from. When a lot goes on sale, we run the numbers: what it costs to build, what it would need to sell for, and whether it’s worth it.',
+    'Escribimos para quien vive aquí y para quien mira desde afuera. Para quien busca su primer apartamento y para quien evalúa un edificio entero.': 'We write for people who live here and for those watching from abroad. For someone buying a first apartment and for someone weighing a whole building.',
+    'Qué hacemos': 'What we do',
+    'Cómo trabajamos': 'How we work',
+    'Cada jueves, una historia con datos sobre precios, alquileres y zonas. Gratis.': 'Every Thursday, one data-driven story on prices, rents and areas. Free.',
+    'El precio por m² de 151 zonas, una herramienta para saber si un inmueble está bien de precio y estudios de factibilidad completos.': 'Price per m² for 151 areas, a tool to check whether a property is fairly priced, and full feasibility studies.',
+    'Inmuebles y terrenos con nuestra lectura de precio, y proyectos que estructuramos con nuestra comunidad.': 'Homes and lots with our price read, and projects we structure with our community.',
+    'No cobramos comisión por ventas. Algunos destacados son espacios pagados; nuestras conclusiones no se venden.': 'We take no commission on sales. Some featured spots are paid; our conclusions are not for sale.',
+    'El nombre': 'The name',
+    'Un cauce es el camino que abre el agua.': 'A cauce is the path water carves.',
+    'Queremos que el capital encuentre el suyo: con información clara, hacia proyectos que mejoren las ciudades.': 'We want capital to find its own: with clear information, toward projects that make cities better.',
     'Datos con fuente': 'Sourced data', 'DATOS CON FUENTE · CARACAS ·': 'SOURCED DATA · CARACAS ·',
     '20 oct': 'Oct 20', '20 oct 2026': 'Oct 20, 2026', 'Porlamar · n=18 · ago 2026': 'Porlamar · n=18 · Aug 2026',
     'por m² · n=980 · ago 2026': 'per m² · n=980 · Aug 2026', 'alquiler largo · 80–180 m²': 'long-term rent · 80–180 m²',
@@ -596,7 +623,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     'Boletín de los jueves': 'The Thursday newsletter', 'Una cifra, una historia y un terreno. Cada semana.': 'One number, one story and one lot. Every week.',
     'Correo': 'Email', 'tu@correo.com': 'you@email.com', 'Unirme': 'Join',
     'Gratis. Al unirte, recibes un estudio completo de regalo.': 'Free. Join and get a full study as a welcome gift.',
-    'Luis, editor jefe': 'Luis, editor in chief',
+    
     '«Si tienes un terreno o una duda, escríbeme. Muchas de nuestras historias empiezan así.»': '“If you have a lot or a question, write to me. Many of our stories start that way.”',
     'Agendar una consulta 1:1': 'Book a 1:1 consult', '← Mercado': '← Market', '← Propiedades': '← Properties',
     'Estudio de factibilidad · Porlamar': 'Feasibility study · Porlamar',
@@ -610,7 +637,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     'El vendedor podría decir que en la costa los inmuebles nuevos se piden más caros que los usados. Es probable, pero no hay suficientes anuncios para medirlo.': 'The seller could say that on the coast, new properties are listed higher than resale ones. That’s likely, but there aren’t enough listings to measure it.',
     'Para suscriptores': 'For subscribers', 'El modelo completo: costos, escenarios y calculadora.': 'The full model: costs, scenarios and calculator.', 'Ver planes': 'See plans',
     'Datos de la zona': 'Area data', 'Ver en Inteligencia': 'See in Intelligence', 'Propiedades en esta zona': 'Properties in this area', 'Foto': 'Photo',
-    'Terreno · 2.363 m² · $500.000': 'Lot · 2,363 m² · $500,000', 'Habla con Luis': 'Talk to Luis',
+    'Terreno · 2.363 m² · $500.000': 'Lot · 2,363 m² · $500,000', 
     '45 minutos sobre tu inmueble o terreno. Si luego encargas un estudio, te descontamos el precio de la consulta.': '45 minutes on your property or lot. If you then order a study, we credit the consult fee.', 'Agendar': 'Book',
     'Inmuebles y terrenos,': 'Homes and lots,', 'con nuestra lectura.': 'with our take.', 'Estudia mi terreno': 'Study my lot', 'Secciones': 'Sections',
     'Destacados': 'Featured', 'Proyectos Cauce': 'Cauce projects',
@@ -644,7 +671,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     'Historias de mercado y zonas': 'Market and area stories', 'Un estudio completo de regalo': 'One full study as a gift', 'Unirme gratis': 'Join free', 'Más': 'Most', 'elegido': 'popular',
     '/mes, pago anual': '/mo, billed yearly', 'Para quien compra o ya tiene inmuebles.': 'For buyers and owners.', 'Estudios completos y calculadora': 'Full studies and calculator',
     '151 zonas, con datos semanales': '151 areas, updated weekly', 'Análisis de propiedades ilimitados': 'Unlimited property checks', 'Descarga de datos en CSV': 'CSV downloads', 'Suscribirme': 'Subscribe',
-    'Consulta 1:1': '1:1 consult', 'Con Luis, sobre tu inmueble o terreno.': 'With Luis, about your property or lot.', 'Revisión de precio y zona': 'Price and area review',
+    'Consulta 1:1': '1:1 consult',  'Revisión de precio y zona': 'Price and area review',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
     'Muestra tu terreno a inversionistas.': 'Show your lot to investors.', 'Estudio de factibilidad publicado': 'Published feasibility study',
     'Solo destacado: $150 por 30 días': 'Featured listing only: $150 for 30 days', 'Contactos de lectores interesados': 'Leads from interested readers', 'Empezar': 'Get started',
