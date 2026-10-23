@@ -23,8 +23,8 @@ function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let maxH = value;
 
-  const C = Cam(45, 0.5, 1.62);
-  fit(C, [[0, 0, -TH], [LX, LY, -TH], [LX, 0, 0], [0, LY, 0], [bx(0), BY0, 90], [bx(N - 1) + BW, BY0 + BD, 90]], 200, 166);
+  const C = Cam(45, 0.5, 1.42);
+  fit(C, [[0, 0, -TH], [LX, LY, -TH], [LX, 0, 0], [0, LY, 0], [bx(1), BY0, 34]], 200, 160);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
 

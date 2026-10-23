@@ -22,7 +22,7 @@ function mount({ stage, svg, read }, value) {
   let rise = value;
 
   const C = Cam(45, 0.5, 1.52);
-  fit(C, [[0, 0, -TH], [SIDE, SIDE, -TH], [SIDE, 0, 0], [0, SIDE, 0], [M, M, 38 + 60], [SIDE - M, SIDE - M, 30]], 200, 166);
+  fit(C, [[0, 0, -TH], [SIDE, SIDE, -TH], [SIDE, 0, 0], [0, SIDE, 0], ...REST.flatMap((h, i) => { const [x, y] = at(i); return [[x, y, h], [x + BW, y, h], [x, y + BW, h]]; })], 200, 160);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
 
