@@ -28,7 +28,7 @@ def main():
         html = fetch(False)
     m = re.search(r'id="dolar".*?<strong>\s*([\d.,]+)\s*</strong>', html, re.S)
     if not m:
-        sys.exit("USD value not found on the BCV page; leaving data/bcv.json as it is.")
+        sys.exit(f"USD value not found on the BCV page ({len(html)} bytes, 'dolar' {'present' if 'dolar' in html else 'absent'}); leaving data/bcv.json as it is.")
     usd = float(m.group(1).replace(".", "").replace(",", "."))
     d = re.search(r'Fecha Valor.*?content="(\d{4}-\d{2}-\d{2})', html, re.S)
     date = d.group(1) if d else datetime.date.today().isoformat()
@@ -45,4 +45,11 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except SystemExit as e:
+        print(f"::error::{e}")
+        raise
+    except Exception as e:  # noqa: BLE001
+        print(f"::error::{type(e).__name__}: {e}")
+        sys.exit(1)
