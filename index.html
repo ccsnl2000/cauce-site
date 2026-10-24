@@ -33,7 +33,7 @@ html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
 :root[data-theme="dark"] { --cover: #2E2F2C; --cover-ink: #ECEBE6; --sheet: #1F201E; --faint: #5E5F5A; --bg: #1A1B19; --card: #1A1B19; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; --g0: #2F302D; --g1: #353632; --g2: #3B3C38; --g3: #2A2B28; }
 body.intel-light { --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18; color-scheme: light; }
-body.intel { --bg: #1A1B19; --card: #1F201E; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
+body.intel { --bg: #1A1B19; --card: #1F201E; --sheet: #222321; --faint: #5E5F5A; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, p { margin: 0; }
 h1, h2, h3, .verdict, .cover b, .foot .big { font-weight: 800 !important; text-wrap: balance; letter-spacing: -0.045em; }
@@ -260,6 +260,33 @@ form.f select option { background: var(--card); }
 .kpis b { font: 700 24px var(--mono); letter-spacing: -0.04em; }
 .scan { position: absolute; left: 0; right: 0; height: 2px; background: var(--ink); opacity: .5; animation: scan 1s var(--ease) forwards; pointer-events: none; }
 @keyframes scan { from { top: 0; } to { top: 100%; opacity: 0; } }
+.dash { margin-top: 44px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; } .dash > *, .dlock > .blur > * { min-width: 0; }
+.dhead { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 22px; }
+.dhead h2 { font-size: 34px; letter-spacing: -0.03em; margin: 6px 0 8px; } .dhead p { max-width: 60ch; }
+.demo { font-size: 12px; font-weight: 700; padding: 6px 12px; border: 1px solid var(--ink); border-radius: 999px; white-space: nowrap; }
+.dpick label { display: inline-grid; gap: 6px; } .dpick select { font: 600 16px var(--sans); color: var(--ink); background: var(--card); border: 1px solid var(--ink); border-radius: 999px; padding: 9px 38px 9px 16px; max-width: 100%; }
+.dcard { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; padding: 22px; display: grid; gap: 18px; }
+.dch { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; } .dch h3 { font-size: 28px; letter-spacing: -0.02em; margin-top: 4px; }
+.dsc { display: flex; align-items: center; gap: 10px; } .dsc b { font: 700 44px/1 var(--mono); letter-spacing: -0.05em; } .dsc span { font-size: 12px; color: var(--soft); line-height: 1.3; }
+.drd { font-size: 16px; max-width: 70ch; }
+.dk { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 18px; } .dk div { display: grid; gap: 4px; border-top: 1px solid var(--line); padding-top: 10px; } .dk b { font: 700 24px/1.1 var(--mono); letter-spacing: -0.03em; }
+.dms { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px 22px; }
+.dm { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; font-size: 13px; } .dm i { grid-column: 1 / -1; grid-row: 2; height: 6px; border-radius: 9px; background: var(--fill); overflow: hidden; } .dm i b { display: block; height: 100%; border-radius: 9px; background: var(--ink); } .dm span:last-child { font-family: var(--mono); color: var(--soft); }
+.dlock { display: grid; } .dlock > .blur { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; } .dsec { display: grid; gap: 14px; }
+.dcharts { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; } .dcharts .chart { margin: 0; }
+.drh h3 { font-size: 22px; margin: 4px 0; }
+.dpri { display: flex; flex-wrap: wrap; gap: 8px; } .dpri button { font: 600 13px var(--sans); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; } .dpri button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.dtw { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--sheet); }
+.dtw table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 720px; } .dtw th { text-align: right; padding: 0; border-bottom: 1px solid var(--line); } .dtw th:first-child { text-align: left; }
+.dtw th button { font: 600 12px var(--sans); color: var(--soft); background: none; border: 0; padding: 12px 12px; cursor: pointer; } .dtw th[aria-sort] button { color: var(--ink); }
+.dtw td { padding: 10px 12px; text-align: right; font-family: var(--mono); border-bottom: 1px solid var(--line); white-space: nowrap; } .dtw tr:last-child td { border-bottom: 0; }
+.dtw td.dn { text-align: left; font-family: var(--sans); display: flex; gap: 10px; align-items: baseline; } .dtw td.dn .sm { margin-left: 6px; } .dix { color: var(--soft); font: 12px var(--mono); min-width: 18px; }
+.dtw tbody tr { cursor: pointer; transition: background .15s; } .dtw tbody tr:hover, .dtw tbody tr.on { background: var(--fill); }
+.dbar { display: inline-block; width: 56px; height: 6px; border-radius: 9px; background: var(--fill); margin-right: 8px; vertical-align: middle; overflow: hidden; } .dbar i { display: block; height: 100%; background: var(--ink); border-radius: 9px; }
+.dtw tr.on .dbar, .dtw tbody tr:hover .dbar { background: var(--line); }
+.dmore { justify-self: start; font: 600 13px var(--sans); color: var(--ink); background: none; border: 1px solid var(--ink); border-radius: 999px; padding: 8px 16px; cursor: pointer; margin-top: 12px; }
+.dnote { max-width: 80ch; }
+@media (max-width: 760px) { .dk { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dcharts { grid-template-columns: minmax(0, 1fr); } .dms { grid-template-columns: minmax(0, 1fr); } .dhead h2 { font-size: 26px; } .dch h3 { font-size: 22px; } .dsc b { font-size: 34px; } }
 .lock { position: relative; }
 .lock > .blur { filter: blur(6px); opacity: .5; pointer-events: none; user-select: none; }
 .lock > a { position: absolute; inset: 0; display: grid; place-items: center; }
@@ -617,15 +644,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <div class="mlock" hidden><div><b style="font-size:18px">El precio por m² de cada zona</b><span class="sm" style="color:#555">Con Inteligencia ves la mediana por parroquia y municipio, su serie semanal y las propiedades bajo la media.</span><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a><button type="button" class="x">Seguir explorando</button></div></div>
   </div>
   <p class="sm" style="margin-top:10px"><span data-src>Límites: parroquias de Venezuela (Tapiquén, 2015).</span> <span>Propiedades de ejemplo.</span></p>
-  <div class="lock" style="margin-top:36px">
-    <div class="blur" aria-hidden="true"><div class="mgrid">
-      <div class="panel"><span class="lab">Precio por m², serie semanal</span><svg viewBox="0 0 400 120" style="width:100%;height:170px"><path d="M0 100 C60 90 90 92 140 75 S240 60 280 48 S360 36 400 30" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
-      <div class="panel"><span class="lab">Ranking · 151 zonas</span><div class="bars"><div><span>█████</span><i style="width:100%"></i><span>████</span></div><div><span>█████</span><i style="width:82%"></i><span>████</span></div><div><span>█████</span><i style="width:64%"></i><span>████</span></div><div><span>█████</span><i style="width:41%"></i><span>████</span></div></div></div>
-      <div class="panel"><span class="lab">Comparar dos zonas</span></div>
-      <div class="panel"><span class="lab">Alquiler y Airbnb por zona</span></div>
-    </div></div>
-    <a href="#planes" data-plan="inteligencia" aria-label="Únete para ver todos los datos"><span>Únete para ver las 151 zonas →</span></a>
-  </div>
+  <div class="dash" id="dash" aria-live="polite"></div>
 </section>
 
 <!-- PLANES -->
@@ -2751,7 +2770,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
           map.addSource('l' + k, { type: 'geojson', data: labelsFC(ZN[k]) });
           const vis = k === scale ? 'visible' : 'none';
           map.addLayer({ id: 'fill-' + k, type: 'fill', source: 'z' + k, layout: { visibility: vis }, paint: { 'fill-color': ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]], 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 11, ['case', ['boolean', ['feature-state', 'h'], false], 0.88, 0.75], 14, ['case', ['boolean', ['feature-state', 'h'], false], 0.62, 0.5], 16, ['case', ['boolean', ['feature-state', 'h'], false], 0.32, 0.2], 18, ['case', ['boolean', ['feature-state', 'h'], false], 0.2, 0.1]] } });
-          map.addLayer({ id: 'line-' + k, type: 'line', source: k === 'm' ? 'zml' : 'z' + k, layout: { visibility: vis, 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': ['case', ['boolean', ['feature-state', 'h'], false], 1.8, 1.1] } });
+          map.addLayer({ id: 'line-' + k, type: 'line', source: k === 'm' ? 'zml' : 'z' + k, layout: { visibility: vis, 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': ['interpolate', ['linear'], ['zoom'], 10, ['case', ['boolean', ['feature-state', 'h'], false], 1.1, 0.45], 13, ['case', ['boolean', ['feature-state', 'h'], false], 1.4, 0.7], 15, ['case', ['boolean', ['feature-state', 'h'], false], 1.9, 1.1], 18, ['case', ['boolean', ['feature-state', 'h'], false], 2.8, 1.9]] } });
         });
         const L = (o) => map.addLayer(o);
         L({ id: 'building-3d', type: 'fill-extrusion', source: 'omt', 'source-layer': 'building', minzoom: 14, layout: { visibility: 'none' }, paint: { 'fill-extrusion-color': '#2E2F2B', 'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 9], 'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0], 'fill-extrusion-opacity': 0.92 } });
@@ -2796,8 +2815,10 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
       map.on('mouseout', () => { setHover(null); tip.hidden = true; });
       map.on('click', (e) => {
         if (!ready) return; const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0]; if (!z) return;
-        const f = ZN[scale][z.id]; const b = bboxOf(f.c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: full ? 60 : 30, maxZoom: 16, duration: reduce ? 0 : 900 }); resetB.hidden = false;
+        const f = ZN[scale][z.id]; const b = bboxOf(f.c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: full ? 60 : 30, maxZoom: 16, duration: reduce ? 0 : 900 }); resetB.hidden = false; if (full) { select(z.id); document.dispatchEvent(new CustomEvent('cauce-zone', { detail: { n: f.n, s: scale } })); }
       });
+      let selId = null; const select = (id) => { if (selId !== null) map.setFeatureState({ source: 'zp', id: selId }, { sel: false }); selId = id; if (id !== null && scale === 'p') map.setFeatureState({ source: 'zp', id }, { sel: true }); };
+      root._focus = (n) => { if (!ready) return; if (scale !== 'p') { const b = $('[data-scale="p"]', root); if (b) b.click(); } const id = ZN.p.findIndex((f) => f.n === n); if (id < 0) return; select(id); const b = bboxOf(ZN.p[id].c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 60, maxZoom: 15, duration: reduce ? 0 : 900 }); resetB.hidden = false; };
       map.on('moveend', () => { if (!inited || !home) return; const c = map.getCenter(); resetB.hidden = Math.abs(map.getZoom() - home.zoom) < 0.05 && Math.abs(c.lng - home.center.lng) < 0.002 && Math.abs(c.lat - home.center.lat) < 0.002; });
     }
     resetB.addEventListener('click', () => { if (map && home) map.flyTo({ ...home, duration: reduce ? 0 : 800 }); resetB.hidden = true; });
@@ -2864,6 +2885,109 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
   if (PREVIEW) { document.body.classList.add('preview'); document.body.insertAdjacentHTML('beforeend', '<div class="pvbar" role="status"><span>Vista completa · borrador</span><a href="?vista=normal#mercado">Salir</a></div>'); }
 
   /* router */
+  /* Inteligencia · neighbourhood dashboard (demo data, labelled as such) */
+  (function dash() {
+    const el = $('#dash'); if (!el) return;
+    const L = (es, en) => (document.documentElement.lang === 'en' ? en : es);
+    // name: [fallback price, walk, safety, metro minutes on foot, water days a week, power cuts a month, closings a month]
+    const T = { 'Chacao': [2600, 92, 78, 6, 6, 1, 38], 'Baruta': [1900, 58, 66, 25, 4, 2, 42], 'El Cafetal': [1450, 40, 68, 30, 4, 2, 30], 'Las Minas de Baruta': [600, 35, 30, 35, 3, 3, 6], 'El Hatillo': [1500, 28, 70, 45, 3, 2, 22], 'Leoncio Martínez': [1500, 74, 62, 8, 5, 2, 34], 'Petare': [650, 55, 28, 10, 3, 3, 12], 'Caucagüita': [320, 25, 24, 40, 2, 4, 3], 'Filas de Mariches': [280, 18, 30, 50, 2, 4, 2], 'La Dolorita': [300, 30, 26, 35, 2, 4, 3], 'El Recreo': [1300, 86, 52, 5, 5, 2, 31], 'San Pedro': [1350, 74, 58, 9, 5, 2, 18], 'San Bernardino': [900, 75, 48, 12, 5, 2, 12], 'Candelaria': [850, 85, 46, 6, 5, 2, 15], 'Catedral': [650, 88, 40, 5, 5, 2, 7], 'Altagracia': [700, 80, 40, 10, 4, 2, 6], 'San José': [600, 72, 36, 12, 4, 3, 5], 'Santa Teresa': [600, 78, 38, 6, 4, 3, 5], 'Santa Rosalía': [650, 68, 34, 11, 4, 3, 8], 'San Juan': [550, 70, 34, 9, 4, 3, 7], 'San Agustín': [550, 64, 32, 8, 4, 3, 6], 'La Pastora': [500, 62, 38, 14, 4, 3, 5], 'Sucre': [520, 65, 30, 7, 3, 3, 14], 'El Paraíso': [800, 66, 45, 10, 4, 2, 13], '23 de Enero': [380, 50, 26, 15, 3, 3, 4], 'La Vega': [400, 45, 25, 18, 3, 3, 6], 'Antímano': [350, 42, 24, 9, 3, 3, 5], 'El Valle': [420, 55, 30, 8, 3, 3, 9], 'Coche': [450, 52, 32, 8, 3, 3, 7], 'Caricuao': [480, 50, 40, 7, 3, 3, 10], 'Macarao': [330, 30, 34, 25, 2, 4, 3], 'El Junquito': [300, 15, 42, 60, 2, 5, 2] };
+    const hash = (s) => { let h = 2166136261; for (const ch of s) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296; };
+    const M24 = []; { const mn = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], en = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; for (let i = 23; i >= 0; i--) { const d = new Date(2026, 9 - i, 1); M24.push([mn[d.getMonth()] + ' ' + String(d.getFullYear()).slice(2), en[d.getMonth()] + ' ' + String(d.getFullYear()).slice(2)]); } }
+    const Z = ZN.p.map((f) => {
+      const t = T[f.n] || [600, 50, 40, 20, 3, 3, 5], r = hash(f.n), price = typeof f.v === 'number' ? f.v : t[0];
+      const g12 = Math.round((-3 + r() * 15 + (t[6] > 20 ? 3 : 0)) * 10) / 10; // % change in 12 months
+      const start = price / (1 + g12 / 100 * 2), wob = price * 0.012;
+      const ser = Array.from({ length: 24 }, (_, i) => i === 23 ? price : start + (price - start) * Math.pow(i / 23, 0.9) + wob * Math.sin(i * 1.3 + r() * 6));
+      const yld = Math.round((13.5 - price / 400 + r() * 1.5) * 10) / 10, cl = t[6];
+      const closes = Array.from({ length: 12 }, (_, i) => Math.max(0, Math.round(cl * (0.75 + 0.5 * r()) * (0.9 + i / 60))));
+      return { n: f.n, m: f.m, price: Math.round(price), g12, ser, yld: Math.max(5, yld), rent: Math.round(price * Math.max(5, yld) / 100 / 12 * 10) / 10, walk: t[1], safe: t[2], metro: t[3], water: t[4], cuts: t[5], cl: Math.round(closes.slice(-3).reduce((a, b) => a + b, 0) / 3), closes, dom: Math.round(220 - cl * 3.4 + r() * 25), stock: Math.round(cl * (5 + r() * 4)), disc: Math.round((22 - cl / 3 + r() * 4)) };
+    });
+    const med = (a) => { const s = [...a].sort((x, y) => x - y), k = s.length >> 1; return s.length % 2 ? s[k] : (s[k - 1] + s[k]) / 2; };
+    const CCS = { price: med(Z.map((z) => z.price)), ser: M24.map((_, i) => med(Z.map((z) => z.ser[i]))) };
+    // normalised 0–100 per factor, higher is better for the buyer
+    const range = (k) => { const v = Z.map((z) => z[k]); return [Math.min(...v), Math.max(...v)]; };
+    const nz = (z, k, inv) => { const [a, b] = range(k); const x = (z[k] - a) / (b - a || 1) * 100; return inv ? 100 - x : x; };
+    const FACT = [
+      ['precio', 'Precio accesible', 'Affordable', (z) => nz(z, 'price', 1)],
+      ['valor', 'Valorización', 'Appreciation', (z) => nz(z, 'g12')],
+      ['renta', 'Rendimiento', 'Yield', (z) => nz(z, 'yld')],
+      ['liq', 'Liquidez', 'Liquidity', (z) => (nz(z, 'cl') + nz(z, 'dom', 1)) / 2],
+      ['camina', 'Caminar', 'Walkability', (z) => z.walk],
+      ['seg', 'Seguridad', 'Safety', (z) => z.safe],
+      ['serv', 'Servicios', 'Utilities', (z) => (z.water / 7 * 100 + (100 - z.cuts * 20) + nz(z, 'metro', 1)) / 3]
+    ];
+    let pri = new Set(['seg', 'liq']), A = 'Chacao', B = 'El Recreo', sortK = 'score', sortD = -1, all = false;
+    const score = (z) => { let s = 0, w = 0; FACT.forEach(([k, , , f]) => { const q = pri.has(k) ? 3 : 1; s += f(z) * q; w += q; }); return Math.round(s / w); };
+    const by = (n) => Z.find((z) => z.n === n) || Z[0];
+    const pct = (v) => (v > 0 ? '+' : '') + N0(v, 1) + '%';
+    const vsC = (z) => { const d = (z.price / CCS.price - 1) * 100; return pct(d) + ' ' + L('vs. Caracas', 'vs. Caracas'); };
+    const meter = (lab, v, txt) => `<div class="dm"><span>${lab}</span><i><b style="width:${Math.max(3, Math.min(100, v))}%"></b></i><span>${txt}</span></div>`;
+    const opts = (sel) => Z.slice().sort((a, b) => a.n.localeCompare(b.n, 'es')).map((z) => `<option value="${esc(z.n)}"${z.n === sel ? ' selected' : ''}>${esc(z.n)}${z.m && z.m !== z.n ? ' · ' + esc(z.m) : ''}</option>`).join('');
+    const reading = (z) => {
+      const p = [];
+      p.push(z.price > CCS.price * 1.3 ? L('Por encima de la mediana de Caracas', 'Above the Caracas median') : z.price < CCS.price * 0.8 ? L('Por debajo de la mediana de Caracas', 'Below the Caracas median') : L('Cerca de la mediana de Caracas', 'Near the Caracas median'));
+      p.push(z.dom < 130 ? L('se vende rápido', 'sells fast') : z.dom > 180 ? L('se vende lento', 'sells slowly') : L('se vende a ritmo normal', 'sells at a normal pace'));
+      p.push(z.walk >= 70 ? L('se camina bien', 'very walkable') : z.walk < 40 ? L('depende del carro', 'car-dependent') : L('se camina a ratos', 'somewhat walkable'));
+      p.push(z.water >= 5 ? L('agua casi toda la semana', 'water most of the week') : L('agua por días: pregunta por tanque', 'water some days: ask about the tank'));
+      return p[0] + ', ' + p.slice(1).join(', ') + '.';
+    };
+    function card(z, mini) {
+      const k = [
+        [L('Precio pedido', 'Asking price'), FMT.m2p(z.price), vsC(z)], [L('Cambio en 12 meses', '12-month change'), pct(z.g12), L('precio pedido', 'asking price')],
+        [L('Cierres por mes', 'Closings a month'), N0(z.cl), L('promedio, 3 meses', '3-month average')], [L('Días en venta', 'Days on market'), N0(z.dom), L('mediana', 'median')],
+        [L('Alquiler', 'Rent'), '$' + N0(z.rent, 1) + '/m²', L('al mes', 'a month')], [L('Rendimiento bruto', 'Gross yield'), N0(z.yld, 1) + '%', L('alquiler largo', 'long-term rental')],
+        [L('En venta ahora', 'Listed now'), N0(z.stock), L('anuncios activos', 'active listings')], [L('Descuento al cerrar', 'Discount at closing'), '−' + z.disc + '%', L('pedido vs. cierre', 'asking vs. closing')]
+      ];
+      return `<div class="dcard"><div class="dch"><div><span class="lab">${L('Parroquia', 'Parish')} · ${esc(z.m)}</span><h3>${esc(z.n)}</h3></div><div class="dsc"><b>${score(z)}</b><span>${L('Puntaje Cauce', 'Cauce score')}<br>${L('de 100', 'out of 100')}</span></div></div>
+        <p class="drd">${reading(z)}</p>
+        <div class="dk">${(mini ? k.slice(0, 4) : k).map((x) => `<div><span class="lab">${x[0]}</span><b>${x[1]}</b><span class="sm">${x[2]}</span></div>`).join('')}</div>
+        <div class="dms">${meter(L('Caminabilidad', 'Walkability'), z.walk, z.walk + '/100')}${meter(L('Seguridad percibida', 'Perceived safety'), z.safe, z.safe + '/100')}${meter(L('Agua', 'Water'), z.water / 7 * 100, z.water + ' ' + L('días/sem.', 'days/wk'))}${meter(L('Electricidad', 'Power'), 100 - z.cuts * 20, z.cuts + ' ' + (z.cuts === 1 ? L('corte/mes', 'cut/mo') : L('cortes/mes', 'cuts/mo')))}${meter(L('Metro', 'Metro'), 100 - Math.min(60, z.metro) / 60 * 100, z.metro + ' ' + L('min a pie', 'min walk'))}</div></div>`;
+    }
+    function charts() {
+      const a = by(A), b = by(B), src = L('Datos de demostración. Se reemplazan al conectar las fuentes.', 'Demo data. Replaced once sources are connected.');
+      CH.dzt = { t: L('Precio pedido por m², 24 meses', 'Asking price per m², 24 months'), k: 'line', x: M24.map((m) => L(m[0], m[1])), f: 'm2p', src, s: [{ n: a.n, v: a.ser }, { n: b.n, v: b.ser }, { n: L('Mediana de Caracas', 'Caracas median'), v: CCS.ser }] };
+      CH.dzc = { t: L('Cierres registrados por mes', 'Recorded closings a month') + ' · ' + a.n, k: 'bar', x: M24.slice(12).map((m) => L(m[0], m[1]).split(' ')[0]), f: 'n', src, s: [{ n: L('Cierres', 'Closings'), v: a.closes }] };
+      $('#dz-charts').innerHTML = '<div class="chart" data-chart="dzt"></div><div class="chart" data-chart="dzc"></div>'; wireCharts($('#dz-charts'));
+    }
+    function rank() {
+      const cols = [['n', L('Zona', 'Area')], ['price', '$/m²'], ['g12', L('12 meses', '12 mo')], ['yld', L('Rend.', 'Yield')], ['cl', L('Cierres', 'Closings')], ['dom', L('Días', 'Days')], ['walk', L('Caminar', 'Walk')], ['safe', L('Seguridad', 'Safety')], ['score', L('Puntaje', 'Score')]];
+      const rows = Z.map((z) => ({ ...z, score: score(z) })).sort((x, y) => (sortK === 'n' ? x.n.localeCompare(y.n, 'es') * -sortD : (x[sortK] - y[sortK]) * sortD));
+      const top = all ? rows : rows.slice(0, 10), mx = Math.max(...rows.map((r) => r.score));
+      const fmt = { n: (r) => `<b>${esc(r.n)}</b><span class="sm">${esc(r.m)}</span>`, price: (r) => '$' + N0(r.price), g12: (r) => pct(r.g12), yld: (r) => N0(r.yld, 1) + '%', cl: (r) => N0(r.cl), dom: (r) => N0(r.dom), walk: (r) => r.walk, safe: (r) => r.safe, score: (r) => `<span class="dbar"><i style="width:${r.score / mx * 100}%"></i></span><b>${r.score}</b>` };
+      $('#dz-rank').innerHTML = `<div class="dtw"><table><thead><tr>${cols.map(([k, l]) => `<th${k === sortK ? ` aria-sort="${sortD < 0 ? 'descending' : 'ascending'}"` : ''}><button type="button" data-sort="${k}">${l}${k === sortK ? (sortD < 0 ? ' ↓' : ' ↑') : ''}</button></th>`).join('')}</tr></thead><tbody>${top.map((r, i) => `<tr data-z="${esc(r.n)}"${r.n === A ? ' class="on"' : ''}><td class="dn"><span class="dix">${i + 1}</span>${fmt.n(r)}</td>${cols.slice(1).map(([k]) => `<td>${fmt[k](r)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` + (rows.length > 10 ? `<button type="button" class="dmore" data-all>${all ? L('Ver menos', 'Show fewer') : L('Ver las ' + rows.length + ' parroquias', 'Show all ' + rows.length + ' parishes')}</button>` : '');
+    }
+    function render() {
+      const a = by(A), b = by(B);
+      el.innerHTML = `<div class="dhead"><div><span class="lab">${L('Elegir zona', 'Choose an area')}</span><h2>${L('¿Dónde comprar en Caracas?', 'Where to buy in Caracas?')}</h2><p class="sm">${L('Precio, tendencia, cierres, servicios y seguridad por parroquia. Toca una zona en el mapa o elígela aquí.', 'Price, trend, closings, utilities and safety by parish. Tap an area on the map or pick it here.')}</p></div><span class="demo">${L('Datos de demostración', 'Demo data')}</span></div>
+        <div class="dpick"><label><span class="lab">${L('Zona', 'Area')}</span><select id="dz-a">${opts(A)}</select></label></div>
+        <div id="dz-prof">${card(a)}</div>
+        <div class="lock dlock"><div class="blur">
+          <div class="dsec"><div class="dpick"><label><span class="lab">${L('Comparar con', 'Compare with')}</span><select id="dz-b">${opts(B)}</select></label></div><div class="dcomp">${card(b, 1)}</div></div>
+          <div class="dcharts" id="dz-charts"></div>
+          <div class="dsec"><div class="drh"><div><span class="lab">${L('Ranking', 'Ranking')} · ${Z.length} ${L('parroquias', 'parishes')}</span><h3>${L('¿Qué te importa más?', 'What matters most to you?')}</h3><p class="sm">${L('Marca lo que pesa en tu decisión. El puntaje se recalcula.', 'Mark what weighs on your decision. The score recalculates.')}</p></div></div>
+            <div class="dpri">${FACT.map(([k, es, en]) => `<button type="button" data-pri="${k}" aria-pressed="${pri.has(k)}">${L(es, en)}</button>`).join('')}</div>
+            <div id="dz-rank"></div></div>
+        </div><a href="#planes" data-plan="inteligencia"><span>${L('Únete para comparar todas las zonas →', 'Join to compare every area →')}</span></a></div>
+        <p class="sm dnote">${L('Cómo leerlo: precio pedido y días en venta salen de anuncios; cierres, de operaciones registradas; caminabilidad, de la distancia a comercios, paradas y Metro; seguridad, de encuestas de percepción; agua y luz, de reportes de vecinos. Hoy todo son datos de demostración: no los uses para decidir.', 'How to read it: asking price and days on market come from listings; closings, from recorded sales; walkability, from distance to shops, stops and Metro; safety, from perception surveys; water and power, from residents\' reports. All figures are demo data for now: do not use them to decide.')}</p>`;
+      charts(); rank();
+    }
+    FMT.n = (v) => N0(v);
+    el.addEventListener('change', (e) => {
+      if (e.target.id === 'dz-a') { A = e.target.value; render(); focus(A); }
+      if (e.target.id === 'dz-b') { B = e.target.value; render(); }
+    });
+    el.addEventListener('click', (e) => {
+      const p = e.target.closest('[data-pri]'), s = e.target.closest('[data-sort]'), tr0 = e.target.closest('tr[data-z]'), m = e.target.closest('[data-all]');
+      if (p) { const k = p.dataset.pri; pri.has(k) ? pri.delete(k) : pri.add(k); render(); }
+      else if (s) { const k = s.dataset.sort; sortD = k === sortK ? -sortD : (k === 'price' || k === 'dom' || k === 'n' ? 1 : -1); sortK = k; rank(); }
+      else if (m) { all = !all; rank(); }
+      else if (tr0) { A = tr0.dataset.z; render(); focus(A); $('#dz-prof').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); }
+    });
+    const focus = (n) => { const r = $('#map-full'); if (r && r._focus) r._focus(n); };
+    document.addEventListener('cauce-zone', (e) => { if (e.detail && e.detail.s === 'p' && Z.some((z) => z.n === e.detail.n)) { A = e.detail.n; render(); } });
+    let lastLang = document.documentElement.lang; new MutationObserver(() => { const l = document.documentElement.lang; if (l !== lastLang) { lastLang = l; render(); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+    render();
+  })();
   const VIEWS = ['mercado', 'articulo', 'propiedades', 'propiedad', 'analizar', 'datos', 'planes', 'entrar', 'sobre', 'contacto'];
   const AREA = { mercado: 'mercado', articulo: 'mercado', propiedades: 'propiedades', propiedad: 'propiedades', analizar: 'inteligencia', datos: 'inteligencia' };
   let current = null, artId = '', backTo = '#mercado';
