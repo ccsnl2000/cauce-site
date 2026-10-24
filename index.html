@@ -60,11 +60,10 @@ a:hover .ph, .zoom:hover .ph { }
 a.card-link:hover .ph { transform: scale(.985); }
 .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ph .credit { position: relative; z-index: 1; background: rgba(20,20,18,.55); color: #F1EEE9; padding: 3px 7px; border-radius: 5px; font-size: 10px; }
-.ph.fig { --fc: #293A39; --fl: #fff; background: var(--fc); padding: 0; container-type: size; display: grid; place-items: center; }
+.ph.fig { --fc: var(--ink); --fl: var(--bg); background: var(--fc); padding: 0; container-type: size; display: grid; place-items: center; }
 .ph.fig::before { display: none; }
-.ph.fig[data-c="0"] { --fc: #FC6E4C; } .ph.fig[data-c="1"] { --fc: #293A39; } .ph.fig[data-c="2"] { --fc: #4F4817; } .ph.fig[data-c="3"] { --fc: #BDCDAD; --fl: #293A39; }
 .ph.fig > span { position: absolute; left: 12px; bottom: 12px; z-index: 2; margin: 0; color: var(--fl); opacity: .8; }
-.figbox { width: min(80%, 100cqh); aspect-ratio: 5 / 4; }
+.figbox { width: min(86%, 108cqh); aspect-ratio: 5 / 4; }
 [data-hairline] { --hairline-stroke: 1.5; --hairline-plate: var(--fc, var(--sheet)); --hairline-hi: var(--fl, var(--ink));
   --hairline-edge: color-mix(in srgb, var(--fl, var(--ink)) 82%, var(--fc, var(--sheet))); --hairline-mid: color-mix(in srgb, var(--fl, var(--ink)) 55%, var(--fc, var(--sheet))); --hairline-lo: color-mix(in srgb, var(--fl, var(--ink)) 32%, var(--fc, var(--sheet))); }
 .ph.ill { background: var(--fill); }
@@ -1271,61 +1270,62 @@ var HL = (() => {
 window.HLFIGS = {}; window.hairline = function (def) { window.HLFIGS[def.name] = def; };
 (function () {
 /**
- * Lote: a rounded lot with a setback line and four buildings of different
- * heights. The building under the pointer rises to the height the slider
- * allows; its neighbours rise a little less, staggered outward from it.
- * At rest the tallest one holds the bright edge. The slider is that height.
- *
- * Pattern: discrete items (Riffle). Tweens, a stagger by distance, and a hit
- * test on each building's rest centre, so a rising block never flips the choice.
+ * Lote: the Porlamar study. A rounded lot with its setback line and four
+ * buildings of different heights, trees along the front, the street in front
+ * with its centre line and a crossing, and the neighbour's lot behind. The
+ * building under the pointer rises to the height the slider allows; its
+ * neighbours rise less, staggered outward. At rest the tallest is bright.
  */
-const {
-  Cam, clamp, facing, fit, poly, proj, prism, rings, ringAt, rrect,
-  solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register,
-} = HL;
+const { Cam, clamp, facing, fit, hull, open, poly, proj, prism, rings, ringAt, rrect, run, seg, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
 
-const LX = 172, LY = 104, LR = 8, TH = 6, SB = 9;          // lot size, corner radius, thickness, setback
-const BW = 28, BD = 46, GAP = 10, BY0 = 30;                // building footprint and spacing
-const REST = [18, 34, 14, 24];                             // composed rest heights (rule 05)
-const NEAR = 0.45;                                         // how much a neighbour follows the chosen one
-const N = REST.length, X0 = 16;
+const LX = 172, LY = 104, LR = 8, TH = 6, SB = 9;
+const BW = 28, BD = 46, GAP = 10, BY0 = 30, REST = [18, 34, 14, 24], NEAR = 0.45, N = REST.length, X0 = 16;
 const bx = (i) => X0 + i * (BW + GAP);
+const NX0 = -62, NX1 = -12, SX0 = -62, SX1 = LX + 16, SY0 = LY + 10, SY1 = LY + 38;
 
 function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let maxH = value;
-
-  const C = Cam(45, 0.5, 1.42);
-  fit(C, [[0, 0, -TH], [LX, LY, -TH], [LX, 0, 0], [0, LY, 0], [bx(1), BY0, 34]], 200, 160);
+  const C = Cam(45, 0.5, 1.1);
+  fit(C, [[NX0, 0, -3], [NX0, 0, 16], [LX, 0, 0], [SX0, SY1, -3], [SX1, SY1, -3], [SX1, SY0, 0], [bx(1), BY0, 34]], 200, 155);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
-
-  // the lot: an opaque plate, then its setback guide on top
+  // the neighbour, behind: its lot, its setback, two low blocks
+  const [nr, ni] = rings(NX0, 0, NX1, LY, 6, 1.4);
+  put(solid(g), prism(P, front, nr, ni, -3, 0));
+  mk("path", { d: poly(ringAt(P, rrect(NX0 + 7, 7, NX1 - 7, LY - 7, 3, 6), 0)), class: "nf dash" }, g);
+  put(solid(g), box(P, front, NX0 + 11, 14, NX1 - 11, 58, 0, 16));
+  put(solid(g), box(P, front, NX0 + 11, 66, NX1 - 11, 90, 0, 8));
+  // the lot
   const [lotRing, lotInner] = rings(0, 0, LX, LY, LR, 1.6);
   put(solid(g), prism(P, front, lotRing, lotInner, -TH, 0));
   mk("path", { d: poly(ringAt(P, rrect(SB, SB, LX - SB, LY - SB, LR - 3, 6), 0)), class: "nf dash" }, g);
+  const blocks = REST.map((h, i) => { const [ring, inner] = rings(bx(i), BY0, bx(i) + BW, BY0 + BD, 3.2, 1.4); const s = solid(g); return { ring, inner, s, fl: mk("path", { class: "nf lo" }, s.g), z: tween(h), last: -1 }; });
+  // trees in the front setback, then the street
+  [24, 62, 100, 138].forEach((x) => plant(g, P, front, x, LY - 4.5, 4, 17));
+  put(solid(g), box(P, front, SX0, SY0, SX1, SY1, -3, 0, 4));
+  mk("path", { d: open([P(SX0 + 6, (SY0 + SY1) / 2, 0), P(SX1 - 6, (SY0 + SY1) / 2, 0)]), class: "nf dash" }, g);
+  let zebra = ""; for (let k = 0; k < 6; k++) { const x = LX - 30 + k * 4.5; zebra += seg(P(x, SY0 + 3, 0), P(x, SY1 - 3, 0)); }
+  mk("path", { d: zebra, class: "nf lo" }, g);
 
-  // buildings, back to front (ascending x)
-  const blocks = REST.map((h, i) => {
-    const [ring, inner] = rings(bx(i), BY0, bx(i) + BW, BY0 + BD, 3.2, 1.4);
-    const s = solid(g);
-    return { ring, inner, s, z: tween(h), last: -1 };
-  });
-
-  function draw(b, h) {
-    if (Math.abs(h - b.last) < 0.01) return;
-    b.last = h;
-    put(b.s, prism(P, front, b.ring, b.inner, 0, h));
-  }
-
-  const B = register(stage, (_dt, now) => {
-    let moving = false;
-    blocks.forEach((b) => { draw(b, tval(b.z, now)); if (!tdone(b.z, now)) moving = true; });
-    return moving;
-  });
+  const draw = (b, i, h) => { if (Math.abs(h - b.last) < 0.01) return; b.last = h; put(b.s, prism(P, front, b.ring, b.inner, 0, h)); b.fl.setAttribute("d", floors(P, bx(i), BY0, bx(i) + BW, BY0 + BD, h, 7)); };
+  const B = register(stage, (_dt, now) => { let m = false; blocks.forEach((b, i) => { draw(b, i, tval(b.z, now)); if (!tdone(b.z, now)) m = true; }); return m; });
   bag.add(B.unregister);
-
-  // hit test on rest poses: nearest rest centre on screen x, inside the lot's band (rule 01)
   const centres = blocks.map((_, i) => P(bx(i) + BW / 2, BY0 + BD / 2, REST[i]));
   const top = Math.min(...centres.map((c) => c[1])) - 60, bottom = P(LX, LY, -TH)[1] + 6;
   const left = P(0, LY, 0)[0] - 6, right = P(LX, 0, 0)[0] + 6;
@@ -1333,171 +1333,167 @@ function mount({ stage, svg, read }, value) {
     if (x < left || x > right || y < top || y > bottom) return -1;
     let best = -1, d = 1e9;
     centres.forEach((c, i) => { const k = Math.abs(c[0] - x); if (k < d) { d = k; best = i; } });
-    return d < BW * 1.4 ? best : -1;
+    return d < BW * 1.1 ? best : -1;
   }
-
   const tallest = REST.indexOf(Math.max(...REST));
   let act = -2;
   function setActive(a) {
     if (a === act) return;
-    const now = performance.now(), from = a >= 0 ? a : Math.max(act, 0);
-    act = a;
+    const now = performance.now(), from = a >= 0 ? a : Math.max(act, 0); act = a;
     blocks.forEach((b, i) => {
       const lift = a < 0 ? REST[i] : i === a ? maxH : clamp(REST[i] + (maxH - REST[i]) * NEAR / (1 + Math.abs(i - a)), REST[i], maxH);
-      tset(b.z, lift, now, Math.abs(i - from) * 45);
-      b.s.sil.classList.toggle("hi", a < 0 ? i === tallest : i === a);
+      tset(b.z, lift, now, Math.abs(i - from) * 45); b.s.sil.classList.toggle("hi", a < 0 ? i === tallest : i === a);
     });
-    read.textContent = a < 0 ? "rest" : "0" + (a + 1);
-    B.wake();
+    read.textContent = a < 0 ? "rest" : "0" + (a + 1); B.wake();
   }
-
   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
   bag.add(() => svg.replaceChildren());
   setActive(-1);
-
-  return {
-    set: (v) => { maxH = v; if (act >= 0) { const a = act; act = -2; setActive(a); } },
-    destroy: bag.dispose,
-  };
+  return { set: (v) => { maxH = v; if (act >= 0) { const a = act; act = -2; setActive(a); } }, destroy: bag.dispose };
 }
-
-hairline({
-  name: "lote",
-  means: "A lot and what it can hold: the building under the pointer rises to the height the zoning allows.",
-  rules: [1, 2, 5, 9],
-  range: [40, 62, 84],
-  tour: [[150, 150], [205, 170], [255, 190], null],
-  mount,
-});
+hairline({ name: "lote", means: "The lot, its street and its neighbour: the building under the pointer rises to the height the zoning allows.", rules: [1, 2, 5, 9], range: [40, 62, 84], tour: [[170, 150], [215, 165], [255, 185], null], mount });
 
 })();
 (function () {
 /**
- * Ciudad: a block of the city, nine buildings on one plate, each a different
- * height. The building under the pointer rises; the ones around it rise less,
- * staggered outward by distance. At rest the tallest holds the bright edge.
- * The slider is how far the chosen building rises.
- *
- * Pattern: discrete items on a grid. Tweens, a stagger by distance, and a hit
- * test against each building's rest top, never the pose on screen.
+ * Ciudad: a block of the city under the mountain. Nine buildings on one plate,
+ * each a different height with its floors drawn, trees on the near edge, and
+ * the ridge of the Ávila behind. The building under the pointer rises; the
+ * ones around it rise less, staggered outward. At rest the tallest is bright.
  */
-const {
-  Cam, clamp, facing, fit, poly, proj, prism, rings, ringAt, rrect, unproj,
-  solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register,
-} = HL;
+const { Cam, clamp, facing, fit, hull, open, poly, proj, prism, rings, ringAt, rrect, run, seg, unproj, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
 
-const G = 3, BW = 30, GAP = 11, M = 12, TH = 6;
+const G = 3, BW = 30, GAP = 11, M = 14, TH = 6;
 const SIDE = M * 2 + G * BW + (G - 1) * GAP;
-const REST = [12, 26, 16, 30, 20, 38, 14, 22, 18];        // composed, never uniform (rule 05)
+const REST = [12, 26, 16, 30, 20, 38, 14, 22, 18];
 const at = (i) => [M + (i % G) * (BW + GAP), M + Math.floor(i / G) * (BW + GAP)];
+const RC = -6, ridge = (t) => 6 + 48 * Math.exp(-(((t + 24) / 42) ** 2)) + 32 * Math.exp(-(((t - 58) / 30) ** 2));
 
 function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let rise = value;
-
-  const C = Cam(45, 0.5, 1.52);
-  fit(C, [[0, 0, -TH], [SIDE, SIDE, -TH], [SIDE, 0, 0], [0, SIDE, 0], ...REST.flatMap((h, i) => { const [x, y] = at(i); return [[x, y, h], [x + BW, y, h], [x, y + BW, h]]; })], 200, 160);
+  const C = Cam(45, 0.5, 1.22);
+  const T = []; for (let t = -96; t <= 96; t += 4) T.push(t);
+  const R = (t, k = 1) => [RC + t, RC - t, ridge(t) * k];
+  fit(C, [[0, 0, -TH], [SIDE, SIDE, -TH], [SIDE, 0, 0], [0, SIDE, 0], R(-96), R(96), R(-24)], 200, 160);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
-
+  // the mountain: an opaque profile, its ridge, and one inner contour
+  const prof = T.map((t) => P(...R(t)));
+  mk("path", { d: poly([...prof, P(RC + 96, RC - 96, 0), P(RC - 96, RC + 96, 0)]), class: "fo" }, g);
+  mk("path", { d: open(prof), class: "nf sil" }, g);
+  mk("path", { d: open(T.filter((t) => Math.abs(t + 20) < 64).map((t) => P(RC + t + 14, RC - t + 14, ridge(t) * 0.55))), class: "nf lo" }, g);
+  mk("path", { d: open(T.filter((t) => t > 30 && t < 86).map((t) => P(RC + t + 10, RC - t + 10, ridge(t) * 0.62))), class: "nf lo" }, g);
+  // the block
   const [plate, plateIn] = rings(0, 0, SIDE, SIDE, 9, 1.6);
   put(solid(g), prism(P, front, plate, plateIn, -TH, 0));
-  mk("path", { d: poly(ringAt(P, rrect(M - 5, M - 5, SIDE - M + 5, SIDE - M + 5, 6, 6), 0)), class: "nf dash" }, g);
-
-  // back to front: ascending x + y
-  const order = REST.map((_, i) => i).sort((a, b) => (at(a)[0] + at(a)[1]) - (at(b)[0] + at(b)[1]));
+  mk("path", { d: poly(ringAt(P, rrect(M - 6, M - 6, SIDE - M + 6, SIDE - M + 6, 6, 6), 0)), class: "nf dash" }, g);
+  const order = REST.map((_, i) => i).sort((a, b) => at(a)[0] + at(a)[1] - (at(b)[0] + at(b)[1]));
   const blocks = [];
-  order.forEach((i) => {
-    const [x, y] = at(i);
-    const [ring, inner] = rings(x, y, x + BW, y + BW, 3.4, 1.4);
-    blocks[i] = { ring, inner, s: solid(g), z: tween(REST[i]), last: -1 };
-  });
+  order.forEach((i) => { const [x, y] = at(i), [ring, inner] = rings(x, y, x + BW, y + BW, 3.4, 1.4), s = solid(g); blocks[i] = { ring, inner, s, fl: mk("path", { class: "nf lo" }, s.g), z: tween(REST[i]), last: -1 }; });
+  [[SIDE - 6, 30], [SIDE - 6, 72], [SIDE - 6, 114], [30, SIDE - 6], [72, SIDE - 6]].forEach(([x, y]) => plant(g, P, front, x, y, 3.6, 15));
 
-  const draw = (b, h) => { if (Math.abs(h - b.last) < 0.01) return; b.last = h; put(b.s, prism(P, front, b.ring, b.inner, 0, h)); };
-  const B = register(stage, (_dt, now) => {
-    let moving = false;
-    blocks.forEach((b) => { draw(b, tval(b.z, now)); if (!tdone(b.z, now)) moving = true; });
-    return moving;
-  });
+  const draw = (b, i, h) => { if (Math.abs(h - b.last) < 0.01) return; b.last = h; put(b.s, prism(P, front, b.ring, b.inner, 0, h)); const [x, y] = at(i); b.fl.setAttribute("d", floors(P, x, y, x + BW, y + BW, h, 6)); };
+  const B = register(stage, (_dt, now) => { let m = false; blocks.forEach((b, i) => { draw(b, i, tval(b.z, now)); if (!tdone(b.z, now)) m = true; }); return m; });
   bag.add(B.unregister);
-
-  /** The building whose rest top holds the point; the nearest to the viewer wins. */
   function hit([sx, sy]) {
     let best = -1, key = -1;
-    REST.forEach((h, i) => {
-      const [x, y] = at(i), [wx, wy] = unproj(C, sx, sy, h);
-      if (wx >= x - 3 && wx <= x + BW + 3 && wy >= y - 3 && wy <= y + BW + 3 && x + y > key) { key = x + y; best = i; }
-    });
+    REST.forEach((h, i) => { const [x, y] = at(i), [wx, wy] = unproj(C, sx, sy, h); if (wx >= x - 3 && wx <= x + BW + 3 && wy >= y - 3 && wy <= y + BW + 3 && x + y > key) { key = x + y; best = i; } });
     return best;
   }
-
   const tallest = REST.indexOf(Math.max(...REST));
   let act = -2;
   function setActive(a) {
     if (a === act) return;
-    const now = performance.now(), from = a >= 0 ? a : Math.max(act, 0);
-    act = a;
+    const now = performance.now(), from = a >= 0 ? a : Math.max(act, 0); act = a;
     blocks.forEach((b, i) => {
       const d = Math.abs((i % G) - (from % G)) + Math.abs(Math.floor(i / G) - Math.floor(from / G));
-      const lift = a < 0 ? REST[i] : REST[i] + clamp(rise / (1 + d * 1.6), 0, rise) * (i === a ? 1 : 0.5);
-      tset(b.z, lift, now, d * 45);
+      tset(b.z, a < 0 ? REST[i] : REST[i] + clamp(rise / (1 + d * 1.6), 0, rise) * (i === a ? 1 : 0.5), now, d * 45);
       b.s.sil.classList.toggle("hi", a < 0 ? i === tallest : i === a);
     });
-    read.textContent = a < 0 ? "rest" : (a % G + 1) + "·" + (Math.floor(a / G) + 1);
-    B.wake();
+    read.textContent = a < 0 ? "rest" : (a % G + 1) + "·" + (Math.floor(a / G) + 1); B.wake();
   }
-
   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
   bag.add(() => svg.replaceChildren());
   setActive(-1);
-
-  return {
-    set: (v) => { rise = v; if (act >= 0) { const a = act; act = -2; setActive(a); } },
-    destroy: bag.dispose,
-  };
+  return { set: (v) => { rise = v; if (act >= 0) { const a = act; act = -2; setActive(a); } }, destroy: bag.dispose };
 }
-
-hairline({
-  name: "ciudad",
-  means: "A city block: the building under the pointer rises, and the ones around it follow, less the farther they stand.",
-  rules: [1, 2, 3, 5],
-  range: [24, 42, 60],
-  tour: [[170, 140], [215, 170], [250, 150], null],
-  mount,
-});
+hairline({ name: "ciudad", means: "A city block under the mountain: the building under the pointer rises, and the ones around it follow, less the farther they stand.", rules: [1, 2, 3, 5], range: [24, 42, 60], tour: [[175, 175], [215, 195], [250, 180], null], mount });
 
 })();
 (function () {
 /**
- * Fuentes: two columns on one plate, one 2.8 times the other: the same city
- * measured by two sources. A dashed guide at the tall one's height shows the
- * gap. The column under the pointer rises by the slider; the tall one is
- * bright at rest.
+ * Fuentes: two sources, one city. Two buildings on one plate, one 2.8 times
+ * the other, each with its floors, each over a source card marked with one
+ * dot or two. A measuring rod stands behind, and a dashed guide carries the
+ * tall one's height across. The building under the pointer rises; at rest the
+ * tall one is bright.
  */
-const { Cam, facing, fit, open, proj, prism, rings, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+const { Cam, facing, fit, flatDot, hull, open, place, poly, proj, prism, rings, ringAt, rrect, run, seg, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
 
-const PW = 150, PD = 70, TH = 6, CW = 34, CD = 34;
-const COLS = [{ x: 26, h: 72 }, { x: 90, h: 26 }];
+const PW = 150, PD = 92, TH = 6, CW = 34, CY0 = 14, CD = 34, ROD = 84;
+const COLS = [{ x: 30, h: 72 }, { x: 94, h: 26 }];
 
 function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let rise = value;
-  const C = Cam(45, 0.5, 1.7);
-  fit(C, [[0, 0, -TH], [PW, PD, -TH], [PW, 0, 0], [0, PD, 0], [COLS[0].x, 18, COLS[0].h]], 200, 160);
+  const C = Cam(45, 0.5, 1.45);
+  fit(C, [[0, 0, -TH], [PW, PD, -TH], [PW, 0, 0], [0, PD, 0], [COLS[0].x, CY0, COLS[0].h], [8, 8, ROD]], 200, 160);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
   const [pr, pi] = rings(0, 0, PW, PD, 8, 1.6);
   put(solid(g), prism(P, front, pr, pi, -TH, 0));
-  mk("path", { d: open([P(COLS[0].x + CW, 18 + CD, COLS[0].h), P(COLS[1].x + CW, 18 + CD, COLS[0].h)]), class: "nf dash" }, g);
-  const cols = COLS.map((c) => { const [r, i] = rings(c.x, 18, c.x + CW, 18 + CD, 4, 1.4); return { r, i, s: solid(g), z: tween(c.h), h: c.h, last: -1 }; });
+  // the measuring rod, with a tick every ten
+  put(solid(g), box(P, front, 6, 6, 10, 10, 0, ROD, 1.2));
+  let ticks = ""; for (let z = 10; z < ROD; z += 10) ticks += seg(P(10, 8, z), P(z % 20 ? 14 : 17, 8, z));
+  mk("path", { d: ticks, class: "nf lo" }, g);
+  mk("path", { d: open([P(17, 8, COLS[0].h), P(COLS[1].x + CW, CY0 + CD, COLS[0].h)]), class: "nf dash" }, g);
+  // the buildings, then their source cards in front
+  const cols = COLS.map((c) => { const [r, i] = rings(c.x, CY0, c.x + CW, CY0 + CD, 4, 1.4), s = solid(g); return { ...c, r, i, s, fl: mk("path", { class: "nf lo" }, s.g), z: tween(c.h), last: -1 }; });
+  cols.forEach((c, k) => {
+    const y0 = CY0 + CD + 10, y1 = y0 + 22;
+    put(solid(g), box(P, front, c.x + 2, y0, c.x + CW - 2, y1, 0, 1.6, 2));
+    mk("path", { d: seg(P(c.x + 7, y1 - 6, 1.6), P(c.x + CW - 7, y1 - 6, 1.6)) + seg(P(c.x + 7, y1 - 10, 1.6), P(c.x + CW - 12, y1 - 10, 1.6)), class: "nf lo" }, g);
+    for (let d = 0; d <= k; d++) place(flatDot(g, C, 1.3, "dot m"), P(c.x + 9 + d * 5, y0 + 6, 1.6));
+  });
   const B = register(stage, (_dt, now) => {
     let m = false;
-    cols.forEach((c) => { const h = tval(c.z, now); if (Math.abs(h - c.last) > 0.01) { c.last = h; put(c.s, prism(P, front, c.r, c.i, 0, h)); } if (!tdone(c.z, now)) m = true; });
+    cols.forEach((c) => { const h = tval(c.z, now); if (Math.abs(h - c.last) > 0.01) { c.last = h; put(c.s, prism(P, front, c.r, c.i, 0, h)); c.fl.setAttribute("d", floors(P, c.x, CY0, c.x + CW, CY0 + CD, h, 7)); } if (!tdone(c.z, now)) m = true; });
     return m;
   });
   bag.add(B.unregister);
-  const cx = COLS.map((c) => P(c.x + CW / 2, 18 + CD / 2, 0)[0]);
-  const hit = ([x, y]) => (y < 40 || y > 290 ? -1 : Math.abs(x - cx[0]) < Math.abs(x - cx[1]) ? 0 : 1);
+  const cx = COLS.map((c) => P(c.x + CW / 2, CY0 + CD / 2, 0)[0]);
+  const hit = ([x, y]) => (y < 30 || y > 300 ? -1 : Math.abs(x - cx[0]) < Math.abs(x - cx[1]) ? 0 : 1);
   let act = -2;
   function setActive(a) {
     if (a === act) return; act = a; const now = performance.now();
@@ -1509,35 +1505,67 @@ function mount({ stage, svg, read }, value) {
   setActive(-1);
   return { set: (v) => { rise = v; }, destroy: bag.dispose };
 }
-hairline({ name: "fuentes", means: "Two sources, one city: one column stands 2.8 times the other, and the dashed line shows the gap.", rules: [4, 5, 9, 10], range: [6, 14, 22], tour: [[170, 150], [235, 185], null], mount });
+hairline({ name: "fuentes", means: "Two sources, one city: one building stands 2.8 times the other, and the rod and dashed line show the gap.", rules: [4, 5, 9, 10], range: [6, 14, 22], tour: [[170, 150], [235, 185], null], mount });
 
 })();
 (function () {
 /**
- * Noches: a month of nights as a 7 × 4 grid of tiles; the occupied nights
- * (about a third) stand raised. The pointer lifts the tile under it and its
- * neighbours less, outward by distance. The slider is how high they lift.
+ * Noches: a month of nights. A calendar of 7 × 4 tiles on its board, bound by
+ * rings along the back; the booked nights, about a third, stand raised. Beside
+ * it the flat that is rented out, a dashed path from its door to the calendar.
+ * The pointer lifts the night under it and its neighbours less, by distance.
  */
-const { Cam, clamp, facing, fit, proj, prism, rings, unproj, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+const { Cam, clamp, facing, fit, hull, open, poly, proj, prism, rings, ringAt, rrect, run, seg, unproj, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
 
-const CX = 7, CY = 4, T = 16, GP = 5, M = 8, TH = 5;
-const W = M * 2 + CX * T + (CX - 1) * GP, D = M * 2 + CY * T + (CY - 1) * GP;
+const CX = 7, CY = 4, T = 16, GP = 5, M = 8, TH = 5, HEAD = 12;
+const W = M * 2 + CX * T + (CX - 1) * GP, D = HEAD + M * 2 + CY * T + (CY - 1) * GP;
 const BUSY = new Set([1, 4, 5, 9, 12, 16, 19, 23, 26]);
-const at = (i) => [M + (i % CX) * (T + GP), M + Math.floor(i / CX) * (T + GP)];
+const at = (i) => [M + (i % CX) * (T + GP), HEAD + M + Math.floor(i / CX) * (T + GP)];
 const restH = (i) => (BUSY.has(i) ? 10 : 2);
+const HX0 = W + 22, HX1 = W + 52, HY0 = 36, HY1 = 62;
 
 function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let lift = value;
-  const C = Cam(45, 0.5, 1.55);
-  fit(C, [[0, 0, -TH], [W, D, -TH], [W, 0, 0], [0, D, 0], [W / 2, D / 2, 10]], 200, 160);
+  const C = Cam(45, 0.5, 1.3);
+  fit(C, [[0, 0, -TH], [W, D, -TH], [0, D, 0], [W, 0, 0], [HX1 + 8, HY0 - 8, 0], [HX1 + 8, HY1 + 8, -3], [HX0, (HY0 + HY1) / 2, 34], [0, 0, 12]], 200, 153);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
   const [pr, pi] = rings(0, 0, W, D, 7, 1.6);
   put(solid(g), prism(P, front, pr, pi, -TH, 0));
+  // the header strip and the binding rings
+  mk("path", { d: open([P(6, HEAD, 0), P(W - 6, HEAD, 0)]), class: "nf lo" }, g);
+  for (let k = 0; k < 5; k++) {
+    const x = 22 + k * ((W - 44) / 4), pts = [];
+    for (let a = -110; a <= 250; a += 15) { const r = (a * Math.PI) / 180; pts.push(P(x, 6 - 5 * Math.cos(r), 2 + 6 * Math.sin(r))); }
+    mk("path", { d: open(pts), class: "nf sil" }, g);
+  }
   const N = CX * CY, order = [...Array(N).keys()].sort((a, b) => at(a)[0] + at(a)[1] - (at(b)[0] + at(b)[1]));
   const tiles = [];
   order.forEach((i) => { const [x, y] = at(i), [r, inn] = rings(x, y, x + T, y + T, 2.6, 1.2); tiles[i] = { r, inn, s: solid(g), z: tween(restH(i)), last: -1 }; });
+  // the flat: a plate, a house with its door and windows, a tree, a path to the calendar
+  put(solid(g), box(P, front, HX0 - 8, HY0 - 8, HX1 + 8, HY1 + 8, -3, 0, 5));
+  mk("path", { d: open([[HX0 + 12, HY1 + 1], [HX0 + 4, HY1 + 10], [W + 8, HY1 + 14], [W - 4, D - 30]].map(([x, y]) => P(x, y, 0))), class: "nf dash" }, g);
+  put(solid(g), box(P, front, HX0, HY0, HX1, HY1, 0, 18, 1));
+  put(solid(g), roof(P, front, HX0, HY0, HX1, HY1, 18, 11));
+  mk("path", { d: poly([P(HX0 + 9, HY1, 0), P(HX0 + 9, HY1, 10), P(HX0 + 15, HY1, 10), P(HX0 + 15, HY1, 0)]) + poly([P(HX0 + 20, HY1, 7), P(HX0 + 20, HY1, 12), P(HX0 + 26, HY1, 12), P(HX0 + 26, HY1, 7)]) + poly([P(HX1, HY0 + 8, 7), P(HX1, HY0 + 8, 12), P(HX1, HY0 + 18, 12), P(HX1, HY0 + 18, 7)]), class: "nf lo" }, g);
+  plant(g, P, front, HX1 + 2, HY1 + 3, 3.4, 15);
+
   const B = register(stage, (_dt, now) => {
     let m = false;
     tiles.forEach((t) => { const h = tval(t.z, now); if (Math.abs(h - t.last) > 0.01) { t.last = h; put(t.s, prism(P, front, t.r, t.inn, 0, h)); } if (!tdone(t.z, now)) m = true; });
@@ -1546,8 +1574,8 @@ function mount({ stage, svg, read }, value) {
   bag.add(B.unregister);
   function hit([sx, sy]) {
     const [wx, wy] = unproj(C, sx, sy, 2);
-    if (wx < 0 || wy < 0 || wx > W || wy > D) return -1;
-    return clamp(Math.floor((wy - M + GP / 2) / (T + GP)), 0, CY - 1) * CX + clamp(Math.floor((wx - M + GP / 2) / (T + GP)), 0, CX - 1);
+    if (wx < 0 || wy < HEAD || wx > W || wy > D) return -1;
+    return clamp(Math.floor((wy - HEAD - M + GP / 2) / (T + GP)), 0, CY - 1) * CX + clamp(Math.floor((wx - M + GP / 2) / (T + GP)), 0, CX - 1);
   }
   let act = -2;
   function setActive(a) {
@@ -1564,40 +1592,89 @@ function mount({ stage, svg, read }, value) {
   setActive(-1);
   return { set: (v) => { lift = v; }, destroy: bag.dispose };
 }
-hairline({ name: "noches", means: "A month of nights: the raised tiles are the booked ones, about a third of them.", rules: [1, 2, 3, 5], range: [8, 16, 26], tour: [[160, 150], [210, 165], [250, 175], null], mount });
+hairline({ name: "noches", means: "A month of nights beside the flat that earns them: the raised tiles are the booked ones, about a third.", rules: [1, 2, 3, 5], range: [8, 16, 26], tour: [[150, 150], [190, 165], [225, 180], null], mount });
 
 })();
 (function () {
 /**
- * Pasos: five steps climbing to the right, each a rounded slab: buying from
- * abroad, step by step. The step under the pointer rises and turns bright;
- * the others follow a little, outward from it. At rest the first is bright.
+ * Pasos: buying from abroad, step by step. A suitcase on its own plate across
+ * a dashed border, five steps rising toward a house, each step marked with
+ * its number in dots, and a dashed flight from the suitcase to the house. The
+ * step under the pointer lifts and turns bright; the others follow a little.
  */
-const { Cam, clamp, facing, fit, proj, prism, rings, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+const { Cam, clamp, facing, fit, flatDot, hull, open, place, poly, proj, prism, rings, ringAt, rrect, run, seg, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
 
-const N = 5, SW = 26, SD = 60, UP = 12;
+const N = 5, SW = 24, SD = 46, UP = 11;
 const base = (i) => 8 + i * UP;
+const y0 = (i) => -(i + 1) * SW + 3, y1 = (i) => -i * SW;   // step i climbs away along -y, up and to the right
+const OX0 = 4, OX1 = 42, OY0 = 22, OY1 = 56;
 
 function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let lift = value;
-  const C = Cam(45, 0.5, 1.7);
-  fit(C, [[0, 0, 0], [N * SW, SD, 0], [N * SW, 0, 0], [0, SD, 0], ...[...Array(N).keys()].flatMap((i) => [[i * SW, 0, base(i)], [i * SW + SW, 0, base(i)], [i * SW, SD, base(i)]])], 200, 160);
+  const C = Cam(45, 0.5, 1.5);
+  const L = N - 1;
+  fit(C, [[0, 0, 0], [SD, 0, 0], [OX0, OY1, -3], [OX1, OY1, -3], [0, y0(L), base(L) + 30], [SD, y0(L), base(L)], [OX0 + 19, 39, 40]], 200, 149);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
-  const steps = [...Array(N).keys()].map((i) => { const [r, inn] = rings(i * SW, 0, i * SW + SW - 3, SD, 4, 1.4); return { r, inn, s: solid(g), z: tween(base(i)), last: -1 }; });
+  // the steps, far to near, each with its dots
+  const steps = [...Array(N).keys()].map((i) => ({ i })).reverse().map(({ i }) => {
+    const [r, inn] = rings(0, y0(i), SD, y1(i), 4, 1.4), s = solid(g);
+    const dots = [...Array(i + 1).keys()].map(() => flatDot(s.g, C, 1.3, "dot off"));
+    return { i, r, inn, s, dots, z: tween(base(i)), last: -1 };
+  }).sort((a, b) => a.i - b.i);
+  // the house on the top step
+  const hs = { body: solid(g), roof: solid(g) }, HX0 = 9, HX1 = SD - 9, HY0 = y0(L) + 2, HY1 = y1(L) - 3;
+  // the border, then abroad: a plate and a suitcase with its handle and straps
+  mk("path", { d: open([P(-10, 13, 0), P(SD + 10, 13, 0)]), class: "nf dash" }, g);
+  put(solid(g), box(P, front, OX0, OY0, OX1, OY1, -3, 0, 5));
+  put(solid(g), box(P, front, OX0 + 10, OY0 + 11, OX1 - 10, OY1 - 11, 0, 22, 2.5));
+  const sx = (OX0 + OX1) / 2;
+  mk("path", { d: open([P(sx, OY0 + 17, 22), P(sx, OY0 + 17, 27), P(sx, OY1 - 17, 27), P(sx, OY1 - 17, 22)]) + seg(P(OX1 - 10, OY0 + 16, 0), P(OX1 - 10, OY0 + 16, 22)) + seg(P(OX1 - 10, OY1 - 16, 0), P(OX1 - 10, OY1 - 16, 22)), class: "nf sil" }, g);
+  const arc = mk("path", { class: "nf dash" }, g);
   const B = register(stage, (_dt, now) => {
     let m = false;
-    steps.forEach((t) => { const h = tval(t.z, now); if (Math.abs(h - t.last) > 0.01) { t.last = h; put(t.s, prism(P, front, t.r, t.inn, 0, h)); } if (!tdone(t.z, now)) m = true; });
+    steps.forEach((t) => {
+      const h = tval(t.z, now), i = t.i;
+      if (Math.abs(h - t.last) > 0.01) {
+        t.last = h; put(t.s, prism(P, front, t.r, t.inn, 0, h));
+        t.dots.forEach((el, d) => place(el, P(8 + d * 7, (y0(i) + y1(i)) / 2, h)));
+        if (i === L) {
+          put(hs.body, box(P, front, HX0, HY0, HX1, HY1, h, h + 13, 1)); put(hs.roof, roof(P, front, HX0, HY0, HX1, HY1, h + 13, 8));
+          const a = [sx, 39, 30], b = [(HX0 + HX1) / 2, (HY0 + HY1) / 2, h + 24], pts = [];
+          for (let k = 0; k <= 24; k++) { const u = k / 24; pts.push(P(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u + Math.sin(u * Math.PI) * 26)); }
+          arc.setAttribute("d", open(pts));
+        }
+      }
+      if (!tdone(t.z, now)) m = true;
+    });
     return m;
   });
   bag.add(B.unregister);
-  const cx = steps.map((_, i) => P(i * SW + SW / 2, SD / 2, base(i))[0]);
-  function hit([x, y]) { if (y < 30 || y > 300) return -1; let b = -1, d = 1e9; cx.forEach((c, i) => { if (Math.abs(c - x) < d) { d = Math.abs(c - x); b = i; } }); return d < 40 ? b : -1; }
+  const cx = steps.map((_, i) => P(SD / 2, (y0(i) + y1(i)) / 2, base(i))[0]);
+  function hit([x, y]) { if (y < 30 || y > 300) return -1; let b = -1, d = 1e9; cx.forEach((c, i) => { if (Math.abs(c - x) < d) { d = Math.abs(c - x); b = i; } }); return d < 16 ? b : -1; }
   let act = -2;
   function setActive(a) {
     if (a === act) return; const from = a >= 0 ? a : Math.max(act, 0); act = a; const now = performance.now();
-    steps.forEach((t, i) => { const d = Math.abs(i - from); tset(t.z, base(i) + (a < 0 ? 0 : clamp(lift / (1 + d * 2), 0, lift)), now, d * 45); t.s.sil.classList.toggle("hi", a < 0 ? i === 0 : i === a); });
+    steps.forEach((t, i) => {
+      const d = Math.abs(i - from); tset(t.z, base(i) + (a < 0 ? 0 : clamp(lift / (1 + d * 2), 0, lift)), now, d * 45);
+      const on = a < 0 ? i === 0 : i === a; t.s.sil.classList.toggle("hi", on); t.dots.forEach((el) => el.setAttribute("class", on ? "dot" : "dot off"));
+    });
     read.textContent = a < 0 ? "rest" : "0" + (a + 1); B.wake();
   }
   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
@@ -1605,28 +1682,55 @@ function mount({ stage, svg, read }, value) {
   setActive(-1);
   return { set: (v) => { lift = v; }, destroy: bag.dispose };
 }
-hairline({ name: "pasos", means: "Buying from abroad, step by step: five rising steps, and the one under the pointer lifts.", rules: [1, 2, 5, 9], range: [6, 12, 20], tour: [[150, 190], [210, 160], [260, 130], null], mount });
+hairline({ name: "pasos", means: "From a suitcase abroad to a house: five numbered steps, and the one under the pointer lifts.", rules: [1, 2, 5, 9], range: [6, 12, 20], tour: [[150, 190], [200, 165], [245, 140], null], mount });
 
 })();
 (function () {
 /**
- * Gastos: a gross yield drawn as a stack of six slabs, slightly fanned at
- * rest. The pointer splits the stack at the slab under it: everything above
- * lifts away, what is left is what you keep. The slider is the split's gap.
+ * Gastos: what a yield leaves. The rented house on its plate, a dashed line
+ * carrying its rent to a tray, and the rent as a stack of six slabs on the
+ * tray. The pointer splits the stack at the slab under it: everything above
+ * lifts away as costs, what stays is what you keep. The slider is the gap.
  */
-const { Cam, clamp, facing, fit, proj, prism, rings, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+const { Cam, clamp, facing, fit, hull, open, poly, proj, prism, rings, ringAt, rrect, run, seg, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
 
-const N = 6, S = 70, T = 8, REST = 2.4;
+const N = 6, S = 64, T = 8, REST = 2.4;
 const z0 = (i, gap) => i * (T + REST) + gap;
+const HX0 = -92, HX1 = -58, HY0 = 20, HY1 = 50;
 
 function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let gap = value;
-  const C = Cam(45, 0.5, 1.75);
+  const C = Cam(45, 0.5, 1.45);
   const ZT = (N - 1) * (T + REST) + T;
-  fit(C, [[0, 0, 0], [S, S, 0], [S, 0, 0], [0, S, 0], [0, 0, ZT], [S, 0, ZT], [0, S, ZT]], 200, 160);
+  fit(C, [[-8, S + 8, -3], [S + 8, S + 8, -3], [S + 8, -8, 0], [0, 0, ZT], [S, 0, ZT], [0, S, ZT], [HX0 - 10, HY0 - 10, 0], [HX0 - 10, HY1 + 10, -3]], 200, 160);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
+  // the house: plate, body, roof, door and windows, a tree
+  put(solid(g), box(P, front, HX0 - 10, HY0 - 10, HX1 + 10, HY1 + 10, -3, 0, 5));
+  put(solid(g), box(P, front, HX0, HY0, HX1, HY1, 0, 20, 1));
+  put(solid(g), roof(P, front, HX0, HY0, HX1, HY1, 20, 12));
+  const win = (x0, x1, y, a, b) => poly([P(x0, y, a), P(x0, y, b), P(x1, y, b), P(x1, y, a)]);
+  mk("path", { d: win(HX0 + 6, HX0 + 12, HY1, 0, 11) + win(HX0 + 18, HX0 + 28, HY1, 8, 14) + poly([P(HX1, HY0 + 6, 8), P(HX1, HY0 + 6, 14), P(HX1, HY0 + 14, 14), P(HX1, HY0 + 14, 8)]), class: "nf lo" }, g);
+  plant(g, P, front, HX0 - 4, HY1 + 4, 3.6, 16);
+  // the rent's path, then the tray
+  mk("path", { d: open([[HX1 + 4, HY1 + 6], [HX1 + 20, HY1 + 10], [-14, S / 2 + 10], [-10, S / 2]].map(([x, y]) => P(x, y, 0))), class: "nf dash" }, g);
+  put(solid(g), box(P, front, -8, -8, S + 8, S + 8, -3, 0, 7));
   const [r, inn] = rings(0, 0, S, S, 7, 1.6);
   const slabs = [...Array(N).keys()].map((i) => ({ s: solid(g), z: tween(z0(i, 0)), last: -1 }));
   const B = register(stage, (_dt, now) => {
@@ -1649,44 +1753,65 @@ function mount({ stage, svg, read }, value) {
   setActive(-1);
   return { set: (v) => { gap = v; }, destroy: bag.dispose };
 }
-hairline({ name: "gastos", means: "A yield as a stack: the pointer lifts away the costs above it, and what stays is what you keep.", rules: [1, 2, 5, 6], range: [10, 18, 28], tour: [[200, 200], [200, 160], [200, 120], null], mount });
+hairline({ name: "gastos", means: "A house and its rent as a stack: the pointer lifts away the costs above it, and what stays is what you keep.", rules: [1, 2, 5, 6], range: [10, 18, 28], tour: [[240, 210], [240, 170], [240, 130], null], mount });
 
 })();
 (function () {
 /**
- * Costa: a long strip of coast with a dashed shoreline and five homes growing
- * in size along it, one per budget. The home under the pointer rises; the
- * others follow less, outward from it. The largest is bright at rest.
+ * Costa: from $15,000 on the coast. A strip of land with a dashed shoreline,
+ * five gabled homes growing along it, one per budget, trees in front, waves
+ * and a jetty on the water. The home under the pointer rises; the others
+ * follow less, outward from it. The largest is bright at rest.
  */
-const { Cam, clamp, facing, fit, open, proj, prism, rings, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+const { Cam, clamp, facing, fit, hull, open, poly, proj, prism, rings, ringAt, rrect, run, seg, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
 
-const L = 190, D = 70, TH = 5;
-const HOMES = [{ x: 10, w: 18, h: 10 }, { x: 40, w: 24, h: 14 }, { x: 76, w: 28, h: 18 }, { x: 116, w: 30, h: 24 }, { x: 156, w: 26, h: 32 }];
+const L = 196, D = 96, TH = 5, SHORE = 64;
+const HOMES = [{ x: 10, w: 18, h: 9 }, { x: 40, w: 24, h: 12 }, { x: 76, w: 28, h: 15 }, { x: 116, w: 30, h: 19 }, { x: 158, w: 30, h: 25 }];
+const shoreY = (x) => SHORE + Math.sin(x / 15) * 3;
 
 function mount({ stage, svg, read }, value) {
   const bag = disposer();
   let lift = value;
-  const C = Cam(45, 0.5, 1.45);
-  fit(C, [[0, 0, -TH], [L, D, -TH], [L, 0, 0], [0, D, 0], [170, 20, 32]], 200, 160);
+  const C = Cam(45, 0.5, 1.4);
+  fit(C, [[0, 0, -TH], [L, D, -TH], [L, 0, 0], [0, D, 0], [172, 14, 25 + 12]], 200, 160);
   const P = proj(C), front = facing(C);
   const g = mk("g", {}, svg);
   const [pr, pi] = rings(0, 0, L, D, 8, 1.6);
   put(solid(g), prism(P, front, pr, pi, -TH, 0));
-  const shore = []; for (let x = 4; x <= L - 4; x += 6) shore.push(P(x, D - 14 + Math.sin(x / 14) * 4, 0));
+  const shore = []; for (let x = 4; x <= L - 4; x += 4) shore.push(P(x, shoreY(x), 0));
   mk("path", { d: open(shore), class: "nf dash" }, g);
-  const homes = HOMES.map((h) => { const [r, inn] = rings(h.x, 14, h.x + h.w, 14 + h.w, 3, 1.3); return { r, inn, h: h.h, s: solid(g), z: tween(h.h), last: -1 }; });
+  let waves = ""; [74, 82, 90].forEach((y, k) => { for (let x0 = 10 + k * 9; x0 < L - 24; x0 += 34) { const pts = []; for (let x = x0; x <= x0 + 18; x += 2) pts.push(P(x, y + Math.sin((x - x0) / 3) * 1.2, 0)); waves += open(pts); } });
+  mk("path", { d: waves, class: "nf lo" }, g);
+  const homes = HOMES.map((h) => { const [r, inn] = rings(h.x, 14, h.x + h.w, 14 + h.w, 2.4, 1.2); return { ...h, r, inn, body: solid(g), roof: solid(g), z: tween(h.h), last: -1 }; });
+  [[34, 53, 17], [110, 55, 19], [151, 56, 15]].forEach(([x, y, h]) => plant(g, P, front, x, y, 3.6, h));
+  put(solid(g), box(P, front, 182, shoreY(182) - 2, 188, D - 6, 0.5, 2, 1));
   const B = register(stage, (_dt, now) => {
     let m = false;
-    homes.forEach((t) => { const z = tval(t.z, now); if (Math.abs(z - t.last) > 0.01) { t.last = z; put(t.s, prism(P, front, t.r, t.inn, 0, z)); } if (!tdone(t.z, now)) m = true; });
+    homes.forEach((t) => { const z = tval(t.z, now); if (Math.abs(z - t.last) > 0.01) { t.last = z; put(t.body, prism(P, front, t.r, t.inn, 0, z)); put(t.roof, roof(P, front, t.x, 14, t.x + t.w, 14 + t.w, z, t.w * 0.42)); } if (!tdone(t.z, now)) m = true; });
     return m;
   });
   bag.add(B.unregister);
   const cx = HOMES.map((h) => P(h.x + h.w / 2, 14 + h.w / 2, 0)[0]);
-  function hit([x, y]) { if (y < 60 || y > 290) return -1; let b = -1, d = 1e9; cx.forEach((c, i) => { if (Math.abs(c - x) < d) { d = Math.abs(c - x); b = i; } }); return d < 30 ? b : -1; }
+  function hit([x, y]) { if (y < 50 || y > 290) return -1; let b = -1, d = 1e9; cx.forEach((c, i) => { if (Math.abs(c - x) < d) { d = Math.abs(c - x); b = i; } }); return d < 26 ? b : -1; }
   let act = -2;
   function setActive(a) {
     if (a === act) return; const from = a >= 0 ? a : Math.max(act, 0); act = a; const now = performance.now();
-    homes.forEach((t, i) => { const d = Math.abs(i - from); tset(t.z, t.h + (a < 0 ? 0 : clamp(lift / (1 + d * 2), 0, lift)), now, d * 45); t.s.sil.classList.toggle("hi", a < 0 ? i === 4 : i === a); });
+    homes.forEach((t, i) => { const d = Math.abs(i - from); tset(t.z, t.h + (a < 0 ? 0 : clamp(lift / (1 + d * 2), 0, lift)), now, d * 45); const on = a < 0 ? i === 4 : i === a; t.body.sil.classList.toggle("hi", on); t.roof.sil.classList.toggle("hi", on); });
     read.textContent = a < 0 ? "rest" : "0" + (a + 1); B.wake();
   }
   bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
