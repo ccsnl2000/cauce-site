@@ -26,8 +26,11 @@ def main():
     except Exception as e:  # noqa: BLE001
         print("Verified TLS failed, retrying without verification:", e)
         html = fetch(False)
-    m = re.search(r'id="dolar".*?<strong>\s*([\d.,]+)\s*</strong>', html, re.S)
+    m = (re.search(r'id=["\']dolar["\'].{0,600}?<strong>\s*([\d.,]+)\s*</strong>', html, re.S)
+         or re.search(r'>\s*USD\s*<.{0,400}?<strong>\s*([\d.,]+)\s*</strong>', html, re.S))
     if not m:
+        i = html.find("dolar")
+        print("::warning::" + re.sub(r"\s+", " ", html[max(0, i - 80):i + 320]).replace("<", "[").replace(">", "]"))
         sys.exit(f"USD value not found on the BCV page ({len(html)} bytes, 'dolar' {'present' if 'dolar' in html else 'absent'}); leaving data/bcv.json as it is.")
     usd = float(m.group(1).replace(".", "").replace(",", "."))
     d = re.search(r'Fecha Valor.*?content="(\d{4}-\d{2}-\d{2})', html, re.S)
