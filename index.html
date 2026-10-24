@@ -20,6 +20,7 @@
 @font-face { font-family: "HND"; src: url("/fonts/hnd-700.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-800.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }
 :root {
+  --g0: #E7E2DA; --g1: #DCD6CC; --g2: #D2CBC0; --g3: #C7C0B4;
   --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18;
   --sans: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --serif: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --mono: "HND", "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(.2,.7,.2,1);
@@ -29,7 +30,7 @@
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
-:root[data-theme="dark"] { --sheet: #1D1D1B; --faint: #5E5B56; --bg: #131312; --card: #131312; --ink: #EEEAE3; --soft: #8F8B84; --line: #2A2926; --fill: #1F1E1C; --sage: #2A2926; --sage-ink: #EEEAE3; color-scheme: dark; }
+:root[data-theme="dark"] { --sheet: #1F201E; --faint: #5E5F5A; --bg: #1A1B19; --card: #1A1B19; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; --g0: #2F302D; --g1: #353632; --g2: #3B3C38; --g3: #2A2B28; }
 body.intel-light { --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18; color-scheme: light; }
 body.intel { --bg: #1A1B19; --card: #1F201E; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
 a { color: inherit; text-decoration: none; }
@@ -60,8 +61,9 @@ a:hover .ph, .zoom:hover .ph { }
 a.card-link:hover .ph { transform: scale(.985); }
 .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ph .credit { position: relative; z-index: 1; background: rgba(20,20,18,.55); color: #F1EEE9; padding: 3px 7px; border-radius: 5px; font-size: 10px; }
-.ph.fig { --fc: var(--ink); --fl: var(--bg); background: var(--fc); padding: 0; container-type: size; display: grid; place-items: center; }
+.ph.fig { --fc: var(--g1); --fl: var(--ink); background: var(--fc); padding: 0; container-type: size; display: grid; place-items: center; }
 .ph.fig::before { display: none; }
+.ph.fig[data-c="0"] { --fc: var(--g0); } .ph.fig[data-c="1"] { --fc: var(--g1); } .ph.fig[data-c="2"] { --fc: var(--g2); } .ph.fig[data-c="3"] { --fc: var(--g3); }
 .ph.fig > span { position: absolute; left: 12px; bottom: 12px; z-index: 2; margin: 0; color: var(--fl); opacity: .8; }
 .figbox { width: min(86%, 108cqh); aspect-ratio: 5 / 4; }
 [data-hairline] { --hairline-stroke: 1.5; --hairline-plate: var(--fc, var(--sheet)); --hairline-hi: var(--fl, var(--ink));
@@ -80,6 +82,11 @@ a.card-link:hover .ph { transform: scale(.985); }
 @keyframes fade { to { opacity: 1; } }
 
 /* header: plain bar, no pill */
+.uc { height: 26px; overflow: hidden; background: #FFD43B; color: #1B1A18; font: 700 11px/26px var(--sans); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.uc-track { display: inline-flex; gap: 14px; padding-left: 14px; animation: uc 38s linear infinite; }
+@keyframes uc { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .uc-track { animation: none; } }
+body.auth .uc { display: none; }
 header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background .35s var(--ease); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
 .bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 76px; }
@@ -167,6 +174,8 @@ main { min-height: 70vh; }
 @keyframes grow { from { transform: scaleX(0); } }
 .wall { margin-top: 32px; border: 1px dashed var(--soft); border-radius: 16px; padding: 24px; text-align: center; display: grid; gap: 12px; justify-items: center; }
 .rail { position: sticky; top: 100px; align-self: start; display: grid; gap: 14px; }
+.panel.pop { background: #fff; border-color: transparent; box-shadow: 0 1px 2px rgba(27,26,24,.04), 0 10px 30px rgba(27,26,24,.05); }
+:root[data-theme="dark"] .panel.pop { background: #2A2B28; box-shadow: none; }
 .rail .panel { padding: 16px; gap: 10px; }
 
 /* PROPIEDADES */
@@ -235,10 +244,11 @@ form.f select option { background: var(--card); }
 /* JOIN (extra large, centered) */
 .view.ghost { position: fixed; inset: 0; z-index: 0; overflow: hidden; padding-top: 40px; filter: blur(26px) saturate(.85); transform: scale(1.06); opacity: .9; pointer-events: none; user-select: none; }
 body.auth header.top, body.auth footer { display: none; }
-.auth { position: relative; z-index: 2; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; padding-block: 44px 32px; }
+.auth { position: relative; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; padding-block: 44px 32px; }
 .auth-back { font-size: 14px; color: var(--soft); position: fixed; top: calc(36px + env(safe-area-inset-top, 0px)); left: max(40px, env(safe-area-inset-left, 0px)); z-index: 3; }
 .auth-back:hover { color: var(--ink); }
-.auth-hello { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.025em; }
+.auth-hello { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.025em; color: #fff; mix-blend-mode: difference; }
+.auth-back { mix-blend-mode: difference; color: #fff !important; opacity: .75; }
 .auth-card { align-self: center; width: 640px; max-width: 100%; background: var(--sheet); border-radius: 22px; padding: clamp(28px, 4vw, 56px); box-shadow: 0 40px 90px rgba(27,26,24,.10); }
 .auth-tabs { display: flex; justify-content: space-between; align-items: baseline; }
 .auth-tabs button { background: none; border: 0; padding: 0; font: 400 clamp(22px, 2.2vw, 30px) var(--sans); letter-spacing: -0.02em; color: var(--faint); cursor: pointer; }
@@ -307,6 +317,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
 <div id="intro" aria-hidden="true"><div><div class="w">cauce</div><p>Datos con fuente, desde Caracas.</p></div></div>
 
+<div class="uc" role="status" aria-label="Sitio en construcción"><div class="uc-track" aria-hidden="true"><span>🚧</span><span>Sitio en construcción</span><span>🏗️</span><span>Estamos echando la placa</span><span>👷</span><span>Vuelve pronto, pana</span><span>🚧</span><span>Faltan unas cabillas</span><span>🏗️</span><span>🚧</span><span>Sitio en construcción</span><span>🏗️</span><span>Estamos echando la placa</span><span>👷</span><span>Vuelve pronto, pana</span><span>🚧</span><span>Faltan unas cabillas</span><span>🏗️</span></div></div>
 <header class="top"><div class="wrap">
   <div class="bar">
     <div class="brand"><a class="wm" href="#mercado" aria-label="Cauce, inicio">cauce</a><a class="about" href="#sobre">Sobre Cauce →</a></div>
@@ -328,17 +339,17 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="hero">
     <a class="lead card-link" href="#articulo">
       <div class="ph fig" data-c="0"><div class="figbox" data-fig="lote"></div><span>Ilustración: el terreno en Porlamar</span></div>
-      <div class="sticker spin" style="width:96px;height:96px;top:-22px;right:-18px"><svg viewBox="0 0 100 100" width="96" height="96" aria-label="Datos con fuente"><defs><path id="c" d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0"/></defs><text font-size="10.5" letter-spacing="2" fill="currentColor"><textPath href="#c">DATOS CON FUENTE · CARACAS · </textPath></text><path d="M38 51c3-4 7 4 12 0s9 4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="sticker spin" style="width:96px;height:96px;top:-22px;right:-18px"><svg viewBox="0 0 100 100" width="96" height="96" aria-label="Sin cuento, con fuente"><defs><path id="c" d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0"/></defs><text font-size="10.5" letter-spacing="2" fill="currentColor"><textPath href="#c">SIN CUENTO · CON FUENTE · </textPath></text><path d="M38 51c3-4 7 4 12 0s9 4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
       <span class="lab">Estudio de factibilidad · 8 min</span>
       <h1>2.363 m² en Porlamar por $500.000. ¿Es rentable construir y vender?</h1>
       <p class="dek">A los precios de hoy, construir para vender da pérdidas. Para cubrir costos, cada m² debe venderse a $1.501. En Porlamar se piden $1.003.</p>
     </a>
     <div class="side">
-      <div class="panel"><span class="lab">Analiza un inmueble</span>
+      <div class="panel pop"><span class="lab">Analiza un inmueble</span>
         <form class="pillfield" id="quick"><label for="q" hidden>Enlace o datos</label><input id="q" placeholder="Pega un enlace o escribe zona + m² + precio"><button class="btn">Analizar</button></form>
         <span class="sm">Ej.: Los Palos Grandes 120 m² 210000. Un análisis gratis.</span>
       </div>
-      <div class="panel"><div style="display:flex;justify-content:space-between"><span class="lab">Cifras de la semana</span><span class="sm">20 oct</span></div>
+      <div class="panel pop"><div style="display:flex;justify-content:space-between"><span class="lab">Cifras de la semana</span><span class="sm">20 oct</span></div>
         <div class="figs">
           <div><span class="sm">Mediana de venta</span><b data-count="1551" data-pre="$">$1.551</b><span class="sm">por m²</span></div>
           <div><span class="sm">Dólar BCV</span><b>500,46</b><span class="sm">Bs.</span></div>
@@ -455,7 +466,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="plans-h"><span class="lab">Planes</span><h1>Elige cómo quieres leer el mercado.</h1><p class="sm" style="font-size:15px">Empieza gratis. Paga cuando necesites decidir.</p></div>
   <div class="plans" id="plans">
     <div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado cada jueves.</p><ul><li>Cifras de la semana</li><li>Historias de mercado y zonas</li><li>Un estudio completo de regalo</li></ul><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
-    <div class="plan" data-plan="inteligencia"><div class="sticker" aria-hidden="true">Más<br>elegido</div><span class="lab">Inteligencia</span><div class="price">$10<small> /mes, pago anual</small></div><p class="sm">Para quien compra o ya tiene inmuebles.</p><ul><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
+    <div class="plan" data-plan="inteligencia"><div class="sticker" aria-hidden="true">La<br>fija</div><span class="lab">Inteligencia</span><div class="price">$10<small> /mes, pago anual</small></div><p class="sm">Para quien compra o ya tiene inmuebles.</p><ul><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
     <div class="plan" data-plan="consulta"><span class="lab">Consulta 1:1</span><div class="price">$60<small> / 45 min</small></div><p class="sm">Con nuestro equipo, sobre tu inmueble o terreno.</p><ul><li>Revisión de precio y zona</li><li>Notas por escrito</li><li>Se descuenta si encargas un estudio</li></ul><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
     <div class="plan" data-plan="duenos"><span class="lab">Para dueños y agentes</span><div class="price">$450<small> por estudio</small></div><p class="sm">Muestra tu terreno a inversionistas.</p><ul><li>Estudio de factibilidad publicado</li><li>Solo destacado: $150 por 30 días</li><li>Contactos de lectores interesados</li></ul><a class="btn" href="#entrar" data-pick="duenos">Empezar</a></div>
   </div>
@@ -510,7 +521,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <div><span class="n">(03)</span><h3>Independientes.</h3><p class="sm">No cobramos comisión por ventas. Algunos destacados son espacios pagados; nuestras conclusiones no se venden.</p></div>
   </div>
   <div class="duo" style="position:relative">
-    <div class="sticker flat drag" id="drag" style="top:-30px;right:8%">Hecho en Caracas ↝<br><span style="opacity:.6">arrástrame</span></div>
+    <div class="sticker flat drag" id="drag" style="top:-30px;right:8%">De Caracas, con calculadora ↝<br><span style="opacity:.6">arrástrame, pana</span></div>
     <div><span class="lab">El nombre</span><h2>Un cauce es el camino que abre el agua.</h2><p class="sm" style="font-size:16px;max-width:30em">Queremos que el capital encuentre el suyo: con información clara, hacia proyectos que mejoren las ciudades.</p></div>
     <div><p class="sm" style="font-size:15px">Escríbenos: <span style="user-select:all;color:var(--ink)">hola@cauce.blog</span></p><a class="btn" href="#planes" style="margin-top:14px">Ver planes</a></div>
   </div>
@@ -2108,7 +2119,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     'Cada cifra con su fuente.': 'Every number sourced.', 'Fecha, muestra y tipo de inmueble. Si dos fuentes no coinciden, publicamos las dos.': 'Date, sample size and property type. If two sources disagree, we publish both.',
     'Supuestos a la vista.': 'Assumptions up front.', 'En cada estudio mostramos qué asumimos y cómo cambia el resultado si nos equivocamos.': 'Every study shows what we assumed and how the result changes if we’re wrong.',
     'Independientes.': 'Independent.', 'Algunos destacados son espacios pagados. Nuestras lecturas y conclusiones no se venden.': 'Some featured spots are paid. Our analysis and conclusions are not for sale.',
-    'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
+    'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'De Caracas, con calculadora ↝': 'From Caracas, with a calculator ↝', 'arrástrame, pana': 'drag me, pal', 'La': 'Safe', 'fija': 'bet', 'SIN CUENTO · CON FUENTE ·': 'NO TALL TALES · SOURCED ·', 'Sin cuento, con fuente': 'No tall tales, sourced', 'Sitio en construcción': 'Site under construction', 'Estamos echando la placa': 'Pouring the concrete', 'Vuelve pronto, pana': 'Back soon, pal', 'Faltan unas cabillas': 'A few rebars to go', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
     'Datos inmobiliarios con fuente. Boletín cada jueves.': 'Sourced real estate data. Newsletter every Thursday.',
     'Leer': 'Read', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
     'Una fuente dice $1.551 por m² y otra $547. ¿Cuál usar?': 'One source says $1,551 per m² and another $547. Which to use?',
