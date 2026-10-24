@@ -83,10 +83,7 @@ a.card-link:hover .ph { transform: scale(.985); }
 @keyframes fade { to { opacity: 1; } }
 
 /* header: plain bar, no pill */
-.uc { height: 26px; overflow: hidden; background: #FFD43B; color: #1B1A18; font: 700 11px/26px var(--sans); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
-.uc-track { display: inline-flex; gap: 14px; padding-left: 14px; animation: uc 38s linear infinite; }
-@keyframes uc { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .uc-track { animation: none; } }
+.uc { padding: 7px 16px; background: var(--fill); color: var(--soft); font: 500 12px/1.4 var(--sans); text-align: center; border-bottom: 1px solid var(--line); } .uc span:first-child { color: var(--ink); font-weight: 700; margin-right: 4px; }
 body.auth .uc { display: none; }
 header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background .35s var(--ease); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
@@ -287,6 +284,8 @@ form.f select option { background: var(--card); }
 .dmore { justify-self: start; font: 600 13px var(--sans); color: var(--ink); background: none; border: 1px solid var(--ink); border-radius: 999px; padding: 8px 16px; cursor: pointer; margin-top: 12px; }
 .dnote { max-width: 80ch; }
 @media (max-width: 760px) { .dk { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dcharts { grid-template-columns: minmax(0, 1fr); } .dms { grid-template-columns: minmax(0, 1fr); } .dhead h2 { font-size: 26px; } .dch h3 { font-size: 22px; } .dsc b { font-size: 34px; } }
+.reads { margin-top: 36px; border-top: 1px solid var(--line); padding-top: 18px; display: grid; gap: 12px; } .reads ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.reads li a { display: grid; gap: 8px; height: 100%; padding: 16px; border: 1px solid var(--line); border-radius: 14px; color: inherit; text-decoration: none; transition: border-color .2s; } .reads li a:hover { border-color: var(--ink); } .reads p { font-size: 15px; margin: 0; } .reads .rq { font-style: italic; color: var(--soft); font-size: 14px; }
 .lock { position: relative; }
 .lock > .blur { filter: blur(6px); opacity: .5; pointer-events: none; user-select: none; }
 .lock > a { position: absolute; inset: 0; display: grid; place-items: center; }
@@ -360,7 +359,7 @@ body.auth header.top, body.auth footer { display: none; }
 .pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 64px; }
 .pillars div { border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 8px; align-content: start; }
 .pillars.p2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.routes { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 24px; }
+.routes { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; max-width: 860px; margin-inline: auto; }
 .routes .plan { cursor: default; }
 .routes ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
 .chat { position: relative; }
@@ -494,7 +493,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
 <div id="intro" aria-hidden="true"><div><div class="w">cauce</div><p>Datos con fuente, desde Caracas.</p></div></div>
 
-<div class="uc" role="status" aria-label="Sitio en construcción"><div class="uc-track" aria-hidden="true"><span>🚧</span><span>Sitio en construcción</span><span>🏗️</span><span>Estamos echando la placa</span><span>👷</span><span>Vuelve pronto, pana</span><span>🚧</span><span>Faltan unas cabillas</span><span>🏗️</span><span>🚧</span><span>Sitio en construcción</span><span>🏗️</span><span>Estamos echando la placa</span><span>👷</span><span>Vuelve pronto, pana</span><span>🚧</span><span>Faltan unas cabillas</span><span>🏗️</span></div></div>
+<div class="uc" role="status"><span>Beta</span> <span>Algunas cifras son de demostración mientras conectamos las fuentes.</span></div>
 <header class="top"><div class="wrap">
   <div class="bar">
     <div class="brand"><a class="wm" href="#mercado" aria-label="Cauce, inicio">cauce</a><a class="about" href="#sobre">Sobre Cauce →</a></div>
@@ -525,7 +524,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <a class="sticker spin go-sobre" href="#sobre" data-grain="round" data-hex="#CFCAC1,#8F8B84,#F1EEE9" aria-label="Cómo trabajamos: sin cuento, con fuente" style="width:104px;height:104px;top:-26px;right:-22px"><svg viewBox="0 0 100 100" width="96" height="96" aria-label="Sin cuento, con fuente"><defs><path id="c" d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0"/></defs><text font-size="10.5" letter-spacing="2" fill="currentColor"><textPath href="#c">SIN CUENTO · CON FUENTE · </textPath></text><path d="M38 51c3-4 7 4 12 0s9 4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
     </div>
     <div class="side">
-      <div class="panel pop"><span class="lab">Analiza un inmueble</span>
+      <div class="panel pop"><span class="lab">¿Evaluando un inmueble?</span>
         <form class="pillfield" id="quick"><label for="q" hidden>Enlace o datos</label><input id="q" placeholder="Pega un enlace o escribe zona + m² + precio"><button class="btn">Analizar</button></form>
         <span class="sm">Ej.: Los Palos Grandes 120 m² 210000. Un análisis gratis.</span>
       </div>
@@ -659,14 +658,14 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Precios de prueba, en US$. No cobramos comisión por ventas. Cancela cuando quieras.</p>
   </div>
-  <button class="peek" type="button" id="peek" aria-controls="abroad"><span>Comprar desde el exterior</span><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+  <button class="peek" type="button" id="peek" aria-controls="abroad"><span>Cómo comprar, paso a paso</span><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   <div class="abroad blurred" id="abroad">
-  <div class="secthead"><h2>Comprar desde el exterior</h2></div>
+  <div class="secthead"><h2>Cómo comprar, paso a paso</h2></div>
   <p class="sm" style="font-size:16px;max-width:40em">De la primera pregunta a la firma. Empieza con la guía o con una consulta; después eliges cómo quieres tener el inmueble.</p>
   <div class="plans routes" style="margin-top:24px">
     <div class="pcol"><div class="plan"><span class="lab">La guía</span><div class="price">$0<small> por correo</small></div><p class="sm">El proceso legal completo, en siete capítulos.</p><ol><li>¿Puede un extranjero ser dueño?</li><li>Los seis tipos de visa</li><li>La visa desde el exterior</li><li>El RIF en el SENIAT</li><li>Registro SAREN y revisión del inmueble</li><li>El cierre: documentos y costos</li><li>Zonas de seguridad y Margarita</li></ol></div><a class="btn" href="#articulo/guia">Leer la guía</a></div>
     <div class="pcol"><div class="plan"><span class="lab">Compra a tu nombre</span><div class="price">4–8<small> meses</small></div><p class="sm">Tú firmas y el título queda a tu nombre.</p><ul><li>Visa y RIF, coordinados a distancia o en persona</li><li>Registro SAREN de comprador extranjero</li><li>Negociación con precios comparables</li><li>Revisión de documentos y registro</li><li>Acompañamiento por WhatsApp hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
-    <div class="pcol"><div class="plan"><span class="lab">Compra a través de una empresa local</span><div class="price">0–4<small> meses</small></div><p class="sm">Sin visa ni RIF de tu lado. Tu participación queda en un contrato con la empresa que tiene el título.</p><ul><li>Lectura del mercado y 3 a 5 oportunidades filtradas</li><li>La estructura, explicada en tu contrato</li><li>Abogado y agente aliados</li><li>Coordinación hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
+    <div class="pcol" hidden data-legal-review><div class="plan"><span class="lab">Compra a través de una empresa local</span><div class="price">0–4<small> meses</small></div><p class="sm">Sin visa ni RIF de tu lado. Tu participación queda en un contrato con la empresa que tiene el título.</p><ul><li>Lectura del mercado y 3 a 5 oportunidades filtradas</li><li>La estructura, explicada en tu contrato</li><li>Abogado y agente aliados</li><li>Coordinación hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Precio según el alcance de cada caso. También: traducción de documentos, poderes para comprar a distancia y administración después de la compra.</p>
   </div>
@@ -680,7 +679,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="chat-card">
     <div class="chat-hd"><b>Cauce</b><div class="acts"><button type="button" id="c-min">Minimizar</button><button type="button" id="c-close" aria-label="Cerrar">✕</button></div></div>
     <div class="thread" id="c-thread" aria-live="polite"></div>
-    <div class="qchips" id="c-chips"><button type="button">Quiero comprar desde afuera</button><button type="button">Tengo un terreno</button><button type="button">¿Está bien de precio?</button></div>
+    <div class="qchips" id="c-chips"><button type="button">Estoy evaluando un inmueble</button><button type="button">Tengo un terreno</button><button type="button">¿Está bien de precio?</button></div>
     <form class="ask" id="c-form"><label for="c-in" hidden>Tu mensaje</label><input id="c-in" placeholder="Escribe tu pregunta" autocomplete="off"><button type="submit" aria-label="Enviar"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button></form>
     <p class="chat-note">Vista previa: el asistente todavía no está conectado. Para hablar con una persona, escribe a <span style="user-select:all;color:var(--ink)">hola@cauce.blog</span>.</p>
   </div>
@@ -726,7 +725,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <p class="pull"><span>No vendemos propiedades.</span> <em>Ayudamos a que el capital llegue a las correctas.</em></p>
     <p>Trabajamos desde afuera y desde Caracas, con abogados, desarrolladores y agentes aliados en las zonas que cubrimos. Antes de mostrar un inmueble, explicamos el marco legal, fiscal y migratorio, porque esa claridad es lo que ofrecemos.</p>
     <p class="soft">Venezuela tiene riesgo político, de liquidez y legal. No lo escondemos: lo ordenamos para que decidas con información y no con ilusiones. También somos selectivos. No todo cliente encaja ni todo negocio vale la pena, y filtrar en ambos lados protege a nuestra red, a nuestros clientes y cada operación.</p>
-    <p class="soft">No cobramos comisión por ventas. Algunos destacados son espacios pagados; nuestras conclusiones no se venden. Escribimos para quien vive aquí y para quien mira desde afuera, para quien busca su primer apartamento y para quien evalúa un edificio entero.</p>
+    <p class="soft">No cobramos comisión por ventas. Algunos destacados son espacios pagados; nuestras conclusiones no se venden. Escribimos para quien está decidiendo sobre un inmueble concreto: su primer apartamento, un local o un edificio entero.</p>
   </div>
   <div class="about-end">
     <div><h2>Un cauce es el camino que abre el agua.</h2><p class="sm" style="font-size:16px;max-width:32em">Queremos que el capital encuentre el suyo: con información clara, hacia proyectos que mejoren las ciudades.</p><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" href="#contacto">Escríbenos</a><a class="btn o" href="#planes">Ver planes</a></div></div>
@@ -2053,7 +2052,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     ['Zonas', 'Bello Monte y Colinas: zonas vecinas, $243 de diferencia por m²', '4 min', 0, 'p:Colinas_de_Bello_Monte,_Mirador._2017._Caracas,_Venezuela.jpg'],
     ['Estudio', 'La Boyera, 18.000 m²: townhouses con margen, si se venden', '9 min', 1, null],
     ['Análisis', 'Airbnb a $63 la noche: ¿conviene más que alquilar por año?', '5 min', 0, 'i:noches'],
-    ['Guía', 'Comprar desde el exterior: pasos, costos y riesgos', '10 min', 0, 'i:pasos'],
+    ['Guía', 'Comprar en Venezuela: pasos, costos y riesgos', '10 min', 0, 'i:pasos'],
     ['Estudio', '¿Convertir un local de 5.380 m² en vivienda?', '7 min', 1, null],
     ['Análisis', 'Rendimiento bruto de 12%: cuánto queda después de gastos', '7 min', 1, 'i:gastos'],
     ['Zonas', 'Desde $15.000: qué se compra en la costa con cada presupuesto', '5 min', 0, 'p:Salt_ponds_and_Playa_La_Salina_viewed_from_above_in_Pampatar,_Margarita_Island,_Venezuela.jpg']
@@ -2080,7 +2079,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
   /* Charts. Porlamar comes from the study's own assumptions; the rest are SAMPLE DATA until the sources are connected. */
   const N0 = (n, d = 0) => { const t = Math.abs(n).toFixed(d).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.'); return (n < 0 ? '−' : '') + t.join(','); };
   const FMT = { usd: (v) => (v < 0 ? '−$' : '$') + N0(Math.abs(v)), m2p: (v) => '$' + N0(v) + '/m²', pct: (v) => N0(v, 1) + '%', m2: (v) => N0(v) + ' m²', mes: (v) => '$' + N0(v) + (document.documentElement.lang === 'en' ? '/mo' : '/mes') };
-  const SAMPLE = 'Datos de ejemplo. Se reemplazan al conectar las fuentes.';
+  const SAMPLE = 'Datos de demostración. Se reemplazan al conectar las fuentes.';
   const MONTHS = ['nov', 'dic', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct'];
   const walk = (a, b, w) => MONTHS.map((_, i) => a + (b - a) * (i / 11) + w * Math.sin(i * 1.7));
   const be = (o) => (500000 + o * 3544.5) * 1.276 / 2835.6, PX = [900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700], OCC = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
@@ -2177,20 +2176,27 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     costa: { dek: 'En la costa, $15.000 compran unos 28 m². El gráfico muestra cuánto espacio da cada presupuesto.', b: ['Lo que muestran los datos', 'Los presupuestos bajos compran más metros por dólar, casi siempre en edificios más viejos o lejos de la playa.'], c: 'Antes de comprar barato, suma el costo de remodelar. Allí suele estar la diferencia.' },
     posada: { sec: 'Estudio', t: 'Posada de 7.216 m² en Playa El Agua: ¿cuánto llena al año?', mins: '6 min', pro: 1, dek: 'Una posada en venta por $1,2 millones. La pregunta no es el precio, es la ocupación fuera de temporada.', b: ['Lo que sabemos', 'La ocupación sube en Carnaval, Semana Santa, agosto y diciembre, y baja a cerca de 40% el resto del año.'], c: 'En estudio: falta medir las tarifas reales de cada temporada.' }
   };
+  /* What others report: real articles, attributed, paraphrased (one short quote) */
+  const READS = [
+    ['Finanzas Digital', 'Ahiana Figueroa', '1 sep 2025', 'https://finanzasdigital.com/precio-de-los-inmuebles-muestra-leve-alza-de-2-en-dos-anos-segun-camara-metropolitana/', 'La Cámara Inmobiliaria Metropolitana estima el m² en Caracas entre $800 y $1.100, con Las Mercedes por encima de $2.300, y alquileres de $150 a $300 al mes.', '“Siempre se alquila más de lo que se vende.” Fernando Di Gerónimo'],
+    ['El Diario', 'Daniela León', '13 may 2026', 'https://eldiario.com/2026/05/13/camara-inmobiliaria-venezuela-revision-marco-legal/', 'Según la Cámara Inmobiliaria de Venezuela, los alquileres fueron el 45% de las operaciones en el área metropolitana en el primer trimestre de 2026; su presidente, Pablo González Travieso, calcula de 3 a 5 años para que vuelva el crédito hipotecario.', ''],
+    ['Finanzas Digital', 'Oswin J. Barrios', '7 jun 2025', 'https://finanzasdigital.com/mercado-inmobiliario-caracas-2025-alquiler-venta/', 'El retorno de familias movió la oferta en El Paraíso y Vista Alegre, y en Baruta en Los Naranjos, Lomas del Sol, Manzanares y El Cigarral.', '']
+  ];
+  const readsHTML = () => `<div class="reads"><span class="lab">Lo que reportan otros</span><ul>${READS.map((r) => `<li><a href="${r[3]}" target="_blank" rel="noopener"><span class="sm"><span>${esc(r[0])}</span> · <span>${esc(r[1])}</span> · <span>${esc(r[2])}</span></span><p>${esc(r[4])}</p>${r[5] ? `<span class="rq">${esc(r[5])}</span>` : ''}</a></li>`).join('')}</ul><p class="sm">Resumen de Cauce; las cifras son de cada medio y sus fuentes, no nuestras.</p></div>`;
   let PORLAMAR = null;
   function renderArticle(id) {
     const art = $('#v-articulo article');
     if (PORLAMAR === null) PORLAMAR = art.innerHTML;
     const a = ARTS[id];
     $$('#v-articulo .pz').forEach((p) => { p.hidden = !!a; });
-    if (!a) { art.innerHTML = PORLAMAR; wireCharts(art); mountFigs(); return; }
+    if (!a) { art.innerHTML = PORLAMAR + readsHTML(); wireCharts(art); mountFigs(); return; }
     const fi = FID.indexOf(id), f = fi >= 0 ? FEED[fi] : [a.sec, a.t, a.mins, a.pro, null];
     const top = f[4] ? media(f[4], fi) : cover(id, '', f[1].split(':')[0], '16/10');
     art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><div class="avatar">c</div><span>Equipo Cauce</span><span>20 oct 2026</span><span>${esc(f[2])}</span></div>${top}
       <div class="blk"><span class="lab">${esc(a.b[0])}</span><p>${esc(a.b[1])}</p><div class="chart" data-chart="${id}"></div></div>
       ${a.list ? `<div class="blk"><span class="lab">${esc(a.list[0])}</span><ol class="chap">${a.list[1].map((x) => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
       <div class="blk"><span class="lab">La lectura de Cauce</span><p>${esc(a.c)}</p></div>${a.cta ? '<div class="wall"><span class="lab">Gratis</span><p class="serif" style="font-size:26px;line-height:1.1">Recibe la guía completa en tu correo.</p><a class="btn" href="#entrar" data-pick="boletin">Recibir la guía</a></div>' : ''}${f[3] ? '<div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El análisis completo, con datos descargables.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>' : ''}`;
-    wireCharts(art); mountFigs();
+    art.insertAdjacentHTML('beforeend', readsHTML()); wireCharts(art); mountFigs();
   }
   const OWN = [
     { t: 'Proyecto Cauce 01', s: 'En estructuración · memorando para inversionistas', tag: 'Propio', ok: 1 },
@@ -2237,7 +2243,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
 
   /* properties */
   const PINTRO = { destacados: 'Los cinco inmuebles de la semana con el precio por m² más bajo frente a su zona. Incluye espacios destacados.', estudios: 'Terrenos y edificios estudiados con los números a la vista.', cauce: 'Proyectos que estructuramos con inversionistas de la comunidad Cauce.' };
-  const PNOTE = { destacados: 'Datos de ejemplo hasta que conectemos Rent-A-House. Algunos destacados son espacios pagados.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.', cauce: 'Acceso anticipado para suscriptores de Inteligencia.' };
+  const PNOTE = { destacados: 'Datos de demostración hasta conectar los anuncios. Algunos destacados son espacios pagados.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.', cauce: 'Acceso anticipado para suscriptores de Inteligencia.' };
   function grid(k) {
     let html = '';
     if (k === 'destacados') {
@@ -2266,7 +2272,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     const out = $('#out');
     if (!(a > 0 && p > 0)) { out.innerHTML = '<span class="lab">Resultado</span><p class="sm">Revisa el área y el precio.</p>'; return; }
     const per = p / a, med = ZONES[z], d = per / med - 1, mx = Math.max(per, med);
-    const v = d > 0.1 ? 'Más caro que la zona.' : d < -0.1 ? 'Más barato que la zona.' : 'En línea con la zona.';
+    const v = d > 0.1 ? 'Pedido por encima de la mediana de la zona.' : d < -0.1 ? 'Pedido por debajo de la mediana de la zona.' : 'Pedido cerca de la mediana de la zona.';
     const y = r > 0 ? (r * 12 / p * 100).toFixed(1).replace('.', ',') + '%' : '—';
     out.innerHTML = `${reduce ? '' : '<div class="scan"></div>'}<span class="lab">Resultado · ${esc(z)}</span><p class="verdict">${v}</p>
       <div class="bars" style="margin-top:0"><div><span>Este inmueble</span><i style="width:${(per / mx * 100).toFixed(1)}%"></i><span>$${int(per)}</span></div><div><span>Mediana de la zona</span><i class="g" style="width:${(med / mx * 100).toFixed(1)}%"></i><span>$${int(med)}</span></div></div>
@@ -2454,6 +2460,16 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     "Leer el mercado": "Read the market", "Habla con Cauce": "Talk to Cauce", "Habla": "Talk", "con": "to", "¿Está bien": "Is it fairly", "de precio?": "priced?", "Analízalo →": "Check it →", "Cómo trabajamos: sin cuento, con fuente": "How we work: no tall tales, sourced",
     "Vista": "View", "Contexto": "Context", "Calles": "Streets", "Edificios": "Buildings", "Ocupación · pronto": "Occupancy · soon", "Límites: parroquias de Venezuela (Tapiquén, 2015), detalle completo.": "Boundaries: parishes of Venezuela (Tapiquén, 2015), full detail.",
     "Vista completa · borrador": "Full view · draft", "Salir": "Exit", "Precio pedido · ejemplo": "Asking price · sample",
+    'Beta': 'Beta', 'Algunas cifras son de demostración mientras conectamos las fuentes.': 'Some figures are demo data while we connect our sources.',
+    '¿Evaluando un inmueble?': 'Weighing a property?', 'Cómo comprar, paso a paso': 'How to buy, step by step', 'Comprar en Venezuela: pasos, costos y riesgos': 'Buying in Venezuela: steps, costs and risks', 'Estoy evaluando un inmueble': 'I’m weighing a property',
+    'No cobramos comisión por ventas. Algunos destacados son espacios pagados; nuestras conclusiones no se venden. Escribimos para quien está decidiendo sobre un inmueble concreto: su primer apartamento, un local o un edificio entero.': 'We take no commission on sales. Some featured spots are paid; our conclusions are not for sale. We write for people deciding on a specific property: a first apartment, a shop or a whole building.',
+    'Datos de demostración. Se reemplazan al conectar las fuentes.': 'Demo data. Replaced once sources are connected.', 'Datos de demostración hasta conectar los anuncios. Algunos destacados son espacios pagados.': 'Demo data until listings are connected. Some featured spots are paid.',
+    'Pedido por encima de la mediana de la zona.': 'Asking above the area median.', 'Pedido por debajo de la mediana de la zona.': 'Asking below the area median.', 'Pedido cerca de la mediana de la zona.': 'Asking near the area median.',
+    'Lo que reportan otros': 'What others report', 'Resumen de Cauce; las cifras son de cada medio y sus fuentes, no nuestras.': 'Summary by Cauce; figures belong to each outlet and its sources, not to us.',
+    'La Cámara Inmobiliaria Metropolitana estima el m² en Caracas entre $800 y $1.100, con Las Mercedes por encima de $2.300, y alquileres de $150 a $300 al mes.': 'The Cámara Inmobiliaria Metropolitana puts Caracas at $800–1,100 per m², with Las Mercedes above $2,300, and rents at $150–300 a month.',
+    'Según la Cámara Inmobiliaria de Venezuela, los alquileres fueron el 45% de las operaciones en el área metropolitana en el primer trimestre de 2026; su presidente, Pablo González Travieso, calcula de 3 a 5 años para que vuelva el crédito hipotecario.': 'According to the Cámara Inmobiliaria de Venezuela, rentals were 45% of metro-area transactions in Q1 2026; its president, Pablo González Travieso, expects 3 to 5 years for mortgage credit to return.',
+    'El retorno de familias movió la oferta en El Paraíso y Vista Alegre, y en Baruta en Los Naranjos, Lomas del Sol, Manzanares y El Cigarral.': 'Returning families moved supply in El Paraíso and Vista Alegre, and in Baruta in Los Naranjos, Lomas del Sol, Manzanares and El Cigarral.',
+    '“Siempre se alquila más de lo que se vende.” Fernando Di Gerónimo': '“More is always rented than sold.” Fernando Di Gerónimo',
     'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'De Caracas, con calculadora ↝': 'From Caracas, with a calculator ↝', 'arrástrame, pana': 'drag me, pal', 'La': 'Safe', 'fija': 'bet', 'SIN CUENTO · CON FUENTE ·': 'NO TALL TALES · SOURCED ·', 'Sin cuento, con fuente': 'No tall tales, sourced', 'Sitio en construcción': 'Site under construction', 'Estamos echando la placa': 'Pouring the concrete', 'Vuelve pronto, pana': 'Back soon, pal', 'Faltan unas cabillas': 'A few rebars to go', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
     'Datos inmobiliarios con fuente. Boletín cada jueves.': 'Sourced real estate data. Newsletter every Thursday.',
     'Leer': 'Read', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
@@ -2870,7 +2886,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
 
   /* Planes: switch between the plans and buying from abroad */
   let abroadOn = false;
-  const PEEK = { down: '<span>Comprar desde el exterior</span><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>', up: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Leer el mercado</span>' };
+  const PEEK = { down: '<span>Cómo comprar, paso a paso</span><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>', up: '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Leer el mercado</span>' };
   function setAbroad(on, scroll) {
     abroadOn = on; $('#abroad').classList.toggle('blurred', !on); $('#mktw').classList.toggle('blurred', on);
     $('#peek').innerHTML = on ? PEEK.up : PEEK.down; $('#peek').classList.toggle('up', on); applyLang();
@@ -2968,7 +2984,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
             <div class="dpri">${FACT.map(([k, es, en]) => `<button type="button" data-pri="${k}" aria-pressed="${pri.has(k)}">${L(es, en)}</button>`).join('')}</div>
             <div id="dz-rank"></div></div>
         </div><a href="#planes" data-plan="inteligencia"><span>${L('Únete para comparar todas las zonas →', 'Join to compare every area →')}</span></a></div>
-        <p class="sm dnote">${L('Cómo leerlo: precio pedido y días en venta salen de anuncios; cierres, de operaciones registradas; caminabilidad, de la distancia a comercios, paradas y Metro; seguridad, de encuestas de percepción; agua y luz, de reportes de vecinos. Hoy todo son datos de demostración: no los uses para decidir.', 'How to read it: asking price and days on market come from listings; closings, from recorded sales; walkability, from distance to shops, stops and Metro; safety, from perception surveys; water and power, from residents\' reports. All figures are demo data for now: do not use them to decide.')}</p>`;
+        <p class="sm dnote">${L('Cómo leerlo: precio pedido y días en venta salen de anuncios; cierres, de operaciones registradas; caminabilidad, de la distancia a comercios, paradas y Metro; seguridad, de encuestas de percepción; agua y luz, de reportes de vecinos. Hoy todo son datos de demostración: no los uses para decidir.', 'How to read it: asking price and days on market come from listings; closings, from recorded sales; walkability, from distance to shops, stops and Metro; safety, from perception surveys; water and power, from residents\' reports. All figures are demo data for now: do not use them to decide.')}</p>${readsHTML()}`;
       charts(); rank();
     }
     FMT.n = (v) => N0(v);
