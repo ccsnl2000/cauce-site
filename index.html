@@ -136,8 +136,9 @@ a.sticker:focus-visible, button.sticker:focus-visible { outline: 2px solid var(-
 .stick-chat { position: fixed; right: max(18px, env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 45; width: 96px; height: 96px; font-size: 12px; line-height: 1.05; }
 .stick-chat .dot { position: absolute; top: 10px; right: 12px; width: 10px; height: 10px; border-radius: 50%; background: #1B1A18; box-shadow: 0 0 0 2px #F1EEE9; }
 body.auth .stick-chat { display: none; }
-.stick-price { position: absolute; right: 18%; top: -26px; width: 128px; height: 150px; font-size: 13px; line-height: 1.1; transform: rotate(7deg); }
-.stick-price:hover { transform: rotate(2deg) scale(1.05); }
+.stick-chat { transition: width .45s var(--ease), height .45s var(--ease), transform .35s var(--ease); }
+.stick-chat > span { transition: opacity .25s var(--ease); }
+.stick-chat.small { width: 48px; height: 48px; } .stick-chat.small > span { opacity: 0; } .stick-chat.small .dot { top: 4px; right: 4px; }
 .plan .sticker[data-grain] { font-size: 12px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -282,7 +283,7 @@ form.f select option { background: var(--card); }
 .plan .price small { font: 400 13px var(--sans); color: var(--soft); letter-spacing: 0; }
 .plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; font-size: 13px; }
 .plan li::before { content: "— "; color: var(--soft); }
-.plan .btn { margin-top: auto; align-self: center; }
+.pcol { display: flex; flex-direction: column; gap: 16px; min-width: 0; } .pcol > .plan { flex: 1; } .pcol > .btn { align-self: center; }
 .plan > ul, .plan > ol { margin-bottom: 10px; }
 .plan .sticker { top: -16px; right: 14px; width: 66px; height: 66px; transform: rotate(10deg); }
 
@@ -383,9 +384,10 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap .seg button { background: none; border: 0; font: inherit; font-size: 13px; color: #a6a49f; padding: 6px 12px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
 .cmap .seg button[aria-pressed="true"] { background: #f2f0ec; color: #111; font-weight: 700; }
 .cmap .seg .lk { color: #f2f0ec; }
-.cmap .go { position: absolute; right: 16px; bottom: 34px; z-index: 2; background: #f2f0ec; color: #111; border-radius: 999px; padding: 9px 15px; font-size: 13px; font-weight: 700; }
+.cmap .go { position: absolute; right: 60px; bottom: 34px; z-index: 2; background: #f2f0ec; color: #111; border-radius: 999px; padding: 9px 15px; font-size: 13px; font-weight: 700; }
 .cmap .reset { position: absolute; right: 16px; top: 16px; z-index: 2; background: rgba(20,20,20,.85); color: #f2f0ec; border: 1px solid #333; border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; }
 .hero-map .reset { top: auto; bottom: 34px; right: auto; left: 16px; }
+.hero-map .maplibregl-ctrl-bottom-right { bottom: 26px; right: 6px; }
 .cmap.full .reset { top: 96px; right: 10px; }
 .cmap .maplibregl-ctrl-bottom-left { left: 8px; bottom: 6px; } .cmap .maplibregl-ctrl-bottom-left .maplibregl-ctrl { margin: 0; }
 .cmap .maplibregl-ctrl-attrib { background: none !important; padding: 0 4px; font-size: 10px; color: rgba(241,238,233,.6); white-space: nowrap; max-width: calc(100% - 24px); overflow: hidden; text-overflow: ellipsis; } .cmap .maplibregl-ctrl-attrib a { color: rgba(241,238,233,.6) !important; }
@@ -398,15 +400,15 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 @keyframes mp { from { transform: scale(.6); opacity: .9; } to { transform: scale(3.2); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .mpulse::after { animation: none; opacity: 0; } }
 /* map themes follow the site: dark map on a dark site, light map on a light one, from the same tones */
-.cmap { --m-bg: #1A1B19; --m-ink: #F1EEE9; --m-soft: #a6a49f; --m-ctl: rgba(26,27,25,.88); --m-line: #33342f; --m-on: #F1EEE9; --m-on-ink: #1B1A18; background: var(--m-bg); color: var(--m-ink); transition: background .35s var(--ease); }
-.cmap.lt { --m-bg: #E7E2DA; --m-ink: #1B1A18; --m-soft: #77736C; --m-ctl: rgba(241,238,233,.94); --m-line: #DCD6CC; --m-on: #1B1A18; --m-on-ink: #F1EEE9; }
+.cmap { --m-lab: #1B1A18; --m-bg: #1A1B19; --m-ink: #F1EEE9; --m-soft: #a6a49f; --m-ctl: rgba(26,27,25,.88); --m-line: #33342f; --m-on: #F1EEE9; --m-on-ink: #1B1A18; background: var(--m-bg); color: var(--m-ink); transition: background .35s var(--ease); }
+.cmap.lt { --m-lab: #ffffff; --m-bg: #E7E2DA; --m-ink: #1B1A18; --m-soft: #77736C; --m-ctl: rgba(241,238,233,.94); --m-line: #DCD6CC; --m-on: #1B1A18; --m-on-ink: #F1EEE9; }
 .cmap .mhead .lab { color: var(--m-ink); opacity: .78; } .cmap .mhead h2 { color: var(--m-ink); } .cmap .mhead p { color: var(--m-soft); }
 .cmap.lt .mhead { text-shadow: 0 1px 12px rgba(241,238,233,.75), 0 0 2px rgba(241,238,233,.5); }
 .cmap .seg { background: var(--m-ctl); } .cmap .seg button { color: var(--m-soft); } .cmap .seg button[aria-pressed="true"] { background: var(--m-on); color: var(--m-on-ink); } .cmap .seg .lk { color: currentColor; }
 .cmap .go { background: var(--m-on); color: var(--m-on-ink); }
 .cmap .reset { background: var(--m-ctl); color: var(--m-ink); border-color: var(--m-line); }
 .cmap .maplibregl-ctrl-attrib { color: var(--m-ink); opacity: .72; } .cmap .maplibregl-ctrl-attrib a { color: inherit !important; }
-.cmap .mlab { color: var(--m-ink); }
+.cmap .mlab { color: var(--m-lab); font-weight: 600; font-size: 9px; letter-spacing: .14em; } .cmap.full .mlab { font-size: 10px; }
 .cmap .maplibregl-ctrl-group { background: var(--m-ctl); border-color: var(--m-line); } .cmap .maplibregl-ctrl-group button + button { border-top-color: var(--m-line); }
 .cmap.lt .maplibregl-ctrl-icon { filter: none; }
 .cmap .mpulse::after { border-color: var(--m-ink); }
@@ -490,7 +492,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
         <a class="go" href="#datos">Explorar el mapa completo →</a>
         <div class="mtip" hidden></div>
       </div>
-      <a class="sticker spin go-sobre" href="#sobre" data-grain="scallop" data-c="2,9,3" aria-label="Cómo trabajamos: sin cuento, con fuente" style="width:104px;height:104px;top:-26px;right:-22px"><svg viewBox="0 0 100 100" width="96" height="96" aria-label="Sin cuento, con fuente"><defs><path id="c" d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0"/></defs><text font-size="10.5" letter-spacing="2" fill="currentColor"><textPath href="#c">SIN CUENTO · CON FUENTE · </textPath></text><path d="M38 51c3-4 7 4 12 0s9 4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
+      <a class="sticker spin go-sobre" href="#sobre" data-grain="scallop" data-hex="#CFCAC1,#8F8B84,#F1EEE9" aria-label="Cómo trabajamos: sin cuento, con fuente" style="width:104px;height:104px;top:-26px;right:-22px"><svg viewBox="0 0 100 100" width="96" height="96" aria-label="Sin cuento, con fuente"><defs><path id="c" d="M50 50 m-36 0 a36 36 0 1 1 72 0 a36 36 0 1 1 -72 0"/></defs><text font-size="10.5" letter-spacing="2" fill="currentColor"><textPath href="#c">SIN CUENTO · CON FUENTE · </textPath></text><path d="M38 51c3-4 7 4 12 0s9 4 12 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
     </div>
     <div class="side">
       <div class="panel pop"><span class="lab">Analiza un inmueble</span>
@@ -551,7 +553,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 
 <!-- PROPIEDADES -->
 <section class="view" id="v-propiedades" hidden>
-  <div class="phead" style="position:relative"><a class="sticker stick-price" href="#analizar" data-grain="cloud" data-c="1,8,6"><span>¿Está bien<br>de precio?<br><span style="font-weight:400">Analízalo →</span></span></a><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div>
+  <div class="phead" style="position:relative"><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div>
   <div class="ptabs" role="group" aria-label="Secciones"><button type="button" aria-pressed="true" data-k="destacados">Destacados</button><button type="button" aria-pressed="false" data-k="estudios">Estudios</button><button type="button" aria-pressed="false" data-k="cauce">Proyectos Cauce</button></div>
   <p class="sm" id="p-intro" style="margin-top:16px"></p>
   <div class="grid" id="grid"></div>
@@ -628,10 +630,10 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="mktw" id="mktw">
   <div class="plans-h"><span class="lab">Planes</span><h1>Elige cómo quieres leer el mercado.</h1><p class="sm" style="font-size:15px">Empieza gratis. Paga cuando necesites decidir.</p></div>
   <div class="plans" id="plans">
-    <div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado cada jueves.</p><ul><li>Cifras de la semana</li><li>Historias de mercado y zonas</li><li>Un estudio completo de regalo</li></ul><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
-    <div class="plan" data-plan="inteligencia"><div class="sticker" data-grain="flower" data-c="2,0,10" aria-hidden="true">La<br>fija</div><span class="lab">Inteligencia</span><div class="price">$10<small> /mes, pago anual</small></div><p class="sm">Para quien compra o ya tiene inmuebles.</p><ul><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
-    <div class="plan" data-plan="consulta"><span class="lab">Consulta 1:1</span><div class="price">$60<small> / 45 min</small></div><p class="sm">Con nuestro equipo, sobre tu inmueble o terreno.</p><ul><li>Revisión de precio y zona</li><li>Notas por escrito</li><li>Se descuenta si encargas un estudio</li></ul><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
-    <div class="plan" data-plan="duenos"><span class="lab">Para dueños y agentes</span><div class="price">$450<small> por estudio</small></div><p class="sm">Muestra tu terreno a inversionistas.</p><ul><li>Estudio de factibilidad publicado</li><li>Solo destacado: $150 por 30 días</li><li>Contactos de lectores interesados</li></ul><a class="btn" href="#entrar" data-pick="duenos">Empezar</a></div>
+    <div class="pcol"><div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado cada jueves.</p><ul><li>Cifras de la semana</li><li>Historias de mercado y zonas</li><li>Un estudio completo de regalo</li></ul></div><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
+    <div class="pcol"><div class="plan" data-plan="inteligencia"><div class="sticker" data-grain="round" data-c="1,8,6" aria-hidden="true">La<br>fija</div><span class="lab">Inteligencia</span><div class="price">$10<small> /mes, pago anual</small></div><p class="sm">Para quien compra o ya tiene inmuebles.</p><ul><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul></div><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
+    <div class="pcol"><div class="plan" data-plan="consulta"><span class="lab">Consulta 1:1</span><div class="price">$60<small> / 45 min</small></div><p class="sm">Con nuestro equipo, sobre tu inmueble o terreno.</p><ul><li>Revisión de precio y zona</li><li>Notas por escrito</li><li>Se descuenta si encargas un estudio</li></ul></div><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
+    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">Para dueños y agentes</span><div class="price">$450<small> por estudio</small></div><p class="sm">Muestra tu terreno a inversionistas.</p><ul><li>Estudio de factibilidad publicado</li><li>Solo destacado: $150 por 30 días</li><li>Contactos de lectores interesados</li></ul></div><a class="btn" href="#entrar" data-pick="duenos">Empezar</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Precios de prueba, en US$. No cobramos comisión por ventas. Cancela cuando quieras.</p>
   </div>
@@ -640,9 +642,9 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="secthead"><h2>Comprar desde el exterior</h2></div>
   <p class="sm" style="font-size:16px;max-width:40em">De la primera pregunta a la firma. Empieza con la guía o con una consulta; después eliges cómo quieres tener el inmueble.</p>
   <div class="plans routes" style="margin-top:24px">
-    <div class="plan"><span class="lab">La guía</span><div class="price">$0<small> por correo</small></div><p class="sm">El proceso legal completo, en siete capítulos.</p><ol><li>¿Puede un extranjero ser dueño?</li><li>Los seis tipos de visa</li><li>La visa desde el exterior</li><li>El RIF en el SENIAT</li><li>Registro SAREN y revisión del inmueble</li><li>El cierre: documentos y costos</li><li>Zonas de seguridad y Margarita</li></ol><a class="btn" href="#articulo/guia">Leer la guía</a></div>
-    <div class="plan"><span class="lab">Compra a tu nombre</span><div class="price">4–8<small> meses</small></div><p class="sm">Tú firmas y el título queda a tu nombre.</p><ul><li>Visa y RIF, coordinados a distancia o en persona</li><li>Registro SAREN de comprador extranjero</li><li>Negociación con precios comparables</li><li>Revisión de documentos y registro</li><li>Acompañamiento por WhatsApp hasta el cierre</li></ul><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
-    <div class="plan"><span class="lab">Compra a través de una empresa local</span><div class="price">0–4<small> meses</small></div><p class="sm">Sin visa ni RIF de tu lado. Tu participación queda en un contrato con la empresa que tiene el título.</p><ul><li>Lectura del mercado y 3 a 5 oportunidades filtradas</li><li>La estructura, explicada en tu contrato</li><li>Abogado y agente aliados</li><li>Coordinación hasta el cierre</li></ul><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
+    <div class="pcol"><div class="plan"><span class="lab">La guía</span><div class="price">$0<small> por correo</small></div><p class="sm">El proceso legal completo, en siete capítulos.</p><ol><li>¿Puede un extranjero ser dueño?</li><li>Los seis tipos de visa</li><li>La visa desde el exterior</li><li>El RIF en el SENIAT</li><li>Registro SAREN y revisión del inmueble</li><li>El cierre: documentos y costos</li><li>Zonas de seguridad y Margarita</li></ol></div><a class="btn" href="#articulo/guia">Leer la guía</a></div>
+    <div class="pcol"><div class="plan"><span class="lab">Compra a tu nombre</span><div class="price">4–8<small> meses</small></div><p class="sm">Tú firmas y el título queda a tu nombre.</p><ul><li>Visa y RIF, coordinados a distancia o en persona</li><li>Registro SAREN de comprador extranjero</li><li>Negociación con precios comparables</li><li>Revisión de documentos y registro</li><li>Acompañamiento por WhatsApp hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
+    <div class="pcol"><div class="plan"><span class="lab">Compra a través de una empresa local</span><div class="price">0–4<small> meses</small></div><p class="sm">Sin visa ni RIF de tu lado. Tu participación queda en un contrato con la empresa que tiene el título.</p><ul><li>Lectura del mercado y 3 a 5 oportunidades filtradas</li><li>La estructura, explicada en tu contrato</li><li>Abogado y agente aliados</li><li>Coordinación hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Precio según el alcance de cada caso. También: traducción de documentos, poderes para comprar a distancia y administración después de la compra.</p>
   </div>
@@ -2501,6 +2503,9 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
   $$('#plans .plan').forEach((p) => { p.setAttribute('role', 'button'); p.setAttribute('tabindex', '0');
     p.addEventListener('click', (e) => { if (!e.target.closest('a,button')) { selectPlan(p.dataset.plan); planIntent = p.dataset.plan; } });
     p.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === p) { e.preventDefault(); selectPlan(p.dataset.plan); planIntent = p.dataset.plan; } }); });
+  $$('#abroad .plan').forEach((p) => { p.setAttribute('role', 'button'); p.setAttribute('tabindex', '0');
+    const pick = () => $$('#abroad .plan').forEach((x) => { x.classList.toggle('sel', x === p); x.setAttribute('aria-pressed', String(x === p)); });
+    p.addEventListener('click', pick); p.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === p) { e.preventDefault(); pick(); } }); });
   /* plans: highlight by where the reader came from */
   let lastArea = 'publicacion', planIntent = null;
   function highlightPlans() {
@@ -2596,7 +2601,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     ['c-thread', 'd-thread'].forEach((id) => { const el = document.getElementById(id); el.innerHTML = bubbles(); el.scrollTop = el.scrollHeight; });
     $('#c-chips').hidden = CHAT.m.some((x) => x.w === 'me');
     const onPage = current === 'contacto' || current === 'entrar';
-    $('#dock').hidden = onPage || CHAT.s !== 'open'; $('#pill').hidden = onPage; $('#pill .dot').hidden = !(CHAT.s === 'min' && CHAT.m.some((x) => x.w === 'me'));
+    $('#dock').hidden = onPage || CHAT.s !== 'open'; $('#pill').hidden = onPage; $('#pill').classList.toggle('small', CHAT.s !== 'closed'); $('#pill .dot').hidden = !(CHAT.s === 'min' && CHAT.m.some((x) => x.w === 'me'));
     applyLang();
   }
   function say(t) {
@@ -2631,12 +2636,12 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
   const MPAL = ['#F08DB8', '#F26B47', '#FAC93E', '#1FB2CF', '#4DB964', '#2F7FD0', '#BB7FD3', '#E84A3C', '#F7A15E', '#2BB89E', '#E35FA2', '#A9CF46'];
   const MOFF = '#F1EEE9';
   const MTONE = {
-    dark: { bg: '#1A1B19', landcover: '#1F201E', park: '#1E201D', water: '#121312', waterway: '#131414', building: '#252623', minor: '#2A2B28', major: '#383934', text: '#F1EEE9' },
-    light: { bg: '#E7E2DA', landcover: '#E2DDD4', park: '#DEDAD0', water: '#D2D3CF', waterway: '#D2D3CF', building: '#DCD6CC', minor: '#D9D3C9', major: '#CCC5B9', text: '#1B1A18' } };
+    dark: { bg: '#1A1B19', landcover: '#1F201E', park: '#1E201D', water: '#121312', waterway: '#131414', building: '#252623', minor: '#2A2B28', major: '#383934', text: '#1B1A18', line: '#F1EEE9' },
+    light: { bg: '#E7E2DA', landcover: '#E2DDD4', park: '#DEDAD0', water: '#D2D3CF', waterway: '#D2D3CF', building: '#DCD6CC', minor: '#D9D3C9', major: '#CCC5B9', text: '#ffffff', line: '#1B1A18' } };
   function paintBase(map, t) {
     const T = MTONE[t], set = (id, k, v) => { if (map.getLayer(id)) map.setPaintProperty(id, k, v); };
     set('bg', 'background-color', T.bg); set('landcover', 'fill-color', T.landcover); set('park', 'fill-color', T.park); set('water', 'fill-color', T.water);
-    set('waterway', 'line-color', T.waterway); set('building', 'fill-color', T.building); set('roads-minor', 'line-color', T.minor); set('roads-major', 'line-color', T.major); set('osm-places', 'text-color', T.text);
+    set('waterway', 'line-color', T.waterway); set('building', 'fill-color', T.building); set('roads-minor', 'line-color', T.minor); set('roads-major', 'line-color', T.major); set('osm-places', 'text-color', T.text); set('line-p', 'line-color', T.line); set('line-m', 'line-color', T.line);
   }
   const BASE = { version: 8, glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
     sources: { omt: { type: 'vector', url: 'https://tiles.openfreemap.org/planet', attribution: '© OpenFreeMap © OpenMapTiles · Datos © colaboradores de OpenStreetMap' } },
@@ -2687,9 +2692,9 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     function start() {
       if (map || !window.maplibregl || !root.offsetWidth) return;
       map = new maplibregl.Map({ container: $('.mgl', root), style: BASE, bounds: HOME, fitBoundsOptions: { padding: 0 }, maxZoom: 15, attributionControl: false,
-        dragRotate: false, pitchWithRotate: false, touchPitch: false, touchZoomRotate: full, scrollZoom: full, dragPan: true, doubleClickZoom: full, keyboard: full, boxZoom: false, cooperativeGestures: false });
+        dragRotate: false, pitchWithRotate: false, touchPitch: false, touchZoomRotate: true, scrollZoom: true, dragPan: true, doubleClickZoom: true, keyboard: true, boxZoom: false, cooperativeGestures: false });
       map.touchZoomRotate && map.touchZoomRotate.disableRotation && map.touchZoomRotate.disableRotation();
-      if (full) map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), full ? 'top-right' : 'bottom-right');
       map.addControl(new maplibregl.AttributionControl({ compact: false }), 'bottom-left');
       let inited = false;
       const labs = { p: [], m: [] };
@@ -2714,7 +2719,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
           map.addLayer({ id: 'fill-' + k, type: 'fill', source: 'z' + k, layout: { visibility: vis }, paint: { 'fill-color': ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]], 'fill-opacity': ['case', ['boolean', ['feature-state', 'h'], false], 0.88, 0.75] } });
           map.addLayer({ id: 'line-' + k, type: 'line', source: 'z' + k, layout: { visibility: vis }, paint: { 'line-color': MOFF, 'line-opacity': ['case', ['boolean', ['feature-state', 'h'], false], 1, 0.85], 'line-width': ['case', ['boolean', ['feature-state', 'h'], false], 1.4, 0.6] } });
         });
-        map.addLayer({ id: 'osm-places', type: 'symbol', source: 'omt', 'source-layer': 'place', minzoom: 13, filter: ['in', ['get', 'class'], ['literal', ['suburb', 'neighbourhood', 'quarter']]], layout: { 'text-field': ['upcase', ['coalesce', ['get', 'name:es'], ['get', 'name']]], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-letter-spacing': 0.14 }, paint: { 'text-color': MOFF, 'text-opacity': 0.9 } });
+        map.addLayer({ id: 'osm-places', type: 'symbol', source: 'omt', 'source-layer': 'place', minzoom: 13, filter: ['in', ['get', 'class'], ['literal', ['suburb', 'neighbourhood', 'quarter']]], layout: { 'text-field': ['upcase', ['coalesce', ['get', 'name:es'], ['get', 'name']]], 'text-font': ['Noto Sans Bold'], 'text-size': 9, 'text-letter-spacing': 0.14 }, paint: { 'text-color': MOFF, 'text-opacity': 0.95 } });
         ['p', 'm'].forEach(buildLabels);
         map.addSource('offers', { type: 'geojson', data: offersFC() });
         map.addLayer({ id: 'offers', type: 'circle', source: 'offers', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 3, 15, 5], 'circle-color': '#ffffff', 'circle-stroke-color': '#151515', 'circle-stroke-width': 1.4 } });
@@ -2764,11 +2769,11 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
   }).catch(() => {});
 
   /* grainy gradient stickers: soft shapes filled with blurred map colours and a film grain */
-  const SHAPES = { flower: [6, 6, 44], scallop: [14, 2.6, 47], cloud: [10, 3.6, 46] };
+  const SHAPES = { flower: [6, 6, 44], scallop: [14, 2.6, 47], cloud: [10, 3.6, 46], round: [1, 0, 48] };
   function shapePath(k) { const [n, A, B] = SHAPES[k]; let d = ''; for (let i = 0; i <= 360; i += 2) { const t = i * Math.PI / 180, R = B + A * Math.cos(n * t); d += (i ? 'L' : 'M') + (50 + R * Math.cos(t)).toFixed(2) + ' ' + (50 + R * Math.sin(t)).toFixed(2); } return d + 'Z'; }
   let gid = 0;
   function grain(el) {
-    const id = 'g' + ++gid, cs = (el.dataset.c || '0,2,3').split(',').map((i) => MPAL[+i % MPAL.length]), d = shapePath(el.dataset.grain);
+    const id = 'g' + ++gid, cs = el.dataset.hex ? el.dataset.hex.split(',') : (el.dataset.c || '0,2,3').split(',').map((i) => MPAL[+i % MPAL.length]), d = shapePath(el.dataset.grain);
     el.insertAdjacentHTML('afterbegin', `<svg class="gr" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><clipPath id="${id}c"><path d="${d}"/></clipPath>
       <filter id="${id}b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13"/></filter>
       <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="${gid * 7}" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.42"/></feComponentTransfer></filter></defs>
