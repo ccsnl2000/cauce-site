@@ -134,10 +134,12 @@ main { min-height: 70vh; }
 .hero .lead .ph { aspect-ratio: 16/10; }
 .hero h1 { font-family: var(--serif); font-size: clamp(36px, 4.4vw, 58px); line-height: 1; letter-spacing: -0.045em; }
 .hero .dek { color: var(--soft); font-size: 16px; max-width: 38em; }
-.side { display: grid; gap: 16px; align-content: start; }
+.side { display: grid; gap: 16px; align-content: start; grid-template-rows: auto 1fr; }
 .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 14px; }
 .figs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
-.figs div { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 2px; }
+.figs div { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 2px; align-content: start; }
+.side .panel.pop:last-child { grid-template-rows: auto 1fr; }
+.side .panel.pop:last-child .figs { grid-auto-rows: 1fr; }
 .figs b { font: 700 24px var(--mono); letter-spacing: -0.04em; }
 .editor { display: flex; gap: 14px; align-items: center; }
 .avatar { width: 54px; height: 54px; border-radius: 50%; background: var(--fill); display: grid; place-items: center; font-family: var(--serif); font-size: 24px; flex: none; }
@@ -150,6 +152,28 @@ main { min-height: 70vh; }
 .feed h3 { font-family: var(--serif); font-size: 22px; line-height: 1.12; }
 .feed a:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .pro { font-size: 10px; border: 1px solid currentColor; border-radius: 999px; padding: 1px 6px; margin-left: 6px; letter-spacing: .06em; }
+.cover .mini { flex: 1; min-height: 0; padding: 12% 3% 10%; }
+.cover .mini svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.mini .ln { fill: none; stroke: currentColor; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.mini .m1 { opacity: .55; } .mini .m2 { opacity: .3; } .mini .bx { fill: currentColor; } .mini .bx.neg { opacity: .45; }
+.mini .ref { stroke: currentColor; opacity: .35; stroke-dasharray: 2 3; vector-effect: non-scaling-stroke; }
+.chart { margin: 22px 0 0; padding: 18px 18px 12px; background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; }
+.chart figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; font-size: 14px; font-weight: 700; }
+.chart .lgd { display: flex; gap: 14px; flex-wrap: wrap; color: var(--soft); font-size: 12px; font-weight: 400; }
+.chart i.sw { display: inline-block; width: 14px; height: 2px; vertical-align: middle; margin-right: 6px; background: currentColor; }
+.plot { position: relative; margin-top: 12px; outline: none; touch-action: pan-y; cursor: crosshair; }
+.plot:focus-visible { box-shadow: 0 0 0 2px var(--ink); border-radius: 6px; }
+.plot svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--sans); }
+.plot .gl { stroke: var(--line); } .plot .ax { fill: var(--soft); font-size: 11px; }
+.plot .ln { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.c0 { stroke: var(--ink); color: var(--ink); } .c1 { stroke: var(--soft); color: var(--soft); } .c2 { stroke: var(--faint); color: var(--faint); }
+.plot .bx { fill: var(--ink); transition: opacity .2s; } .plot .bx.neg { fill: var(--soft); }
+.plot.hov .bx:not(.on) { opacity: .3; }
+.plot .ref { stroke: var(--soft); stroke-dasharray: 3 4; } .plot .reft { fill: var(--soft); font-size: 11px; }
+.plot .xh { stroke: var(--ink); stroke-width: 1; opacity: .35; } .plot .dt { fill: var(--sheet); stroke-width: 2; }
+.tip { position: absolute; top: -6px; transform: translate(-50%, -100%); background: var(--bg); color: var(--ink); border: 1px solid var(--line); padding: 8px 10px; border-radius: 10px; font-size: 12px; pointer-events: none; white-space: nowrap; display: grid; gap: 3px; box-shadow: 0 8px 24px rgba(0,0,0,.08); z-index: 2; }
+.tip div { display: flex; justify-content: space-between; gap: 16px; } .tip b { font-weight: 700; }
+.chart .src { margin-top: 8px; font-size: 11px; color: var(--soft); }
 .cover { aspect-ratio: 4/3; border-radius: 10px; background: var(--ink); color: var(--bg); padding: 14px; display: flex; flex-direction: column; justify-content: space-between; }
 .cover b { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1; }
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
@@ -247,8 +271,8 @@ body.auth header.top, body.auth footer { display: none; }
 .auth { position: relative; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; padding-block: 44px 32px; }
 .auth-back { font-size: 14px; color: var(--soft); position: fixed; top: calc(36px + env(safe-area-inset-top, 0px)); left: max(40px, env(safe-area-inset-left, 0px)); z-index: 3; }
 .auth-back:hover { color: var(--ink); }
-.auth-hello { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.025em; color: #fff; mix-blend-mode: difference; }
-.auth-back { mix-blend-mode: difference; color: #fff !important; opacity: .75; }
+.auth-hello { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.025em; color: var(--ink); text-shadow: 0 0 18px var(--bg), 0 0 36px var(--bg); }
+.auth-back { text-shadow: 0 0 14px var(--bg); }
 .auth-card { align-self: center; width: 640px; max-width: 100%; background: var(--sheet); border-radius: 22px; padding: clamp(28px, 4vw, 56px); box-shadow: 0 40px 90px rgba(27,26,24,.10); }
 .auth-tabs { display: flex; justify-content: space-between; align-items: baseline; }
 .auth-tabs button { background: none; border: 0; padding: 0; font: 400 clamp(22px, 2.2vw, 30px) var(--sans); letter-spacing: -0.02em; color: var(--faint); cursor: pointer; }
@@ -383,14 +407,14 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <div class="ph fig" data-c="1"><div class="figbox" data-fig="lote"></div><span>Ilustración: el terreno, la calle, el vecindario</span></div>
       <div class="blk"><span class="lab">La noticia</span><p>Vertical Real Estate ofrece 2.363 m² en Porlamar por $500.000, con un proyecto de uso mixto. Suponemos 1,5 m² construibles por cada m² de terreno. De esa área, el 80% sería vendible.</p></div>
       <div class="blk"><span class="lab">Lo que sabemos</span><p>Con un costo de obra de $800 por m², el proyecto cuesta unos $4 millones. El terreno es solo el 12% de ese total. El resultado depende del costo de obra y del precio de venta.</p>
-        <div class="bars" aria-label="Punto de equilibrio frente al mercado"><div><span>Para no perder</span><i style="width:100%"></i><span>$1.501</span></div><div><span>Porlamar hoy</span><i class="g" style="width:67%"></i><span>$1.003</span></div></div></div>
+        <div class="bars" aria-label="Punto de equilibrio frente al mercado"><div><span>Para no perder</span><i style="width:100%"></i><span>$1.501</span></div><div><span>Porlamar hoy</span><i class="g" style="width:67%"></i><span>$1.003</span></div></div><div class="chart" data-chart="porlamar"></div></div>
       <div class="blk"><span class="lab">La lectura de Cauce</span><p>A los precios de hoy, los números no dan. El proyecto funciona si la obra cuesta menos de $650 por m² y el precio de venta en la costa sube a unos $1.400 por m².</p></div>
       <div class="blk"><span class="lab">La otra mirada</span><p>El vendedor podría decir que en la costa los inmuebles nuevos se piden más caros que los usados. Es probable, pero no hay suficientes anuncios para medirlo.</p></div>
       <div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El modelo completo: costos, escenarios y calculadora.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>
     </article>
     <aside class="rail">
-      <div class="panel"><span class="lab">Datos de la zona</span><b class="num" style="font-size:26px;font-weight:500">$1.003<span class="sm"> /m²</span></b><span class="sm">Porlamar · n=18 · ago 2026</span><a class="sm" href="#datos" style="text-decoration:underline">Ver en Inteligencia</a></div>
-      <div class="panel"><span class="lab">Propiedades en esta zona</span><a href="#propiedad"><div class="ph fig" data-c="2" style="aspect-ratio:16/9"><div class="figbox" data-fig="lote"></div></div></a><span class="sm">Terreno · 2.363 m² · $500.000</span></div>
+      <div class="panel pz"><span class="lab">Datos de la zona</span><b class="num" style="font-size:26px;font-weight:500">$1.003<span class="sm"> /m²</span></b><span class="sm">Porlamar · n=18 · ago 2026</span><a class="sm" href="#datos" style="text-decoration:underline">Ver en Inteligencia</a></div>
+      <div class="panel pz"><span class="lab">Propiedades en esta zona</span><a href="#propiedad"><div class="ph fig" data-c="2" style="aspect-ratio:16/9"><div class="figbox" data-fig="lote"></div></div></a><span class="sm">Terreno · 2.363 m² · $500.000</span></div>
       <div class="panel"><span class="lab">Habla con nuestro equipo</span><span class="sm">45 minutos sobre tu inmueble o terreno. Si luego encargas un estudio, te descontamos el precio de la consulta.</span><a class="btn" href="#planes" data-plan="consulta" style="justify-self:start">Agendar</a></div>
     </aside>
   </div>
@@ -1861,11 +1885,125 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     { t: 'Apartamento · El Marqués', img: 'i:avila', zone: 'El Marqués', m2: 90, price: 81000 }
   ];
   const STUDIES = [
-    { t: 'Terreno · La Boyera', s: '18.000 m² · $5,5 M', tag: 'Viable con condiciones', ok: 1 },
-    { t: 'Local · Colinas de Bello Monte', s: '5.380 m² · $2,1 M', tag: 'Ajustado', ok: 0 },
-    { t: 'Terreno · Porlamar', s: '2.363 m² · $500.000', tag: 'No viable hoy', ok: 0 },
-    { t: 'Posada · Playa El Agua', s: '7.216 m² · $1,2 M', tag: 'En estudio', ok: 0 }
+    { t: 'Terreno · La Boyera', s: '18.000 m² · $5,5 M', tag: 'Viable con condiciones', ok: 1, id: 'boyera' },
+    { t: 'Local · Colinas de Bello Monte', s: '5.380 m² · $2,1 M', tag: 'Ajustado', ok: 0, id: 'local' },
+    { t: 'Terreno · Porlamar', s: '2.363 m² · $500.000', tag: 'No viable hoy', ok: 0, id: 'porlamar' },
+    { t: 'Posada · Playa El Agua', s: '7.216 m² · $1,2 M', tag: 'En estudio', ok: 0, id: 'posada' }
   ];
+  /* Charts. Porlamar comes from the study's own assumptions; the rest are SAMPLE DATA until the sources are connected. */
+  const N0 = (n, d = 0) => { const t = Math.abs(n).toFixed(d).split('.'); t[0] = t[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.'); return (n < 0 ? '−' : '') + t.join(','); };
+  const FMT = { usd: (v) => (v < 0 ? '−$' : '$') + N0(Math.abs(v)), m2p: (v) => '$' + N0(v) + '/m²', pct: (v) => N0(v, 1) + '%', m2: (v) => N0(v) + ' m²', mes: (v) => '$' + N0(v) + (document.documentElement.lang === 'en' ? '/mo' : '/mes') };
+  const SAMPLE = 'Datos de ejemplo. Se reemplazan al conectar las fuentes.';
+  const MONTHS = ['nov', 'dic', 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct'];
+  const walk = (a, b, w) => MONTHS.map((_, i) => a + (b - a) * (i / 11) + w * Math.sin(i * 1.7));
+  const be = (o) => (500000 + o * 3544.5) * 1.276 / 2835.6, PX = [900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700], OCC = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60];
+  const CH = {
+    porlamar: { t: 'Margen según precio de venta y costo de obra', k: 'line', x: PX.map((p) => '$' + N0(p)), f: 'pct', ref: [0, 'Punto de equilibrio'], src: 'Calculado con los supuestos del estudio: 1,5 m² construibles por m² de terreno, 80% vendible.', s: [650, 800, 950].map((o) => ({ n: 'Obra a $' + o, v: PX.map((p) => (p - be(o)) / p * 100) })) },
+    fuentes: { t: 'Precio por m², dos fuentes', k: 'line', x: MONTHS, f: 'm2p', src: SAMPLE, s: [{ n: 'Anuncios en portales', v: walk(1488, 1551, 9) }, { n: 'Otra fuente', v: walk(522, 547, 6) }] },
+    bellomonte: { t: 'Precio pedido por m²', k: 'line', x: MONTHS, f: 'm2p', src: SAMPLE, s: [{ n: 'Bello Monte', v: walk(1372, 1410, 8) }, { n: 'Colinas de Bello Monte', v: walk(1140, 1167, 7) }] },
+    boyera: { t: 'Margen según meses para venderlo todo', k: 'line', x: ['12', '18', '24', '30', '36', '42', '48'].map((m) => m + ' meses'), f: 'pct', ref: [0, 'Sin margen'], src: SAMPLE, s: [{ n: 'Margen del proyecto', v: [22, 18.4, 14.6, 10.9, 7.1, 3.2, -0.8] }] },
+    airbnb: { t: 'Ingreso neto mensual según ocupación', k: 'line', x: OCC.map((o) => o + '%'), f: 'mes', src: SAMPLE, s: [{ n: 'Airbnb a $63 la noche', v: OCC.map((o) => 63 * 30 * o / 100 * 0.65) }, { n: 'Alquiler por año', v: OCC.map(() => 420) }] },
+    guia: { t: 'Costos de compra, como % del precio', k: 'bar', x: ['Impuestos y registro', 'Abogado', 'Traslado de fondos', 'Notaría y poderes', 'Avalúo'], f: 'pct', src: SAMPLE, s: [{ n: 'Costo', v: [3, 1.5, 1, 0.5, 0.3] }] },
+    local: { t: 'Costo por m² frente al mercado', k: 'bar', x: ['Compra', 'Conversión', 'Gastos y permisos', 'Costo total', 'Vivienda en Colinas'], f: 'm2p', src: SAMPLE, tot: [3, 4], s: [{ n: 'Por m²', v: [390, 560, 200, 1150, 1250] }] },
+    rendimiento: { t: 'Del rendimiento bruto al neto', k: 'water', x: ['Bruto', 'Condominio', 'Vacancia', 'Mantenimiento', 'Impuestos', 'Administración', 'Neto'], f: 'pct', src: SAMPLE, s: [{ n: 'Rendimiento', v: [12, -1.6, -1, -1.2, -0.8, -1, 0] }] },
+    costa: { t: 'Metros cuadrados por presupuesto, en la costa', k: 'bar', x: ['$15 mil', '$30 mil', '$60 mil', '$120 mil', '$250 mil'], f: 'm2', src: SAMPLE, s: [{ n: 'Superficie típica', v: [28, 50, 80, 130, 210] }] },
+    posada: { t: 'Ocupación estimada por mes', k: 'line', x: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], f: 'pct', src: SAMPLE, s: [{ n: 'Ocupación', v: [62, 70, 66, 55, 40, 38, 52, 68, 45, 35, 38, 66] }] }
+  };
+  /* geometry shared by the static cover and the interactive chart */
+  function geo(c, W, H, pad) {
+    const [L, R, T, B] = pad, n = c.x.length, v = c.s[0].v;
+    let run = 0; const wat = c.k === 'water' ? v.map((d, i) => { if (i === n - 1) return [0, run]; const a = run; run += d; return i === 0 ? [0, run] : [a, run]; }) : null;
+    const all = wat ? wat.flat() : c.s.flatMap((x) => x.v);
+    let lo = Math.min(0, ...all), hi = Math.max(...all);
+    const raw = (hi - lo) / 4, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1, 2, 2.5, 5, 10].map((k) => k * mag).find((k) => k >= raw);
+    lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+    const pw = W - L - R, ph = H - T - B;
+    const X = c.k === 'line' ? (i) => L + pw * i / (n - 1) : (i) => L + pw * (i + 0.5) / n;
+    const Y = (y) => T + ph * (1 - (y - lo) / (hi - lo));
+    return { n, lo, hi, step, X, Y, pw, ph, L, T, W, H, wat, bw: pw / n * 0.56 };
+  }
+  function marks(c, g, mini) {
+    let o = '';
+    if (c.ref) o += `<line class="ref" x1="${g.L}" x2="${g.W - (mini ? 6 : 16)}" y1="${g.Y(c.ref[0])}" y2="${g.Y(c.ref[0])}"/>`;
+    if (c.k === 'line') c.s.forEach((x, k) => { o += `<path class="ln ${mini ? 'm' : 'c'}${k}" d="${x.v.map((y, i) => (i ? 'L' : 'M') + g.X(i).toFixed(1) + ' ' + g.Y(y).toFixed(1)).join('')}"/>`; });
+    else c.s[0].v.forEach((y, i) => {
+      const [a, b] = g.wat ? g.wat[i] : [0, y], y0 = g.Y(Math.max(a, b)), y1 = g.Y(Math.min(a, b));
+      const cls = g.wat ? (i === 0 || i === g.n - 1 ? 'tot' : 'neg') : (c.tot && c.tot.indexOf(i) >= 0 ? 'tot' : '');
+      o += `<rect class="bx ${cls}" data-i="${i}" x="${(g.X(i) - g.bw / 2).toFixed(1)}" y="${y0.toFixed(1)}" width="${g.bw.toFixed(1)}" height="${Math.max(1, y1 - y0).toFixed(1)}" rx="${mini ? 1.5 : 3}"/>`;
+    });
+    return o;
+  }
+  const miniChart = (id) => { const c = CH[id]; if (!c) return ''; const g = geo(c, 300, 150, [4, 4, 6, 4]); return `<div class="mini" aria-hidden="true"><svg viewBox="0 0 300 150" preserveAspectRatio="none">${marks(c, g, 1)}</svg></div>`; };
+  const cover = (id, n, name, ar) => `<div class="cover"${ar ? ` style="aspect-ratio:${ar}"` : ''}><span class="lab" style="color:inherit;opacity:.7">Estudio${n ? " Nº " + n : ""}</span>${miniChart(id)}<b>${esc(name)}</b></div>`;
+  function chartHTML(id) {
+    const c = CH[id], W = 640, H = 280, g = geo(c, W, H, [52, 16, 14, 30]), fm = FMT[c.f];
+    let ax = '';
+    for (let y = g.lo; y <= g.hi + 1e-9; y += g.step) ax += `<line class="gl" x1="${g.L}" x2="${W - 16}" y1="${g.Y(y)}" y2="${g.Y(y)}"/><text class="ax" x="${g.L - 8}" y="${g.Y(y) + 4}" text-anchor="end">${fm(y)}</text>`;
+    const every = g.n > 9 ? 2 : 1;
+    c.x.forEach((l, i) => { if (i % every === 0) ax += `<text class="ax" x="${g.X(i)}" y="${H - 8}" text-anchor="middle">${esc(l)}</text>`; });
+    const rt = c.ref ? `<text class="reft" x="${W - 16}" y="${g.Y(c.ref[0]) - 6}" text-anchor="end">${esc(c.ref[1])}</text>` : '';
+    const lgd = c.s.length > 1 ? `<span class="lgd">${c.s.map((x, k) => `<span class="c${k}"><i class="sw"></i><span>${esc(x.n)}</span></span>`).join('')}</span>` : '';
+    return `<figure class="chart" data-chart="${id}"><figcaption><span>${esc(c.t)}</span>${lgd}</figcaption><div class="plot" tabindex="0" role="img" aria-label="${esc(c.t)}"><svg viewBox="0 0 ${W} ${H}">${ax}${marks(c, g)}${rt}<line class="xh" y1="${g.T}" y2="${g.T + g.ph}" visibility="hidden"/><g class="dts"></g></svg><div class="tip" hidden></div></div><p class="src">${esc(c.src)}</p></figure>`;
+  }
+  function wireCharts(root) {
+    $$('.chart[data-chart]:not([data-on])', root).forEach((el) => {
+      const id = el.dataset.chart, c = CH[id]; if (!c) return;
+      el.outerHTML = chartHTML(id);
+    });
+    $$('.chart[data-chart]', root).forEach((el) => {
+      if (el.dataset.on) return; el.dataset.on = '1';
+      const c = CH[el.dataset.chart], g = geo(c, 640, 280, [52, 16, 14, 30]), fm = FMT[c.f];
+      const plot = $('.plot', el), svg = $('svg', plot), tip = $('.tip', plot), xh = $('.xh', svg), dts = $('.dts', svg);
+      let cur = -1;
+      const val = (i) => (g.wat ? (i === g.n - 1 ? g.wat[i][1] : c.s[0].v[i]) : null);
+      function at(i) {
+        if (i === cur) return; cur = i;
+        if (i < 0) { plot.classList.remove('hov'); tip.hidden = true; xh.setAttribute('visibility', 'hidden'); dts.innerHTML = ''; $$('.bx', svg).forEach((b) => b.classList.remove('on')); return; }
+        plot.classList.add('hov');
+        const x = g.X(i);
+        if (c.k === 'line') { xh.setAttribute('x1', x); xh.setAttribute('x2', x); xh.setAttribute('visibility', 'visible'); dts.innerHTML = c.s.map((s, k) => `<circle class="dt c${k}" cx="${x}" cy="${g.Y(s.v[i])}" r="4.5"/>`).join(''); }
+        else $$('.bx', svg).forEach((b) => b.classList.toggle('on', +b.dataset.i === i));
+        const rows = c.k === 'water' ? `<div><span>${esc(i === 0 ? 'Rendimiento' : i === g.n - 1 ? 'Queda' : 'Resta')}</span><b>${fm(val(i))}</b></div>`
+          : c.s.map((s, k) => `<div><span class="c${k}">${c.s.length > 1 ? '<i class="sw"></i>' : ''}<span>${esc(s.n)}</span></span><b>${fm(s.v[i])}</b></div>`).join('');
+        tip.innerHTML = `<b>${esc(c.x[i])}</b>${rows}`; tip.hidden = false;
+        const px = x / 640 * plot.clientWidth, half = tip.offsetWidth / 2;
+        tip.style.left = Math.min(Math.max(px, half), plot.clientWidth - half) + 'px';
+      }
+      const pick = (e) => { const r = svg.getBoundingClientRect(), vx = (e.clientX - r.left) / r.width * 640; return Math.max(0, Math.min(g.n - 1, c.k === 'line' ? Math.round((vx - g.L) / g.pw * (g.n - 1)) : Math.floor((vx - g.L) / g.pw * g.n))); };
+      plot.addEventListener('pointermove', (e) => at(pick(e)));
+      plot.addEventListener('pointerdown', (e) => at(pick(e)));
+      plot.addEventListener('pointerleave', () => at(-1));
+      plot.addEventListener('blur', () => at(-1));
+      plot.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); at(Math.max(0, Math.min(g.n - 1, (cur < 0 ? (e.key === 'ArrowRight' ? -1 : g.n) : cur) + (e.key === 'ArrowRight' ? 1 : -1)))); } });
+    });
+  }
+  /* Article pages. '' is the Porlamar study, kept in the markup; the rest render from here. */
+  const FID = ['fuentes', 'bellomonte', 'boyera', 'airbnb', 'guia', 'local', 'rendimiento', 'costa'];
+  const ARTS = {
+    fuentes: { dek: 'Los portales muestran precios pedidos; otras fuentes miden algo distinto. Antes de comparar, hay que saber qué mide cada una.', b: ['Lo que muestran los datos', 'La primera cifra sale de anuncios en portales: es lo que piden los vendedores. La segunda viene de otra fuente, con otra muestra y otro método. La diferencia se mantiene mes a mes, así que no es ruido.'], c: 'Usa el precio pedido para saber contra qué compites al vender, y descuéntale un margen de negociación. No mezcles las dos cifras en un mismo cálculo.' },
+    bellomonte: { dek: 'Dos zonas que comparten calles y servicios, con una diferencia de $243 por m² que se ha mantenido durante el último año.', b: ['Lo que muestran los datos', 'Bello Monte se pide más caro de forma constante. Parte de la diferencia viene del tipo de edificio y de su antigüedad, no solo de la ubicación.'], c: 'Para quien compra, Colinas da más metros por el mismo dinero. Revisa el estado del edificio antes de asumir que es una ganga.' },
+    boyera: { dek: 'Un terreno de 18.000 m² por $5,5 millones, pensado para townhouses. El margen existe, pero depende de qué tan rápido se vendan.', b: ['Lo que sabemos', 'Si todo se vende en un año, el margen ronda 22%. Cada seis meses de más se comen casi cuatro puntos, en costos financieros y de mantenimiento.'], c: 'Viable con condiciones: preventa antes de construir y fases pequeñas, para no cargar inventario.' },
+    airbnb: { dek: 'Con $63 por noche y 32% de ocupación, un apartamento en Airbnb deja casi lo mismo que alquilado por año, con más trabajo.', b: ['Lo que muestran los datos', 'El gráfico compara el ingreso neto mensual de Airbnb, según la ocupación, con un alquiler anual de $420 al mes. Las líneas se cruzan cerca de 34%.'], c: 'Por debajo de 35% de ocupación conviene alquilar por año. Por encima, Airbnb paga el esfuerzo.' },
+    guia: { dek: 'Comprar en Venezuela desde afuera es posible. Lo que cambia es el orden de los pasos y quién firma por ti.', b: ['Lo que cuesta', 'Además del precio, cuenta con impuestos y registro, abogado, poderes y el traslado de fondos. En este ejemplo suman cerca de 6% del precio.'], c: 'Empieza por el poder y el abogado, no por el inmueble. Y verifica el documento de propiedad antes de pagar cualquier arras.' },
+    local: { dek: 'Un local de 5.380 m² en Colinas de Bello Monte por $2,1 millones. Convertido en vivienda, los números dan, pero con poco espacio para errores.', b: ['Lo que sabemos', 'Sumando compra, obra de conversión, gastos y permisos, el costo llega a $1.150 por m². La vivienda en la zona se pide a $1.250.'], c: 'Ajustado: un sobrecosto de 8% en el total borra el margen.' },
+    rendimiento: { dek: 'Un 12% bruto suena bien. Después de condominio, vacancia, mantenimiento, impuestos y administración, queda cerca de 6,4%.', b: ['De dónde se va', 'Cada barra es un gasto, como porcentaje del valor del inmueble al año. Pasa el cursor para ver cuánto resta cada uno.'], c: 'Compara siempre el rendimiento neto. Un 6% neto en dólares sigue siendo competitivo, pero no es 12%.' },
+    costa: { dek: 'En la costa, $15.000 compran unos 28 m². El gráfico muestra cuánto espacio da cada presupuesto.', b: ['Lo que muestran los datos', 'Los presupuestos bajos compran más metros por dólar, casi siempre en edificios más viejos o lejos de la playa.'], c: 'Antes de comprar barato, suma el costo de remodelar. Allí suele estar la diferencia.' },
+    posada: { sec: 'Estudio', t: 'Posada de 7.216 m² en Playa El Agua: ¿cuánto llena al año?', mins: '6 min', pro: 1, dek: 'Una posada en venta por $1,2 millones. La pregunta no es el precio, es la ocupación fuera de temporada.', b: ['Lo que sabemos', 'La ocupación sube en Carnaval, Semana Santa, agosto y diciembre, y baja a cerca de 40% el resto del año.'], c: 'En estudio: falta medir las tarifas reales de cada temporada.' }
+  };
+  let PORLAMAR = null;
+  function renderArticle(id) {
+    const art = $('#v-articulo article');
+    if (PORLAMAR === null) PORLAMAR = art.innerHTML;
+    const a = ARTS[id];
+    $$('#v-articulo .pz').forEach((p) => { p.hidden = !!a; });
+    if (!a) { art.innerHTML = PORLAMAR; wireCharts(art); mountFigs(); return; }
+    const fi = FID.indexOf(id), f = fi >= 0 ? FEED[fi] : [a.sec, a.t, a.mins, a.pro, null];
+    const top = f[4] ? media(f[4], fi) : cover(id, '', f[1].split(':')[0], '16/10');
+    art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><div class="avatar">c</div><span>Equipo Cauce</span><span>20 oct 2026</span><span>${esc(f[2])}</span></div>${top}
+      <div class="blk"><span class="lab">${esc(a.b[0])}</span><p>${esc(a.b[1])}</p><div class="chart" data-chart="${id}"></div></div>
+      <div class="blk"><span class="lab">La lectura de Cauce</span><p>${esc(a.c)}</p></div>${f[3] ? '<div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El análisis completo, con datos descargables.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>' : ''}`;
+    wireCharts(art); mountFigs();
+  }
   const OWN = [
     { t: 'Proyecto Cauce 01', s: 'En estructuración · memorando para inversionistas', tag: 'Propio', ok: 1 },
     { t: 'Proyecto Cauce 02', s: 'Buscando terreno', tag: 'Próximamente', ok: 0 }
@@ -1901,8 +2039,9 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
   /* feed */
   function feed(f) {
     $('#feed').innerHTML = FEED.filter((x) => f === 'all' || x[0] === f).map((x, i) => {
-      const img = x[0] === 'Estudio' ? `<div class="cover"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(x[1].split(':')[0])}</b></div>` : media(x[4], i);
-      return `<a class="card-link" href="#articulo">${img}<span class="lab">${esc(x[0])} · ${esc(x[2])}${x[3] ? '<span class="pro">PRO</span>' : ''}</span><h3>${esc(x[1])}</h3></a>`;
+      const id = FID[FEED.indexOf(x)];
+      const img = x[0] === 'Estudio' ? cover(id, i + 1, x[1].split(':')[0]) : media(x[4], i);
+      return `<a class="card-link" href="#articulo/${id}">${img}<span class="lab">${esc(x[0])} · ${esc(x[2])}${x[3] ? '<span class="pro">PRO</span>' : ''}</span><h3>${esc(x[1])}</h3></a>`;
     }).join('');
     applyLang(); mountFigs();
   }
@@ -1921,7 +2060,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
       html = items.join('');
     } else {
       const L = k === 'estudios' ? STUDIES : OWN;
-      html = L.map((p, i) => `<a class="card-link" href="#propiedad">${k === 'estudios' ? `<div class="cover" style="aspect-ratio:4/5"><span class="lab" style="color:inherit;opacity:.7">Estudio Nº ${i + 1}</span><b>${esc(p.t.split(' · ')[1])}</b></div>` : ill(i ? 'avila' : 'lote')}<div class="row"><b>${esc(p.t)}</b><span class="tag${p.ok ? ' ok' : ''}">${esc(p.tag)}</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
+      html = L.map((p, i) => `<a class="card-link" href="${p.id ? (p.id === 'porlamar' ? '#articulo' : '#articulo/' + p.id) : '#propiedad'}">${k === 'estudios' ? cover(p.id, i + 1, p.t.split(' · ')[1], '4/5') : ill(i ? 'avila' : 'lote')}<div class="row"><b>${esc(p.t)}</b><span class="tag${p.ok ? ' ok' : ''}">${esc(p.tag)}</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
     }
     $('#grid').innerHTML = html;
     $('#p-intro').textContent = PINTRO[k]; $('#p-note').textContent = PNOTE[k];
@@ -2119,6 +2258,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     'Cada cifra con su fuente.': 'Every number sourced.', 'Fecha, muestra y tipo de inmueble. Si dos fuentes no coinciden, publicamos las dos.': 'Date, sample size and property type. If two sources disagree, we publish both.',
     'Supuestos a la vista.': 'Assumptions up front.', 'En cada estudio mostramos qué asumimos y cómo cambia el resultado si nos equivocamos.': 'Every study shows what we assumed and how the result changes if we’re wrong.',
     'Independientes.': 'Independent.', 'Algunos destacados son espacios pagados. Nuestras lecturas y conclusiones no se venden.': 'Some featured spots are paid. Our analysis and conclusions are not for sale.',
+    "Margen según precio de venta y costo de obra": "Margin by sale price and construction cost", "Punto de equilibrio": "Break-even", "Calculado con los supuestos del estudio: 1,5 m² construibles por m² de terreno, 80% vendible.": "Calculated with the study’s assumptions: 1.5 buildable m² per m² of land, 80% sellable.", "Obra a $650": "Construction at $650", "Obra a $800": "Construction at $800", "Obra a $950": "Construction at $950", "Datos de ejemplo. Se reemplazan al conectar las fuentes.": "Sample data. Replaced once the sources are connected.", "Precio por m², dos fuentes": "Price per m², two sources", "Anuncios en portales": "Listing portals", "Otra fuente": "Another source", "Precio pedido por m²": "Asking price per m²", "Margen según meses para venderlo todo": "Margin by months to sell everything", "Sin margen": "No margin", "Margen del proyecto": "Project margin", "12 meses": "12 months", "18 meses": "18 months", "24 meses": "24 months", "30 meses": "30 months", "36 meses": "36 months", "42 meses": "42 months", "48 meses": "48 months", "Ingreso neto mensual según ocupación": "Net monthly income by occupancy", "Airbnb a $63 la noche": "Airbnb at $63 a night", "Alquiler por año": "Yearly rental", "Costos de compra, como % del precio": "Purchase costs, as % of price", "Impuestos y registro": "Taxes and registry", "Abogado": "Lawyer", "Traslado de fondos": "Moving funds", "Notaría y poderes": "Notary and powers of attorney", "Avalúo": "Appraisal", "Costo": "Cost", "Costo por m² frente al mercado": "Cost per m² against the market", "Compra": "Purchase", "Conversión": "Conversion", "Gastos y permisos": "Fees and permits", "Costo total": "Total cost", "Vivienda en Colinas": "Homes in Colinas", "Por m²": "Per m²", "Del rendimiento bruto al neto": "From gross to net yield", "Bruto": "Gross", "Condominio": "Building fees", "Vacancia": "Vacancy", "Mantenimiento": "Maintenance", "Impuestos": "Taxes", "Administración": "Management", "Neto": "Net", "Rendimiento": "Yield", "Queda": "Left", "Resta": "Takes", "Metros cuadrados por presupuesto, en la costa": "Square metres per budget, on the coast", "Superficie típica": "Typical size", "$15 mil": "$15k", "$30 mil": "$30k", "$60 mil": "$60k", "$120 mil": "$120k", "$250 mil": "$250k", "Ocupación estimada por mes": "Estimated occupancy by month", "Ocupación": "Occupancy", "ene": "Jan", "feb": "Feb", "mar": "Mar", "abr": "Apr", "may": "May", "jun": "Jun", "jul": "Jul", "ago": "Aug", "sep": "Sep", "oct": "Oct", "nov": "Nov", "dic": "Dec", "Lo que muestran los datos": "What the data shows", "De dónde se va": "Where it goes", "Lo que cuesta": "What it costs", "Estudio": "Study", "El análisis completo, con datos descargables.": "The full analysis, with downloadable data.", "Posada de 7.216 m² en Playa El Agua: ¿cuánto llena al año?": "A 7,216 m² inn at Playa El Agua: how full does it get?", "Los portales muestran precios pedidos; otras fuentes miden algo distinto. Antes de comparar, hay que saber qué mide cada una.": "Portals show asking prices; other sources measure something else. Before comparing, know what each one measures.", "La primera cifra sale de anuncios en portales: es lo que piden los vendedores. La segunda viene de otra fuente, con otra muestra y otro método. La diferencia se mantiene mes a mes, así que no es ruido.": "The first figure comes from portal listings: what sellers ask. The second comes from another source, with another sample and method. The gap holds month after month, so it is not noise.", "Usa el precio pedido para saber contra qué compites al vender, y descuéntale un margen de negociación. No mezcles las dos cifras en un mismo cálculo.": "Use the asking price to know what you compete with when selling, minus a negotiation margin. Don’t mix the two figures in one calculation.", "Dos zonas que comparten calles y servicios, con una diferencia de $243 por m² que se ha mantenido durante el último año.": "Two areas that share streets and services, with a $243 per m² gap that has held for the past year.", "Bello Monte se pide más caro de forma constante. Parte de la diferencia viene del tipo de edificio y de su antigüedad, no solo de la ubicación.": "Bello Monte is consistently priced higher. Part of the gap comes from building type and age, not only location.", "Para quien compra, Colinas da más metros por el mismo dinero. Revisa el estado del edificio antes de asumir que es una ganga.": "For buyers, Colinas gives more metres for the same money. Check the building before assuming it is a bargain.", "Un terreno de 18.000 m² por $5,5 millones, pensado para townhouses. El margen existe, pero depende de qué tan rápido se vendan.": "An 18,000 m² plot for $5.5 million, planned for townhouses. The margin is there, but it depends on how fast they sell.", "Si todo se vende en un año, el margen ronda 22%. Cada seis meses de más se comen casi cuatro puntos, en costos financieros y de mantenimiento.": "If everything sells in a year, the margin is around 22%. Every extra six months eats almost four points in financing and upkeep.", "Viable con condiciones: preventa antes de construir y fases pequeñas, para no cargar inventario.": "Viable with conditions: pre-sales before building, and small phases so inventory doesn’t pile up.", "Con $63 por noche y 32% de ocupación, un apartamento en Airbnb deja casi lo mismo que alquilado por año, con más trabajo.": "At $63 a night and 32% occupancy, an Airbnb flat earns about the same as a yearly rental, with more work.", "El gráfico compara el ingreso neto mensual de Airbnb, según la ocupación, con un alquiler anual de $420 al mes. Las líneas se cruzan cerca de 34%.": "The chart compares Airbnb’s net monthly income, by occupancy, with a yearly rental at $420 a month. The lines cross near 34%.", "Por debajo de 35% de ocupación conviene alquilar por año. Por encima, Airbnb paga el esfuerzo.": "Below 35% occupancy, rent by the year. Above it, Airbnb pays for the effort.", "Comprar en Venezuela desde afuera es posible. Lo que cambia es el orden de los pasos y quién firma por ti.": "Buying in Venezuela from abroad is possible. What changes is the order of the steps and who signs for you.", "Además del precio, cuenta con impuestos y registro, abogado, poderes y el traslado de fondos. En este ejemplo suman cerca de 6% del precio.": "On top of the price, count taxes and registry, a lawyer, powers of attorney and moving the funds. In this example they add up to about 6% of the price.", "Empieza por el poder y el abogado, no por el inmueble. Y verifica el documento de propiedad antes de pagar cualquier arras.": "Start with the power of attorney and the lawyer, not the property. And check the title before paying any deposit.", "Un local de 5.380 m² en Colinas de Bello Monte por $2,1 millones. Convertido en vivienda, los números dan, pero con poco espacio para errores.": "A 5,380 m² commercial space in Colinas de Bello Monte for $2.1 million. Converted to homes, the numbers work, with little room for error.", "Sumando compra, obra de conversión, gastos y permisos, el costo llega a $1.150 por m². La vivienda en la zona se pide a $1.250.": "Adding purchase, conversion works, fees and permits, the cost reaches $1,150 per m². Homes in the area ask $1,250.", "Ajustado: un sobrecosto de 8% en el total borra el margen.": "Tight: an 8% overrun on the total wipes out the margin.", "Un 12% bruto suena bien. Después de condominio, vacancia, mantenimiento, impuestos y administración, queda cerca de 6,4%.": "A 12% gross yield sounds good. After building fees, vacancy, maintenance, taxes and management, about 6.4% is left.", "Cada barra es un gasto, como porcentaje del valor del inmueble al año. Pasa el cursor para ver cuánto resta cada uno.": "Each bar is a cost, as a percentage of the property’s value per year. Hover to see how much each one takes.", "Compara siempre el rendimiento neto. Un 6% neto en dólares sigue siendo competitivo, pero no es 12%.": "Always compare net yield. 6% net in dollars is still competitive, but it is not 12%.", "En la costa, $15.000 compran unos 28 m². El gráfico muestra cuánto espacio da cada presupuesto.": "On the coast, $15,000 buys about 28 m². The chart shows how much space each budget gets.", "Los presupuestos bajos compran más metros por dólar, casi siempre en edificios más viejos o lejos de la playa.": "Smaller budgets buy more metres per dollar, almost always in older buildings or away from the beach.", "Antes de comprar barato, suma el costo de remodelar. Allí suele estar la diferencia.": "Before buying cheap, add the cost of renovating. That is usually where the difference lies.", "Una posada en venta por $1,2 millones. La pregunta no es el precio, es la ocupación fuera de temporada.": "An inn for sale at $1.2 million. The question is not the price, it is occupancy off season.", "La ocupación sube en Carnaval, Semana Santa, agosto y diciembre, y baja a cerca de 40% el resto del año.": "Occupancy rises at Carnival, Easter, August and December, and falls to about 40% the rest of the year.", "En estudio: falta medir las tarifas reales de cada temporada.": "Under study: real rates for each season still need measuring.",
     'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'De Caracas, con calculadora ↝': 'From Caracas, with a calculator ↝', 'arrástrame, pana': 'drag me, pal', 'La': 'Safe', 'fija': 'bet', 'SIN CUENTO · CON FUENTE ·': 'NO TALL TALES · SOURCED ·', 'Sin cuento, con fuente': 'No tall tales, sourced', 'Sitio en construcción': 'Site under construction', 'Estamos echando la placa': 'Pouring the concrete', 'Vuelve pronto, pana': 'Back soon, pal', 'Faltan unas cabillas': 'A few rebars to go', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
     'Datos inmobiliarios con fuente. Boletín cada jueves.': 'Sourced real estate data. Newsletter every Thursday.',
     'Leer': 'Read', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
@@ -2281,7 +2421,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
   /* router */
   const VIEWS = ['mercado', 'articulo', 'propiedades', 'propiedad', 'analizar', 'datos', 'planes', 'entrar', 'sobre'];
   const AREA = { mercado: 'mercado', articulo: 'mercado', propiedades: 'propiedades', propiedad: 'propiedades', analizar: 'inteligencia', datos: 'inteligencia' };
-  let current = null;
+  let current = null, artId = '';
   function render(h) {
     const authView = h === 'entrar';
     VIEWS.forEach((v) => { const el = document.getElementById('v-' + v); const ghost = authView && v === 'mercado'; el.hidden = !(v === h || ghost); el.classList.toggle('ghost', ghost); el.setAttribute('aria-hidden', ghost ? 'true' : 'false'); if (v === h) { el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter'); } });
@@ -2294,18 +2434,23 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     $$('#sub a').forEach((a) => { if (a.dataset.s === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     if (h === 'planes') highlightPlans();
     if (h === 'mercado') countUp();
+    if (h === 'articulo') renderArticle(artId);
     applyLang();
     window.scrollTo(0, 0);
   }
   function show() {
-    let h = location.hash.slice(1); if (VIEWS.indexOf(h) < 0) h = 'mercado';
+    let [h, arg] = location.hash.slice(1).split('/'); if (VIEWS.indexOf(h) < 0) h = 'mercado';
+    artId = h === 'articulo' ? arg || '' : artId;
     if (current && AREA[current]) lastArea = AREA[current];
     if (h !== 'planes' && h !== 'entrar') planIntent = null;
     current = h;
     if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
   }
   window.addEventListener('hashchange', show);
-  feed('all'); grid('destacados'); mountFigs(); show();
+  const heroFit = () => { const ph = $('.hero .lead .ph'), side = $('.hero .side'); if (!ph || !side) return; side.style.height = matchMedia('(max-width: 900px)').matches ? '' : Math.round(ph.getBoundingClientRect().bottom - side.getBoundingClientRect().top) + 'px'; };
+  if (window.ResizeObserver) new ResizeObserver(heroFit).observe($('.hero .lead .ph'));
+  window.addEventListener('resize', heroFit);
+  feed('all'); grid('destacados'); mountFigs(); show(); heroFit();
   setTimeout(() => $('#intro').classList.add('done'), reduce ? 0 : 1300);
 })();
 </script>
