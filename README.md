@@ -1,5 +1,14 @@
 # cauce.blog
 
-Sitio de Cauce. Cada cambio en `main` se publica en cauce.blog (Porkbun Static Hosting + GitHub Connect).
+Every push to `main` deploys to https://cauce.blog (Porkbun, GitHub Connect).
 
-Última publicación: 2026-10-23.
+## Where to edit
+- `src/draft.html` is the source of the whole site (one page, all views, styles and scripts).
+- Run `python3 tools/build.py` to regenerate `index.html` from it, then commit both files.
+- Do not edit `index.html` by hand; the next build overwrites it.
+- `src/hairline/` holds the illustration sources (`kit.txt` is shared; `build.py` assembles the figures).
+- `vendor/` is MapLibre GL 4.7.1 (BSD-3). `fonts/` is Helvetica Now Display (licensed to Cauce).
+- `data/bcv.json` is written once a day by `.github/workflows/bcv.yml` from bcv.org.ve. Don't edit it by hand.
+
+## Language
+Spanish is the source. English lives in the `EN` dictionary inside `src/draft.html`, keyed by the exact Spanish text. Add a line there for every new Spanish string.
