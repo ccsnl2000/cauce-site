@@ -19,4 +19,4 @@ jobs:
           git config user.name "cauce-bot"
           git config user.email "bot@cauce.blog"
           git add data/bcv.json
-          git diff --cached --quiet || (git commit -m "BCV: tasa del día" && git push)
+          git diff --cached --quiet || (git commit -m "BCV: tasa del día" && git pull --rebase origin main && git push)
