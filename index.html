@@ -202,6 +202,7 @@ body.auth .stick-chat { display: none; }
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
 .duo h2 { font-family: var(--serif); font-size: 34px; line-height: 1.05; margin: 8px 0 18px; }
 
+.perfil { margin-top: 14px; display: grid; gap: 10px; animation: gdIn .45s var(--ease) both; } .perfil-q b { font-weight: 700; } .perfil .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .gd { max-width: 720px; margin: 0 auto; }
 .gd h1 { font-family: var(--serif); font-size: clamp(36px, 4.4vw, 56px); line-height: 1.02; margin: 14px 0 16px; }
 .gd .dek { font-size: 18px; color: var(--soft); max-width: 36em; }
@@ -392,6 +393,18 @@ body.auth header.top, body.auth footer { display: none; }
 .routes { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; max-width: 860px; margin-inline: auto; }
 .routes .plan { cursor: default; }
 .routes ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
+.c-res { display: none; }
+.chat.wide { grid-template-columns: minmax(320px, 440px) minmax(0, 1fr); grid-template-rows: auto auto 1fr auto; column-gap: 28px; justify-items: stretch; align-items: start; padding-inline: max(24px, 3vw); }
+.chat.wide .auth-hello { grid-column: 1 / -1; justify-self: center; }
+.chat.wide .chat-card { grid-column: 1; grid-row: 3; width: 100%; height: min(720px, 78vh); align-self: start; }
+.chat.wide .c-res { display: grid; gap: 16px; grid-column: 2; grid-row: 3; align-content: start; background: var(--sheet); border-radius: 22px; padding: clamp(18px, 2.4vw, 28px); box-shadow: 0 40px 90px rgba(27,26,24,.10); max-height: 78vh; overflow-y: auto; animation: gdIn .5s var(--ease) both; }
+.c-res .rh { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; } .c-res h2 { font-size: 26px; letter-spacing: -.03em; margin-top: 4px; } .c-res .demo { justify-self: start; }
+.c-res .rz { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.rzc { display: grid; gap: 4px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; color: inherit; text-decoration: none; position: relative; } .rzc:hover { border-color: var(--ink); } .rzc .n { position: absolute; top: 12px; right: 14px; font: 12px var(--mono); color: var(--soft); } .rzc b { font-size: 17px; } .rzc .kv { display: grid; gap: 2px; font-size: 13px; margin-top: 6px; } .rzc .kv span:first-child { font: 700 15px var(--mono); }
+.rzc .bar { display: block; height: 4px; border-radius: 9px; background: var(--fill); margin-top: 8px; overflow: hidden; } .rzc .bar b { display: block; height: 100%; background: var(--ink); }
+.c-res .rp { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; } .c-res .rp .ph { aspect-ratio: 4/3; } .c-res .rp .row b { font-size: 14px; font-weight: 600; } .c-res .chart { margin: 0; } .c-res > .btn { justify-self: start; }
+.widebtn { justify-self: start; display: inline-flex; gap: 8px; align-items: center; font: 600 13px var(--sans); color: var(--ink); background: none; border: 1px solid var(--ink); border-radius: 999px; padding: 8px 14px; cursor: pointer; margin-top: 2px; } .widebtn:hover { background: var(--ink); color: var(--bg); }
+@media (max-width: 900px) { .chat.wide { grid-template-columns: 1fr; } .chat.wide .chat-card { grid-row: auto; height: 60vh; } .chat.wide .c-res { grid-column: 1; grid-row: auto; max-height: none; margin-top: 16px; } }
 .chat { position: relative; }
 .chat-card { align-self: center; width: 640px; max-width: 100%; height: min(640px, 72vh); background: var(--sheet); border-radius: 22px; padding: clamp(18px, 3vw, 28px); box-shadow: 0 40px 90px rgba(27,26,24,.10); display: grid; grid-template-rows: auto 1fr auto auto auto; gap: 14px; }
 .chat-hd { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
@@ -443,6 +456,8 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap .seg button { background: none; border: 0; font: inherit; font-size: 13px; color: #a6a49f; padding: 6px 12px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
 .cmap .seg button[aria-pressed="true"] { background: #f2f0ec; color: #111; font-weight: 700; }
 .cmap .seg .lk { color: #f2f0ec; }
+.cmap .seg.lines { background: none !important; padding: 0; gap: 6px; } .cmap .seg.lines button { border: 1px solid color-mix(in srgb, var(--m-ink) 35%, transparent); color: var(--m-ink); background: none !important; padding: 5px 12px; font-weight: 500; text-shadow: 0 0 6px var(--m-bg), 0 0 2px var(--m-bg); }
+.cmap .seg.lines button[aria-pressed="true"] { border-color: var(--m-ink); box-shadow: inset 0 0 0 1px var(--m-ink); font-weight: 700; color: var(--m-ink) !important; } .cmap .seg.lines button:disabled { border-style: dashed; }
 .cmap .go { position: absolute; right: 60px; bottom: 34px; z-index: 2; background: #f2f0ec; color: #111; border-radius: 999px; padding: 9px 15px; font-size: 13px; font-weight: 700; }
 .cmap .reset { position: absolute; right: 16px; top: 16px; z-index: 2; background: rgba(20,20,20,.85); color: #f2f0ec; border: 1px solid #333; border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; }
 .hero-map .reset { top: auto; bottom: 34px; right: auto; left: 16px; }
@@ -463,6 +478,9 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap.lt { --m-lab: #ffffff; --m-bg: #E7E2DA; --m-ink: #1B1A18; --m-soft: #77736C; --m-ctl: rgba(241,238,233,.94); --m-line: #DCD6CC; --m-on: #1B1A18; --m-on-ink: #F1EEE9; }
 .cmap .mhead .lab { color: var(--m-ink); opacity: .78; } .cmap .mhead h2 { color: var(--m-ink); } .cmap .mhead p { color: var(--m-soft); }
 .cmap.lt .mhead { text-shadow: 0 1px 12px rgba(241,238,233,.75), 0 0 2px rgba(241,238,233,.5); }
+.cmap .mpay { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding: 20px; background: color-mix(in srgb, var(--m-bg) 35%, transparent); }
+.cmap .mpay > div { background: var(--sheet); color: var(--ink); border-radius: 18px; padding: 26px 28px; max-width: 360px; display: grid; gap: 10px; justify-items: start; box-shadow: 0 30px 80px rgba(0,0,0,.25); animation: gdIn .5s var(--ease) both; } .cmap .mpay b { font-size: 22px; letter-spacing: -.02em; } .cmap .mpay a.sm { text-decoration: underline; text-underline-offset: 3px; }
+.cmap.paywall .mgl, .cmap.paywall .mctl, .cmap.paywall .mlab { filter: blur(7px); pointer-events: none; transition: filter .6s var(--ease); }
 .cmap .seg { background: var(--m-ctl); } .cmap .seg button { color: var(--m-soft); } .cmap .seg button[aria-pressed="true"] { background: var(--m-on); color: var(--m-on-ink); } .cmap .seg button:disabled { opacity: .45; cursor: default; } .cmap .seg .lk { color: currentColor; }
 .cmap .go { background: var(--m-on); color: var(--m-on-ink); }
 .cmap .reset { background: var(--m-ctl); color: var(--m-ink); border-color: var(--m-line); }
@@ -580,7 +598,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="duo">
     <div><span class="lab">Boletín de los jueves</span><h2>Una cifra, una historia y un terreno. Cada semana.</h2>
       <form class="pillfield nl"><label for="nl1" hidden>Correo</label><input id="nl1" type="email" required placeholder="tu@correo.com"><button class="btn">Unirme</button></form>
-      <p class="sm nlmsg" style="margin-top:10px">Gratis. Al unirte, recibes un estudio completo de regalo.</p></div>
+      <p class="sm nlmsg" style="margin-top:10px">Gratis. Al unirte, recibes un estudio completo de regalo.</p><div class="perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div></div>
     <div><span class="lab">Consulta 1:1</span><h2>¿Tienes un inmueble, un terreno o una duda? Revisémoslo juntos.</h2><a class="btn o" href="#planes" data-plan="consulta">Agendar una consulta</a></div>
   </div>
 </section>
@@ -601,7 +619,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
         <p class="sm gd-msg" id="gd-msg" aria-live="polite"></p>
       </form>
       <div class="gd-done" id="gd-done" hidden>
-        <p class="gd-ok"><span>Listo.</span> <span>La guía va en camino a</span> <b id="gd-to"></b></p>
+        <p class="gd-ok"><span>Listo.</span> <span>La guía va en camino a</span> <b id="gd-to"></b></p><div class="perfil" id="gd-perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div>
         <div class="gd-acc" id="gd-acc">
           <p class="gd-q">¿Guardamos la guía en una cuenta?</p>
           <ul><li>La guía siempre a mano en la web, sin buscar el correo</li><li>Guarda artículos, estudios y propiedades para volver a ellos</li><li>Avisos cuando cambie el precio en las zonas que sigues</li></ul>
@@ -706,10 +724,10 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="cmap full" id="map-full" data-view="-67.075,10.372,-66.72,10.548" data-full="1">
     <div class="mgl" aria-label="Mapa de Caracas por parroquia o municipio"></div>
     <div class="mhead"><span class="lab">Mapa · Caracas</span><h2>Precio y oferta por zona</h2><p>Límites oficiales. Una escala a la vez.</p></div>
-    <div class="mctl"><div class="seg" role="group" aria-label="Escala"><button type="button" data-scale="p" aria-pressed="true">Parroquias</button><button type="button" data-scale="m" aria-pressed="false">Municipios</button></div><div class="seg" role="group" aria-label="Dato"><button type="button" data-layer="o" aria-pressed="true">Zonas</button><button type="button" data-layer="v" aria-pressed="false"><span>Precio m²</span> <svg class="lk" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div><div class="seg" role="group" aria-label="Vista"><button type="button" data-v3="0" aria-pressed="true">2D</button><button type="button" data-v3="1" aria-pressed="false">3D</button></div><div class="seg" role="group" aria-label="Contexto"><button type="button" data-ctx="metro" aria-pressed="true">Metro</button><button type="button" data-ctx="streets" aria-pressed="true">Calles</button><button type="button" data-ctx="buildings" aria-pressed="true">Edificios</button><button type="button" disabled aria-disabled="true">Ocupación · pronto</button></div></div>
+    <div class="mctl"><div class="seg" role="group" aria-label="Escala"><button type="button" data-scale="m" aria-pressed="false">Municipios</button><button type="button" data-scale="p" aria-pressed="true">Parroquias</button></div><div class="seg" role="group" aria-label="Dato"><button type="button" data-layer="o" aria-pressed="true">Zonas</button><button type="button" data-layer="v" aria-pressed="false"><span>Precio m²</span> <svg class="lk" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div><div class="seg" role="group" aria-label="Vista"><button type="button" data-v3="0" aria-pressed="true">2D</button><button type="button" data-v3="1" aria-pressed="false">3D</button></div><div class="seg lines" role="group" aria-label="Contexto"><button type="button" data-ctx="metro" aria-pressed="true">Metro</button><button type="button" data-ctx="streets" aria-pressed="true">Calles</button><button type="button" data-ctx="buildings" aria-pressed="true">Edificios</button><button type="button" disabled aria-disabled="true">Ocupación · pronto</button></div></div>
     <button class="reset" type="button" hidden>← Caracas</button>
     <div class="mtip" hidden></div>
-    <div class="mlock" hidden><div><b style="font-size:18px">El precio por m² de cada zona</b><span class="sm" style="color:#555">Con Inteligencia ves la mediana por parroquia y municipio, su serie semanal y las propiedades bajo la media.</span><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a><button type="button" class="x">Seguir explorando</button></div></div>
+    <div class="mpay" hidden><div><span class="lab">Inteligencia</span><b>Sigue explorando el mapa</b><p class="sm">Precios por zona, capas y comparaciones sin límite de tiempo.</p><a class="btn" href="#planes" data-plan="inteligencia">Suscríbete por $10 al mes</a><a class="sm" href="#entrar">Ya tengo cuenta</a></div></div><div class="mlock" hidden><div><b style="font-size:18px">El precio por m² de cada zona</b><span class="sm" style="color:#555">Con Inteligencia ves la mediana por parroquia y municipio, su serie semanal y las propiedades bajo la media.</span><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a><button type="button" class="x">Seguir explorando</button></div></div>
   </div>
   <p class="sm" style="margin-top:10px"><span data-src>Límites: parroquias de Venezuela (Tapiquén, 2015).</span> <span>Propiedades de ejemplo.</span></p>
   <div class="dash" id="dash" aria-live="polite"></div>
@@ -752,6 +770,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <form class="ask" id="c-form"><label for="c-in" hidden>Tu mensaje</label><input id="c-in" placeholder="Escribe tu pregunta" autocomplete="off"><button type="submit" aria-label="Enviar"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button></form>
     <p class="chat-note">Vista previa: el asistente todavía no está conectado. Para hablar con una persona, escribe a <span style="user-select:all;color:var(--ink)">hola@cauce.blog</span>.</p>
   </div>
+  <aside class="c-res" id="c-res" aria-live="polite"></aside>
 </section>
 
 <div class="cdock" id="dock" hidden><div class="hd"><b>Cauce</b><div class="acts"><button type="button" id="d-full" aria-label="Abrir en página">Abrir</button><button type="button" id="d-min" aria-label="Minimizar">—</button><button type="button" id="d-close" aria-label="Cerrar">✕</button></div></div><div class="thread" id="d-thread" aria-live="polite"></div><form class="ask" id="d-form"><label for="d-in" hidden>Tu mensaje</label><input id="d-in" placeholder="Responde…" autocomplete="off"><button type="submit" aria-label="Enviar"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button></form></div>
@@ -772,7 +791,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     </form>
     <form id="f-perfil" hidden>
       <p class="auth-q">Cuéntanos un poco. Es opcional y puedes cambiarlo cuando quieras.</p>
-      <div class="chips" role="group" aria-label="¿Qué te trae a Cauce?"><button type="button" class="chip" aria-pressed="false" data-r="vivir">Comprar para vivir</button><button type="button" class="chip" aria-pressed="false" data-r="invertir">Invertir</button><button type="button" class="chip" aria-pressed="false" data-r="vender">Vender o desarrollar</button><button type="button" class="chip" aria-pressed="false" data-r="agente">Soy agente</button></div>
+      <div class="chips" role="group" aria-label="¿Qué te trae a Cauce?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div>
       <label for="a-pais" hidden>País donde vives</label><input id="a-pais" type="text" placeholder="País donde vives" autocomplete="country-name">
       <label for="a-zonas" hidden>Zonas que te interesan</label><input id="a-zonas" type="text" placeholder="Zonas que te interesan">
       <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
@@ -2873,6 +2892,135 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     'Registro SAREN y revisión del inmueble': 'SAREN registration and property checks', 'Registro obligatorio del comprador extranjero, verificación del título, solvencias y alertas antes de firmar.': 'Mandatory foreign buyer registration, title checks, clearances and red flags before signing.',
     'El cierre: documentos y costos': 'Closing: documents and costs', 'Lista completa del cierre, aranceles, timbres fiscales, impuestos y un presupuesto de 5% a 8% del precio.': 'Full closing checklist, fees, tax stamps, taxes and a budget of 5–8% of the price.',
     'Zonas de seguridad, fronteras y Margarita': 'Security zones, borders and Margarita', 'Qué zonas piden autorización del Ministerio de la Defensa y qué revisar antes de enamorarte de un inmueble.': 'Which zones need Defence Ministry authorisation, and what to check before falling for a property.',
+    "La Trinidad, El Cafetal y Chuao piden precios altos. La pregunta es si se venden a ese precio: en 2026 las fuentes describen más precio pedido que operaciones cerradas.": "La Trinidad, El Cafetal and Chuao ask high prices. The question is whether they sell at those prices: in 2026 the sources describe more asking than closing.",
+    "El este sigue siendo la zona más cara de la ciudad, pero en 2026 los precios pedidos subieron más rápido que las ventas. Para comprar, negocia desde los cierres; para vender, el precio que funcionó en 2025 es mejor ancla que lo que piden los vecinos hoy.": "The east is still the most expensive part of the city, but in 2026 asking prices rose faster than sales. To buy, negotiate from closings; to sell, the price that worked in 2025 is a better anchor than what the neighbours ask today.",
+    "Lo que dicen las fuentes": "What the sources say",
+    "En septiembre de 2025, la Cámara Inmobiliaria Metropolitana estimaba que el metro cuadrado en Caracas se movía entre $800 y $1.100, con zonas como Las Mercedes por encima de $2.300. En el mismo periodo, el gremio ubicaba los alquileres entre $400 y $1.500 al mes y contaba que muchos apartamentos cerrados por la migración estaban volviendo al mercado.": "In September 2025, the Cámara Inmobiliaria Metropolitana estimated that a square metre in Caracas sold for $800 to $1,100, with areas such as Las Mercedes above $2,300. In the same period the chamber put rents at $400 to $1,500 a month and said many flats closed up during the migration were coming back to the market.",
+    "En 2026 el tono cambió. En junio, el presidente de la Cámara, Fernando Di Gerónimo, describió una contracción de la oferta: muchos propietarios duplicaron o triplicaron sus precios frente a 2025, el volumen de operaciones no acompañó y parte de los inmuebles salió del mercado. Las zonas con demanda sostenida que nombró son las corporativas: los alrededores de la embajada de Estados Unidos, Campo Alegre, Los Palos Grandes, La Castellana y Altamira.": "In 2026 the tone changed. In June the chamber's president, Fernando Di Gerónimo, described a shrinking supply: many owners doubled or tripled their prices from 2025, transactions did not follow, and some properties were pulled from the market. The areas he named as still in demand are the corporate ones: around the US embassy, Campo Alegre, Los Palos Grandes, La Castellana and Altamira.",
+    "Dónde quedan La Trinidad, El Cafetal y Chuao": "Where La Trinidad, El Cafetal and Chuao stand",
+    "El gráfico pone el precio pedido por m² en cuatro zonas del este junto al rango que la Cámara estimó para toda la ciudad. Las tres zonas de este artículo quedan por encima del rango general, pero lejos de Las Mercedes.": "The chart sets the asking price per m² in four eastern areas next to the range the chamber estimated for the whole city. The three areas in this piece sit above the general range, but well below Las Mercedes.",
+    "Por qué el este pide más": "Why the east asks more",
+    "En nuestra lectura, tres cosas sostienen el precio pedido: urbanizaciones con control de acceso, mejor respaldo de servicios (planta eléctrica y tanques de agua) y cercanía a oficinas, colegios y centros comerciales. Explican por qué un propietario se atreve a pedir más; no garantizan que alguien pague ese precio.": "In our reading, three things hold up asking prices: gated or access-controlled neighbourhoods, better backup services (generators and water tanks), and closeness to offices, schools and shopping centres. They explain why an owner dares to ask more; they do not guarantee anyone pays it.",
+    "Cómo leer un precio en el este en 2026": "How to read a price in the east in 2026",
+    "Pregunta cuánto tiempo lleva publicado el anuncio y si ya bajó de precio.": "Ask how long the listing has been up and whether the price has already dropped.",
+    "Compara con operaciones cerradas en el mismo edificio o la misma calle, no con otros anuncios.": "Compare with closed sales in the same building or street, not with other listings.",
+    "Suma el condominio y el costo de agua y luz de respaldo: en el este pesan en el gasto mensual.": "Add the condo fee and the cost of backup water and power: in the east they weigh on monthly costs.",
+    "Si un apartamento lleva meses sin moverse, su precio pedido es un techo, no una referencia.": "If a flat has sat for months, its asking price is a ceiling, not a reference.",
+    "1 sep 2025": "1 Sep 2025",
+    "16 sep 2025": "16 Sep 2025",
+    "18 jun 2026": "18 Jun 2026",
+    "13 may 2026": "13 May 2026",
+    "Desde agosto de 2026 el RIF es permanente y se tramita solo en línea. Quién lo necesita, qué pide el SENIAT y qué hacer si ya tienes uno.": "Since August 2026 the RIF is permanent and handled online only. Who needs it, what SENIAT asks for, and what to do if you already have one.",
+    "Si vas a comprar, saca el RIF primero. Ahora es permanente y en línea, así que no hay razón para dejarlo para el final, cuando cualquier retraso detiene la firma.": "If you are going to buy, get the RIF first. It is now permanent and online, so there is no reason to leave it for the end, when any delay holds up the signing.",
+    "Quién tiene que sacarlo": "Who has to get one",
+    "La reforma publicada en la Gaceta Oficial Nº 43.435 (Providencia SNAT/2026/00080) obliga a inscribirse a las personas no residentes que tengan actividad económica o bienes gravables en Venezuela. Comprar un inmueble entra en ese supuesto. Quedan fuera quienes entran como turistas o en tránsito y no tienen actividad ni bienes en el país.": "The reform published in Gaceta Oficial No. 43,435 (Providencia SNAT/2026/00080) requires non-resident individuals with economic activity or taxable assets in Venezuela to register. Buying property falls under that. People who enter as tourists or in transit and have no activity or assets in the country are exempt.",
+    "El plazo es de 30 días hábiles desde el inicio de la actividad, y el SENIAT puede inscribir de oficio a quien no lo haga.": "The deadline is 30 business days from the start of the activity, and SENIAT can register anyone who does not do it on their own.",
+    "Qué cambió": "What changed",
+    "Antes": "Before",
+    "Desde agosto de 2026": "Since August 2026",
+    "Vigencia del comprobante": "Validity of the certificate",
+    "Tres años, con renovación": "Three years, with renewal",
+    "Permanente; solo se actualiza si cambian tus datos": "Permanent; only updated if your details change",
+    "Cómo se tramita": "How it is processed",
+    "Solicitud en línea y validación en una oficina del SENIAT": "Online application and validation at a SENIAT office",
+    "Solo por los canales electrónicos del SENIAT": "Only through SENIAT's electronic channels",
+    "Norma": "Rule",
+    "Providencia de 2013": "2013 regulation",
+    "Providencia SNAT/2026/00080": "Providencia SNAT/2026/00080",
+    "Comprobación": "Verification",
+    "Comprobante impreso": "Printed certificate",
+    "Validez verificable en línea": "Validity checkable online",
+    "Fuentes: Gaceta Oficial Nº 43.435, vía Finanzas Digital; Bloomberg Línea (2025) para el procedimiento anterior.": "Sources: Gaceta Oficial No. 43,435, via Finanzas Digital; Bloomberg Línea (2025) for the previous procedure.",
+    "Paso a paso": "Step by step",
+    "Entra al portal fiscal del SENIAT (seniat.gob.ve) y busca la inscripción de RIF para persona natural.": "Go to SENIAT's tax portal (seniat.gob.ve) and look for RIF registration for individuals.",
+    "Si eres extranjero, el formulario pide tu número de pasaporte en lugar de la cédula.": "If you are a foreign national, the form asks for your passport number instead of the cédula.",
+    "Ten a mano un comprobante de domicilio; el SENIAT publica en su portal los requisitos técnicos vigentes y puede pedir otros documentos según tu caso.": "Have a proof of address ready; SENIAT publishes the current technical requirements on its portal and may ask for other documents depending on your case.",
+    "Envía la solicitud y guarda el comprobante digital. Ya no vence: solo hay que actualizarlo si cambian tus datos.": "Submit the application and keep the digital certificate. It no longer expires: you only update it if your details change.",
+    "Dónde lo vas a usar": "Where you will use it",
+    "La norma pide que el número de RIF aparezca en contratos y en solicitudes ante organismos oficiales, entre otros documentos. En una compra te lo van a pedir para el documento de compraventa y los trámites de registro, así que conviene tenerlo antes de negociar.": "The rule requires the RIF number on contracts and on requests to official bodies, among other documents. In a purchase you will be asked for it for the deed and the registry steps, so it is worth having before you negotiate.",
+    "25 ago 2026": "25 Aug 2026",
+    "13 feb 2025": "13 Feb 2025",
+    "Precios de entrada bajos y operaciones en dólares. Lo que decide el rendimiento es la ocupación fuera de temporada.": "Low entry prices and dollar transactions. What decides the return is occupancy outside the high season.",
+    "La temporada alta llena cualquier cálculo; el resto del año no siempre. Haz los números con la ocupación de los meses flojos y compara con un alquiler largo: si no superas 30% fuera de temporada, alquilar por año rinde casi lo mismo con mucho menos trabajo.": "The high season fills any spreadsheet; the rest of the year does not always. Run the numbers with the slow months' occupancy and compare with a long-term lease: if you cannot beat 30% off-season, renting by the year earns about the same with far less work.",
+    "Qué sabemos de la demanda": "What we know about demand",
+    "La Cámara Hotelera de Nueva Esparta reportó ocupaciones promedio de 60% a 70% en las vacaciones escolares de 2025, con algunos hoteles cerca de 90% por visitantes de Rusia y Trinidad. Para Semana Santa de 2026, las autoridades proyectaron un aumento del turismo de más de 20% frente a 2025, sin publicar la metodología.": "The Nueva Esparta hotel chamber reported average occupancy of 60% to 70% during the 2025 school holidays, with some hotels near 90% thanks to visitors from Russia and Trinidad. For Easter 2026 the authorities projected tourism growth of more than 20% over 2025, without publishing the method.",
+    "Son cifras de hoteles y de temporada alta. Para un apartamento en alquiler vacacional la pregunta es otra: qué pasa en mayo, junio, octubre y noviembre.": "These are hotel figures for the high season. For a flat on short-term rental the question is different: what happens in May, June, October and November.",
+    "El cálculo": "The numbers",
+    "El gráfico estima el ingreso neto mensual de un apartamento según su ocupación, frente a alquilarlo por año. Con $60 la noche y 35% entre comisiones, limpieza y servicios, el alquiler vacacional supera al largo a partir de una ocupación de alrededor de 30%.": "The chart estimates a flat's monthly net income by occupancy, against renting it by the year. At $60 a night and 35% in fees, cleaning and utilities, short-term rental beats a long lease from roughly 30% occupancy.",
+    "Las reglas de la isla": "The island's rules",
+    "Margarita es zona insular, y algunas zonas insulares y fronterizas tienen restricciones por la Ley Orgánica de Seguridad de la Nación. Antes de firmar, confirma con un abogado si el inmueble está en una zona con restricciones y cómo conviene estructurar la compra. La isla también tiene régimen de puerto libre, que cumplió 25 años en 2025.": "Margarita is an insular zone, and some insular and border zones carry restrictions under the national security law. Before signing, check with a lawyer whether the property sits in a restricted zone and how best to structure the purchase. The island also has a free-port regime, which turned 25 in 2025.",
+    "Qué mirar en un apartamento para alquilar por noches": "What to look for in a flat to rent by the night",
+    "Distancia caminando a la playa: es lo primero que filtran los huéspedes.": "Walking distance to the beach: it is the first filter guests use.",
+    "Planta eléctrica y tanque de agua propios del edificio.": "The building's own generator and water tank.",
+    "Si el condominio permite alquileres por noches.": "Whether the condo allows nightly rentals.",
+    "Quién lo administra, limpia y recibe a los huéspedes cuando no estás, y cuánto cobra.": "Who manages, cleans and welcomes guests when you are not there, and what they charge.",
+    "9 sep 2025": "9 Sep 2025",
+    "27 mar 2026": "27 Mar 2026",
+    "La Transeúnte Inversionista dura tres años y abre el camino a la residencia; la Rentista dura uno y pide ingresos fijos generados fuera del país. Cuál conviene depende de cómo vas a tener el inmueble.": "The Transeúnte Inversionista lasts three years and opens the path to residency; the Rentista lasts one and requires steady income earned outside the country. Which one fits depends on how you will hold the property.",
+    "Si vas a pasar temporadas largas y tienes ingresos fijos, la Rentista es el camino corto. Si la compra es una inversión de largo plazo con estructura, la Inversionista da más años y una ruta a la residencia. En ambos casos, verifica los requisitos vigentes con el consulado.": "If you will spend long stretches in the country and have fixed income, the Rentista is the short path. If the purchase is a long-term structured investment, the Inversionista gives more years and a route to residency. Either way, check current requirements with the consulate.",
+    "Las dos visas, lado a lado": "The two visas, side by side",
+    "TR-I · Inversionista": "TR-I · Investor",
+    "TR-RE · Rentista": "TR-RE · Rentista",
+    "Para quién": "Who it is for",
+    "Quien invierte en una actividad aceptada por organismos venezolanos": "Someone investing in an activity accepted by Venezuelan bodies",
+    "Quien vive de una pensión o renta lícita generada fuera del país": "Someone living on a lawful pension or income earned outside the country",
+    "Requisito central": "Core requirement",
+    "Documento que pruebe que la inversión fue aceptada": "A document proving the investment was accepted",
+    "Ingreso de US$1.200 al mes, más US$500 por cada familiar": "Income of US$1,200 a month, plus US$500 per family member",
+    "Vigencia": "Validity",
+    "Tres años": "Three years",
+    "Un año": "One year",
+    "Entradas": "Entries",
+    "Múltiples": "Multiple",
+    "Después": "Afterwards",
+    "Prórroga de hasta dos años y luego solicitud de residencia": "Extension of up to two years, then an application for residency",
+    "Prórrogas por periodos iguales mientras se mantenga el ingreso": "Renewals for equal periods while the income continues",
+    "Fuente: Normas de Procedimiento para la Expedición de Visados, Gaceta Oficial Nº 5.427 Extraordinario (2000).": "Source: Normas de Procedimiento para la Expedición de Visados, Gaceta Oficial No. 5,427 Extraordinario (2000).",
+    "Cuánto ingreso pide la Rentista": "How much income the Rentista requires",
+    "La norma fija el monto en dólares: US$1.200 al mes para quien solicita y US$500 más por cada familiar que lo acompañe. Son montos del año 2000; confirma con el consulado si hay ajustes antes de reunir los documentos.": "The rule sets the amount in dollars: US$1,200 a month for the applicant and US$500 more for each accompanying family member. These are 2000 amounts; check with the consulate for any changes before gathering documents.",
+    "Cuándo gana cada una": "When each one wins",
+    "La TR-I tiene sentido si la compra es parte de una inversión que un organismo venezolano puede aceptar, por lo general a través de una empresa. Fuentes especializadas mencionan una participación mínima de 20% en el capital y renovaciones mientras se mantengan las condiciones.": "The TR-I makes sense if the purchase is part of an investment a Venezuelan body can accept, usually through a company. Specialist sources mention a minimum 20% stake and renewals while the conditions hold.",
+    "La TR-RE es más simple de documentar para quien ya tiene una pensión o renta estable, pero se renueva cada año y no depende de la inversión: sirve para pasar temporadas largas, no para estructurar la compra.": "The TR-RE is simpler to document for someone with a steady pension or income, but it renews every year and does not depend on the investment: it is for long stays, not for structuring the purchase.",
+    "Antes de aplicar": "Before applying",
+    "Ambas se solicitan en el consulado de Venezuela del país donde vives.": "Both are requested at the Venezuelan consulate in the country where you live.",
+    "Los documentos emitidos fuera de Venezuela suelen requerir apostilla.": "Documents issued outside Venezuela usually need an apostille.",
+    "La visa no es requisito para todas las compras: depende de cómo se estructure la operación. Revísalo con un abogado.": "A visa is not required for every purchase: it depends on how the deal is structured. Review it with a lawyer.",
+    "5 ene 2000": "5 Jan 2000",
+    "mar 2026": "Mar 2026",
+    "Precio pedido por m² en el este, frente al rango de Caracas": "Asking price per m² in the east, against the Caracas range",
+    "Caracas, bajo": "Caracas, low",
+    "Caracas, alto": "Caracas, high",
+    "Por m²": "Per m²",
+    "Rango de Caracas y Las Mercedes: Cámara Inmobiliaria Metropolitana (sep 2025). El Cafetal, La Trinidad y Chuao: datos de demostración.": "Caracas range and Las Mercedes: Cámara Inmobiliaria Metropolitana (Sep 2025). El Cafetal, La Trinidad and Chuao: demo data.",
+    "Ingreso neto mensual según ocupación, por noches frente a alquiler largo": "Monthly net income by occupancy, nightly against long-term rental",
+    "Supuestos de demostración: $60 por noche, 35% de costos y comisiones, alquiler largo de $350 al mes.": "Demo assumptions: $60 a night, 35% costs and fees, long-term rent of $350 a month.",
+    "Por noches, $60": "Nightly, $60",
+    "Alquiler largo": "Long-term rental",
+    "Ingreso mensual que pide la visa Rentista, según el grupo familiar": "Monthly income the Rentista visa requires, by family size",
+    "Solo": "Alone",
+    "Con 1 familiar": "With 1 relative",
+    "Con 2": "With 2",
+    "Con 3": "With 3",
+    "Ingreso mensual": "Monthly income",
+    "Normas de Procedimiento para la Expedición de Visados (2000): US$1.200 más US$500 por familiar.": "Visa procedure rules (2000): US$1,200 plus US$500 per family member.",
+    "Fuentes": "Sources",
+    "Te puedo mostrar zonas que encajan, inmuebles y sus números lado a lado. Se ve mejor en pantalla amplia.": "I can show you areas that fit, homes and their numbers side by side. It looks better in the wide view.",
+    "Ver en pantalla amplia": "Open the wide view",
+    "Sigue explorando el mapa": "Keep exploring the map",
+    "Precios por zona, capas y comparaciones sin límite de tiempo.": "Prices by area, layers and comparisons with no time limit.",
+    "Suscríbete por $10 al mes": "Subscribe for $10 a month",
+    "Ya tengo cuenta": "I already have an account",
+    "¿Cuál te describe?": "Which describes you?",
+    "Así te mandamos lo que te sirve.": "So we send you what is useful to you.",
+    "Particular": "Individual",
+    "Agente inmobiliario": "Real estate agent",
+    "Inmobiliaria": "Agency",
+    "Inversionista local": "Local investor",
+    "Inversionista internacional": "International investor",
+    "Desarrollador o constructor": "Developer or builder",
+    "Otro": "Other",
+    "Listo. Borrador: el registro se activa al lanzar el sitio.": "Done. Draft: sign-up switches on at launch.",
+    "Gracias. Borrador: el registro se activa al lanzar el sitio.": "Thanks. Draft: sign-up switches on at launch.",
     'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'De Caracas, con calculadora ↝': 'From Caracas, with a calculator ↝', 'arrástrame, pana': 'drag me, pal', 'La': 'Safe', 'fija': 'bet', 'SIN CUENTO · CON FUENTE ·': 'NO TALL TALES · SOURCED ·', 'Sin cuento, con fuente': 'No tall tales, sourced', 'Sitio en construcción': 'Site under construction', 'Estamos echando la placa': 'Pouring the concrete', 'Vuelve pronto, pana': 'Back soon, pal', 'Faltan unas cabillas': 'A few rebars to go', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
     'Datos inmobiliarios con fuente. Boletín cada jueves.': 'Sourced real estate data. Newsletter every Thursday.',
     'Leer': 'Read', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
@@ -3002,7 +3150,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (auth.mode === 'login') { $('#a-msg').textContent = 'Borrador: el inicio de sesión se activa al lanzar el sitio.'; return; }
     $('#f-auth').hidden = true; $('#f-perfil').hidden = false;
   });
-  $$('#f-perfil .chip').forEach((c) => c.addEventListener('click', () => c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'))));
+  $$('#f-perfil [data-perfil]').forEach((c) => c.addEventListener('click', () => { $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); savePerfil({ perfil: c.dataset.perfil }); }));
+  new MutationObserver(() => { if (!$('#f-perfil').hidden) { const cur = getPerfil().perfil; $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.perfil === cur))); } }).observe($('#f-perfil'), { attributes: true, attributeFilter: ['hidden'] });
   function done() {
     const n = NEXT[auth.plan];
     $('#f-perfil').hidden = true; $('#a-done').hidden = false;
@@ -3010,7 +3159,20 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   }
   $('#f-perfil').addEventListener('submit', (e) => { e.preventDefault(); done(); });
   $('#p-skip').addEventListener('click', done);
-  $$('form.nl').forEach((f) => f.addEventListener('submit', (e) => { e.preventDefault(); const m = f.parentElement.querySelector('.nlmsg'); if (m) m.textContent = 'Listo. Borrador: el registro se activa al lanzar el sitio.'; }));
+  // who signs up: one tap after the email, saved for the profile (and, at launch, the member label in the newsletter tool)
+  const savePerfil = (o) => { try { const cur = JSON.parse(localStorage.getItem('cauce-perfil') || '{}'); localStorage.setItem('cauce-perfil', JSON.stringify({ ...cur, ...o })); } catch (e) {} };
+  const getPerfil = () => { try { return JSON.parse(localStorage.getItem('cauce-perfil') || '{}'); } catch (e) { return {}; } };
+  function askPerfil(box, done) {
+    box.hidden = false; const cur = getPerfil().perfil;
+    $$('[data-perfil]', box).forEach((b) => { b.setAttribute('aria-pressed', String(b.dataset.perfil === cur)); b.onclick = () => { $$('[data-perfil]', box).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); savePerfil({ perfil: b.dataset.perfil }); if (done) done(b); }; });
+  }
+  $$('form.nl').forEach((f) => f.addEventListener('submit', (e) => {
+    e.preventDefault(); const em = $('input[type=email]', f).value.trim(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return;
+    savePerfil({ email: em, boletin: true }); const wrap = f.parentElement, m = wrap.querySelector('.nlmsg'), box = wrap.querySelector('.perfil');
+    if (m) m.textContent = 'Listo. Borrador: el registro se activa al lanzar el sitio.';
+    if (box) askPerfil(box, () => { if (m) m.textContent = 'Gracias. Borrador: el registro se activa al lanzar el sitio.'; setTimeout(() => { box.hidden = true; }, 900); });
+    applyLang();
+  }));
   $$('form.pinfo').forEach((f) => f.addEventListener('submit', (e) => { e.preventDefault(); $('.pmsg').textContent = 'Recibido. Borrador: el envío se activa al lanzar el sitio.'; }));
 
   /* count-up for figures */
@@ -3032,27 +3194,28 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   try { const o = JSON.parse(sessionStorage.getItem('cauce-chat') || 'null'); if (o && o.m) Object.assign(CHAT, o); } catch (e) {}
   const saveChat = () => { try { sessionStorage.setItem('cauce-chat', JSON.stringify(CHAT)); } catch (e) {} };
   function canned(t) {
+    if (/d[oó]nde\b.*\b(compr|invert|vivir|mud)|qu[eé] (zona|barrio|parroquia|urbanizaci)|mejor(es)? (zona|barrio)|where\b.*\b(buy|invest|live)|which (area|neighbou?rhood)|best (area|neighbou?rhood)/i.test(t)) return { t: 'Te puedo mostrar zonas que encajan, inmuebles y sus números lado a lado. Se ve mejor en pantalla amplia.', wide: 1, q: t };
     if (/exterior|afuera|visa|rif|saren|extranjer|abroad|foreign|madrid|miami/i.test(t)) return { t: 'Para comprar desde afuera, lo primero es el poder y el abogado; después, el inmueble. Mientras conectamos el asistente, aquí tienes por dónde empezar.', r: [['Leer la guía para comprar desde el exterior', '#articulo/guia'], ['Consulta 1:1 con nuestro equipo', '#planes', 'consulta'], ['Abogado aliado · registro y poderes', '']] };
     if (/terreno|lote|vender|venta|estudio|desarroll|land|sell/i.test(t)) return { t: 'Para un terreno, lo útil es un estudio de factibilidad: cuánto cuesta construir, a cuánto habría que vender y si vale la pena.', r: [['Estudia mi terreno', '#planes', 'duenos'], ['Consulta 1:1 con nuestro equipo', '#planes', 'consulta']] };
     if (/precio|vale|cuesta|caro|barato|m2|m²|price/i.test(t)) return { t: 'Pega el enlace del anuncio en Inteligencia y te decimos si el precio está en línea con la zona.', r: [['Analizar un inmueble', '#analizar'], ['Ver precios por zona', '#datos']] };
     return { t: 'Gracias, te leemos. Si nos das un poco más de contexto (zona, presupuesto, plazo), te decimos con quién conviene hablar.', r: [['Consulta 1:1 con nuestro equipo', '#planes', 'consulta']] };
   }
   function bubbles() {
-    return CHAT.m.map((x, i) => x.w === 'me' ? `<div class="bub me">${esc(x.t)}</div>` : `<div class="bub">${esc(x.t)}</div>` + (x.r ? `<div class="recs"><span class="lab">Te recomendamos hablar con</span>${x.r.map(([n, h, pl], k) => `<div class="row"><span>${esc(n)}</span>${h ? `<a class="mini" href="${h}"${pl ? ` data-plan="${pl}"` : ''}>${h.startsWith('#planes') ? 'Agendar' : 'Abrir'}</a>` : `<button type="button" class="mini" data-intro="${i}:${k}">Pedir presentación</button>`}</div>`).join('')}</div>` : '')).join('');
+    return CHAT.m.map((x, i) => x.w === 'me' ? `<div class="bub me">${esc(x.t)}</div>` : `<div class="bub">${esc(x.t)}</div>` + (x.r ? `<div class="recs"><span class="lab">Te recomendamos hablar con</span>${x.r.map(([n, h, pl], k) => `<div class="row"><span>${esc(n)}</span>${h ? `<a class="mini" href="${h}"${pl ? ` data-plan="${pl}"` : ''}>${h.startsWith('#planes') ? 'Agendar' : 'Abrir'}</a>` : `<button type="button" class="mini" data-intro="${i}:${k}">Pedir presentación</button>`}</div>`).join('')}</div>` : '') + (x.wide ? `<button type="button" class="widebtn" data-wide="${i}"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Ver en pantalla amplia</span></button>` : '')).join('');
   }
   function drawChat() {
     ['c-thread', 'd-thread'].forEach((id) => { const el = document.getElementById(id); el.innerHTML = bubbles(); el.scrollTop = el.scrollHeight; });
     $('#c-chips').hidden = CHAT.m.some((x) => x.w === 'me');
     const onPage = current === 'contacto' || current === 'entrar';
-    $('#dock').hidden = onPage || CHAT.s !== 'open'; $('#pill').hidden = onPage; $('#pill').classList.toggle('small', CHAT.s !== 'closed'); $('#pill .dot').hidden = !(CHAT.s === 'min' && CHAT.m.some((x) => x.w === 'me'));
+    $('#dock').hidden = onPage || CHAT.s !== 'open'; $('#pill').hidden = onPage; $('#pill').classList.toggle('small', CHAT.s !== 'closed' || !!CHAT.used); $('#pill .dot').hidden = !(CHAT.s === 'min' && CHAT.m.some((x) => x.w === 'me'));
     applyLang();
   }
   function say(t) {
     t = t.trim(); if (!t) return;
     CHAT.m.push({ w: 'me', t }); drawChat(); saveChat();
-    setTimeout(() => { const a = canned(t); CHAT.m.push({ w: 'c', t: a.t, r: a.r }); drawChat(); saveChat(); }, reduce ? 0 : 650);
+    setTimeout(() => { const a = canned(t); CHAT.m.push({ w: 'c', t: a.t, r: a.r, wide: a.wide, q: a.q }); drawChat(); saveChat(); }, reduce ? 0 : 650);
   }
-  function chatRoute(h) { if (h === 'contacto') setTimeout(() => $('#c-in').focus(), 50); drawChat(); }
+  function chatRoute(h) { if (h === 'contacto') { CHAT.used = true; saveChat(); setTimeout(() => $('#c-in').focus(), 50); } $('#v-contacto').classList.toggle('wide', h === 'contacto' && !!CHAT.wide); if (h === 'contacto' && CHAT.wide) drawRes(); drawChat(); }
   const leave = (state) => { CHAT.s = state; saveChat(); location.hash = backTo || '#mercado'; };
   [['c-form', 'c-in'], ['d-form', 'd-in']].forEach(([f, i]) => document.getElementById(f).addEventListener('submit', (e) => { e.preventDefault(); const el = document.getElementById(i); say(el.value); el.value = ''; }));
   $$('#c-chips button').forEach((b) => b.addEventListener('click', () => say(b.textContent)));
@@ -3062,7 +3225,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   $('#d-min').addEventListener('click', () => { CHAT.s = 'min'; saveChat(); drawChat(); });
   $('#d-close').addEventListener('click', () => { CHAT.s = 'closed'; saveChat(); drawChat(); });
   $('#d-full').addEventListener('click', () => { location.hash = '#contacto'; });
-  $('#pill').addEventListener('click', () => { CHAT.s = CHAT.s === 'open' ? 'min' : 'open'; saveChat(); drawChat(); if (CHAT.s === 'open') setTimeout(() => $('#d-in').focus(), 30); });
+  $('#pill').addEventListener('click', () => { CHAT.used = true; CHAT.s = CHAT.s === 'open' ? 'min' : 'open'; saveChat(); drawChat(); if (CHAT.s === 'open') setTimeout(() => $('#d-in').focus(), 30); });
   // the chat window can be moved anywhere by its header
   (function () {
     const d = $('#dock'), hd = $('.hd', d); let on = false, sx = 0, sy = 0, x0 = 0, y0 = 0;
@@ -3071,6 +3234,26 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     hd.addEventListener('pointermove', (e) => { if (!on) return; const x = Math.max(8, Math.min(innerWidth - d.offsetWidth - 8, x0 + e.clientX - sx)), y = Math.max(8, Math.min(innerHeight - d.offsetHeight - 8, y0 + e.clientY - sy)); d.style.left = x + 'px'; d.style.top = y + 'px'; d.style.right = 'auto'; d.style.bottom = 'auto'; });
     hd.addEventListener('pointerup', () => { if (!on) return; on = false; d.classList.remove('dragging'); try { sessionStorage.setItem('cauce-dock', JSON.stringify([parseInt(d.style.left), parseInt(d.style.top)])); } catch (e) {} });
   })();
+  document.addEventListener('click', (e) => {
+    const w = e.target.closest('[data-wide]'); if (w) { const m = CHAT.m[+w.dataset.wide]; CHAT.wide = { q: m && m.q || '' }; CHAT.s = 'min'; saveChat(); if (current === 'contacto') chatRoute('contacto'); else location.hash = '#contacto'; return; }
+    if (e.target.closest('#c-narrow')) { CHAT.wide = null; saveChat(); chatRoute('contacto'); }
+  });
+  new MutationObserver(() => { if (current === 'contacto' && CHAT.wide) drawRes(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  function drawRes() {
+    const q = (CHAT.wide && CHAT.wide.q) || '', L = (es, en) => (document.documentElement.lang === 'en' ? en : es);
+    const num = q.replace(/\./g, '').match(/\$?\s?(\d{2,7})\s*(mil|k)?/i); let budget = num ? +num[1] * (num[2] ? 1000 : 1) : 0; if (budget && budget < 1000) budget *= 1000;
+    const zones = (DZ || []).slice().sort((a, b) => b.score - a.score).slice(0, 4);
+    const deals = DEALS.filter((d) => !budget || d.price <= budget * 1.1).slice(0, 4);
+    CH.chatz = zones.length ? { t: L('Precio pedido por m², 24 meses', 'Asking price per m², 24 months'), k: 'line', x: zones[0].ser.map((_, i) => (i === 23 ? L('hoy', 'now') : '−' + (23 - i) + 'm')), f: 'm2p', src: L('Datos de demostración.', 'Demo data.'), s: zones.slice(0, 3).map((z) => ({ n: z.n, v: z.ser })) } : null;
+    $('#c-res').innerHTML = `<div class="rh"><div><span class="lab">${L('Dónde comprar', 'Where to buy')}</span><h2>${budget ? L('Zonas e inmuebles hasta ', 'Areas and homes up to ') + FMT.usd(budget) : L('Zonas e inmuebles que encajan', 'Areas and homes that fit')}</h2></div><button type="button" class="gd-no" id="c-narrow">${L('Vista normal', 'Normal view')}</button></div>
+      <span class="demo">${L('Datos de demostración', 'Demo data')}</span>
+      <div class="rz">${zones.map((z, i) => `<a class="rzc" href="#datos"><span class="n">${i + 1}</span><b>${esc(z.n)}</b><span class="sm">${esc(z.m)}</span><div class="kv"><span>${FMT.m2p(z.price)}</span><span>${(z.g12 > 0 ? '+' : '') + N0(z.g12, 1)}% ${L('en 12 meses', 'in 12 mo')}</span><span>${L('Caminar', 'Walk')} ${z.walk} · ${L('Seguridad', 'Safety')} ${z.safe}</span></div><i class="bar"><b style="width:${z.score}%"></b></i></a>`).join('')}</div>
+      ${CH.chatz ? '<div class="chart" data-chart="chatz"></div>' : ''}
+      <span class="lab" style="margin-top:6px">${L('Inmuebles en estas zonas', 'Homes in these areas')}</span>
+      <div class="rp">${deals.map((d, i) => `<a class="card-link" href="#propiedad">${media(d.img, i)}<div class="row"><b>${esc(d.t)}</b></div><span class="sm">${N0(d.m2)} m² · ${FMT.usd(d.price)} · ${FMT.m2p(Math.round(d.price / d.m2))}</span></a>`).join('') || `<p class="sm">${L('No hay inmuebles de ejemplo en ese presupuesto.', 'No sample homes in that budget.')}</p>`}</div>
+      <a class="btn" href="#datos">${L('Ver todo en Inteligencia', 'See everything in Inteligencia')}</a>`;
+    wireCharts($('#c-res')); mountFigs();
+  }
   document.addEventListener('click', (e) => { const b = e.target.closest('[data-intro]'); if (!b) return; CHAT.m.push({ w: 'c', t: 'Anotado. Cuando el asistente esté conectado, te presentamos por correo o WhatsApp. Por ahora, escríbenos a hola@cauce.blog y lo hacemos a mano.' }); drawChat(); saveChat(); });
 
   /* GIS map (MapLibre, vendored): solid translucent parroquias or municipios, one scale at a time, over a grayscale OSM base.
@@ -3241,6 +3424,14 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       map.on('moveend', () => { if (!inited || !home) return; const c = map.getCenter(); resetB.hidden = Math.abs(map.getZoom() - home.zoom) < 0.05 && Math.abs(c.lng - home.center.lng) < 0.002 && Math.abs(c.lat - home.center.lat) < 0.002; });
     }
     resetB.addEventListener('click', () => { if (map && home) map.flyTo({ ...home, duration: reduce ? 0 : 800 }); resetB.hidden = true; });
+    // a minute of free exploring on the full map, then a soft paywall (owners in preview are never locked)
+    if (full) {
+      const pay = $('.mpay', root); let t0 = null;
+      const lock = () => { if (document.body.classList.contains('preview')) return; root.classList.add('paywall'); pay.hidden = false; try { sessionStorage.setItem('cauce-maplock', '1'); } catch (e) {} };
+      try { if (sessionStorage.getItem('cauce-maplock') === '1') lock(); } catch (e) {}
+      const startClock = () => { if (t0 || root.classList.contains('paywall')) return; t0 = setTimeout(lock, window.CAUCE_PAY_MS || 60000); };
+      ['pointerdown', 'wheel', 'touchstart'].forEach((ev) => root.addEventListener(ev, startClock, { passive: true, capture: true }));
+    }
     $$('[data-scale]', root).forEach((b) => b.addEventListener('click', () => {
       scale = b.dataset.scale; $$('[data-scale]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
       if (map && ready) { hov = null; ['p', 'm'].forEach((k) => ['fill-', 'line-'].forEach((l) => map.setLayoutProperty(l + k, 'visibility', k === scale ? 'visible' : 'none'))); }
@@ -3305,6 +3496,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* router */
   /* Inteligencia · neighbourhood dashboard (demo data, labelled as such) */
+  let DZ = [];
   (function dash() {
     const el = $('#dash'); if (!el) return;
     const L = (es, en) => (document.documentElement.lang === 'en' ? en : es);
@@ -3337,6 +3529,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     ];
     let pri = new Set(['seg', 'liq']), A = 'Chacao', B = 'El Recreo', sortK = 'score', sortD = -1, all = false;
     const score = (z) => { let s = 0, w = 0; FACT.forEach(([k, , , f]) => { const q = pri.has(k) ? 3 : 1; s += f(z) * q; w += q; }); return Math.round(s / w); };
+    DZ = Z; Z.forEach((z) => { z.score = score(z); });
     const by = (n) => Z.find((z) => z.n === n) || Z[0];
     const pct = (v) => (v > 0 ? '+' : '') + N0(v, 1) + '%';
     const vsC = (z) => { const d = (z.price / CCS.price - 1) * 100; return pct(d) + ' ' + L('vs. Caracas', 'vs. Caracas'); };
@@ -3413,7 +3606,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     f.addEventListener('submit', (e) => {
       e.preventDefault(); const v = $('#gd-email').value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { $('#gd-msg').textContent = document.documentElement.lang === 'en' ? 'Check your email address.' : 'Revisa tu correo.'; $('#gd-email').focus(); return; }
-      $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; applyLang();
+      $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; savePerfil({ email: v, boletin: $('#gd-news').checked, guia: true }); $('#gd-acc').hidden = true; askPerfil($('#gd-perfil'), () => { $('#gd-acc').hidden = false; }); applyLang();
     });
     $('#gd-no').addEventListener('click', () => { $('#gd-acc').hidden = true; });
     $('#gd-yes').addEventListener('click', () => {
