@@ -11,7 +11,7 @@
 :root {
   --cover: #FFFFFF; --cover-ink: #1B1A18;
   --g0: #E7E2DA; --g1: #DCD6CC; --g2: #D2CBC0; --g3: #C7C0B4;
-  --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18;
+  --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #6B675F; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18;
   --sans: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --serif: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --mono: "HND", "Helvetica Neue", Arial, sans-serif;
   --ease: cubic-bezier(.2,.7,.2,1);
   color-scheme: light;
@@ -21,7 +21,7 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
 :root[data-theme="dark"] { --cover: #000000; --cover-ink: #ECEBE6; --sheet: #1F201E; --faint: #5E5F5A; --bg: #1A1B19; --card: #1A1B19; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; --g0: #2F302D; --g1: #353632; --g2: #3B3C38; --g3: #2A2B28; }
-body.intel-light { --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18; color-scheme: light; }
+body.intel-light { --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #6B675F; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18; color-scheme: light; }
 body.intel { --bg: #1A1B19; --card: #1F201E; --sheet: #222321; --faint: #5E5F5A; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, p { margin: 0; }
@@ -814,7 +814,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
     <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#datos">Inteligencia</a><a href="#guia">Guía gratis</a></nav>
     <nav aria-label="Cauce"><span class="lab">Cauce</span><a href="#sobre">Sobre Cauce</a><a href="#planes">Planes</a><a href="#planes" data-plan="consulta">Consulta 1:1</a><a href="#contacto">Contacto</a></nav>
   </div>
-  <div class="foot-bar"><span class="live"><i></i><span id="clock">Caracas</span> · <span>Dólar BCV</span> <span data-bcv>887,30</span></span><span>No es asesoría de inversión</span></div>
+  <div class="foot-bar"><span class="live"><i></i><span id="clock">Caracas</span> · <span>Dólar BCV</span> <span data-bcv>887,30</span></span><span><a href="/legal.html#aviso">No es asesoría de inversión</a> · <a href="/legal.html">Legal</a></span></div>
 </div></footer>
 
 <script>
@@ -3636,6 +3636,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     applyLang();
     window.scrollTo(0, 0);
   }
+  const TITLES = { guia: 'Guía para comprar', articulo: 'Análisis', propiedades: 'Propiedades', propiedad: 'Propiedad', analizar: 'Analizar un precio', datos: 'Inteligencia', planes: 'Planes', entrar: 'Entrar', sobre: 'Sobre Cauce', contacto: 'Contacto' };
   function show() {
     let [h, arg] = location.hash.slice(1).split('/'); if (VIEWS.indexOf(h) < 0) h = 'mercado';
     if (h !== 'contacto' && h !== 'entrar') backTo = location.hash || '#mercado';
@@ -3643,6 +3644,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (current && AREA[current]) lastArea = AREA[current];
     if (h !== 'planes' && h !== 'entrar') planIntent = null;
     current = h;
+    document.title = h === 'mercado' ? 'Cauce · Datos inmobiliarios con fuente' : (TITLES[h] || 'Cauce') + ' · Cauce';
     if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
   }
   window.addEventListener('hashchange', show);
