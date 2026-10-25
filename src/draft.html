@@ -217,6 +217,7 @@ body.auth .stick-chat { display: none; }
 .xt thead th { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--soft); } .xt tbody th { font-weight: 600; width: 26%; }
 .xt figcaption { margin-top: 8px; font-size: 12px; color: var(--soft); }
 .srcs { margin: 12px 0 0; padding-left: 20px; display: grid; gap: 10px; } .srcs li { font-size: 15px; } .srcs a { text-decoration: underline; text-underline-offset: 3px; } .srcs .sm { display: block; margin-top: 2px; }
+.ph.spot { display: grid; place-items: center; border: 1px dashed var(--soft); background: transparent; } .ph.spot span { position: static; font-size: 40px; color: var(--soft); background: none; }
 /* ARTICLE (Semafor-style sections) */
 .art { display: grid; grid-template-columns: minmax(0, 680px) 280px; gap: 64px; justify-content: center; }
 .art h1 { font-family: var(--serif); font-size: clamp(38px, 4.6vw, 60px); line-height: 1; margin: 14px 0 16px; }
@@ -656,7 +657,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <!-- PROPIEDADES -->
 <section class="view" id="v-propiedades" hidden>
   <div class="phead" style="position:relative"><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div>
-  <div class="ptabs" role="group" aria-label="Secciones"><button type="button" aria-pressed="true" data-k="destacados">Destacados</button><button type="button" aria-pressed="false" data-k="estudios">Estudios</button><button type="button" aria-pressed="false" data-k="cauce">Proyectos Cauce</button></div>
+  <div class="ptabs" role="group" aria-label="Secciones"><button type="button" aria-pressed="true" data-k="destacados">Destacados</button><button type="button" aria-pressed="false" data-k="patro">Patrocinados</button><button type="button" aria-pressed="false" data-k="estudios">Estudios</button></div>
   <p class="sm" id="p-intro" style="margin-top:16px"></p>
   <div class="grid" id="grid"></div>
   <p class="note" id="p-note"></p>
@@ -2605,16 +2606,23 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   $$('#v-mercado .chips .chip').forEach((b) => b.addEventListener('click', () => { $$('#v-mercado .chips .chip').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); feed(b.dataset.f); }));
 
   /* properties */
-  const PINTRO = { destacados: 'Los cinco inmuebles de la semana con el precio por m² más bajo frente a su zona. Incluye espacios destacados.', estudios: 'Terrenos y edificios estudiados con los números a la vista.', cauce: 'Proyectos que estructuramos con inversionistas de la comunidad Cauce.' };
-  const PNOTE = { destacados: 'Datos de demostración hasta conectar los anuncios. Algunos destacados son espacios pagados.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.', cauce: 'Acceso anticipado para suscriptores de Inteligencia.' };
+  const SPONS = [
+    { t: 'Torre en preventa · Las Mercedes', s: 'Desarrolladora · desde $2.100/m² · entrega 2028', img: 'i:castellana' },
+    { t: 'Townhouses · La Boyera', s: 'Preventa por fases · 12 unidades', img: 'i:casa' },
+    { t: 'Apartamentos frente al mar · Pampatar', s: 'Agencia · desde $68.000', img: 'i:playa' },
+    { t: 'Oficinas · Altamira', s: 'Inmobiliaria · venta o alquiler', img: 'i:altamira' }
+  ];
+  const PINTRO = { destacados: 'Los cinco inmuebles de la semana con el precio por m² más bajo frente a su zona.', patro: 'Proyectos e inmuebles que desarrolladores, agencias y dueños pagan por mostrar aquí.', estudios: 'Terrenos y edificios estudiados con los números a la vista.' };
+  const PNOTE = { destacados: 'Datos de demostración hasta conectar los anuncios. Esta selección no se vende.', patro: 'Espacios pagados, marcados como tales. Ejemplos de demostración. La lectura de precio de Cauce no se edita por pago.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.' };
   function grid(k) {
     let html = '';
     if (k === 'destacados') {
       const ranked = DEALS.map((d) => Object.assign({ per: d.price / d.m2, med: ZONES[d.zone] }, d)).map((d) => Object.assign(d, { off: d.per / d.med - 1 })).filter((d) => d.off < 0).sort((a, b) => a.off - b.off).slice(0, 5);
       const items = ranked.map((d, i) => `<a class="card-link" href="#propiedad" style="position:relative"><span class="rank">Nº ${i + 1}</span>${media(d.img, i)}<div class="row"><b>${esc(d.t)}</b><span class="tag ok">−${Math.round(-d.off * 100)}% vs zona</span></div><span class="sm">${int(d.m2)} m² · $${int(d.price)} · $${int(d.per)}/m²</span></a>`);
       const paid = PAID.map((p, i) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}">${ill('costa')}<div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`);
-      items.splice(2, 0, paid[0]);
       html = items.join('');
+    } else if (k === 'patro') {
+      html = SPONS.map((p, i) => `<a class="card-link" href="#propiedad">${media(p.img, i)}<div class="row"><b>${esc(p.t)}</b><span class="tag">Patrocinado</span></div><span class="sm">${esc(p.s)}</span></a>`).join('') + PAID.map((p) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}"><div class="ph fig spot"><span>+</span></div><div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`).join('');
     } else {
       const L = k === 'estudios' ? STUDIES : OWN;
       html = L.map((p, i) => `<a class="card-link" href="${p.id ? (p.id === 'porlamar' ? '#articulo' : '#articulo/' + p.id) : '#propiedad'}">${k === 'estudios' ? cover(p.id, i + 1, p.t.split(' · ')[1], '4/5') : ill(i ? 'avila' : 'lote')}<div class="row"><b>${esc(p.t)}</b><span class="tag${p.ok ? ' ok' : ''}">${esc(p.tag)}</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
@@ -3007,6 +3015,11 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     "Otro": "Other",
     "Listo. Borrador: el registro se activa al lanzar el sitio.": "Done. Draft: sign-up switches on at launch.",
     "Gracias. Borrador: el registro se activa al lanzar el sitio.": "Thanks. Draft: sign-up switches on at launch.",
+    'Patrocinados': 'Sponsored', 'Patrocinado': 'Sponsored', 'Proyectos e inmuebles que desarrolladores, agencias y dueños pagan por mostrar aquí.': 'Projects and homes that developers, agencies and owners pay to show here.',
+    'Espacios pagados, marcados como tales. Ejemplos de demostración. La lectura de precio de Cauce no se edita por pago.': 'Paid spots, labelled as such. Demo examples. Cauce’s price reading is never edited for payment.',
+    'Los cinco inmuebles de la semana con el precio por m² más bajo frente a su zona.': 'The week’s five homes with the lowest price per m² against their area.', 'Datos de demostración hasta conectar los anuncios. Esta selección no se vende.': 'Demo data until listings are connected. This selection is not for sale.',
+    'Torre en preventa · Las Mercedes': 'Pre-sale tower · Las Mercedes', 'Desarrolladora · desde $2.100/m² · entrega 2028': 'Developer · from $2,100/m² · delivery 2028', 'Townhouses · La Boyera': 'Townhouses · La Boyera', 'Preventa por fases · 12 unidades': 'Phased pre-sale · 12 units',
+    'Apartamentos frente al mar · Pampatar': 'Seafront apartments · Pampatar', 'Agencia · desde $68.000': 'Agency · from $68,000', 'Oficinas · Altamira': 'Offices · Altamira', 'Inmobiliaria · venta o alquiler': 'Agency · sale or rent',
     'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'De Caracas, con calculadora ↝': 'From Caracas, with a calculator ↝', 'arrástrame, pana': 'drag me, pal', 'La': 'Safe', 'fija': 'bet', 'SIN CUENTO · CON FUENTE ·': 'NO TALL TALES · SOURCED ·', 'Sin cuento, con fuente': 'No tall tales, sourced', 'Sitio en construcción': 'Site under construction', 'Estamos echando la placa': 'Pouring the concrete', 'Vuelve pronto, pana': 'Back soon, pal', 'Faltan unas cabillas': 'A few rebars to go', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
     'Datos inmobiliarios con fuente. Boletín cada jueves.': 'Sourced real estate data. Newsletter every Thursday.',
     'Leer': 'Read', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
