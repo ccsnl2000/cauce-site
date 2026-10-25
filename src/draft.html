@@ -657,7 +657,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <!-- PROPIEDADES -->
 <section class="view" id="v-propiedades" hidden>
   <div class="phead" style="position:relative"><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div>
-  <div class="ptabs" role="group" aria-label="Secciones"><button type="button" aria-pressed="true" data-k="destacados">Destacados</button><button type="button" aria-pressed="false" data-k="patro">Patrocinados</button><button type="button" aria-pressed="false" data-k="estudios">Estudios</button></div>
+  <div class="ptabs" role="group" aria-label="Secciones"><button type="button" aria-pressed="true" data-k="todos">Todos</button><button type="button" aria-pressed="false" data-k="destacados">Destacados</button><button type="button" aria-pressed="false" data-k="patro">Patrocinados</button><button type="button" aria-pressed="false" data-k="estudios">Estudios</button></div>
   <p class="sm" id="p-intro" style="margin-top:16px"></p>
   <div class="grid" id="grid"></div>
   <p class="note" id="p-note"></p>
@@ -2612,10 +2612,11 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     { t: 'Apartamentos frente al mar · Pampatar', s: 'Agencia · desde $68.000', img: 'i:playa' },
     { t: 'Oficinas · Altamira', s: 'Inmobiliaria · venta o alquiler', img: 'i:altamira' }
   ];
-  const PINTRO = { destacados: 'Los cinco inmuebles de la semana con el precio por m² más bajo frente a su zona.', patro: 'Proyectos e inmuebles que desarrolladores, agencias y dueños pagan por mostrar aquí.', estudios: 'Terrenos y edificios estudiados con los números a la vista.' };
-  const PNOTE = { destacados: 'Datos de demostración hasta conectar los anuncios. Esta selección no se vende.', patro: 'Espacios pagados, marcados como tales. Ejemplos de demostración. La lectura de precio de Cauce no se edita por pago.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.' };
+  const PINTRO = { todos: 'Destacados de la semana, espacios patrocinados y estudios, en un solo lugar.', destacados: 'Los cinco inmuebles de la semana con el precio por m² más bajo frente a su zona.', patro: 'Proyectos e inmuebles que desarrolladores, agencias y dueños pagan por mostrar aquí.', estudios: 'Terrenos y edificios estudiados con los números a la vista.' };
+  const PNOTE = { todos: 'Datos de demostración. Los patrocinados están marcados como tales.', destacados: 'Datos de demostración hasta conectar los anuncios. Esta selección no se vende.', patro: 'Espacios pagados, marcados como tales. Ejemplos de demostración. La lectura de precio de Cauce no se edita por pago.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.' };
   function grid(k) {
     let html = '';
+    if (k === 'todos') { const parts = ['destacados', 'patro', 'estudios'].map((x) => { grid(x); return $('#grid').innerHTML; }); $('#grid').innerHTML = parts.join(''); $('#p-intro').textContent = PINTRO.todos; $('#p-note').textContent = PNOTE.todos; mountFigs(); applyLang(); return; }
     if (k === 'destacados') {
       const ranked = DEALS.map((d) => Object.assign({ per: d.price / d.m2, med: ZONES[d.zone] }, d)).map((d) => Object.assign(d, { off: d.per / d.med - 1 })).filter((d) => d.off < 0).sort((a, b) => a.off - b.off).slice(0, 5);
       const items = ranked.map((d, i) => `<a class="card-link" href="#propiedad" style="position:relative"><span class="rank">Nº ${i + 1}</span>${media(d.img, i)}<div class="row"><b>${esc(d.t)}</b><span class="tag ok">−${Math.round(-d.off * 100)}% vs zona</span></div><span class="sm">${int(d.m2)} m² · $${int(d.price)} · $${int(d.per)}/m²</span></a>`);
@@ -3020,6 +3021,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     'Los cinco inmuebles de la semana con el precio por m² más bajo frente a su zona.': 'The week’s five homes with the lowest price per m² against their area.', 'Datos de demostración hasta conectar los anuncios. Esta selección no se vende.': 'Demo data until listings are connected. This selection is not for sale.',
     'Torre en preventa · Las Mercedes': 'Pre-sale tower · Las Mercedes', 'Desarrolladora · desde $2.100/m² · entrega 2028': 'Developer · from $2,100/m² · delivery 2028', 'Townhouses · La Boyera': 'Townhouses · La Boyera', 'Preventa por fases · 12 unidades': 'Phased pre-sale · 12 units',
     'Apartamentos frente al mar · Pampatar': 'Seafront apartments · Pampatar', 'Agencia · desde $68.000': 'Agency · from $68,000', 'Oficinas · Altamira': 'Offices · Altamira', 'Inmobiliaria · venta o alquiler': 'Agency · sale or rent',
+    'Todos': 'All', 'Destacados de la semana, espacios patrocinados y estudios, en un solo lugar.': 'The week’s featured homes, sponsored spots and studies, in one place.', 'Datos de demostración. Los patrocinados están marcados como tales.': 'Demo data. Sponsored spots are labelled as such.',
     'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'De Caracas, con calculadora ↝': 'From Caracas, with a calculator ↝', 'arrástrame, pana': 'drag me, pal', 'La': 'Safe', 'fija': 'bet', 'SIN CUENTO · CON FUENTE ·': 'NO TALL TALES · SOURCED ·', 'Sin cuento, con fuente': 'No tall tales, sourced', 'Sitio en construcción': 'Site under construction', 'Estamos echando la placa': 'Pouring the concrete', 'Vuelve pronto, pana': 'Back soon, pal', 'Faltan unas cabillas': 'A few rebars to go', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
     'Datos inmobiliarios con fuente. Boletín cada jueves.': 'Sourced real estate data. Newsletter every Thursday.',
     'Leer': 'Read', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
@@ -3647,7 +3649,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const heroFit = () => { const ph = $('.hero .lead .cmap'), side = $('.hero .side'); if (!ph || !side) return; side.style.height = matchMedia('(max-width: 900px)').matches ? '' : Math.round(ph.getBoundingClientRect().bottom - side.getBoundingClientRect().top) + 'px'; };
   if (window.ResizeObserver) new ResizeObserver(heroFit).observe($('.hero .lead .cmap'));
   window.addEventListener('resize', heroFit);
-  feed('all'); grid('destacados'); mountFigs(); show(); heroFit();
+  feed('all'); grid('todos'); mountFigs(); show(); heroFit();
   setTimeout(() => $('#intro').classList.add('done'), reduce ? 0 : 1300);
 })();
 </script>
