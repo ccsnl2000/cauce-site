@@ -3141,7 +3141,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   function setPick(p) { auth.plan = p; setMode('join'); }
   function setMode(m) {
     if (user) { account(); return; }
-    auth.mode = m; $('#d-out').hidden = true;
+    auth.mode = m; $('#d-out').hidden = true; $('.auth-tabs').hidden = false;
     $$('.auth-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
     $('#f-auth').hidden = false; $('#f-perfil').hidden = true; $('#a-done').hidden = true;
     $('#a-plan').hidden = m !== 'join';
@@ -3183,16 +3183,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     try { const c = await sb(); await c.from('profiles').update(row).eq('id', user.id); } catch (e) {}
   }
   async function account() {
-    $('#f-auth').hidden = true; $('#f-perfil').hidden = true; $('#a-done').hidden = false; $('#d-out').hidden = false;
+    $('#f-auth').hidden = true; $('#f-perfil').hidden = true; $('#a-done').hidden = false; $('#d-out').hidden = false; $('.auth-tabs').hidden = true;
     $('#d-title').textContent = 'Tu cuenta'; $('#d-text').textContent = user.email;
     const btn = (t, h) => { $('#d-btn').textContent = t; $('#d-btn').setAttribute('href', h); applyLang(); };
     btn('Ir a Mercado', '#mercado');
     let plan = 'boletin';
     try { const c = await sb(), r = await c.from('profiles').select('plan').eq('id', user.id).single(); if (r.data) plan = r.data.plan; } catch (e) {}
     $('#d-text').textContent = user.email + ' · ' + (PLAN_NAME[plan] || plan);
-    const wants = planIntent === 'inteligencia' || (user.user_metadata || {}).plan_intent === 'inteligencia';
     if (plan === 'inteligencia') btn('Gestionar suscripción', PORTAL + '?prefilled_email=' + encodeURIComponent(user.email));
-    else if (wants && PAY_LINK) btn('Pasar a Inteligencia · $10/mes', payUrl());
+    else if (PAY_LINK) btn('Pasar a Inteligencia · $10/mes', payUrl());
   }
   $('#d-out').addEventListener('click', async () => { const c = await sb(); await c.auth.signOut(); $('#d-out').hidden = true; setMode('login'); });
   window.addEventListener('hashchange', () => { if (user && location.hash === '#entrar') account(); });
