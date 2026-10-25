@@ -41,3 +41,6 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+-- Added 25 Oct 2026: the trigger function is not callable through the API.
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
