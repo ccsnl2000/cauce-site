@@ -12,3 +12,4 @@ Every push to `main` deploys to https://cauce.blog (Porkbun, GitHub Connect).
 
 ## Language
 Spanish is the source. English lives in the `EN` dictionary inside `src/draft.html`, keyed by the exact Spanish text. Add a line there for every new Spanish string.
+- `supabase/schema.sql` creates the `profiles` table (run once in Supabase SQL Editor). Accounts use Supabase Auth; `vendor/supabase.js` is supabase-js 2.118.0 (MIT), loaded after the page.

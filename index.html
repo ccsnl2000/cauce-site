@@ -806,9 +806,9 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <label for="a-zonas" hidden>Zonas que te interesan</label><input id="a-zonas" type="text" placeholder="Zonas que te interesan">
       <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
     </form>
-    <div class="auth-done" id="a-done" hidden><p class="big" id="d-title"></p><p class="sm" id="d-text"></p><a class="btn" id="d-btn" href="#mercado"></a></div>
+    <div class="auth-done" id="a-done" hidden><p class="big" id="d-title"></p><p class="sm" id="d-text"></p><div class="auth-row" style="justify-content:flex-start;gap:16px"><a class="btn" id="d-btn" href="#mercado"></a><button type="button" class="alt" id="d-out" hidden>Salir</button></div></div>
   </div>
-  <p class="auth-note">Borrador: las cuentas, los pagos y las reservas se activan al lanzar el sitio.</p>
+  <p class="auth-note">Los pagos y las reservas se activan muy pronto.</p>
 </section>
 
 <!-- SOBRE -->
@@ -2693,6 +2693,21 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Los pagos y las reservas se activan muy pronto.": "Payments and bookings go live very soon.",
+    "Mi cuenta": "My account",
+    "Tu cuenta": "Your account",
+    "Ir a Mercado": "Go to Market",
+    "Correo o contraseña incorrectos.": "Wrong email or password.",
+    "Confirma tu correo primero: revisa tu bandeja de entrada.": "Confirm your email first: check your inbox.",
+    "Ya existe una cuenta con ese correo. Inicia sesión.": "An account with that email already exists. Sign in.",
+    "Demasiados intentos. Espera unos minutos.": "Too many attempts. Wait a few minutes.",
+    "Algo falló. Inténtalo de nuevo o escríbenos a hola@cauce.blog.": "Something went wrong. Try again or write to hola@cauce.blog.",
+    "Enviando…": "Sending…",
+    "Entrando…": "Signing in…",
+    "Creando tu cuenta…": "Creating your account…",
+    "Listo. Revisa tu correo y abre el enlace para entrar.": "Done. Check your email and open the link to sign in.",
+    "Revisa tu correo.": "Check your email.",
+    "Te enviamos un enlace para confirmar tu cuenta. Ábrelo y quedas dentro.": "We sent you a link to confirm your account. Open it and you’re in.",
     'Imagen de referencia · Wikimedia Commons': 'Reference image · Wikimedia Commons',
     'Imagen de referencia': 'Reference image',
     'Ilustración: el terreno en Porlamar': 'Illustration: the lot in Porlamar',
@@ -3146,7 +3161,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const auth = { mode: 'login', plan: 'boletin' };
   function setPick(p) { auth.plan = p; setMode('join'); }
   function setMode(m) {
-    auth.mode = m;
+    if (user) { account(); return; }
+    auth.mode = m; $('#d-out').hidden = true;
     $$('.auth-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
     $('#f-auth').hidden = false; $('#f-perfil').hidden = true; $('#a-done').hidden = true;
     $('#a-plan').hidden = m !== 'join';
@@ -3161,25 +3177,77 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   }
   $$('.auth-tabs button').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.m)));
   const validEmail = () => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('#a-email').value.trim());
-  function magic() {
-    if (!validEmail()) { $('#a-msg').textContent = 'Escribe tu correo y te enviamos un enlace para entrar sin contraseña.'; $('#a-email').focus(); return; }
-    $('#a-msg').textContent = 'Borrador: el enlace para entrar se enviará a tu correo al lanzar el sitio.';
+  /* accounts: Supabase Auth, loaded after the page so it never slows the first view */
+  const SB_URL = 'https://gdgmcnqczrbbzwuzkvcv.supabase.co', SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A';
+  let sbP = null, user = null;
+  function sb() {
+    if (!sbP) sbP = new Promise((ok, no) => { const t = document.createElement('script'); t.src = '/vendor/supabase.js'; t.onload = () => ok(window.supabase.createClient(SB_URL, SB_KEY)); t.onerror = no; document.head.appendChild(t); });
+    return sbP;
+  }
+  const ERR = { 'Invalid login credentials': 'Correo o contraseña incorrectos.', 'Email not confirmed': 'Confirma tu correo primero: revisa tu bandeja de entrada.', 'User already registered': 'Ya existe una cuenta con ese correo. Inicia sesión.' };
+  const aSay = (t) => { $('#a-msg').textContent = t; applyLang(); };
+  const fail = (e) => aSay(ERR[e && e.message] || (/rate limit|security purposes/i.test(e && e.message || '') ? 'Demasiados intentos. Espera unos minutos.' : 'Algo falló. Inténtalo de nuevo o escríbenos a hola@cauce.blog.'));
+  const back = () => location.origin + '/#entrar';
+  function setUser(u) {
+    user = u || null;
+    $$('a.in').forEach((l) => { l.textContent = user ? 'Mi cuenta' : 'Iniciar sesión'; if (user) l.removeAttribute('data-mode'); else l.dataset.mode = 'login'; });
+    if (user) syncPerfil();
+    if (user && current === 'entrar') account();
+    applyLang();
+  }
+  async function syncPerfil() {
+    const p = getPerfil(), row = {}; ['perfil', 'pais', 'zonas'].forEach((k) => { if (p[k]) row[k] = p[k]; });
+    if (!Object.keys(row).length) return;
+    try { const c = await sb(); await c.from('profiles').update(row).eq('id', user.id); } catch (e) {}
+  }
+  async function account() {
+    $('#f-auth').hidden = true; $('#f-perfil').hidden = true; $('#a-done').hidden = false; $('#d-out').hidden = false;
+    $('#d-title').textContent = 'Tu cuenta'; $('#d-text').textContent = user.email; $('#d-btn').textContent = 'Ir a Mercado'; $('#d-btn').setAttribute('href', '#mercado');
+    try { const c = await sb(), r = await c.from('profiles').select('plan').eq('id', user.id).single(); if (r.data) $('#d-text').textContent = user.email + ' · ' + (PLAN_NAME[r.data.plan] || r.data.plan); } catch (e) {}
+    applyLang();
+  }
+  $('#d-out').addEventListener('click', async () => { const c = await sb(); await c.auth.signOut(); $('#d-out').hidden = true; setMode('login'); });
+  window.addEventListener('hashchange', () => { if (user && location.hash === '#entrar') account(); });
+  sb().then((c) => {
+    c.auth.onAuthStateChange((ev, ses) => { setTimeout(() => {
+      setUser(ses && ses.user);
+      if (ev === 'SIGNED_IN' && /access_token|code=|type=/.test(location.href)) { history.replaceState(null, '', '/#entrar'); show(); }
+    }, 0); });
+  }).catch(() => {});
+  async function magic() {
+    if (!validEmail()) { aSay('Escribe tu correo y te enviamos un enlace para entrar sin contraseña.'); $('#a-email').focus(); return; }
+    aSay('Enviando…');
+    try { const c = await sb(), r = await c.auth.signInWithOtp({ email: $('#a-email').value.trim(), options: { emailRedirectTo: back() } }); if (r.error) return fail(r.error); aSay('Listo. Revisa tu correo y abre el enlace para entrar.'); } catch (e) { fail(e); }
   }
   $('#a-alt').addEventListener('click', () => (auth.mode === 'join' ? setMode('login') : magic()));
   $('#a-help').addEventListener('click', magic);
-  $('#f-auth').addEventListener('submit', (e) => {
+  $('#f-auth').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!validEmail()) { $('#a-msg').textContent = 'Revisa tu correo.'; return; }
-    if ($('#a-pass').value.length < 8) { $('#a-msg').textContent = 'La contraseña necesita 8 caracteres o más.'; return; }
-    if (auth.mode === 'login') { $('#a-msg').textContent = 'Borrador: el inicio de sesión se activa al lanzar el sitio.'; return; }
-    $('#f-auth').hidden = true; $('#f-perfil').hidden = false;
+    if (!validEmail()) { aSay('Revisa tu correo.'); return; }
+    if ($('#a-pass').value.length < 8) { aSay('La contraseña necesita 8 caracteres o más.'); return; }
+    const email = $('#a-email').value.trim(), password = $('#a-pass').value;
+    aSay(auth.mode === 'login' ? 'Entrando…' : 'Creando tu cuenta…');
+    try {
+      const c = await sb();
+      if (auth.mode === 'login') { const r = await c.auth.signInWithPassword({ email, password }); if (r.error) return fail(r.error); aSay(''); return; }
+      const r = await c.auth.signUp({ email, password, options: { emailRedirectTo: back(), data: { plan_intent: auth.plan } } });
+      if (r.error) return fail(r.error);
+      if (r.data.user && r.data.user.identities && !r.data.user.identities.length) return fail({ message: 'User already registered' });
+      savePerfil({ email }); auth.confirm = !r.data.session; aSay(''); $('#a-pass').value = '';
+      $('#f-auth').hidden = true; $('#f-perfil').hidden = false;
+    } catch (err) { fail(err); }
   });
   $$('#f-perfil [data-perfil]').forEach((c) => c.addEventListener('click', () => { $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); savePerfil({ perfil: c.dataset.perfil }); }));
   new MutationObserver(() => { if (!$('#f-perfil').hidden) { const cur = getPerfil().perfil; $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.perfil === cur))); } }).observe($('#f-perfil'), { attributes: true, attributeFilter: ['hidden'] });
   function done() {
+    savePerfil({ pais: $('#a-pais').value.trim() || undefined, zonas: $('#a-zonas').value.trim() || undefined });
+    if (user) syncPerfil();
     const n = NEXT[auth.plan];
     $('#f-perfil').hidden = true; $('#a-done').hidden = false;
-    $('#d-title').textContent = n[0]; $('#d-text').textContent = n[1]; $('#d-btn').textContent = n[2]; $('#d-btn').setAttribute('href', n[3]);
+    $('#d-title').textContent = auth.confirm ? 'Revisa tu correo.' : n[0];
+    $('#d-text').textContent = auth.confirm ? 'Te enviamos un enlace para confirmar tu cuenta. Ábrelo y quedas dentro.' : n[1];
+    $('#d-btn').textContent = auth.confirm ? 'Ir a Mercado' : n[2]; $('#d-btn').setAttribute('href', auth.confirm ? '#mercado' : n[3]);
+    applyLang();
   }
   $('#f-perfil').addEventListener('submit', (e) => { e.preventDefault(); done(); });
   $('#p-skip').addEventListener('click', done);
@@ -3661,7 +3729,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   }
   const TITLES = { guia: 'Guía para comprar', articulo: 'Análisis', propiedades: 'Propiedades', propiedad: 'Propiedad', analizar: 'Analizar un precio', datos: 'Inteligencia', planes: 'Planes', entrar: 'Entrar', sobre: 'Sobre Cauce', contacto: 'Contacto' };
   function show() {
-    let [h, arg] = location.hash.slice(1).split('/'); if (VIEWS.indexOf(h) < 0) h = 'mercado';
+    let [h, arg] = location.hash.slice(1).split('/'); if (/access_token|error_description/.test(h)) h = 'entrar'; if (VIEWS.indexOf(h) < 0) h = 'mercado';
     if (h !== 'contacto' && h !== 'entrar') backTo = location.hash || '#mercado';
     artId = h === 'articulo' ? arg || '' : artId;
     if (current && AREA[current]) lastArea = AREA[current];
