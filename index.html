@@ -2693,6 +2693,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Gestionar suscripción": "Manage subscription",
+    "Pasar a Inteligencia · $10/mes": "Upgrade to Inteligencia · $10/mo",
     "Los pagos y las reservas se activan muy pronto.": "Payments and bookings go live very soon.",
     "Mi cuenta": "My account",
     "Tu cuenta": "Your account",
@@ -3180,6 +3182,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   /* accounts: Supabase Auth, loaded after the page so it never slows the first view */
   const SB_URL = 'https://gdgmcnqczrbbzwuzkvcv.supabase.co', SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A';
   let sbP = null, user = null;
+  // Stripe (test mode). Swap both for the live links when payments go live.
+  const PAY_LINK = '', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
+  const payUrl = () => PAY_LINK + '?client_reference_id=' + user.id + '&prefilled_email=' + encodeURIComponent(user.email);
   function sb() {
     if (!sbP) sbP = new Promise((ok, no) => { const t = document.createElement('script'); t.src = '/vendor/supabase.js'; t.onload = () => ok(window.supabase.createClient(SB_URL, SB_KEY)); t.onerror = no; document.head.appendChild(t); });
     return sbP;
@@ -3202,9 +3207,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   }
   async function account() {
     $('#f-auth').hidden = true; $('#f-perfil').hidden = true; $('#a-done').hidden = false; $('#d-out').hidden = false;
-    $('#d-title').textContent = 'Tu cuenta'; $('#d-text').textContent = user.email; $('#d-btn').textContent = 'Ir a Mercado'; $('#d-btn').setAttribute('href', '#mercado');
-    try { const c = await sb(), r = await c.from('profiles').select('plan').eq('id', user.id).single(); if (r.data) $('#d-text').textContent = user.email + ' · ' + (PLAN_NAME[r.data.plan] || r.data.plan); } catch (e) {}
-    applyLang();
+    $('#d-title').textContent = 'Tu cuenta'; $('#d-text').textContent = user.email;
+    const btn = (t, h) => { $('#d-btn').textContent = t; $('#d-btn').setAttribute('href', h); applyLang(); };
+    btn('Ir a Mercado', '#mercado');
+    let plan = 'boletin';
+    try { const c = await sb(), r = await c.from('profiles').select('plan').eq('id', user.id).single(); if (r.data) plan = r.data.plan; } catch (e) {}
+    $('#d-text').textContent = user.email + ' · ' + (PLAN_NAME[plan] || plan);
+    const wants = planIntent === 'inteligencia' || (user.user_metadata || {}).plan_intent === 'inteligencia';
+    if (plan === 'inteligencia') btn('Gestionar suscripción', PORTAL + '?prefilled_email=' + encodeURIComponent(user.email));
+    else if (wants && PAY_LINK) btn('Pasar a Inteligencia · $10/mes', payUrl());
   }
   $('#d-out').addEventListener('click', async () => { const c = await sb(); await c.auth.signOut(); $('#d-out').hidden = true; setMode('login'); });
   window.addEventListener('hashchange', () => { if (user && location.hash === '#entrar') account(); });
