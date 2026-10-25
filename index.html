@@ -20,7 +20,7 @@
 @font-face { font-family: "HND"; src: url("/fonts/hnd-700.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
 @font-face { font-family: "HND"; src: url("/fonts/hnd-800.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }
 :root {
-  --cover: #2C2B28; --cover-ink: #F1EEE9;
+  --cover: #CBC6BD; --cover-ink: #1B1A18;
   --g0: #E7E2DA; --g1: #DCD6CC; --g2: #D2CBC0; --g3: #C7C0B4;
   --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18;
   --sans: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --serif: "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; --mono: "HND", "Helvetica Neue", Arial, sans-serif;
@@ -31,7 +31,7 @@
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
-:root[data-theme="dark"] { --cover: #2E2F2C; --cover-ink: #ECEBE6; --sheet: #1F201E; --faint: #5E5F5A; --bg: #1A1B19; --card: #1A1B19; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; --g0: #2F302D; --g1: #353632; --g2: #3B3C38; --g3: #2A2B28; }
+:root[data-theme="dark"] { --cover: #3A3B38; --cover-ink: #ECEBE6; --sheet: #1F201E; --faint: #5E5F5A; --bg: #1A1B19; --card: #1A1B19; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; --g0: #2F302D; --g1: #353632; --g2: #3B3C38; --g3: #2A2B28; }
 body.intel-light { --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #77736C; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18; color-scheme: light; }
 body.intel { --bg: #1A1B19; --card: #1F201E; --sheet: #222321; --faint: #5E5F5A; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
 a { color: inherit; text-decoration: none; }
@@ -170,11 +170,15 @@ body.auth .stick-chat { display: none; }
 .feed h3 { font-family: var(--serif); font-size: 22px; line-height: 1.12; }
 .feed a:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .pro { font-size: 10px; border: 1px solid currentColor; border-radius: 999px; padding: 1px 6px; margin-left: 6px; letter-spacing: .06em; }
-.cover .mini { flex: 1; min-height: 0; padding: 12% 3% 10%; }
+.cover .mini { flex: 1; min-height: 0; padding: 6% 0 4%; }
 .cover .mini svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .mini .ln { fill: none; stroke: currentColor; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
 .mini .m1 { opacity: .55; } .mini .m2 { opacity: .3; } .mini .bx { fill: currentColor; } .mini .bx.neg { opacity: .45; }
 .mini .ref { stroke: currentColor; opacity: .35; stroke-dasharray: 2 3; vector-effect: non-scaling-stroke; }
+.mini .gl { stroke: currentColor; opacity: .14; } .mini .ax { fill: currentColor; opacity: .6; font: 500 10px var(--sans); }
+.mini .bv { fill: currentColor; font: 600 9.5px var(--sans); opacity: .85; } .mini .el { fill: currentColor; font: 700 11px var(--sans); } .mini .el.m1 { opacity: .7; } .mini .el.m2 { opacity: .5; }
+.mini .pt { fill: currentColor; } .mini .pt.m1 { opacity: .55; } .mini .pt.m2 { opacity: .3; }
+.plot .pt { fill: var(--sheet); stroke-width: 1.5; } .plot .el { font: 700 11px var(--sans); fill: currentColor; stroke: none; } .plot .bv { fill: var(--soft); font: 600 11px var(--sans); }
 .chart { margin: 22px 0 0; padding: 18px 18px 12px; background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; }
 .chart figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; font-size: 14px; font-weight: 700; }
 .chart .lgd { display: flex; gap: 14px; flex-wrap: wrap; color: var(--soft); font-size: 12px; font-weight: 400; }
@@ -2104,20 +2108,244 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
 </script>
 <script>
 (function () {
+/**
+ * Consulado: an investor's visa, in three stations. The papers on a desk with
+ * a stamp, the investor with a passport in hand on a dashed queue line, and
+ * the consulate with columns, steps, a pediment and a flag. The station under
+ * the pointer lifts; at rest the consulate is bright.
+ */
+const { Cam, clamp, facing, fit, hull, open, poly, proj, prism, rings, ringAt, rrect, run, seg, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
+
+const W = 124, D = 92, TH = 5;
+const circ = (x, y, r) => rrect(x - r, y - r, x + r, y + r, r, 4);
+function person(P, x, y, z) {
+  const body = { sil: poly(hull(ringAt(P, circ(x, y, 2.4), z).concat(ringAt(P, circ(x, y, 3.4), z + 10), ringAt(P, circ(x, y, 2), z + 11.5)))), crease: "" };
+  const head = { sil: poly(hull(ringAt(P, circ(x, y, 0.8), z + 12.6).concat(ringAt(P, circ(x, y, 2.6), z + 15.2), ringAt(P, circ(x, y, 0.8), z + 18)))), crease: "" };
+  return [body, head];
+}
+function mount({ stage, svg, read }, value) {
+  const bag = disposer();
+  let lift = value;
+  const C = Cam(45, 0.5, 1.45);
+  fit(C, [[0, 0, -TH], [W, D, -TH], [W, 0, 0], [0, D, 0], [108, 26, 54], [56, 8, 34]], 200, 152);
+  const P = proj(C), front = facing(C);
+  const g = mk("g", {}, svg);
+  const [pr, pi] = rings(0, 0, W, D, 8, 1.6);
+  put(solid(g), prism(P, front, pr, pi, -TH, 0));
+  // the queue, from the desk to the door
+  mk("path", { d: open([P(16, 60, 0), P(30, 66, 0), P(48, 64, 0), P(66, 57, 0), P(81, 54, 0)]), class: "nf dash" }, g);
+  [[10, 48, 13], [116, 70, 15]].forEach(([x, y, h]) => plant(g, P, front, x, y, 3.4, h));
+  const S = [
+    { x: 14, y: 72, s: { desk: solid(g), p1: solid(g), p2: solid(g), stamp: solid(g), handle: solid(g) } },
+    { x: 40, y: 64, s: { body: solid(g), head: solid(g), pass: solid(g) } },
+    { x: 81, y: 30, s: { step1: solid(g), step2: solid(g), body: solid(g), cols: [...Array(6)].map(() => solid(g)), beam: solid(g), roof: solid(g) } }
+  ];
+  const door = mk("path", { class: "nf sil" }, g), pole = mk("path", { class: "nf sil" }, g), flag = solid(g);
+  const draw = [
+    (h, s) => {
+      put(s.desk, box(P, front, 4, 64, 24, 80, h, h + 8, 1.2));
+      put(s.p1, box(P, front, 7, 67, 19, 77, h + 8, h + 9.2, 0.6));
+      put(s.p2, box(P, front, 8, 66, 20, 76, h + 9.2, h + 10.4, 0.6));
+      const up = 3 + (h > 0.5 ? 0 : 2);
+      put(s.stamp, box(P, front, 15, 69, 19, 73, h + 10.4 + up, h + 13 + up, 0.8));
+      put(s.handle, box(P, front, 16.2, 70.2, 17.8, 71.8, h + 13 + up, h + 17 + up, 0.6));
+    },
+    (h, s) => {
+      const [b, hd] = person(P, 40, 64, h); put(s.body, b); put(s.head, hd);
+      put(s.pass, box(P, front, 43, 62, 45.5, 66, h + 7, h + 10.5, 0.4));
+    },
+    (h, s) => {
+      put(s.step1, box(P, front, 60, 46, 102, 54, h, h + 1.6, 1));
+      put(s.step2, box(P, front, 62, 46, 100, 50, h + 1.6, h + 3.2, 1));
+      put(s.body, box(P, front, 52, 8, 110, 42, h, h + 23, 1.2));
+      s.cols.forEach((c, k) => { const x = 57 + k * 9.6; put(c, box(P, front, x, 42.5, x + 2.6, 45.5, h + 3.2, h + 20, 0.6)); });
+      put(s.beam, box(P, front, 52, 41, 110, 47, h + 20, h + 23.5, 0.8));
+      put(s.roof, roof(P, front, 52, 8, 110, 47, h + 23.5, 9));
+      door.setAttribute("d", open([P(77, 42, h + 3.2), P(77, 42, h + 15), P(85, 42, h + 15), P(85, 42, h + 3.2)]) + open([P(60, 42, h + 9), P(60, 42, h + 15), P(65, 42, h + 15), P(65, 42, h + 9), P(60, 42, h + 9)]) + open([P(97, 42, h + 9), P(97, 42, h + 15), P(102, 42, h + 15), P(102, 42, h + 9), P(97, 42, h + 9)]));
+      const top = h + 32.5;
+      pole.setAttribute("d", seg(P(81, 27.5, top - 1), P(81, 27.5, top + 18)));
+      put(flag, { sil: poly([P(81, 27.5, top + 18), P(81, 41, top + 16.5), P(81, 41, top + 10.5), P(81, 27.5, top + 12)]), crease: seg(P(81, 34, top + 17.2), P(81, 34, top + 11.3)) });
+    }
+  ];
+  const T = S.map(() => ({ z: tween(0), last: -1 }));
+  const B = register(stage, (_dt, now) => {
+    let m = false;
+    T.forEach((t, i) => { const h = tval(t.z, now); if (Math.abs(h - t.last) > 0.01) { t.last = h; draw[i](h, S[i].s); } if (!tdone(t.z, now)) m = true; });
+    return m;
+  });
+  bag.add(B.unregister);
+  const cx = S.map((st) => P(st.x, st.y, 8));
+  function hit([x, y]) { if (y < 20 || y > 300) return -1; let b = -1, d = 1e9; cx.forEach((c, i) => { const dd = Math.hypot(c[0] - x, (c[1] - y) * 0.6); if (dd < d) { d = dd; b = i; } }); return d < 70 ? b : -1; }
+  const mains = [S[0].s.desk, S[1].s.body, S[2].s.body];
+  let act = -2;
+  function setActive(a) {
+    if (a === act) return; act = a; const now = performance.now();
+    T.forEach((t, i) => { tset(t.z, a === i ? clamp(lift, 0, 14) : 0, now, Math.abs(i - Math.max(a, 0)) * 50); mains[i].sil.classList.toggle("hi", a < 0 ? i === 2 : i === a); });
+    read.textContent = a < 0 ? "rest" : ["papeles", "inversionista", "consulado"][a]; B.wake();
+  }
+  bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
+  bag.add(() => svg.replaceChildren());
+  setActive(-1);
+  return { set: (v) => { lift = v; }, destroy: bag.dispose };
+}
+hairline({ name: "consulado", means: "An investor's visa in three stations: the papers and the stamp, the investor with a passport, and the consulate; the one under the pointer lifts.", rules: [1, 2, 5, 9], range: [4, 8, 14], tour: [[120, 210], [175, 190], [250, 150], null], mount });
+
+})();
+</script>
+<script>
+(function () {
+/**
+ * Lugares: recognizable Caracas places from one kit. Each scene is a plate
+ * with its buildings (slabs, round towers, houses, an obelisk), optional hill,
+ * plaza ring and trees, with the ridge of the Ávila behind. The building under
+ * the pointer rises; at rest the scene's landmark is bright.
+ */
+const { Cam, clamp, facing, fit, hull, open, poly, proj, prism, rings, ringAt, rrect, run, seg, unproj, solid, put, tset, tval, tdone, tween, disposer, mk, pointer, register } = HL;
+/* kit: a box, a gabled roof, a tree, floor lines; all built from the kernel's rings and hulls */
+const box = (P, front, x0, y0, x1, y1, z0, z1, r = 1.4) => { const [a, b] = rings(x0, y0, x1, y1, r, 1.1); return prism(P, front, a, b, z0, z1); };
+function roof(P, front, x0, y0, x1, y1, z, rh) {
+  const ym = (y0 + y1) / 2, foot = rrect(x0, y0, x1, y1, 1, 3), ridge = rrect(x0 + 0.6, ym - 0.4, x1 - 0.6, ym + 0.4, 0.4, 2);
+  const top = (x) => P(x, ym, z + rh);
+  return { sil: poly(hull(ringAt(P, foot, z).concat(ringAt(P, ridge, z + rh)))),
+    crease: open(ringAt(P, run(foot, front), z)) + seg(top(x0 + 0.6), top(x1 - 0.6)) + seg(P(x1, y0 + 1, z), top(x1 - 0.6)) + seg(top(x1 - 0.6), P(x1, y1 - 1, z)) };
+}
+function tree(P, front, x, y, r, h) {
+  const q = (k) => rrect(x - r * k, y - r * k, x + r * k, y + r * k, r * k, 4), t = q(0.16), mid = q(1);
+  return [{ sil: poly(hull(ringAt(P, t, 0).concat(ringAt(P, t, h * 0.45)))), crease: "" },
+    { sil: poly(hull(ringAt(P, q(0.5), h * 0.36).concat(ringAt(P, mid, h * 0.66), ringAt(P, q(0.32), h)))), crease: open(ringAt(P, run(mid, front), h * 0.66)) }];
+}
+const plant = (g, P, front, x, y, r, h) => tree(P, front, x, y, r, h).forEach((s) => put(solid(g), s));
+function floors(P, x0, y0, x1, y1, h, step) { let d = ""; for (let z = step; z < h - 3; z += step) d += open([P(x0 + 2, y1, z), P(x1 - 1, y1, z), P(x1, y1 - 1, z), P(x1, y0 + 2, z)]); return d; }
+
+const SIDE = 140, TH = 6, RC = -6;
+const ridge = (t) => 6 + 48 * Math.exp(-(((t + 24) / 42) ** 2)) + 32 * Math.exp(-(((t - 58) / 30) ** 2));
+function shape(P, front, it, h) {
+  const z0 = it.z0 || 0, x1 = it.x + it.w, y1 = it.y + it.d, out = [];
+  if (it.k === 'obelisk') {
+    out.push(box(P, front, it.x - 3, it.y - 3, x1 + 3, y1 + 3, z0, z0 + 3, 0.8));
+    const b = rrect(it.x, it.y, x1, y1, 0.6, 2), cx = it.x + it.w / 2, cy = it.y + it.d / 2, t = rrect(cx - it.w * 0.28, cy - it.d * 0.28, cx + it.w * 0.28, cy + it.d * 0.28, 0.3, 2);
+    out.push({ sil: poly(hull(ringAt(P, b, z0 + 3).concat(ringAt(P, t, z0 + h * 0.9), [P(cx, cy, z0 + h)]))), crease: open(ringAt(P, run(b, front), z0 + 3)) });
+    return out;
+  }
+  const r = it.k === 'round' ? Math.min(it.w, it.d) / 2 : 2.4;
+  const [a, bb] = rings(it.x, it.y, x1, y1, r, 1.2), body = prism(P, front, a, bb, z0, z0 + h);
+  let fl = '';
+  if (it.k === 'round') { for (let z = 5; z < h - 3; z += 5) fl += open(ringAt(P, run(a, front), z0 + z)); }
+  if (it.k !== 'house' && it.k !== 'round') { fl = ''; for (let z = 5; z < h - 3; z += 5) fl += open([P(it.x + 2, y1, z0 + z), P(x1 - 1, y1, z0 + z), P(x1, y1 - 1, z0 + z), P(x1, it.y + 2, z0 + z)]); }
+  body.crease = (body.crease || '') + fl;
+  out.push(body);
+  if (it.k === 'house') out.push(roof(P, front, it.x, it.y, x1, y1, z0 + h, Math.max(5, it.w * 0.3)));
+  return out;
+}
+function scene(name, means, cfg) {
+  function mount({ stage, svg, read }, value) {
+    const bag = disposer();
+    let rise = value;
+    const C = Cam(45, 0.5, 1.22), k = cfg.ridge || 1;
+    const T = []; for (let t = -96; t <= 96; t += 4) T.push(t);
+    const R = (t, s = 1) => [RC + t, RC - t, ridge(t) * k * s];
+    const top = Math.max(...cfg.items.map((it) => (it.z0 || 0) + it.h));
+    fit(C, [[0, 0, -TH], [SIDE, SIDE, -TH], [SIDE, 0, 0], [0, SIDE, 0], R(-96), R(96), R(-24), [SIDE / 2, SIDE / 2, top + 10]], 200, 160);
+    const P = proj(C), front = facing(C);
+    const g = mk("g", {}, svg);
+    const prof = T.map((t) => P(...R(t)));
+    mk("path", { d: poly([...prof, P(RC + 96, RC - 96, 0), P(RC - 96, RC + 96, 0)]), class: "fo" }, g);
+    mk("path", { d: open(prof), class: "nf sil" }, g);
+    mk("path", { d: open(T.filter((t) => Math.abs(t + 20) < 64).map((t) => P(RC + t + 14, RC - t + 14, ridge(t) * k * 0.55))), class: "nf lo" }, g);
+    const [plate, plateIn] = rings(0, 0, SIDE, SIDE, 9, 1.6);
+    put(solid(g), prism(P, front, plate, plateIn, -TH, 0));
+    (cfg.dash || []).forEach((d) => mk("path", { d: d.c ? poly(ringAt(P, rrect(d.c[0] - d.c[2], d.c[1] - d.c[2], d.c[0] + d.c[2], d.c[1] + d.c[2], d.c[2], 10), 0)) : open(d.l.map(([x, y]) => P(x, y, 0))), class: "nf dash" }, g));
+    if (cfg.shore) { const sy = (x) => cfg.shore + Math.sin(x / 13) * 3, sh = []; for (let x = 4; x <= SIDE - 4; x += 4) sh.push(P(x, sy(x), 0)); mk("path", { d: open(sh), class: "nf dash" }, g);
+      let wv = ""; [10, 20, 30].forEach((dy, k) => { for (let x0 = 8 + k * 10; x0 < SIDE - 22; x0 += 32) { const pts = []; for (let x = x0; x <= x0 + 16; x += 2) pts.push(P(x, cfg.shore + dy + Math.sin((x - x0) / 3) * 1.2, 0)); wv += open(pts); } }); mk("path", { d: wv, class: "nf lo" }, g); }
+    if (cfg.hill) { const [x0, y0, x1, y1, h] = cfg.hill, [hr, hi] = rings(x0, y0, x1, y1, 7, 1.4); put(solid(g), prism(P, front, hr, hi, 0, h)); }
+    const items = cfg.items.map((it, i) => ({ it, i })).sort((a, b) => (a.it.x + a.it.y) - (b.it.x + b.it.y));
+    const objs = [];
+    const treesBack = (cfg.trees || []).filter(([x, y]) => x + y < 120), treesFront = (cfg.trees || []).filter(([x, y]) => x + y >= 120);
+    treesBack.forEach(([x, y, h, z0]) => plant(g, (a, b, c) => P(a, b, c + (z0 || 0)), front, x, y, 3.4, h || 14));
+    items.forEach(({ it, i }) => { objs[i] = { it, parts: shape(P, front, it, it.h).map(() => solid(g)), z: tween(it.h), last: -1 }; });
+    treesFront.forEach(([x, y, h, z0]) => plant(g, (a, b, c) => P(a, b, c + (z0 || 0)), front, x, y, 3.4, h || 14));
+    const B = register(stage, (_dt, now) => { let m = false; objs.forEach((o) => { const h = tval(o.z, now); if (Math.abs(h - o.last) > 0.01) { o.last = h; shape(P, front, o.it, h).forEach((s, j) => put(o.parts[j], s)); } if (!tdone(o.z, now)) m = true; }); return m; });
+    bag.add(B.unregister);
+    function hit([sx, sy]) {
+      let best = -1, key = -1;
+      cfg.items.forEach((it, i) => { [it.h * 0.5, it.h].forEach((hh) => { const [wx, wy] = unproj(C, sx, sy, (it.z0 || 0) + hh); if (wx >= it.x - 3 && wx <= it.x + it.w + 3 && wy >= it.y - 3 && wy <= it.y + it.d + 3 && it.x + it.y > key) { key = it.x + it.y; best = i; } }); });
+      return best;
+    }
+    const keyI = cfg.key || 0;
+    let act = -2;
+    function setActive(a) {
+      if (a === act) return; act = a; const now = performance.now();
+      objs.forEach((o, i) => { tset(o.z, o.it.h + (a === i ? clamp(rise, 0, 30) : 0), now, 0); o.parts[o.parts.length > 1 && o.it.k === 'obelisk' ? 1 : 0].sil.classList.toggle("hi", a < 0 ? i === keyI : i === a); });
+      read.textContent = a < 0 ? "rest" : String(a + 1); B.wake();
+    }
+    bag.add(pointer(stage, { move: (p) => setActive(hit(p)), leave: () => setActive(-1) }));
+    bag.add(() => svg.replaceChildren());
+    setActive(-1);
+    return { set: (v) => { rise = v; }, destroy: bag.dispose };
+  }
+  hairline({ name, means, rules: [1, 2, 3, 5], range: [8, 16, 30], tour: [[175, 175], [215, 195], [250, 180], null], mount });
+}
+const S = (k, x, y, w, d, h, z0) => ({ k, x, y, w, d, h, z0 });
+scene("colinas", "Bello Monte in the valley and Colinas on its hill, under the Ávila: the building under the pointer rises.", {
+  items: [S('slab', 12, 66, 22, 16, 44), S('slab', 38, 72, 18, 18, 30), S('round', 14, 100, 16, 16, 26), S('slab', 40, 104, 20, 14, 20),
+    S('slab', 78, 26, 16, 14, 12, 10), S('house', 102, 30, 18, 14, 7, 10), S('slab', 80, 60, 18, 16, 16, 10), S('house', 106, 64, 16, 14, 7, 10), S('slab', 82, 96, 16, 16, 13, 10), S('house', 106, 100, 18, 14, 8, 10)],
+  hill: [70, 18, 134, 134, 10], dash: [{ l: [[64, 10], [62, 50], [66, 90], [62, 134]] }], trees: [[20, 128, 14], [48, 130, 12], [124, 120, 13, 10], [96, 124, 12, 10]], key: 0 });
+scene("altamira", "Plaza Altamira: the obelisk in its round plaza, towers around it, the Ávila behind.", {
+  items: [S('obelisk', 66, 66, 8, 8, 56), S('slab', 8, 10, 24, 18, 38), S('slab', 42, 8, 18, 14, 24), S('slab', 104, 8, 24, 18, 34), S('slab', 8, 56, 20, 24, 30), S('round', 110, 52, 20, 20, 42)],
+  dash: [{ c: [70, 70, 28] }, { c: [70, 70, 18] }], trees: [[44, 50, 12], [96, 48, 12], [44, 96, 12], [98, 94, 12], [70, 122, 13], [122, 70, 13]], key: 0 });
+scene("castellana", "La Castellana: a round tower and slab towers over a row of houses, the Ávila behind.", {
+  items: [S('round', 18, 18, 24, 24, 52), S('slab', 56, 14, 26, 18, 40), S('slab', 96, 18, 24, 22, 46), S('slab', 16, 60, 22, 26, 30), S('slab', 52, 58, 30, 24, 22), S('slab', 98, 62, 24, 22, 34),
+    S('house', 18, 104, 24, 18, 8), S('house', 56, 104, 24, 18, 9), S('house', 96, 104, 24, 18, 8)],
+  trees: [[48, 128, 12], [88, 130, 12], [128, 96, 13], [10, 128, 12]], key: 0 });
+scene("casa", "A house in Campo Alegre: two wings, a garden wall, a pool and trees.", {
+  items: [S('house', 34, 36, 56, 40, 11), S('house', 34, 82, 28, 24, 9)],
+  dash: [{ c: [70, 70, 58] }, { l: [[78, 92], [118, 92], [118, 110], [78, 110], [78, 92]] }], trees: [[16, 16, 16], [110, 20, 18], [122, 52, 15], [20, 118, 14], [120, 124, 16], [100, 130, 13], [16, 70, 15]], key: 0 });
+scene("palos", "Los Palos Grandes: a grid of residential blocks at the foot of the Ávila, trees on every street.", {
+  items: [S('slab', 14, 14, 26, 26, 22), S('slab', 56, 14, 26, 26, 30), S('slab', 98, 14, 26, 26, 18), S('slab', 14, 56, 26, 26, 26), S('slab', 56, 56, 26, 26, 34), S('slab', 98, 56, 26, 26, 24), S('slab', 14, 98, 26, 26, 16), S('slab', 56, 98, 26, 26, 20), S('slab', 98, 98, 26, 26, 14)],
+  ridge: 1.25, trees: [[48, 132, 12], [90, 132, 12], [132, 48, 12], [132, 90, 12], [132, 132, 13]], key: 4 });
+scene("playa", "A beach on Margarita: low apartment blocks and posadas behind the sand, palms, and the sea in front.", {
+  items: [S('slab', 14, 14, 28, 20, 18), S('slab', 54, 12, 26, 22, 24), S('house', 96, 16, 24, 18, 8), S('house', 16, 52, 20, 16, 7), S('slab', 50, 50, 24, 18, 12), S('house', 92, 52, 22, 16, 8)],
+  shore: 92, ridge: 0.7, trees: [[42, 80, 15], [82, 82, 16], [120, 80, 14], [12, 82, 13]], key: 1 });
+scene("seniat", "An office of the tax service: a mid-rise block with a plaza and a queue at its door.", {
+  items: [S('slab', 30, 20, 70, 40, 34), S('slab', 14, 96, 22, 20, 14), S('slab', 104, 100, 22, 20, 16)],
+  dash: [{ l: [[60, 64], [60, 76], [72, 84], [96, 84], [112, 78]] }, { c: [70, 104, 12] }], trees: [[20, 70, 13], [118, 64, 13], [70, 128, 12], [44, 124, 12]], key: 0 });
+scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila behind.", {
+  items: [S('slab', 50, 48, 32, 22, 64), S('slab', 12, 18, 22, 20, 16), S('slab', 100, 22, 24, 18, 20), S('slab', 12, 96, 26, 20, 14), S('slab', 98, 96, 26, 22, 18)],
+  trees: [[50, 110, 13], [80, 112, 12], [124, 70, 13], [20, 70, 12]], key: 0 });
+
+})();
+</script>
+<script>
+(function () {
   'use strict';
   const FEED = [
     ['Análisis', 'Una fuente dice $1.551 por m² y otra $547. ¿Cuál usar?', '6 min', 0, 'i:fuentes'],
-    ['Zonas', 'Bello Monte y Colinas: zonas vecinas, $243 de diferencia por m²', '4 min', 0, 'p:Colinas_de_Bello_Monte,_Mirador._2017._Caracas,_Venezuela.jpg'],
+    ['Zonas', 'Bello Monte y Colinas: zonas vecinas, $243 de diferencia por m²', '4 min', 0, 'i:colinas'],
     ['Estudio', 'La Boyera, 18.000 m²: townhouses con margen, si se venden', '9 min', 1, null],
     ['Análisis', 'Airbnb a $63 la noche: ¿conviene más que alquilar por año?', '5 min', 0, 'i:noches'],
     ['Guía', 'Comprar en Venezuela: pasos, costos y riesgos', '10 min', 0, 'i:pasos'],
     ['Estudio', '¿Convertir un local de 5.380 m² en vivienda?', '7 min', 1, null],
     ['Análisis', 'Rendimiento bruto de 12%: cuánto queda después de gastos', '7 min', 1, 'i:gastos'],
-    ['Zonas', 'Desde $15.000: qué se compra en la costa con cada presupuesto', '5 min', 0, 'p:Salt_ponds_and_Playa_La_Salina_viewed_from_above_in_Pampatar,_Margarita_Island,_Venezuela.jpg'],
+    ['Zonas', 'Desde $15.000: qué se compra en la costa con cada presupuesto', '5 min', 0, 'i:costa'],
     ['Zonas', 'La Trinidad, El Cafetal y Chuao: ¿el este de Caracas sube más que el resto?', 'Pronto', 0, 'i:avila'],
-    ['Marco legal', 'El RIF para extranjeros en el SENIAT: requisitos, pasos y tiempos reales', 'Pronto', 0, 'i:pasos'],
-    ['Análisis', 'Margarita y el alquiler vacacional: ¿cuánto rinde la isla?', 'Pronto', 0, 'i:noches'],
-    ['Marco legal', 'TR-I o TR-RE: qué visa de inversionista conviene según tu caso', 'Pronto', 1, 'i:fuentes']
+    ['Marco legal', 'El RIF para extranjeros en el SENIAT: requisitos, pasos y tiempos reales', 'Pronto', 0, 'i:seniat'],
+    ['Análisis', 'Margarita y el alquiler vacacional: ¿cuánto rinde la isla?', 'Pronto', 0, 'i:playa'],
+    ['Marco legal', 'TR-I o TR-RE: qué visa de inversionista conviene según tu caso', 'Pronto', 1, 'i:consulado']
   ];
   /* Propiedades. PAID = destacados pagados (sin etiqueta por decisión editorial; aviso general abajo).
      DEALS = top 5 por precio/m² bajo la mediana de su zona. DATOS DE EJEMPLO hasta conectar Rent-A-House. */
@@ -2125,11 +2353,11 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     { t: 'Espacio destacado', s: 'Tu propiedad aquí · $150 por 30 días', href: '#planes', plan: 'duenos' }
   ];
   const DEALS = [
-    { t: 'Apartamento · Altamira', img: 'p:Caracas_Altamira.jpg', zone: 'Altamira', m2: 110, price: 260000 },
-    { t: 'Apartamento · La Castellana', img: 'p:Altamira,_La_Castellana_en_Caracas,_Venezuela.jpg', zone: 'La Castellana', m2: 140, price: 480000 },
-    { t: 'Casa · Campo Alegre', img: 'p:Bella_Caracas.JPG', zone: 'Campo Alegre', m2: 200, price: 590000 },
-    { t: 'Apartamento · Los Palos Grandes', img: 'p:Los_Palos_Grandes_2000_000.jpg', zone: 'Los Palos Grandes', m2: 95, price: 165000 },
-    { t: 'Apartamento · Bello Monte', img: 'p:Torre_Savoy,_Bello_Monte,_Caracas,_Venezuela.jpg', zone: 'Bello Monte', m2: 80, price: 98000 },
+    { t: 'Apartamento · Altamira', img: 'i:altamira', zone: 'Altamira', m2: 110, price: 260000 },
+    { t: 'Apartamento · La Castellana', img: 'i:castellana', zone: 'La Castellana', m2: 140, price: 480000 },
+    { t: 'Casa · Campo Alegre', img: 'i:casa', zone: 'Campo Alegre', m2: 200, price: 590000 },
+    { t: 'Apartamento · Los Palos Grandes', img: 'i:palos', zone: 'Los Palos Grandes', m2: 95, price: 165000 },
+    { t: 'Apartamento · Bello Monte', img: 'i:torre', zone: 'Bello Monte', m2: 80, price: 98000 },
     { t: 'Apartamento · El Marqués', img: 'i:avila', zone: 'El Marqués', m2: 90, price: 81000 }
   ];
   const STUDIES = [
@@ -2168,28 +2396,43 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     const pw = W - L - R, ph = H - T - B;
     const X = c.k === 'line' ? (i) => L + pw * i / (n - 1) : (i) => L + pw * (i + 0.5) / n;
     const Y = (y) => T + ph * (1 - (y - lo) / (hi - lo));
-    return { n, lo, hi, step, X, Y, pw, ph, L, T, W, H, wat, bw: pw / n * 0.56 };
+    return { n, lo, hi, step, X, Y, pw, ph, L, R, T, W, H, wat, bw: pw / n * 0.56 };
   }
   function marks(c, g, mini) {
     let o = '';
-    if (c.ref) o += `<line class="ref" x1="${g.L}" x2="${g.W - (mini ? 6 : 16)}" y1="${g.Y(c.ref[0])}" y2="${g.Y(c.ref[0])}"/>`;
+    if (c.ref) o += `<line class="ref" x1="${g.L}" x2="${g.W - g.R}" y1="${g.Y(c.ref[0])}" y2="${g.Y(c.ref[0])}"/>`;
     if (c.k === 'line') c.s.forEach((x, k) => { o += `<path class="ln ${mini ? 'm' : 'c'}${k}" d="${x.v.map((y, i) => (i ? 'L' : 'M') + g.X(i).toFixed(1) + ' ' + g.Y(y).toFixed(1)).join('')}"/>`; });
     else c.s[0].v.forEach((y, i) => {
       const [a, b] = g.wat ? g.wat[i] : [0, y], y0 = g.Y(Math.max(a, b)), y1 = g.Y(Math.min(a, b));
       const cls = g.wat ? (i === 0 || i === g.n - 1 ? 'tot' : 'neg') : (c.tot && c.tot.indexOf(i) >= 0 ? 'tot' : '');
       o += `<rect class="bx ${cls}" data-i="${i}" x="${(g.X(i) - g.bw / 2).toFixed(1)}" y="${y0.toFixed(1)}" width="${g.bw.toFixed(1)}" height="${Math.max(1, y1 - y0).toFixed(1)}" rx="${mini ? 1.5 : 3}"/>`;
+      if (!mini || mini === 2) { const fm = FMT[c.f] || N0, val = g.wat ? (i === g.n - 1 ? g.wat[i][1] : y) : y; o += `<text class="bv" x="${g.X(i).toFixed(1)}" y="${(y0 - (mini ? 4 : 6)).toFixed(1)}" text-anchor="middle">${esc(fm(val))}</text>`; }
     });
+    if (c.k === 'line' && (!mini || mini === 2)) {
+      const fm = FMT[c.f] || N0, last = c.s.map((x, k) => ({ k, y: g.Y(x.v[x.v.length - 1]), v: x.v[x.v.length - 1] })).sort((a, b) => a.y - b.y);
+      for (let i = 1; i < last.length; i++) if (last[i].y - last[i - 1].y < (mini ? 11 : 13)) last[i].y = last[i - 1].y + (mini ? 11 : 13);
+      if (!mini) c.s.forEach((x, k) => x.v.forEach((y, i) => { if (x.v.length <= 13 || i % 2 === 0 || i === x.v.length - 1) o += `<circle class="pt c${k}" cx="${g.X(i).toFixed(1)}" cy="${g.Y(y).toFixed(1)}" r="2.2"/>`; }));
+      else c.s.forEach((x, k) => { o += `<circle class="pt m${k}" cx="${g.X(x.v.length - 1).toFixed(1)}" cy="${g.Y(x.v[x.v.length - 1]).toFixed(1)}" r="2.6"/>`; });
+      last.forEach((e) => { o += `<text class="el ${mini ? 'm' : 'c'}${e.k}" x="${(g.X(g.n - 1) + 7).toFixed(1)}" y="${(e.y + 4).toFixed(1)}">${esc(fm(e.v))}</text>`; });
+    }
     return o;
   }
-  const miniChart = (id) => { const c = CH[id]; if (!c) return ''; const g = geo(c, 300, 150, [4, 4, 6, 4]); return `<div class="mini" aria-hidden="true"><svg viewBox="0 0 300 150" preserveAspectRatio="none">${marks(c, g, 1)}</svg></div>`; };
+  const miniChart = (id) => {
+    const c = CH[id]; if (!c) return ''; const W = 260, H = 150, g = geo(c, W, H, [34, c.k === 'line' ? 46 : 6, 12, 18]), fm = FMT[c.f] || N0;
+    let ax = '';
+    for (let y = g.lo; y <= g.hi + 1e-9; y += g.step) ax += `<line class="gl" x1="${g.L}" x2="${W - g.R}" y1="${g.Y(y).toFixed(1)}" y2="${g.Y(y).toFixed(1)}"/><text class="ax" x="${g.L - 5}" y="${(g.Y(y) + 3).toFixed(1)}" text-anchor="end">${esc(fm(y).replace('/m²', ''))}</text>`;
+    const ends = [0, g.n - 1]; if (g.n > 4) ends.splice(1, 0, Math.round((g.n - 1) / 2));
+    ends.forEach((i) => { ax += `<text class="ax" x="${g.X(i).toFixed(1)}" y="${H - 4}" text-anchor="${c.k === 'line' ? (i === 0 ? 'start' : i === g.n - 1 ? 'end' : 'middle') : 'middle'}">${esc(String(c.x[i]).replace(' meses', 'm'))}</text>`; });
+    return `<div class="mini" aria-hidden="true"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${ax}${marks(c, g, 2)}</svg></div>`;
+  };
   const cover = (id, n, name, ar) => `<div class="cover"${ar ? ` style="aspect-ratio:${ar}"` : ''}><span class="lab" style="color:inherit;opacity:.7">Estudio${n ? " Nº " + n : ""}</span>${miniChart(id)}<b>${esc(name)}</b></div>`;
   function chartHTML(id) {
-    const c = CH[id], W = 640, H = 280, g = geo(c, W, H, [52, 16, 14, 30]), fm = FMT[c.f];
+    const c = CH[id], W = 640, H = 280, g = geo(c, W, H, [52, 74, 14, 30]), fm = FMT[c.f];
     let ax = '';
-    for (let y = g.lo; y <= g.hi + 1e-9; y += g.step) ax += `<line class="gl" x1="${g.L}" x2="${W - 16}" y1="${g.Y(y)}" y2="${g.Y(y)}"/><text class="ax" x="${g.L - 8}" y="${g.Y(y) + 4}" text-anchor="end">${fm(y)}</text>`;
+    for (let y = g.lo; y <= g.hi + 1e-9; y += g.step) ax += `<line class="gl" x1="${g.L}" x2="${W - 74}" y1="${g.Y(y)}" y2="${g.Y(y)}"/><text class="ax" x="${g.L - 8}" y="${g.Y(y) + 4}" text-anchor="end">${fm(y)}</text>`;
     const every = g.n > 9 ? 2 : 1;
     c.x.forEach((l, i) => { if (i % every === 0) ax += `<text class="ax" x="${g.X(i)}" y="${H - 8}" text-anchor="middle">${esc(l)}</text>`; });
-    const rt = c.ref ? `<text class="reft" x="${W - 16}" y="${g.Y(c.ref[0]) - 6}" text-anchor="end">${esc(c.ref[1])}</text>` : '';
+    const rt = c.ref ? `<text class="reft" x="${g.L + 6}" y="${g.Y(c.ref[0]) - 6}" text-anchor="start">${esc(c.ref[1])}</text>` : '';
     const lgd = c.s.length > 1 ? `<span class="lgd">${c.s.map((x, k) => `<span class="c${k}"><i class="sw"></i><span>${esc(x.n)}</span></span>`).join('')}</span>` : '';
     return `<figure class="chart" data-chart="${id}"><figcaption><span>${esc(c.t)}</span>${lgd}</figcaption><div class="plot" tabindex="0" role="img" aria-label="${esc(c.t)}"><svg viewBox="0 0 ${W} ${H}">${ax}${marks(c, g)}${rt}<line class="xh" y1="${g.T}" y2="${g.T + g.ph}" visibility="hidden"/><g class="dts"></g></svg><div class="tip" hidden></div></div><p class="src">${esc(c.src)}</p></figure>`;
   }
@@ -2199,8 +2442,8 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
       el.outerHTML = chartHTML(id);
     });
     $$('.chart[data-chart]', root).forEach((el) => {
-      if (el.dataset.on) return; el.dataset.on = '1';
-      const c = CH[el.dataset.chart], g = geo(c, 640, 280, [52, 16, 14, 30]), fm = FMT[c.f];
+      if (el.dataset.on || !CH[el.dataset.chart]) return; el.dataset.on = '1';
+      const c = CH[el.dataset.chart], g = geo(c, 640, 280, [52, 74, 14, 30]), fm = FMT[c.f];
       const plot = $('.plot', el), svg = $('svg', plot), tip = $('.tip', plot), xh = $('.xh', svg), dts = $('.dts', svg);
       let cur = -1;
       const val = (i) => (g.wat ? (i === g.n - 1 ? g.wat[i][1] : c.s[0].v[i]) : null);
@@ -2278,7 +2521,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
 
   /* Illustrations are Hairline figures (MIT, lucasmarkes/hairline): isometric line drawings that answer the pointer. */
   const FIG = { avila: 'ciudad', llave: 'pasos' };
-  const HUE = { fuentes: 0, noches: 1, pasos: 2, gastos: 3, costa: 0, ciudad: 2, lote: 1 };
+  const HUE = { fuentes: 0, noches: 1, pasos: 2, gastos: 3, costa: 0, ciudad: 2, lote: 1, consulado: 3, playa: 0, seniat: 1, colinas: 1, altamira: 2, castellana: 3, casa: 1, palos: 0, torre: 2 };
   const ill = (k, cap) => { const f = FIG[k] || k; return `<div class="ph fig" data-c="${HUE[f] ?? 1}"><div class="figbox" data-fig="${f}"></div>${cap ? `<span>${cap}</span>` : ''}</div>`; };
   const mounted = [];
   function mountFigs() {
