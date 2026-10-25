@@ -186,6 +186,25 @@ body.auth .stick-chat { display: none; }
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
 .duo h2 { font-family: var(--serif); font-size: 34px; line-height: 1.05; margin: 8px 0 18px; }
 
+.gd { max-width: 720px; margin: 0 auto; }
+.gd h1 { font-family: var(--serif); font-size: clamp(36px, 4.4vw, 56px); line-height: 1.02; margin: 14px 0 16px; }
+.gd .dek { font-size: 18px; color: var(--soft); max-width: 36em; }
+.gd-inc { list-style: none; padding: 0; margin: 20px 0 0; display: flex; flex-wrap: wrap; gap: 8px; } .gd-inc li { font-size: 13px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; }
+.gd-card { margin-top: 28px; background: var(--sheet); border: 1px solid var(--line); border-radius: 18px; padding: 24px; display: grid; gap: 14px; }
+#gd-form { display: grid; gap: 14px; }
+.gd-check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; cursor: pointer; } .gd-check input { margin-top: 3px; accent-color: var(--ink); width: 16px; height: 16px; flex: none; }
+.gd-msg:empty { display: none; }
+.gd-done { display: grid; gap: 16px; animation: gdIn .5s var(--ease) both; }
+.gd-ok { font-size: 18px; } .gd-ok span:first-child { font-weight: 700; }
+.gd-acc { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 10px; animation: gdIn .5s .35s var(--ease) both; }
+.gd-q { font-size: 17px; font-weight: 700; } .gd-acc ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; font-size: 14px; color: var(--soft); }
+.gd-row { display: flex; gap: 14px; align-items: center; margin-top: 6px; } .gd-no { background: none; border: 0; font: 500 14px var(--sans); color: var(--soft); cursor: pointer; padding: 0; } .gd-no:hover { color: var(--ink); }
+@keyframes gdIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.gd-toc { list-style: none; padding: 0; margin: 12px 0 0; } .gd-toc li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); } .gd-toc li:last-child { border-bottom: 0; }
+.gd-toc .n { font: 12px var(--mono); color: var(--soft); padding-top: 3px; } .gd-toc b { font-size: 16px; } .gd-toc .tag { font-size: 11px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--soft); margin-left: 6px; white-space: nowrap; } .gd-toc p { margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--soft); }
+.gd-note { margin-top: 10px; }
+.gd-faq details { border-bottom: 1px solid var(--line); padding: 14px 0; } .gd-faq summary { cursor: pointer; font-weight: 600; font-size: 16px; } .gd-faq details p { margin-top: 8px; font-size: 16px; line-height: 1.6; color: var(--soft); }
+@media (max-width: 560px) { .gd .pillfield { flex-wrap: wrap; border-radius: 18px; padding: 8px 8px 8px 16px; } .gd .pillfield .btn { width: 100%; } }
 /* ARTICLE (Semafor-style sections) */
 .art { display: grid; grid-template-columns: minmax(0, 680px) 280px; gap: 64px; justify-content: center; }
 .art h1 { font-family: var(--serif); font-size: clamp(38px, 4.6vw, 60px); line-height: 1; margin: 14px 0 16px; }
@@ -542,6 +561,45 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 </section>
 
 <!-- ARTICULO -->
+<section class="view" id="v-guia" hidden>
+  <div class="gd">
+    <a class="sm" href="#mercado">← Mercado</a>
+    <p class="lab" style="margin-top:28px">Guía gratis</p>
+    <h1>Comprar en Venezuela: el proceso completo, en siete capítulos</h1>
+    <p class="dek">Tipos de visa, RIF, registro y los documentos de cada paso, explicados en orden. Para entender el proceso antes de pagarle a nadie.</p>
+    <ul class="gd-inc"><li>Seis tipos de visa</li><li>RIF en el SENIAT</li><li>Registro SAREN</li><li>Documentos del cierre</li><li>Zonas de seguridad</li></ul>
+    <div class="gd-card" id="gd-card">
+      <form id="gd-form" novalidate>
+        <span class="lab">Recibe la guía en tu correo</span>
+        <div class="pillfield"><label for="gd-email" hidden>Correo</label><input id="gd-email" type="email" placeholder="tu@correo.com" autocomplete="email" required><button class="btn">Recibir la guía</button></div>
+        <label class="gd-check"><input type="checkbox" id="gd-news"><span>Quiero el boletín gratis de Cauce: cifras de la semana, nuevos estudios y novedades, cada jueves.</span></label>
+        <p class="sm gd-msg" id="gd-msg" aria-live="polite"></p>
+      </form>
+      <div class="gd-done" id="gd-done" hidden>
+        <p class="gd-ok"><span>Listo.</span> <span>La guía va en camino a</span> <b id="gd-to"></b></p>
+        <div class="gd-acc" id="gd-acc">
+          <p class="gd-q">¿Guardamos la guía en una cuenta?</p>
+          <ul><li>La guía siempre a mano en la web, sin buscar el correo</li><li>Guarda artículos, estudios y propiedades para volver a ellos</li><li>Avisos cuando cambie el precio en las zonas que sigues</li></ul>
+          <div class="gd-row"><button type="button" class="btn" id="gd-yes">Crear mi cuenta</button><button type="button" class="gd-no" id="gd-no">Ahora no</button></div>
+        </div>
+      </div>
+    </div>
+    <p class="sm gd-note">Borrador: el envío de la guía y las cuentas se activan al lanzar el sitio.</p>
+    <div class="blk"><span class="lab">Qué cubre la guía</span>
+      <ol class="gd-toc"><li><span class="n">01</span><div><b>¿Puede un extranjero ser dueño?</b> <span class="tag">Base legal</span><p>El principio del Código Civil, qué significa tener capacidad para comprar y lo único que decide si puedes firmar el documento.</p></div></li><li><span class="n">02</span><div><b>Los seis tipos de visa y cuál necesitas</b> <span class="tag">Visas</span><p>TR-I, TR-N, TR-E/I, TR-FV, TR-RE y TR-L comparadas: duración, estadía, requisitos y camino a la residencia.</p></div></li><li><span class="n">03</span><div><b>La visa paso a paso</b> <span class="tag">Visas</span><p>Cita en el consulado, lista de documentos, aprobación previa para inversionistas, plazos y costos.</p></div></li><li><span class="n">04</span><div><b>El RIF en el SENIAT</b> <span class="tag">Impuestos</span><p>Registro en línea, validación en persona, documentos que pide a un extranjero y para qué sirve el RIF.</p></div></li><li><span class="n">05</span><div><b>Registro SAREN y revisión del inmueble</b> <span class="tag">Registro</span><p>Registro obligatorio del comprador extranjero, verificación del título, solvencias y alertas antes de firmar.</p></div></li><li><span class="n">06</span><div><b>El cierre: documentos y costos</b> <span class="tag">Registro</span><p>Lista completa del cierre, aranceles, timbres fiscales, impuestos y un presupuesto de 5% a 8% del precio.</p></div></li><li><span class="n">07</span><div><b>Zonas de seguridad, fronteras y Margarita</b> <span class="tag">Restricciones</span><p>Qué zonas piden autorización del Ministerio de la Defensa y qué revisar antes de enamorarte de un inmueble.</p></div></li></ol>
+    </div>
+    <div class="blk"><span class="lab">Preguntas frecuentes</span>
+      <div class="gd-faq">
+        <details><summary>¿Hay que estar en Venezuela para empezar?</summary><p>No. La visa se tramita en el consulado de Venezuela del país donde vives, y con visa de turista no se puede cambiar de estatus dentro del país. La guía explica cuándo hace falta estar presente y qué se puede hacer a distancia.</p></details>
+        <details><summary>¿Y si mi pareja o familia es venezolana?</summary><p>Es el camino más simple: la visa TR-FV pide menos requisitos que la de inversionista. La guía explica qué documentos de matrimonio o familia hay que apostillar y registrar.</p></details>
+        <details><summary>¿Se puede comprar en Margarita o cerca de la frontera?</summary><p>Sí, pero con un paso más: las zonas insulares y fronterizas tienen restricciones por la Ley Orgánica de Seguridad de la Nación, y algunas piden autorización del Ministerio de la Defensa. La guía dice qué revisar antes de comprometerte.</p></details>
+        <details><summary>¿La guía es asesoría legal?</summary><p>No. Es una guía para entender el proceso antes de hablar con profesionales. Para tu operación siempre vas a necesitar un abogado venezolano.</p></details>
+        <details><summary>¿Qué pasa después de recibirla?</summary><p>Si marcas el boletín, te llega cada jueves con las cifras de la semana. Cuando quieras avanzar, una consulta 1:1 aterriza los pasos a tu caso. Sin apuro.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="view" id="v-articulo" hidden>
   <div class="art">
     <article>
@@ -649,7 +707,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
   <div class="secthead"><h2>Cómo comprar, paso a paso</h2></div>
   <p class="sm" style="font-size:16px;max-width:40em">De la primera pregunta a la firma. Empieza con la guía o con una consulta; después eliges cómo quieres tener el inmueble.</p>
   <div class="plans routes" style="margin-top:24px">
-    <div class="pcol"><div class="plan"><span class="lab">La guía</span><div class="price">$0<small> por correo</small></div><p class="sm">El proceso legal completo, en siete capítulos.</p><ol><li>¿Puede un extranjero ser dueño?</li><li>Los seis tipos de visa</li><li>La visa desde el exterior</li><li>El RIF en el SENIAT</li><li>Registro SAREN y revisión del inmueble</li><li>El cierre: documentos y costos</li><li>Zonas de seguridad y Margarita</li></ol></div><a class="btn" href="#articulo/guia">Leer la guía</a></div>
+    <div class="pcol"><div class="plan"><span class="lab">La guía</span><div class="price">$0<small> por correo</small></div><p class="sm">El proceso legal completo, en siete capítulos.</p><ol><li>¿Puede un extranjero ser dueño?</li><li>Los seis tipos de visa</li><li>La visa paso a paso</li><li>El RIF en el SENIAT</li><li>Registro SAREN y revisión del inmueble</li><li>El cierre: documentos y costos</li><li>Zonas de seguridad y Margarita</li></ol></div><a class="btn" href="#guia">Leer la guía</a></div>
     <div class="pcol"><div class="plan"><span class="lab">Compra a tu nombre</span><div class="price">4–8<small> meses</small></div><p class="sm">Tú firmas y el título queda a tu nombre.</p><ul><li>Visa y RIF, coordinados a distancia o en persona</li><li>Registro SAREN de comprador extranjero</li><li>Negociación con precios comparables</li><li>Revisión de documentos y registro</li><li>Acompañamiento por WhatsApp hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
     <div class="pcol" hidden data-legal-review><div class="plan"><span class="lab">Compra a través de una empresa local</span><div class="price">0–4<small> meses</small></div><p class="sm">Sin visa ni RIF de tu lado. Tu participación queda en un contrato con la empresa que tiene el título.</p><ul><li>Lectura del mercado y 3 a 5 oportunidades filtradas</li><li>La estructura, explicada en tu contrato</li><li>Abogado y agente aliados</li><li>Coordinación hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una consulta</a></div>
   </div>
@@ -722,7 +780,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <footer><div class="wrap">
   <div class="foot">
     <div><div class="big">cauce</div><p class="sm" style="margin-top:12px;max-width:24em">Datos inmobiliarios con fuente. Boletín cada jueves.</p></div>
-    <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#datos">Inteligencia</a></nav>
+    <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#datos">Inteligencia</a><a href="#guia">Guía gratis</a></nav>
     <nav aria-label="Cauce"><span class="lab">Cauce</span><a href="#sobre">Sobre Cauce</a><a href="#planes">Planes</a><a href="#planes" data-plan="consulta">Consulta 1:1</a><a href="#contacto">Contacto</a></nav>
   </div>
   <div class="foot-bar"><span class="live"><i></i><span id="clock">Caracas</span> · <span>Dólar BCV</span> <span data-bcv>887,30</span></span><span>No es asesoría de inversión</span></div>
@@ -2189,7 +2247,7 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><div class="avatar">c</div><span>Equipo Cauce</span><span>20 oct 2026</span><span>${esc(f[2])}</span></div>${top}
       <div class="blk"><span class="lab">${esc(a.b[0])}</span><p>${esc(a.b[1])}</p><div class="chart" data-chart="${id}"></div></div>
       ${a.list ? `<div class="blk"><span class="lab">${esc(a.list[0])}</span><ol class="chap">${a.list[1].map((x) => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
-      <div class="blk"><span class="lab">La lectura de Cauce</span><p>${esc(a.c)}</p></div>${a.cta ? '<div class="wall"><span class="lab">Gratis</span><p class="serif" style="font-size:26px;line-height:1.1">Recibe la guía completa en tu correo.</p><a class="btn" href="#entrar" data-pick="boletin">Recibir la guía</a></div>' : ''}${f[3] ? '<div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El análisis completo, con datos descargables.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>' : ''}`;
+      <div class="blk"><span class="lab">La lectura de Cauce</span><p>${esc(a.c)}</p></div>${a.cta ? '<div class="wall"><span class="lab">Gratis</span><p class="serif" style="font-size:26px;line-height:1.1">Recibe la guía completa en tu correo.</p><a class="btn" href="#guia">Recibir la guía</a></div>' : ''}${f[3] ? '<div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El análisis completo, con datos descargables.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>' : ''}`;
     art.insertAdjacentHTML('beforeend', readsHTML()); wireCharts(art); mountFigs();
   }
   const OWN = [
@@ -2477,6 +2535,38 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     'Precio de entrada frente a ingreso por alquiler vacacional, temporadas, costos de operación y las reglas de zona insular.': 'Entry price against short-term rental income, seasons, running costs and insular-zone rules.',
     'La Transeúnte Inversionista y la Transeúnte Rentista sirven a perfiles distintos. Requisitos, plazos, renovación y cuándo gana cada una.': 'The Transeúnte Inversionista and Transeúnte Rentista visas serve different profiles. Requirements, timelines, renewal and when each one wins.',
     'Qué exige cada visa, cuánto dura, cómo se renueva y en qué casos conviene una u otra.': 'What each visa requires, how long it lasts, how it renews and when one beats the other.',
+    'Guía gratis': 'Free guide', 'Comprar en Venezuela: el proceso completo, en siete capítulos': 'Buying in Venezuela: the full process, in seven chapters',
+    'Tipos de visa, RIF, registro y los documentos de cada paso, explicados en orden. Para entender el proceso antes de pagarle a nadie.': 'Visa types, RIF, registration and the documents for each step, in order. Understand the process before you pay anyone.',
+    'Seis tipos de visa': 'Six visa types', 'RIF en el SENIAT': 'RIF at SENIAT', 'Registro SAREN': 'SAREN registration', 'Documentos del cierre': 'Closing documents', 'Zonas de seguridad': 'Security zones',
+    'Recibe la guía en tu correo': 'Get the guide by email', 'Recibir la guía': 'Get the guide',
+    'Quiero el boletín gratis de Cauce: cifras de la semana, nuevos estudios y novedades, cada jueves.': 'Send me Cauce’s free newsletter: the week’s figures, new studies and updates, every Thursday.',
+    'Listo.': 'Done.', 'La guía va en camino a': 'The guide is on its way to', '¿Guardamos la guía en una cuenta?': 'Keep the guide in an account?',
+    'La guía siempre a mano en la web, sin buscar el correo': 'The guide always at hand on the web, no inbox digging', 'Guarda artículos, estudios y propiedades para volver a ellos': 'Save articles, studies and properties to come back to', 'Avisos cuando cambie el precio en las zonas que sigues': 'Alerts when prices change in the areas you follow',
+    'Crear mi cuenta': 'Create my account', 'Ahora no': 'Not now', 'Borrador: el envío de la guía y las cuentas se activan al lanzar el sitio.': 'Draft: guide delivery and accounts switch on at launch.',
+    'Qué cubre la guía': 'What the guide covers', 'Preguntas frecuentes': 'Common questions',
+    '¿Puede un extranjero ser dueño? La base legal y la capacidad para comprar.': 'Can a foreigner own property? The legal basis and capacity to buy.',
+    'Los seis tipos de visa comparados: TR-I, TR-N, TR-E/I, TR-FV, TR-RE y TR-L.': 'The six visa types compared: TR-I, TR-N, TR-E/I, TR-FV, TR-RE and TR-L.',
+    'La visa paso a paso: consulado, documentos, aprobación previa para inversionistas y plazos.': 'The visa step by step: consulate, documents, investor pre-approval and timelines.',
+    'El RIF en el SENIAT: registro en línea, validación en persona y para qué sirve.': 'The RIF at SENIAT: online registration, in-person validation and what it unlocks.',
+    'Registro SAREN y revisión del inmueble: título, solvencias y alertas antes de firmar.': 'SAREN registration and property checks: title, clearances and red flags before signing.',
+    'El cierre: documentos, aranceles, timbres e impuestos, con un presupuesto de 5% a 8% del precio.': 'Closing: documents, fees, stamps and taxes, with a budget of 5–8% of the price.',
+    'Zonas de seguridad, fronteras y Margarita: cuándo hace falta una autorización.': 'Security zones, borders and Margarita: when you need authorisation.',
+    '¿Hay que estar en Venezuela para empezar?': 'Do I need to be in Venezuela to start?',
+    'No. La visa se tramita en el consulado de Venezuela del país donde vives, y con visa de turista no se puede cambiar de estatus dentro del país. La guía explica cuándo hace falta estar presente y qué se puede hacer a distancia.': 'No. The visa is processed at the Venezuelan consulate in the country where you live, and you cannot change status inside the country on a tourist visa. The guide explains when you need to be present and what can be done remotely.',
+    '¿Y si mi pareja o familia es venezolana?': 'What if my partner or family is Venezuelan?',
+    'Es el camino más simple: la visa TR-FV pide menos requisitos que la de inversionista. La guía explica qué documentos de matrimonio o familia hay que apostillar y registrar.': 'That is the simplest path: the TR-FV visa has fewer requirements than the investor one. The guide explains which marriage or family documents to apostille and register.',
+    '¿Se puede comprar en Margarita o cerca de la frontera?': 'Can I buy in Margarita or near the border?',
+    'Sí, pero con un paso más: las zonas insulares y fronterizas tienen restricciones por la Ley Orgánica de Seguridad de la Nación, y algunas piden autorización del Ministerio de la Defensa. La guía dice qué revisar antes de comprometerte.': 'Yes, with one extra step: insular and border zones carry restrictions under the national security law, and some need Defence Ministry authorisation. The guide says what to check before you commit.',
+    '¿La guía es asesoría legal?': 'Is the guide legal advice?', 'No. Es una guía para entender el proceso antes de hablar con profesionales. Para tu operación siempre vas a necesitar un abogado venezolano.': 'No. It helps you understand the process before talking to professionals. For your transaction you will always need a Venezuelan lawyer.',
+    '¿Qué pasa después de recibirla?': 'What happens after I get it?', 'Si marcas el boletín, te llega cada jueves con las cifras de la semana. Cuando quieras avanzar, una consulta 1:1 aterriza los pasos a tu caso. Sin apuro.': 'If you ticked the newsletter, it arrives every Thursday with the week’s figures. When you want to move ahead, a 1:1 consult maps the steps to your case. No rush.',
+    '¿Puede un extranjero ser dueño?': 'Can a foreigner own property?', 'Base legal': 'Legal basis', 'Visas': 'Visas', 'Impuestos': 'Tax', 'Registro': 'Registry', 'Restricciones': 'Restrictions',
+    'El principio del Código Civil, qué significa tener capacidad para comprar y lo único que decide si puedes firmar el documento.': 'The Civil Code principle, what capacity to buy means, and the one thing that decides whether you can sign the deed.',
+    'Los seis tipos de visa y cuál necesitas': 'The six visa types and which one you need', 'TR-I, TR-N, TR-E/I, TR-FV, TR-RE y TR-L comparadas: duración, estadía, requisitos y camino a la residencia.': 'TR-I, TR-N, TR-E/I, TR-FV, TR-RE and TR-L compared: duration, stays, requirements and path to residency.',
+    'La visa paso a paso': 'The visa step by step', 'Cita en el consulado, lista de documentos, aprobación previa para inversionistas, plazos y costos.': 'Consulate appointment, document list, investor pre-approval, timelines and fees.',
+    'El RIF en el SENIAT': 'The RIF at SENIAT', 'Registro en línea, validación en persona, documentos que pide a un extranjero y para qué sirve el RIF.': 'Online registration, in-person validation, documents required of a foreign national, and what the RIF unlocks.',
+    'Registro SAREN y revisión del inmueble': 'SAREN registration and property checks', 'Registro obligatorio del comprador extranjero, verificación del título, solvencias y alertas antes de firmar.': 'Mandatory foreign buyer registration, title checks, clearances and red flags before signing.',
+    'El cierre: documentos y costos': 'Closing: documents and costs', 'Lista completa del cierre, aranceles, timbres fiscales, impuestos y un presupuesto de 5% a 8% del precio.': 'Full closing checklist, fees, tax stamps, taxes and a budget of 5–8% of the price.',
+    'Zonas de seguridad, fronteras y Margarita': 'Security zones, borders and Margarita', 'Qué zonas piden autorización del Ministerio de la Defensa y qué revisar antes de enamorarte de un inmueble.': 'Which zones need Defence Ministry authorisation, and what to check before falling for a property.',
     'Hecho en Caracas ↝': 'Made in Caracas ↝', 'arrástrame': 'drag me', 'De Caracas, con calculadora ↝': 'From Caracas, with a calculator ↝', 'arrástrame, pana': 'drag me, pal', 'La': 'Safe', 'fija': 'bet', 'SIN CUENTO · CON FUENTE ·': 'NO TALL TALES · SOURCED ·', 'Sin cuento, con fuente': 'No tall tales, sourced', 'Sitio en construcción': 'Site under construction', 'Estamos echando la placa': 'Pouring the concrete', 'Vuelve pronto, pana': 'Back soon, pal', 'Faltan unas cabillas': 'A few rebars to go', 'Editor jefe, Cauce': 'Editor in chief, Cauce', 'Escríbenos:': 'Write to us:',
     'Datos inmobiliarios con fuente. Boletín cada jueves.': 'Sourced real estate data. Newsletter every Thursday.',
     'Leer': 'Read', 'Seguir': 'Follow', '· Dólar BCV 500,46': '· BCV dollar 500.46', 'No es asesoría de inversión': 'Not investment advice',
@@ -3011,7 +3101,21 @@ hairline({ name: "costa", means: "From $15,000 on the coast: five homes along th
     let lastLang = document.documentElement.lang; new MutationObserver(() => { const l = document.documentElement.lang; if (l !== lastLang) { lastLang = l; render(); } }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
     render();
   })();
-  const VIEWS = ['mercado', 'articulo', 'propiedades', 'propiedad', 'analizar', 'datos', 'planes', 'entrar', 'sobre', 'contacto'];
+  /* free guide: email + optional newsletter, then a soft account offer */
+  (function guide() {
+    const f = $('#gd-form'); if (!f) return;
+    f.addEventListener('submit', (e) => {
+      e.preventDefault(); const v = $('#gd-email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { $('#gd-msg').textContent = document.documentElement.lang === 'en' ? 'Check your email address.' : 'Revisa tu correo.'; $('#gd-email').focus(); return; }
+      $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; applyLang();
+    });
+    $('#gd-no').addEventListener('click', () => { $('#gd-acc').hidden = true; });
+    $('#gd-yes').addEventListener('click', () => {
+      const v = $('#gd-to').textContent; location.hash = '#entrar';
+      setTimeout(() => { const j = $('[data-m="join"]'); if (j) j.click(); const a = $('#a-email'); if (a) { a.value = v; const pw = $('#a-pass'); if (pw) pw.focus(); } }, 120);
+    });
+  })();
+  const VIEWS = ['mercado', 'guia', 'articulo', 'propiedades', 'propiedad', 'analizar', 'datos', 'planes', 'entrar', 'sobre', 'contacto'];
   const AREA = { mercado: 'mercado', articulo: 'mercado', propiedades: 'propiedades', propiedad: 'propiedades', analizar: 'inteligencia', datos: 'inteligencia' };
   let current = null, artId = '', backTo = '#mercado';
   function render(h) {
