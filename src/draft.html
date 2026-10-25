@@ -3160,7 +3160,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const SB_URL = 'https://gdgmcnqczrbbzwuzkvcv.supabase.co', SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A';
   let sbP = null, user = null;
   // Stripe (test mode). Swap both for the live links when payments go live.
-  const PAY_LINK = '', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
+  const PAY_LINK = 'https://buy.stripe.com/test_9B65kDdNm9p3bmLgG7gjC01', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
   const payUrl = () => PAY_LINK + '?client_reference_id=' + user.id + '&prefilled_email=' + encodeURIComponent(user.email);
   function sb() {
     if (!sbP) sbP = new Promise((ok, no) => { const t = document.createElement('script'); t.src = '/vendor/supabase.js'; t.onload = () => ok(window.supabase.createClient(SB_URL, SB_KEY)); t.onerror = no; document.head.appendChild(t); });
