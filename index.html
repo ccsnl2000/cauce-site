@@ -3291,6 +3291,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (user) { try { if (!sessionStorage.getItem('cauce-nl')) { sessionStorage.setItem('cauce-nl', '1'); nl({ email: user.email, source: 'cuenta', perfil: getPerfil().perfil }); } } catch (e) {} }
     checkPlan();
     if (user && current === 'entrar') account();
+    if (user && $('#gd-email') && !$('#gd-email').value) $('#gd-email').value = user.email;
     if (!user && current === 'entrar' && !$('#a-acct').hidden) setMode('login');
     applyLang();
   }
@@ -3836,7 +3837,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     f.addEventListener('submit', (e) => {
       e.preventDefault(); const v = $('#gd-email').value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { $('#gd-msg').textContent = document.documentElement.lang === 'en' ? 'Check your email address.' : 'Revisa tu correo.'; $('#gd-email').focus(); return; }
-      $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; savePerfil({ email: v, boletin: $('#gd-news').checked, guia: true }); nl({ email: v, source: 'guia', boletin: $('#gd-news').checked }); $('#gd-acc').hidden = true; askPerfil($('#gd-perfil'), () => { nl({ email: v, perfil: getPerfil().perfil }); $('#gd-acc').hidden = false; }); applyLang();
+      $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; savePerfil({ email: v, boletin: $('#gd-news').checked, guia: true }); nl({ email: v, source: 'guia', boletin: $('#gd-news').checked }); $('#gd-acc').hidden = true; askPerfil($('#gd-perfil'), () => { nl({ email: v, perfil: getPerfil().perfil }); $('#gd-acc').hidden = !!user; }); applyLang();
     });
     $('#gd-no').addEventListener('click', () => { $('#gd-acc').hidden = true; });
     $('#gd-yes').addEventListener('click', () => {
