@@ -337,7 +337,12 @@ form.f select option { background: var(--card); }
 @media (prefers-reduced-motion: reduce) { .dm svg * { animation: none !important; } }
 .dpair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; } .dpair > * { min-width: 0; } .dpair .lock, .dpair .blur, .dpair .dcard { height: 100%; }
 .dpair .dk { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dpair .dch h3 { font-size: var(--t-h3); } .dpair .dsc b { font-size: var(--t-h2); }
-.dpicks { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; } .dvs { font: 600 var(--t-sm) var(--sans); color: var(--soft); padding-bottom: 10px; }
+.dpicks { margin-bottom: -8px; } .dpicks label { display: grid; width: 100%; } .dpicks select { width: 100%; }
+.dpair .dms { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 22px; } .dpair .dm { grid-template-columns: 30px 1fr auto; } .dpair .dm svg { width: 30px; height: 30px; }
+.dpair .dm:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--line); } .dpair .dm:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.dtrend { display: grid; gap: 16px; } .dtrend .chart { margin: 0; }
+@media (max-width: 1100px) and (min-width: 861px) { .dpair .dms { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 860px) { .dpicks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .dk .dd { font-family: var(--mono); font-size: var(--t-xs); color: var(--soft); } .dcard.b { border-color: var(--ink); }
 .dlock { display: grid; } .dlock > .blur { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; } .dsec { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; } .dsec > *, .drh > * { min-width: 0; }
 .dcharts { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; } .dcharts .chart { margin: 0; }
@@ -2794,7 +2799,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     if (!grid.inner) $('#p-spot').hidden = !(k === 'todos' || k === 'patro');
     if (k === 'todos') { grid.inner = 1; const parts = ['destacados', 'patro', 'estudios'].map((x) => { grid(x); return $('#grid').innerHTML; }); grid.inner = 0; $('#grid').innerHTML = parts.join('').replace(/ data-ro="1"| data-sz="[^"]*"/g, ''); drawMinis(); $('#p-intro').textContent = PINTRO.todos; $('#p-note').textContent = PNOTE.todos; mountFigs(); applyLang(); return; }
     if (k === 'destacados') {
-      const ranked = DEALS.map((d) => Object.assign({ per: d.price / d.m2, med: ZONES[d.zone] }, d)).map((d) => Object.assign(d, { off: d.per / d.med - 1 })).filter((d) => d.off < 0).sort((a, b) => a.off - b.off).slice(0, 5);
+      const ranked = DEALS.map((d) => Object.assign({ per: d.price / d.m2, med: ZONES[d.zone] }, d)).map((d) => Object.assign(d, { off: d.per / d.med - 1 })).filter((d) => d.off < 0 && (!DEALS.some((x) => x.pin) || d.pin)).sort((a, b) => a.off - b.off).slice(0, 5);
       const items = ranked.map((d, i) => `<a class="card-link" href="#propiedad" style="position:relative"><span class="rank">Nº ${i + 1}</span>${media(d.img, i)}<div class="row"><b>${esc(d.t)}</b><span class="tag ok">−${Math.round(-d.off * 100)}% vs zona</span></div><span class="sm">${int(d.m2)} m² · $${int(d.price)} · $${int(d.per)}/m²</span></a>`);
       const paid = PAID.map((p, i) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}">${ill('costa')}<div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`);
       html = items.join('');
@@ -4265,8 +4270,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     function charts() {
       const a = by(A), b = by(B), src = L('Datos de demostración. Se reemplazan al conectar las fuentes.', 'Demo data. Replaced once sources are connected.');
       CH.dzt = { t: L('Precio pedido por m², 24 meses', 'Asking price per m², 24 months'), k: 'line', x: M24.map((m) => L(m[0], m[1])), f: 'm2p', src, s: [{ n: a.n, v: a.ser }, { n: b.n, v: b.ser }, { n: L('Mediana de Caracas', 'Caracas median'), v: CCS.ser }] };
-      CH.dzc = { t: L('Cierres registrados por mes', 'Recorded closings a month') + ' · ' + a.n, k: 'bar', x: M24.slice(12).map((m) => L(m[0], m[1]).split(' ')[0]), f: 'n', src, s: [{ n: L('Cierres', 'Closings'), v: a.closes }] };
-      $('#dz-charts').innerHTML = '<div class="chart" data-chart="dzt"></div><div class="chart" data-chart="dzc"></div>'; wireCharts($('#dz-charts'));
+      CH.dzc = { t: L('Cierres por mes, 12 meses', 'Closings a month, 12 months'), k: 'line', x: M24.slice(12).map((m) => L(m[0], m[1])), f: 'n', src, s: [{ n: a.n, v: a.closes }, { n: b.n, v: b.closes }] };
+      $('#dz-charts').innerHTML = '<div class="dpair"><div class="chart" data-chart="dzt"></div><div class="chart" data-chart="dzc"></div></div>'; wireCharts($('#dz-charts'));
     }
     function rank() {
       const cols = [['n', L('Zona', 'Area')], ['price', '$/m²'], ['g12', L('12 meses', '12 mo')], ['yld', L('Rend.', 'Yield')], ['cl', L('Cierres', 'Closings')], ['dom', L('Días', 'Days')], ['walk', L('Caminar', 'Walk')], ['safe', L('Seguridad', 'Safety')], ['score', L('Puntaje', 'Score')]];
@@ -4281,9 +4286,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         <div class="dsec"><div class="drh"><div><span class="lab">${L('Ranking', 'Ranking')} · ${Z.length} ${L('parroquias', 'parishes')}</span><h3>${L('¿Qué te importa más?', 'What matters most to you?')}</h3><p class="sm">${L('Marca lo que pesa en tu decisión. El puntaje se recalcula. Toca una fila para verla abajo.', 'Mark what weighs on your decision. The score recalculates. Tap a row to see it below.')}</p></div></div>
           <div class="dpri">${FACT.map(([k, es, en]) => `<button type="button" data-pri="${k}" aria-pressed="${pri.has(k)}">${L(es, en)}</button>`).join('')}</div>
           <div id="dz-rank"></div></div>
-        <div class="dpicks"><div class="dpick"><label><span class="lab">${L('Zona', 'Area')}</span><select id="dz-a">${opts(A)}</select></label></div><span class="dvs">vs.</span><div class="dpick"><label><span class="lab">${L('Comparar con', 'Compare with')}</span><select id="dz-b">${opts(B)}</select></label></div></div>
+        <div class="dpair dpicks"><div class="dpick"><label><span class="lab">${L('Zona', 'Area')}</span><select id="dz-a">${opts(A)}</select></label></div><div class="dpick"><label><span class="lab">${L('Comparar con', 'Compare with')}</span><select id="dz-b">${opts(B)}</select></label></div></div>
         <div class="dpair" id="dz-prof">${card(a)}<div class="lock"><div class="blur">${card(b, a)}</div><a href="#planes" data-plan="inteligencia"><span>${L('Únete para comparar zonas →', 'Join to compare areas →')}</span></a></div></div>
-        <div class="lock dlock"><div class="blur"><div class="dcharts" id="dz-charts"></div></div><a href="#planes" data-plan="inteligencia"><span>${L('Únete para ver la tendencia →', 'Join to see the trend →')}</span></a></div>
+        <div class="lock dlock"><div class="blur"><div class="dtrend" id="dz-charts"></div></div><a href="#planes" data-plan="inteligencia"><span>${L('Únete para ver la tendencia →', 'Join to see the trend →')}</span></a></div>
         <p class="sm dnote">${L('Cómo leerlo: precio pedido y días en venta salen de anuncios; cierres, de operaciones registradas; caminabilidad, de la distancia a comercios, paradas y Metro; seguridad, de encuestas de percepción; agua y luz, de reportes de vecinos. Hoy todo son datos de demostración: no los uses para decidir.', 'How to read it: asking price and days on market come from listings; closings, from recorded sales; walkability, from distance to shops, stops and Metro; safety, from perception surveys; water and power, from residents\' reports. All figures are demo data for now: do not use them to decide.')}</p>${readsHTML()}`;
       charts(); rank();
     }
@@ -4383,7 +4388,21 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const f = $('#v-mercado .chips .chip[aria-pressed=true]'); feed(f ? f.dataset.f : 'all');
     if (current === 'articulo') renderArticle(artId);
   }
-  feed('all'); grid('todos'); mountFigs(); show(); heroFit(); loadArticles();
+  // listings managed from the panel (properties table); the built-in ones stay if this fails
+  async function loadProps() {
+    try {
+      const r = await fetch(SB_URL + '/rest/v1/properties?select=id,titulo,titulo_en,subtitulo,subtitulo_en,zona,m2,precio,img,destacada,patrocinada,patrocinio_hasta,orden&estado=eq.publicado&order=orden', { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+      if (!r.ok) return; const rows = await r.json(); if (!rows.length) return;
+      const today = new Date().toISOString().slice(0, 10);
+      rows.forEach((x) => { if (x.titulo_en) EN[x.titulo] = x.titulo_en; if (x.subtitulo && x.subtitulo_en) EN[x.subtitulo] = x.subtitulo_en; });
+      const deals = rows.filter((x) => !x.patrocinada && x.m2 && x.precio).map((x) => ({ t: x.titulo, img: x.img || 'i:avila', zone: x.zona, m2: +x.m2, price: +x.precio, pin: x.destacada }));
+      const spons = rows.filter((x) => x.patrocinada && (!x.patrocinio_hasta || x.patrocinio_hasta >= today)).map((x) => ({ t: x.titulo, s: x.subtitulo || '', img: x.img || 'i:avila' }));
+      if (deals.length) DEALS.splice(0, DEALS.length, ...deals);
+      if (spons.length) SPONS.splice(0, SPONS.length, ...spons);
+      const on = $('#v-propiedades .ptabs button[aria-pressed="true"]'); grid(on ? on.dataset.k : 'todos');
+    } catch (e) { /* keep built-in listings */ }
+  }
+  feed('all'); grid('todos'); mountFigs(); show(); heroFit(); loadArticles(); loadProps();
   setTimeout(() => $('#intro').classList.add('done'), reduce ? 0 : 1300);
 })();
 </script>

@@ -81,3 +81,7 @@ alter table public.profiles add column if not exists empresa text, add column if
 -- (borrador → revision → legal → aprobado → publicado → archivado). Anyone reads estado='publicado'; admins read/write all.
 -- Test rows: is_test = true (profiles, subscribers, bookings, chats, visits) and article ids 'prueba-*'.
 -- public.delete_test_data() (admin only) removes them before launch.
+
+-- Added 25 Oct 2026: articles.estado gains 'rechazado' (not approved). New table public.properties
+-- (listings managed from the panel: estado borrador/publicado/pausado/vendido/archivado, destacada, patrocinada, patrocinio_hasta, orden).
+-- Anyone reads estado='publicado'; admins read/write all. delete_test_data() also removes is_test properties.

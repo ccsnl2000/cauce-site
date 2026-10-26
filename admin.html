@@ -27,10 +27,10 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 .btn { display: inline-flex; align-items: center; gap: 6px; font-family: inherit; font-weight: 500; font-size: 14px; padding: 9px 16px; border-radius: 999px; background: var(--ink); color: var(--bg); border: 1px solid var(--ink); cursor: pointer; text-decoration: none; }
 .btn.o { background: transparent; color: var(--ink); border-color: var(--line); }
 .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 22px 0 26px; }
-.kpi { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 4px; }
-.kpi b { font-size: 34px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
-.tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
-.tabs button { flex: none; background: none; border: 0; padding: 0 0 12px; font-family: inherit; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; color: var(--soft); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; }
+.kpi { background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 4px; }
+.kpi b { font-size: 30px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.tabs { display: flex; gap: 20px; margin-top: 18px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.tabs button { flex: none; background: none; border: 0; padding: 0 0 10px; font-family: inherit; font-weight: 700; font-size: 15px; letter-spacing: -0.03em; color: var(--soft); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; }
 .tabs button[aria-pressed=true] { color: var(--ink); border-color: var(--ink); }
 .tabs .n { font-family: inherit; font-weight: 400; font-size: 12px; color: var(--soft); margin-left: 4px; }
 .panel { margin-top: 18px; }
@@ -39,7 +39,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 .tools input[type=search] { min-width: 240px; }
 .tbl { width: 100%; border-collapse: collapse; background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; font-size: 14px; }
 .tbl th { text-align: left; font-weight: 400; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-.tbl td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .tbl tr:last-child td { border-bottom: 0; }
 .tbl tbody tr:hover { background: var(--fill); }
 .scroll { overflow-x: auto; border-radius: 14px; }
@@ -76,6 +76,17 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 .ed input, .ed select, .ed textarea { font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; width: 100%; }
 .ed textarea { min-height: 120px; resize: vertical; line-height: 1.5; } .ed .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .state { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; } .state.publicado { background: var(--ink); color: var(--bg); border-color: var(--ink); } .state.aprobado { border-color: var(--ink); } .state.legal, .state.revision { background: var(--fill); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; } .chips button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; } .chips button[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink); } .chips .n { opacity: .6; margin-left: 4px; }
+.more { font: inherit; font-size: 12px; background: none; border: 0; padding: 0 0 0 4px; color: var(--ink); text-decoration: underline; cursor: pointer; } .clip { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } .clip.open { display: block; -webkit-line-clamp: unset; }
+.tbl td.t { max-width: 280px; } .tbl .sub { display: block; font-size: 12px; color: var(--soft); }
+.tbl tr[data-id] { cursor: pointer; }
+.sw { position: relative; width: 34px; height: 20px; border-radius: 999px; background: var(--line); border: 0; cursor: pointer; padding: 0; vertical-align: middle; transition: background .15s; } .sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--sheet); transition: transform .15s; } .sw[aria-checked=true] { background: var(--ink); } .sw[aria-checked=true]::after { transform: translateX(14px); }
+.scrim { position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 60; } .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(620px, 100%); background: var(--sheet); border-left: 1px solid var(--line); z-index: 61; overflow: auto; padding: 22px; display: grid; gap: 14px; align-content: start; box-shadow: -20px 0 50px rgba(0,0,0,.15); }
+.drawer details { border-top: 1px solid var(--line); padding-top: 10px; } .drawer summary { cursor: pointer; font-size: 13px; font-weight: 600; } .drawer details[open] summary { margin-bottom: 10px; }
+.dbar { position: sticky; bottom: -22px; background: var(--sheet); padding: 12px 0; margin: 0 0 -22px; border-top: 1px solid var(--line); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.state.rechazado { border-style: dashed; color: var(--soft); } .state.pausado, .state.borrador { background: var(--fill); } .state.vendido { border-color: var(--ink); }
+.kpi .d { font-size: 12px; color: var(--soft); } .kpis { margin-top: 18px; }
+.head { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; } .head h1 { margin: 0; }
 @media (max-width: 760px) { .ed { grid-template-columns: 1fr; } .fn { grid-template-columns: 100px 1fr 70px; } }
 @media (max-width: 760px) { .chats { grid-template-columns: 1fr; } .tools input[type=search] { min-width: 0; flex: 1; } }
 </style>
@@ -91,49 +102,55 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 </section>
 
 <main id="app" hidden>
-  <h1 id="hello">Hoy en Cauce</h1>
-  <p class="sm"><span id="stamp"></span> · <a href="#" id="refresh">Actualizar</a> · se actualiza solo cada minuto</p>
-  <div class="testbar" id="testbar"><b>Datos de prueba</b><span id="test-n"></span><label><input type="checkbox" id="show-test" checked> Mostrar en el panel</label><span class="sp"></span><button class="btn o" id="del-test" type="button">Borrar datos de prueba</button></div>
-  <div class="kpis" id="kpis"></div>
-  <div class="charts" id="charts"></div>
+  <div class="head"><h1>Hoy en Cauce</h1><p class="sm"><span id="stamp"></span> · <a href="#" id="refresh">Actualizar</a></p></div>
+  <div class="testbar" id="testbar"><b>Prueba</b><span id="test-n"></span><label><input type="checkbox" id="show-test" checked> Mostrar</label><span class="sp"></span><button class="btn o" id="del-test" type="button">Borrar prueba</button></div>
   <nav class="tabs" id="tabs">
-    <button type="button" data-t="personas" aria-pressed="true">Personas<span class="n" id="n-personas"></span></button>
+    <button type="button" data-t="resumen" aria-pressed="true">Resumen</button>
+    <button type="button" data-t="articulos" aria-pressed="false">Artículos<span class="n" id="n-art"></span></button>
+    <button type="button" data-t="propiedades" aria-pressed="false">Propiedades<span class="n" id="n-prop"></span></button>
+    <button type="button" data-t="personas" aria-pressed="false">Personas<span class="n" id="n-personas"></span></button>
     <button type="button" data-t="llamadas" aria-pressed="false">Llamadas<span class="n" id="n-llamadas"></span></button>
-    <button type="button" data-t="chats" aria-pressed="false">Conversaciones<span class="n" id="n-chats"></span></button>
+    <button type="button" data-t="chats" aria-pressed="false">Chats<span class="n" id="n-chats"></span></button>
     <button type="button" data-t="boletin" aria-pressed="false">Boletín<span class="n" id="n-boletin"></span></button>
     <button type="button" data-t="visitas" aria-pressed="false">Visitas</button>
-    <button type="button" data-t="articulos" aria-pressed="false">Artículos<span class="n" id="n-art"></span></button>
     <button type="button" data-t="whatsapp" aria-pressed="false">WhatsApp</button>
   </nav>
 
-  <section class="panel" data-p="personas">
-    <div class="tools"><input type="search" id="q" placeholder="Buscar nombre, correo, empresa o zona"><select id="f-perfil"><option value="">Todos los perfiles</option></select><select id="f-plan"><option value="">Todos los planes</option><option value="inteligencia">Inteligencia</option><option value="boletin">Boletín</option></select><label class="sm"><input type="checkbox" id="f-ok"> Aceptan contacto</label><button class="btn o" id="csv">Descargar CSV</button></div>
-    <div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Perfil</th><th>País</th><th>Zonas</th><th>Presupuesto · plazo</th><th>Para</th><th>Plan</th><th>Contacto</th><th>Alta</th></tr></thead><tbody id="t-personas"></tbody></table></div>
+  <section class="panel" data-p="resumen">
+    <div class="kpis" id="kpis"></div>
+    <div class="charts" id="charts"></div>
+  </section>
+  <section class="panel" data-p="articulos" hidden>
+    <div class="tools"><div class="chips" id="art-chips"></div><span style="flex:1"></span><button class="btn" id="new-art" type="button">Nuevo artículo</button></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Artículo</th><th>Estado</th><th>Notas</th><th>Actualizado</th></tr></thead><tbody id="t-art"></tbody></table></div>
+  </section>
+  <section class="panel" data-p="propiedades" hidden>
+    <div class="tools"><div class="chips" id="prop-chips"></div><span style="flex:1"></span><button class="btn" id="new-prop" type="button">Nueva propiedad</button></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Inmueble</th><th>Precio</th><th>Estado</th><th>Destacada</th><th>Patrocinada</th><th>Actualizado</th></tr></thead><tbody id="t-prop"></tbody></table></div>
+  </section>
+  <section class="panel" data-p="personas" hidden>
+    <div class="tools"><input type="search" id="q" placeholder="Buscar"><select id="f-perfil"><option value="">Perfil</option></select><select id="f-plan"><option value="">Plan</option><option value="inteligencia">Inteligencia</option><option value="boletin">Boletín</option></select><label class="sm"><input type="checkbox" id="f-ok"> Aceptan contacto</label><button class="btn o" id="csv">CSV</button></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Perfil</th><th>País</th><th>Busca</th><th>Plan</th><th>Contacto</th><th>Alta</th></tr></thead><tbody id="t-personas"></tbody></table></div>
   </section>
   <section class="panel" data-p="llamadas" hidden>
-    <div class="scroll"><table class="tbl"><thead><tr><th>Fecha</th><th>Nombre</th><th>Correo</th><th>Estado</th><th>Pago</th><th>Desde</th><th>Qué quiere revisar</th></tr></thead><tbody id="t-llamadas"></tbody></table></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Fecha</th><th>Persona</th><th>Estado</th><th>Qué quiere revisar</th></tr></thead><tbody id="t-llamadas"></tbody></table></div>
   </section>
   <section class="panel" data-p="chats" hidden>
     <div class="chats"><div class="list" id="chat-list"></div><div class="thread" id="chat-thread"><p class="empty">Elige una conversación.</p></div></div>
   </section>
   <section class="panel" data-p="boletin" hidden>
-    <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Origen</th><th>Perfil</th><th>Bienvenida</th><th>Alta</th></tr></thead><tbody id="t-boletin"></tbody></table></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Origen</th><th>Bienvenida</th><th>Alta</th></tr></thead><tbody id="t-boletin"></tbody></table></div>
   </section>
   <section class="panel" data-p="visitas" hidden>
     <div class="charts" id="v-charts"></div>
-    <p class="sm">Visitas contadas sin cookies ni IP: una sesión es una pestaña del navegador. El país se estima por la zona horaria. Cloudflare Web Analytics sigue activo en paralelo.</p>
-  </section>
-  <section class="panel" data-p="articulos" hidden>
-    <div class="tools"><select id="f-estado"><option value="">Todos los estados</option><option value="borrador">Borrador</option><option value="revision">En revisión</option><option value="legal">Revisión legal</option><option value="aprobado">Aprobado</option><option value="publicado">Publicado</option><option value="archivado">Archivado</option></select><span class="sp" style="flex:1"></span><button class="btn" id="new-art" type="button">Nuevo artículo</button></div>
-    <div class="scroll"><table class="tbl"><thead><tr><th>Título</th><th>Sección</th><th>Estado</th><th>Autor · revisor</th><th>Notas</th><th>Actualizado</th></tr></thead><tbody id="t-art"></tbody></table></div>
-    <div class="card" id="art-ed" hidden style="margin-top:14px;max-width:none"></div>
+    <p class="sm">Sin cookies ni IP. País estimado por zona horaria.</p>
   </section>
   <section class="panel" data-p="whatsapp" hidden>
-    <div class="card"><span class="lab">WhatsApp</span><b>Mensajes en vivo con WhatsApp Business</b>
-      <p>Para ver y responder chats de WhatsApp aquí, hace falta WhatsApp Business Platform (Meta) con un número dedicado de Cauce. Requiere verificar el negocio en Meta, así que conviene hacerlo cuando Cauce esté registrada.</p>
-      <p>Mientras tanto, el asistente del sitio guarda cada conversación en la pestaña Conversaciones, y el botón "Seguir por WhatsApp" abre un chat directo con el número que indiques.</p></div>
+    <div class="card"><b>WhatsApp en vivo</b>
+      <p class="sm clip">Requiere WhatsApp Business Platform (Meta) con un número de Cauce y la empresa verificada. Mientras tanto, las conversaciones del asistente están en Chats y el botón "Seguir por WhatsApp" abre un chat directo.</p></div>
   </section>
 </main>
+<div class="scrim" id="scrim" hidden></div><aside class="drawer" id="drawer" hidden aria-label="Editor"></aside>
 </div>
 
 <script src="/vendor/supabase.js"></script>
@@ -143,30 +160,38 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   const $ = (q, r = document) => r.querySelector(q), $$ = (q, r = document) => [...r.querySelectorAll(q)];
   const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const sb = window.supabase.createClient('https://gdgmcnqczrbbzwuzkvcv.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A');
-  const PERFIL = { particular: 'Particular', agente: 'Agente inmobiliario', inmobiliaria: 'Inmobiliaria', 'inv-local': 'Inversionista local', 'inv-int': 'Inversionista internacional', desarrollador: 'Desarrollador · Analista', otro: 'Otro' };
+  const PERFIL = { particular: 'Particular', agente: 'Agente', inmobiliaria: 'Inmobiliaria', 'inv-local': 'Inversionista local', 'inv-int': 'Inversionista internacional', desarrollador: 'Desarrollador · Analista', otro: 'Otro' };
   const BUD = { '<50k': '< $50k', '50-100k': '$50–100k', '100-250k': '$100–250k', '250-500k': '$250–500k', '500k+': '> $500k', nose: 'No sabe' };
   const WHEN = { '0-3': '0–3 meses', '3-6': '3–6 meses', '6-12': '6–12 meses', '12+': '+1 año', explorando: 'Explorando' };
-  const ESTADO = { borrador: 'Borrador', revision: 'En revisión', legal: 'Revisión legal', aprobado: 'Aprobado', publicado: 'Publicado', archivado: 'Archivado' };
+  const OBJ = { vivir: 'Vivir', alquiler: 'Alquilar', reventa: 'Revender', patrimonio: 'Proteger patrimonio', desarrollo: 'Desarrollar', clientes: 'Conseguir clientes', datos: 'Datos para clientes' };
+  const ESTADO = { borrador: 'Borrador', revision: 'En revisión', legal: 'Revisión legal', aprobado: 'Aprobado', rechazado: 'No aprobado', publicado: 'Publicado', archivado: 'Archivado' };
+  const PEST = { borrador: 'Borrador', publicado: 'Publicada', pausado: 'Pausada', vendido: 'Vendida', archivado: 'Archivada' };
+  const TIPO = { venta: 'Venta', alquiler: 'Alquiler', preventa: 'Preventa', terreno: 'Terreno', local: 'Local', oficina: 'Oficina' };
+  const IMG = ['i:altamira', 'i:castellana', 'i:casa', 'i:palos', 'i:torre', 'i:avila', 'i:playa', 'i:lote'];
   const TZC = { 'America/Caracas': 'VE', 'America/New_York': 'US', 'America/Chicago': 'US', 'America/Denver': 'US', 'America/Los_Angeles': 'US', 'America/Phoenix': 'US', 'Europe/Madrid': 'ES', 'America/Bogota': 'CO', 'America/Panama': 'PA', 'America/Mexico_City': 'MX', 'Europe/Rome': 'IT', 'America/Toronto': 'CA', 'Europe/Berlin': 'DE', 'Europe/Paris': 'FR', 'Europe/Lisbon': 'PT', 'America/Santiago': 'CL', 'America/Lima': 'PE', 'America/Argentina/Buenos_Aires': 'AR', 'America/Santo_Domingo': 'DO', 'Europe/London': 'GB', 'America/Guayaquil': 'EC' };
   const country = (c) => { try { return c ? new Intl.DisplayNames(['es'], { type: 'region' }).of(c) : ''; } catch (e) { return c || ''; } };
-  const day = (d) => (d ? new Date(d).toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
+  const day = (d) => (d ? new Date(d).toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', '') : '');
   const when = (d) => (d ? new Date(d).toLocaleString('es-VE', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : '');
   const nf = (n) => Math.round(n).toLocaleString('es-VE');
-  let RAW = { people: [], subs: [], calls: [], chats: [], visits: [], arts: [] }, D = RAW;
+  const usd = (n) => (n || n === 0 ? '$' + nf(n) : '—');
+  const more = (t) => (t ? `<span class="clip">${esc(t)}</span>${t.length > 70 ? '<button type="button" class="more">más</button>' : ''}` : '');   // read-more
+  document.addEventListener('click', (e) => { const m = e.target.closest('.more'); if (!m) return; e.stopPropagation(); const c = m.previousElementSibling; c.classList.toggle('open'); m.textContent = c.classList.contains('open') ? 'menos' : 'más'; }, true);
+  let RAW = { people: [], subs: [], calls: [], chats: [], visits: [], arts: [], props: [] }, D = RAW;
   const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; document.body.appendChild(tip);
 
   Object.entries(PERFIL).forEach(([v, t]) => $('#f-perfil').insertAdjacentHTML('beforeend', `<option value="${v}">${t}</option>`));
-  $$('#tabs button').forEach((b) => b.addEventListener('click', () => { $$('#tabs button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); $$('.panel').forEach((p) => { p.hidden = p.dataset.p !== b.dataset.t; }); if (b.dataset.t === 'visitas') visitsTab(); }));
+  const tab = (t) => { $$('#tabs button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.t === t))); $$('.panel').forEach((p) => { p.hidden = p.dataset.p !== t; }); if (t === 'visitas') visitsTab(); if (t === 'resumen') overview(); };
+  $$('#tabs button').forEach((b) => b.addEventListener('click', () => tab(b.dataset.t)));
   ['#q', '#f-perfil', '#f-plan', '#f-ok'].forEach((q) => $(q).addEventListener('input', people));
-  $('#f-estado').addEventListener('input', arts);
-  $('#show-test').addEventListener('change', () => { apply(); });
-  const testTag = (r) => (r.is_test ? '<span class="tag-test">prueba</span>' : '');
+  $('#show-test').addEventListener('change', () => apply());
+  const testTag = (r) => (r.is_test || (r.id && String(r.id).startsWith('prueba-')) ? '<span class="tag-test">prueba</span>' : '');
+  const chips = (el, defs, cur, onPick) => { el.innerHTML = defs.map(([k, l, n]) => `<button type="button" data-k="${k}" aria-pressed="${k === cur}">${l}${n !== undefined ? `<span class="n">${n}</span>` : ''}</button>`).join(''); $$('button', el).forEach((b) => b.addEventListener('click', () => onPick(b.dataset.k))); };
 
-  /* ---------- charts: one ink colour, hover tooltips, tables below are the data view ---------- */
-  function bars(el, data, opt = {}) {      // vertical bars over time: data = [{ label, v, tip }]
+  /* ---------- charts: one ink colour, hover tooltips ---------- */
+  const niceStep = (m) => { const raw = m / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p; return Math.max(1, (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p); };
+  function bars(el, data, opt = {}) {
     const W = Math.max(280, Math.round(el.clientWidth || 640)), H = opt.h || 200, L = 34, B = 22, T = 8, max = Math.max(1, ...data.map((d) => d.v)), step = niceStep(max), top = Math.ceil(max / step) * step;
-    const bw = (W - L) / data.length, gap = Math.min(4, bw * .25);
-    let g = '';
+    const bw = (W - L) / data.length, gap = Math.min(4, bw * .25); let g = '';
     for (let y = 0; y <= top; y += step) { const yy = T + (H - T - B) * (1 - y / top); g += `<line class="gl" x1="${L}" x2="${W}" y1="${yy}" y2="${yy}"/><text class="ax" x="${L - 6}" y="${yy + 4}" text-anchor="end">${nf(y)}</text>`; }
     const every = Math.ceil(data.length / (opt.ticks || 8));
     data.forEach((d, i) => { const x = L + i * bw + gap / 2, w = bw - gap, h = (H - T - B) * d.v / top, y = H - B - h, r = Math.min(4, w / 2, h);
@@ -175,158 +200,221 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria || '')}">${g}</svg>`;
     $$('[data-tip]', el).forEach((n) => { n.addEventListener('mousemove', (e) => { tip.textContent = n.dataset.tip; tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px'; tip.hidden = false; }); n.addEventListener('mouseleave', () => { tip.hidden = true; }); });
   }
-  const niceStep = (m) => { const raw = m / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p; return Math.max(1, (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p); };
-  function hbars(el, rows, n = 8) {        // ranked list: rows = [[label, value]]
+  function hbars(el, rows, n = 6) {
     const top = rows.sort((a, b) => b[1] - a[1]).slice(0, n), max = Math.max(1, ...top.map((r) => r[1])), tot = rows.reduce((a, r) => a + r[1], 0) || 1;
-    el.innerHTML = top.length ? `<div class="hbars">${top.map(([l, v]) => `<div class="hb" title="${esc(l)}: ${nf(v)} (${Math.round(v / tot * 100)}%)"><span class="t">${esc(l)}</span><span class="track"><span class="fillb" style="display:block;width:${(v / max * 100).toFixed(1)}%"></span></span><span class="v">${nf(v)}</span></div>`).join('')}</div>` : '<p class="sm">Sin datos aún.</p>';
+    el.innerHTML = top.length ? `<div class="hbars">${top.map(([l, v]) => `<div class="hb" title="${esc(l)}: ${nf(v)} (${Math.round(v / tot * 100)}%)"><span class="t">${esc(l)}</span><span class="track"><span class="fillb" style="display:block;width:${(v / max * 100).toFixed(1)}%"></span></span><span class="v">${Math.round(v / tot * 100)}%</span></div>`).join('')}</div>` : '<p class="sm">Sin datos aún.</p>';
   }
   const count = (arr, f) => { const m = new Map(); arr.forEach((x) => [].concat(f(x) ?? []).forEach((k) => { if (k !== null && k !== undefined && k !== '') m.set(k, (m.get(k) || 0) + 1); })); return [...m.entries()]; };
   const card = (id, title, sub, wide) => `<div class="chart${wide ? ' wide' : ''}"><h3>${title}</h3>${sub ? `<p class="sub">${sub}</p>` : ''}<div id="${id}"></div></div>`;
-  const days = (n) => { const out = []; const d0 = new Date(); d0.setHours(0, 0, 0, 0); for (let i = n - 1; i >= 0; i--) { const d = new Date(d0); d.setDate(d.getDate() - i); out.push(d); } return out; };
   const key = (d) => new Date(d).toLocaleDateString('en-CA');
+  const days = (n) => { const out = [], d0 = new Date(); d0.setHours(0, 0, 0, 0); for (let i = n - 1; i >= 0; i--) { const d = new Date(d0); d.setDate(d.getDate() - i); out.push(d); } return out; };
   function sessionsByDay(n) {
     const by = new Map(); D.visits.forEach((v) => { const k = key(v.at); if (!by.has(k)) by.set(k, { s: new Set(), p: 0 }); const o = by.get(k); o.s.add(v.session); o.p++; });
-    return days(n).map((d) => { const o = by.get(key(d)) || { s: new Set(), p: 0 }; const lab = d.toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', ''); return { label: lab, v: o.s.size, tip: `${lab}: ${nf(o.s.size)} visitantes · ${nf(o.p)} páginas` }; });
+    return days(n).map((d) => { const o = by.get(key(d)) || { s: new Set(), p: 0 }, lab = d.toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', ''); return { label: lab, v: o.s.size, tip: `${lab}: ${nf(o.s.size)} visitantes · ${nf(o.p)} páginas` }; });
   }
+  const mkey = (d) => { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0'); };
+  function months(n) { const out = [], d = new Date(); d.setDate(1); for (let i = n - 1; i >= 0; i--) { const x = new Date(d.getFullYear(), d.getMonth() - i, 1); out.push(x); } return out; }
   function overview() {
-    const wk = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return key(x); };
-    const weeks = []; for (let i = 7; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i * 7); weeks.push(wk(d)); }
-    const sess30 = new Set(D.visits.filter((v) => new Date(v.at) > Date.now() - 30 * 864e5).map((v) => v.session)).size;
-    const acc30 = D.people.filter((r) => new Date(r.created_at) > Date.now() - 30 * 864e5);
-    $('#charts').innerHTML = card('c-vis', 'Visitantes por día', 'Últimos 30 días · pasa el cursor para ver páginas', true) + card('c-acc', 'Cuentas nuevas por semana', 'Últimas 8 semanas') + card('c-fun', 'Del visitante al cliente', 'Últimos 30 días') + card('c-perf', 'Quiénes son', 'Perfil de las cuentas') + card('c-zon', 'Zonas que buscan', 'Interés o zonas de trabajo') + card('c-pais', 'Dónde viven', 'País declarado en la cuenta') + card('c-bud', 'Presupuesto', 'Compradores e inversionistas');
-    bars($('#c-vis'), sessionsByDay(30), { aria: 'Visitantes por día', ticks: 10 });
-    bars($('#c-acc'), weeks.map((w) => { const n = D.people.filter((r) => wk(r.created_at) === w).length, lab = new Date(w + 'T12:00').toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', ''); return { label: lab, v: n, tip: `Semana del ${lab}: ${n} cuentas` }; }), { h: 180, aria: 'Cuentas nuevas por semana' });
-    const steps = [['Visitantes', sess30], ['Cuentas nuevas', acc30.length], ['Inteligencia', acc30.filter((r) => r.plan === 'inteligencia').length], ['Llamadas', D.calls.filter((b) => new Date(b.created_at) > Date.now() - 30 * 864e5 && b.status !== 'cancelada').length]];
-    $('#c-fun').innerHTML = `<div class="funnel">${steps.map(([l, v], i) => `<div class="fn"><span>${l}</span><span class="track"><span class="fillb" style="display:block;width:${Math.max(.4, v / Math.max(1, steps[0][1]) * 100).toFixed(2)}%"></span></span><span class="v">${nf(v)}${i ? `<small>${steps[i - 1][1] ? (v / steps[i - 1][1] * 100).toLocaleString('es-VE', { maximumFractionDigits: 1 }) : 0} % del paso anterior</small>` : ''}</span></div>`).join('')}</div>`;
-    hbars($('#c-perf'), count(D.people, (r) => PERFIL[r.perfil]));
-    hbars($('#c-zon'), count(D.people, (r) => r.zonas), 10);
-    hbars($('#c-pais'), count(D.people, (r) => country(r.pais)));
-    hbars($('#c-bud'), Object.keys(BUD).map((k) => [BUD[k], D.people.filter((r) => r.presupuesto === k).length]).filter((r) => r[1]), 6);
+    if ($('[data-p="resumen"]').hidden) return;
+    const P = D.people, M = months(12), byM = new Map(); P.forEach((r) => { const k = mkey(r.created_at); byM.set(k, (byM.get(k) || 0) + 1); });
+    let run = P.filter((r) => new Date(r.created_at) < M[0]).length;
+    const grow = M.map((m, i) => { const k = mkey(m), v = byM.get(k) || 0, prev = i ? byM.get(mkey(M[i - 1])) || 0 : null; run += v; const lab = m.toLocaleDateString('es-VE', { month: 'short' }).replace('.', '') + (m.getMonth() === 0 || i === 0 ? ' ' + String(m.getFullYear()).slice(2) : '');
+      return { label: lab, v, tip: `${lab}: ${v} nuevos · ${run} en total${prev ? ' · ' + (v >= prev ? '+' : '') + Math.round((v / prev - 1) * 100) + '% vs. mes anterior' : ''}` }; });
+    const now = grow[11].v, prev = grow[10].v, mom = prev ? Math.round((now / prev - 1) * 100) : null;
+    const wk = Date.now() - 7 * 864e5, ses7 = new Set(D.visits.filter((v) => new Date(v.at) > wk).map((v) => v.session)).size;
+    const pend = RAW.arts.filter((a) => ['revision', 'legal', 'aprobado'].includes(a.estado)).length;
+    const K = [['Usuarios', P.length, `${P.filter((r) => r.plan === 'inteligencia').length} con Inteligencia`], ['Nuevos este mes', now, mom === null ? 'primer mes' : (mom >= 0 ? '+' : '') + mom + '% vs. mes anterior'],
+      ['Visitantes', ses7, 'últimos 7 días'], ['Boletín', D.subs.length, 'suscriptores'], ['Por aprobar', pend, 'artículos'], ['Llamadas', D.calls.filter((b) => b.status === 'reservada' && new Date(b.start_time) > Date.now()).length, 'próximas']];
+    $('#kpis').innerHTML = K.map(([l, n, s]) => `<div class="kpi"><span class="lab">${l}</span><b>${nf(n)}</b><span class="d">${s}</span></div>`).join('');
+    $('#charts').innerHTML = card('c-grow', 'Usuarios nuevos por mes', 'Pasa el cursor para ver el total y el cambio', true) + card('c-perf', 'Qué hacen') + card('c-pais', 'Dónde viven') + card('c-obj', 'Para qué compran') + card('c-bud', 'Presupuesto') + card('c-plazo', 'Cuándo') + card('c-zon', 'Zonas que buscan') + card('c-fun', 'Del visitante al cliente', '30 días', true);
+    bars($('#c-grow'), grow, { aria: 'Usuarios nuevos por mes', ticks: 12 });
+    hbars($('#c-perf'), count(P, (r) => PERFIL[r.perfil] || 'Sin dato'));
+    hbars($('#c-pais'), count(P, (r) => country(r.pais) || 'Sin dato'));
+    hbars($('#c-obj'), count(P, (r) => (r.objetivos || []).map((o) => OBJ[o] || o)));
+    hbars($('#c-bud'), Object.keys(BUD).map((k) => [BUD[k], P.filter((r) => r.presupuesto === k).length]).filter((r) => r[1]));
+    hbars($('#c-plazo'), Object.keys(WHEN).map((k) => [WHEN[k], P.filter((r) => r.plazo === k).length]).filter((r) => r[1]));
+    hbars($('#c-zon'), count(P, (r) => r.zonas));
+    const d30 = Date.now() - 30 * 864e5, acc30 = P.filter((r) => new Date(r.created_at) > d30);
+    const steps = [['Visitantes', new Set(D.visits.filter((v) => new Date(v.at) > d30).map((v) => v.session)).size], ['Cuentas', acc30.length], ['Inteligencia', acc30.filter((r) => r.plan === 'inteligencia').length], ['Llamadas', D.calls.filter((b) => new Date(b.created_at) > d30 && b.status !== 'cancelada').length]];
+    $('#c-fun').innerHTML = `<div class="funnel">${steps.map(([l, v], i) => `<div class="fn"><span>${l}</span><span class="track"><span class="fillb" style="display:block;width:${Math.max(.4, v / Math.max(1, steps[0][1]) * 100).toFixed(2)}%"></span></span><span class="v">${nf(v)}${i && steps[i - 1][1] ? `<small>${(v / steps[i - 1][1] * 100).toLocaleString('es-VE', { maximumFractionDigits: 1 })}%</small>` : ''}</span></div>`).join('')}</div>`;
   }
   function visitsTab() {
+    if ($('[data-p="visitas"]').hidden) return;
     const v30 = D.visits.filter((v) => new Date(v.at) > Date.now() - 30 * 864e5), ses = new Map(); v30.forEach((v) => { if (!ses.has(v.session)) ses.set(v.session, v); });
-    const S = [...ses.values()], PAGE = { mercado: 'Mercado (inicio)', datos: 'Inteligencia', propiedades: 'Propiedades', guia: 'Guía', planes: 'Planes', entrar: 'Entrar / Perfil', sobre: 'Sobre Cauce', analizar: 'Analizar', contacto: 'Contacto' };
-    $('#v-charts').innerHTML = card('v-day', 'Visitantes por día', `${nf(S.length)} visitantes y ${nf(v30.length)} páginas en 30 días`, true) + card('v-pages', 'Páginas más vistas') + card('v-ref', 'De dónde llegan', 'Primera página de cada visita') + card('v-ctry', 'Países', 'Estimado por zona horaria') + card('v-dev', 'Dispositivo y idioma');
+    const S = [...ses.values()], PAGE = { mercado: 'Inicio', datos: 'Inteligencia', propiedades: 'Propiedades', guia: 'Guía', planes: 'Planes', entrar: 'Entrar / Perfil', sobre: 'Sobre Cauce', analizar: 'Analizar', contacto: 'Contacto' };
+    $('#v-charts').innerHTML = card('v-day', 'Visitantes por día', `${nf(S.length)} visitantes · ${nf(v30.length)} páginas · 30 días`, true) + card('v-pages', 'Páginas') + card('v-ref', 'Llegan desde') + card('v-ctry', 'Países') + card('v-dev', 'Dispositivo e idioma');
     bars($('#v-day'), sessionsByDay(30), { aria: 'Visitantes por día', ticks: 10 });
-    hbars($('#v-pages'), count(v30, (v) => (v.path || '').startsWith('articulo/') ? 'Artículo · ' + v.path.slice(9) : PAGE[v.path] || v.path), 10);
-    hbars($('#v-ref'), count(S, (v) => v.ref || 'Directo'), 8);
-    hbars($('#v-ctry'), count(S, (v) => country(TZC[v.tz]) || v.tz || 'Desconocido'), 8);
+    hbars($('#v-pages'), count(v30, (v) => (v.path || '').startsWith('articulo/') ? 'Artículo · ' + v.path.slice(9) : PAGE[v.path] || v.path), 8);
+    hbars($('#v-ref'), count(S, (v) => v.ref || 'Directo'));
+    hbars($('#v-ctry'), count(S, (v) => country(TZC[v.tz]) || v.tz || 'Desconocido'));
     hbars($('#v-dev'), [...count(S, (v) => v.device === 'mobile' ? 'Teléfono' : 'Computadora'), ...count(S, (v) => v.lang === 'en' ? 'Inglés' : 'Español')]);
   }
 
-  /* ---------- tables ---------- */
+  /* ---------- people, calls, newsletter, chats ---------- */
   function filtered() {
     const q = $('#q').value.trim().toLowerCase(), pf = $('#f-perfil').value, pl = $('#f-plan').value, ok = $('#f-ok').checked;
     return D.people.filter((r) => (!pf || r.perfil === pf) && (!pl || r.plan === pl) && (!ok || r.acepta_contacto) && (!q || [r.nombre, r.apellido, r.email, r.empresa, (r.zonas || []).join(' ')].join(' ').toLowerCase().includes(q)));
   }
   function people() {
     const rows = filtered();
-    $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr><td><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b>${testTag(r)}<br><span class="sm">${esc(r.email)}</span></td>
-      <td>${esc(PERFIL[r.perfil] || '—')}${r.empresa ? `<br><span class="sm">${esc(r.empresa)}${r.asesores ? ' · ' + esc(r.asesores) : ''}</span>` : ''}</td>
-      <td>${esc(country(r.pais))}</td><td class="sm">${esc((r.zonas || []).join(', '))}</td>
-      <td>${esc([BUD[r.presupuesto], WHEN[r.plazo]].filter(Boolean).join(' · '))}</td><td class="sm">${esc((r.objetivos || []).join(', '))}</td>
-      <td>${r.plan === 'inteligencia' ? `<span class="pill ink">Inteligencia</span>` : '<span class="pill">Boletín</span>'}${r.cancel_at_period_end ? '<br><span class="sm">cancelado</span>' : ''}</td>
-      <td>${r.acepta_contacto ? `<span class="pill">sí</span> ` : ''}${r.contacto === 'whatsapp' && r.whatsapp ? `<a href="https://wa.me/${esc(r.whatsapp.replace(/\D/g, ''))}" target="_blank" rel="noopener">WhatsApp</a>` : `<a href="mailto:${esc(r.email)}">Correo</a>`}</td>
-      <td class="sm">${day(r.created_at)}</td></tr>`).join('') : '<tr><td colspan="9" class="empty">Sin resultados.</td></tr>';
+    $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr><td class="t"><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b>${testTag(r)}<span class="sub">${esc(r.email)}</span></td>
+      <td>${esc(PERFIL[r.perfil] || '—')}${r.empresa ? `<span class="sub">${esc(r.empresa)}</span>` : ''}</td><td>${esc(country(r.pais))}</td>
+      <td class="t">${more([(r.zonas || []).join(', '), [BUD[r.presupuesto], WHEN[r.plazo]].filter(Boolean).join(' · '), (r.objetivos || []).map((o) => OBJ[o] || o).join(', ')].filter(Boolean).join(' · '))}</td>
+      <td>${r.plan === 'inteligencia' ? '<span class="pill ink">Inteligencia</span>' : '<span class="pill">Boletín</span>'}</td>
+      <td>${r.contacto === 'whatsapp' && r.whatsapp ? `<a href="https://wa.me/${esc(r.whatsapp.replace(/\D/g, ''))}" target="_blank" rel="noopener">WhatsApp</a>` : `<a href="mailto:${esc(r.email)}">Correo</a>`}${r.acepta_contacto ? ' <span class="pill">acepta</span>' : ''}</td>
+      <td class="sm">${day(r.created_at)}</td></tr>`).join('') : '<tr><td colspan="7" class="empty">Sin resultados.</td></tr>';
   }
+  $('#csv').addEventListener('click', () => {
+    const cols = ['nombre', 'apellido', 'email', 'perfil', 'empresa', 'pais', 'zonas', 'presupuesto', 'plazo', 'objetivos', 'plan', 'acepta_contacto', 'contacto', 'whatsapp', 'created_at'];
+    const csv = [cols.join(',')].concat(filtered().map((r) => cols.map((c) => '"' + String(Array.isArray(r[c]) ? r[c].join('; ') : r[c] ?? '').replace(/"/g, '""') + '"').join(','))).join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = 'cauce-personas.csv'; a.click();
+  });
   function calls() {
     const rows = [...D.calls].sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
-    $('#t-llamadas').innerHTML = rows.length ? rows.map((b) => { const a = b.answers || {}, desde = a.desde?.value || '', note = a.notes?.value || '';
-      return `<tr><td>${esc(when(b.start_time))}</td><td>${esc(b.name || '')}${testTag(b)}</td><td><a href="mailto:${esc(b.email)}">${esc(b.email || '')}</a></td><td><span class="pill${b.status === 'reservada' ? ' ink' : ''}">${esc(b.status)}</span></td><td>${b.paid ? 'Pagado' : '—'}</td><td class="sm">${esc(desde)}</td><td class="sm">${esc(note)}</td></tr>`; }).join('')
-      : '<tr><td colspan="7" class="empty">Todavía no hay llamadas.</td></tr>';
+    $('#t-llamadas').innerHTML = rows.length ? rows.map((b) => { const a = b.answers || {};
+      return `<tr><td>${esc(when(b.start_time))}</td><td class="t"><b>${esc(b.name || '')}</b>${testTag(b)}<span class="sub"><a href="mailto:${esc(b.email)}">${esc(b.email || '')}</a>${a.desde?.value ? ' · ' + esc(a.desde.value) : ''}</span></td><td><span class="pill${b.status === 'reservada' ? ' ink' : ''}">${esc(b.status)}</span>${b.paid ? ' <span class="pill">pagado</span>' : ''}</td><td class="t">${more(a.notes?.value || '')}</td></tr>`; }).join('')
+      : '<tr><td colspan="4" class="empty">Todavía no hay llamadas.</td></tr>';
   }
-  function subs() { $('#t-boletin').innerHTML = D.subs.length ? D.subs.map((s) => `<tr><td>${esc(s.email)}${testTag(s)}</td><td>${esc(s.source || '')}</td><td>${esc(PERFIL[s.perfil] || '')}</td><td>${s.welcomed_at ? 'Enviada' : '—'}</td><td class="sm">${day(s.created_at)}</td></tr>`).join('') : '<tr><td colspan="5" class="empty">Sin suscriptores aún.</td></tr>'; }
+  function subs() { $('#t-boletin').innerHTML = D.subs.length ? D.subs.map((s) => `<tr><td>${esc(s.email)}${testTag(s)}</td><td>${esc(s.source || '')}</td><td>${s.welcomed_at ? 'Enviada' : '—'}</td><td class="sm">${day(s.created_at)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Sin suscriptores aún.</td></tr>'; }
   function chats() {
     const L = $('#chat-list');
     L.innerHTML = D.chats.length ? D.chats.map((c, i) => { const last = (c.messages || []).filter((m) => m.role === 'user').slice(-1)[0];
-      return `<button type="button" data-i="${i}" aria-pressed="false"><b>${esc(c.email || 'Visitante')}${testTag(c)}</b><span class="sm">${esc((last && last.content || '').slice(0, 80))}</span><span class="sm">${esc(when(c.updated_at))} · ${(c.messages || []).length} mensajes</span></button>`; }).join('') : '<p class="empty">Sin conversaciones aún.</p>';
+      return `<button type="button" data-i="${i}" aria-pressed="false"><b>${esc(c.email || 'Visitante')}${testTag(c)}</b><span class="sm clip">${esc((last && last.content) || '')}</span><span class="sm">${esc(when(c.updated_at))} · ${(c.messages || []).length}</span></button>`; }).join('') : '<p class="empty">Sin conversaciones aún.</p>';
     $$('button', L).forEach((b) => b.addEventListener('click', () => { $$('button', L).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); const c = D.chats[+b.dataset.i];
       $('#chat-thread').innerHTML = (c.messages || []).map((m) => `<div class="bub${m.role === 'user' ? ' me' : ''}">${esc(m.content)}</div>`).join('') + (c.email ? `<p><a class="btn o" href="mailto:${esc(c.email)}?subject=${encodeURIComponent('Tu consulta en Cauce')}">Responder por correo</a></p>` : ''); }));
   }
 
-  /* ---------- articles: approval workflow ---------- */
-  const NEXT = { borrador: [['revision', 'Enviar a revisión']], revision: [['legal', 'Pasar a revisión legal'], ['aprobado', 'Aprobar'], ['borrador', 'Devolver a borrador']], legal: [['aprobado', 'Aprobar'], ['revision', 'Devolver a revisión']], aprobado: [['publicado', 'Publicar'], ['revision', 'Devolver a revisión']], publicado: [['archivado', 'Despublicar']], archivado: [['borrador', 'Volver a borrador'], ['publicado', 'Publicar de nuevo']] };
-  function arts() {
-    const f = $('#f-estado').value, rows = RAW.arts.filter((a) => (!f || a.estado === f) && ($('#show-test').checked || !a.id.startsWith('prueba-')));
-    const order = ['revision', 'legal', 'aprobado', 'borrador', 'publicado', 'archivado'];
-    rows.sort((a, b) => order.indexOf(a.estado) - order.indexOf(b.estado) || new Date(b.updated_at) - new Date(a.updated_at));
-    $('#t-art').innerHTML = rows.map((a) => `<tr data-id="${esc(a.id)}" style="cursor:pointer"><td><b>${esc(a.titulo)}</b>${a.builtin ? '<br><span class="sm">texto en el sitio</span>' : ''}</td><td>${esc(a.seccion)}</td><td><span class="state ${a.estado}">${ESTADO[a.estado]}</span></td><td class="sm">${esc([a.autor, a.revisor].filter(Boolean).join(' · '))}</td><td class="sm">${esc(a.notas || '')}</td><td class="sm">${day(a.updated_at)}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">Sin artículos.</td></tr>';
-    $$('#t-art tr[data-id]').forEach((tr) => tr.addEventListener('click', () => editor(RAW.arts.find((a) => a.id === tr.dataset.id))));
-    const pend = RAW.arts.filter((a) => ['revision', 'legal', 'aprobado'].includes(a.estado)).length; $('#n-art').textContent = pend ? pend + ' por revisar' : '';
+  /* ---------- drawer editor (articles and properties) ---------- */
+  const drawer = $('#drawer'), scrim = $('#scrim');
+  const close = () => { drawer.hidden = true; scrim.hidden = true; };
+  scrim.addEventListener('click', close); document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  const F = (k, label, o, type = 'text', full) => `<label${full ? ' class="full"' : ''}>${label}${type === 'area' ? `<textarea data-k="${k}">${esc(o[k] || '')}</textarea>` : `<input data-k="${k}" type="${type}" value="${esc(o[k] ?? '')}">`}</label>`;
+  const SEL = (k, label, o, opts) => `<label>${label}<select data-k="${k}">${Object.entries(opts).map(([v, t]) => `<option value="${esc(v)}"${String(o[k] ?? '') === v ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select></label>`;
+  const CHK = (k, label, o) => `<label style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input data-k="${k}" type="checkbox" style="width:auto"${o[k] ? ' checked' : ''}> ${label}</label>`;
+  const readForm = () => { const o = {}; $$('[data-k]', drawer).forEach((i) => { o[i.dataset.k] = i.type === 'checkbox' ? i.checked : i.type === 'number' ? (i.value === '' ? null : +i.value) : i.value.trim() || null; }); return o; };
+  const slug = (t) => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'id-' + Date.now();
+  async function persist(table, isNew, id, o) {
+    o.updated_at = new Date().toISOString();
+    const r = isNew ? await sb.from(table).insert(o).select().single() : await sb.from(table).update(o).eq('id', id).select().single();
+    if (r.error) { $('#ed-msg').textContent = 'No se pudo guardar: ' + r.error.message; return null; }
+    const list = table === 'articles' ? RAW.arts : RAW.props, i = list.findIndex((x) => x.id === r.data.id); if (i >= 0) list[i] = r.data; else list.unshift(r.data);
+    return r.data;
   }
-  const F = (k, label, a, type = 'text', full) => `<label${full ? ' class="full"' : ''}>${label}${type === 'area' ? `<textarea data-k="${k}">${esc(a[k] || '')}</textarea>` : `<input data-k="${k}" type="${type}" value="${esc(a[k] ?? '')}">`}</label>`;
-  function editor(a) {
-    const isNew = !a; a = a || { id: '', seccion: 'Análisis', estado: 'borrador', minutos: 5, autor: 'Equipo Cauce' };
-    const E = $('#art-ed'); E.hidden = false;
-    E.innerHTML = `<div class="ed-head" style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><span class="lab">${isNew ? 'Nuevo artículo' : 'Editar artículo'}</span><span class="state ${a.estado}">${ESTADO[a.estado]}</span></div>
-      ${a.builtin ? '<p class="sm">El texto de este artículo vive en el sitio. Aquí controlas su estado (publicado o no) y sus notas.</p>' : ''}
-      <div class="ed">
-        ${F('titulo', 'Título', a, 'text', true)}${F('titulo_en', 'Título en inglés', a, 'text', true)}
-        <label>Sección<select data-k="seccion">${['Análisis', 'Zonas', 'Estudio', 'Guía', 'Marco legal'].map((x) => `<option${x === a.seccion ? ' selected' : ''}>${x}</option>`).join('')}</select></label>
-        <label>Minutos de lectura<input data-k="minutos" type="number" min="1" max="60" value="${esc(a.minutos)}"></label>
-        ${a.builtin ? '' : F('entradilla', 'Entradilla', a, 'area') + F('entradilla_en', 'Entradilla en inglés', a, 'area') + F('cuerpo', 'Cuerpo (## Subtítulo, párrafos, - listas)', a, 'area') + F('cuerpo_en', 'Cuerpo en inglés', a, 'area') + F('lectura', 'La lectura de Cauce (opinión)', a, 'area') + F('lectura_en', 'La lectura de Cauce, en inglés', a, 'area')}
-        ${F('autor', 'Autor', a)}${F('revisor', 'Revisor', a)}${F('notas', 'Notas de revisión', a, 'area', true)}
-        <label class="full" style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input data-k="pro" type="checkbox" style="width:auto"${a.pro ? ' checked' : ''}> Solo suscriptores (PRO)</label>
-        <div class="row full"><button class="btn o" type="button" data-save>Guardar</button>${(NEXT[a.estado] || []).map(([to, l]) => `<button class="btn${to === 'publicado' || to === 'aprobado' ? '' : ' o'}" type="button" data-to="${to}">${l}</button>`).join('')}<span class="sm" id="ed-msg"></span><span style="flex:1"></span><button class="btn o" type="button" data-close>Cerrar</button></div>
-      </div>`;
-    const read = () => { const o = {}; $$('[data-k]', E).forEach((i) => { o[i.dataset.k] = i.type === 'checkbox' ? i.checked : i.type === 'number' ? +i.value || 5 : i.value.trim() || null; }); return o; };
-    const save = async (estado) => {
-      const o = read(); if (!o.titulo) { $('#ed-msg').textContent = 'Falta el título.'; return; }
-      if (estado) { o.estado = estado; if (estado === 'publicado' && !a.publicado_at) o.publicado_at = new Date().toISOString(); }
-      o.updated_at = new Date().toISOString();
-      let r;
-      if (isNew) { o.id = o.titulo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'articulo-' + Date.now(); o.estado = o.estado || 'borrador'; r = await sb.from('articles').insert(o).select().single(); }
-      else r = await sb.from('articles').update(o).eq('id', a.id).select().single();
-      if (r.error) { $('#ed-msg').textContent = 'No se pudo guardar: ' + r.error.message; return; }
-      const i = RAW.arts.findIndex((x) => x.id === r.data.id); if (i >= 0) RAW.arts[i] = r.data; else RAW.arts.unshift(r.data);
-      arts(); editor(r.data); $('#ed-msg').textContent = estado ? 'Ahora: ' + ESTADO[r.data.estado] + (estado === 'publicado' ? ' · ya aparece en cauce.blog' : '') : 'Guardado.';
-    };
-    $('[data-save]', E).addEventListener('click', () => save());
-    $$('[data-to]', E).forEach((b) => b.addEventListener('click', () => save(b.dataset.to)));
-    $('[data-close]', E).addEventListener('click', () => { E.hidden = true; });
-    E.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-  $('#new-art').addEventListener('click', () => editor(null));
 
-  function kpis() {
-    const wk = Date.now() - 7 * 864e5, now = Date.now();
-    const ses7 = new Set(D.visits.filter((v) => new Date(v.at) > wk).map((v) => v.session)).size;
-    const K = [['Visitantes', ses7, 'últimos 7 días'], ['Cuentas', D.people.length, D.people.filter((r) => new Date(r.created_at) > wk).length + ' esta semana'],
-      ['Inteligencia', D.people.filter((r) => r.plan === 'inteligencia').length, 'suscripciones activas'], ['Boletín', D.subs.length, D.subs.filter((s) => new Date(s.created_at) > wk).length + ' esta semana'],
-      ['Llamadas', D.calls.filter((b) => b.status === 'reservada' && new Date(b.start_time) > now).length, 'próximas'], ['Aceptan contacto', D.people.filter((r) => r.acepta_contacto).length, 'agentes e inmobiliarias']];
-    $('#kpis').innerHTML = K.map(([l, n, s]) => `<div class="kpi"><span class="lab">${l}</span><b>${nf(n)}</b><span class="sm">${s}</span></div>`).join('');
-    $('#n-personas').textContent = D.people.length; $('#n-llamadas').textContent = D.calls.length; $('#n-chats').textContent = D.chats.length; $('#n-boletin').textContent = D.subs.length;
+  /* articles: approval workflow */
+  const NEXT = { borrador: [['revision', 'Enviar a revisión']], revision: [['aprobado', 'Aprobar'], ['legal', 'Pasar a legal'], ['rechazado', 'No aprobar']], legal: [['aprobado', 'Aprobar'], ['rechazado', 'No aprobar']], aprobado: [['publicado', 'Publicar'], ['revision', 'Devolver']], rechazado: [['borrador', 'Reabrir como borrador']], publicado: [['archivado', 'Despublicar']], archivado: [['publicado', 'Publicar de nuevo'], ['borrador', 'A borrador']] };
+  const ASTATES = { pend: ['revision', 'legal', 'aprobado'], live: ['publicado'], no: ['rechazado'], draft: ['borrador'], arch: ['archivado'] };
+  let artF = 'pend';
+  function arts() {
+    const all = RAW.arts.filter((a) => $('#show-test').checked || !a.id.startsWith('prueba-')), n = (k) => all.filter((a) => ASTATES[k].includes(a.estado)).length;
+    if (!n('pend') && artF === 'pend' && !arts.picked) artF = 'live';
+    chips($('#art-chips'), [['pend', 'Por aprobar', n('pend')], ['live', 'Publicados', n('live')], ['no', 'No aprobados', n('no')], ['draft', 'Borradores', n('draft')], ['arch', 'Archivados', n('arch')], ['all', 'Todos', all.length]], artF, (k) => { artF = k; arts.picked = 1; arts(); });
+    const rows = all.filter((a) => artF === 'all' || ASTATES[artF].includes(a.estado)).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    $('#t-art').innerHTML = rows.map((a) => `<tr data-id="${esc(a.id)}"><td class="t"><b>${esc(a.titulo)}</b>${testTag(a)}<span class="sub">${esc(a.seccion)}${a.minutos ? ' · ' + a.minutos + ' min' : ''}${a.autor ? ' · ' + esc(a.autor) : ''}</span></td><td><span class="state ${a.estado}">${ESTADO[a.estado]}</span></td><td class="t sm">${more(a.notas || '')}</td><td class="sm">${day(a.updated_at)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nada aquí.</td></tr>';
+    $$('#t-art tr[data-id]').forEach((tr) => tr.addEventListener('click', () => artEditor(RAW.arts.find((a) => a.id === tr.dataset.id))));
+    $('#n-art').textContent = n('pend') || '';
   }
+  function artEditor(a) {
+    const isNew = !a; a = a || { seccion: 'Análisis', estado: 'borrador', minutos: 5, autor: 'Equipo Cauce' };
+    drawer.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="lab">${isNew ? 'Nuevo artículo' : 'Artículo'}</span><span class="state ${a.estado}">${ESTADO[a.estado]}</span></div>
+      ${a.builtin ? '<p class="sm">El texto vive en el sitio; aquí controlas el estado y las notas.</p>' : ''}
+      <div class="ed">${F('titulo', 'Título', a, 'text', true)}${SEL('seccion', 'Sección', a, { 'Análisis': 'Análisis', 'Zonas': 'Zonas', 'Estudio': 'Estudio', 'Guía': 'Guía', 'Marco legal': 'Marco legal' })}${F('minutos', 'Minutos', a, 'number')}${F('autor', 'Autor', a)}${F('revisor', 'Revisor', a)}${F('notas', 'Notas de revisión', a, 'area', true)}</div>
+      ${a.builtin ? '' : `<details${isNew ? ' open' : ''}><summary>Texto en español</summary><div class="ed">${F('entradilla', 'Entradilla', a, 'area', true)}${F('cuerpo', 'Cuerpo · ## subtítulo, - listas', a, 'area', true)}${F('lectura', 'La lectura de Cauce', a, 'area', true)}</div></details>
+      <details><summary>Inglés</summary><div class="ed">${F('titulo_en', 'Title', a, 'text', true)}${F('entradilla_en', 'Dek', a, 'area', true)}${F('cuerpo_en', 'Body', a, 'area', true)}${F('lectura_en', 'Cauce’s take', a, 'area', true)}</div></details>`}
+      ${CHK('pro', 'Solo suscriptores (PRO)', a)}
+      <div class="dbar"><button class="btn o" type="button" data-save>Guardar</button>${(NEXT[a.estado] || []).map(([to, l]) => `<button class="btn${to === 'publicado' || to === 'aprobado' ? '' : ' o'}" type="button" data-to="${to}">${l}</button>`).join('')}<span class="sm" id="ed-msg"></span><span style="flex:1"></span><button class="btn o" type="button" data-close>Cerrar</button></div>`;
+    const save = async (estado) => {
+      const o = readForm(); if (!o.titulo) { $('#ed-msg').textContent = 'Falta el título.'; return; }
+      if (estado) { o.estado = estado; if (estado === 'publicado' && !a.publicado_at) o.publicado_at = new Date().toISOString(); }
+      if (isNew) { o.id = slug(o.titulo); o.estado = o.estado || 'borrador'; }
+      const r = await persist('articles', isNew, a.id, o); if (!r) return;
+      arts(); artEditor(r); $('#ed-msg').textContent = estado ? ESTADO[r.estado] + (estado === 'publicado' ? ' · ya está en cauce.blog' : '') : 'Guardado';
+    };
+    wireDrawer(save);
+  }
+  $('#new-art').addEventListener('click', () => artEditor(null));
+
+  /* properties: listings, featured, sponsored */
+  let propF = 'live';
+  const PSETS = { live: (p) => p.estado === 'publicado', dest: (p) => p.destacada, spon: (p) => p.patrocinada, draft: (p) => ['borrador', 'pausado'].includes(p.estado), done: (p) => ['vendido', 'archivado'].includes(p.estado), all: () => true };
+  function props() {
+    const all = RAW.props.filter((p) => $('#show-test').checked || !p.is_test), n = (k) => all.filter(PSETS[k]).length;
+    chips($('#prop-chips'), [['live', 'Publicadas', n('live')], ['dest', 'Destacadas', n('dest')], ['spon', 'Patrocinadas', n('spon')], ['draft', 'Borradores y pausadas', n('draft')], ['done', 'Vendidas y archivadas', n('done')], ['all', 'Todas', all.length]], propF, (k) => { propF = k; props(); });
+    const rows = all.filter(PSETS[propF]).sort((a, b) => a.orden - b.orden || new Date(b.updated_at) - new Date(a.updated_at));
+    const today = new Date().toISOString().slice(0, 10);
+    $('#t-prop').innerHTML = rows.map((p) => `<tr data-id="${esc(p.id)}"><td class="t"><b>${esc(p.titulo)}</b>${testTag(p)}<span class="sub">${esc([TIPO[p.tipo], p.zona, p.m2 ? nf(p.m2) + ' m²' : '', p.anunciante].filter(Boolean).join(' · '))}</span></td>
+      <td>${usd(p.precio)}${p.precio && p.m2 ? `<span class="sub">${usd(p.precio / p.m2)}/m²</span>` : ''}</td><td><span class="state ${p.estado}">${PEST[p.estado]}</span></td>
+      <td><button type="button" class="sw" role="switch" aria-checked="${!!p.destacada}" data-flag="destacada" aria-label="Destacada"></button></td>
+      <td><button type="button" class="sw" role="switch" aria-checked="${!!p.patrocinada}" data-flag="patrocinada" aria-label="Patrocinada"></button>${p.patrocinada && p.patrocinio_hasta ? `<span class="sub">${p.patrocinio_hasta < today ? 'venció' : 'hasta'} ${day(p.patrocinio_hasta + 'T12:00')}</span>` : ''}</td><td class="sm">${day(p.updated_at)}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">Nada aquí.</td></tr>';
+    $$('#t-prop tr[data-id]').forEach((tr) => tr.addEventListener('click', async (e) => {
+      const p = RAW.props.find((x) => x.id === tr.dataset.id), sw = e.target.closest('[data-flag]');
+      if (!sw) return propEditor(p);
+      const f = sw.dataset.flag, v = sw.getAttribute('aria-checked') !== 'true'; sw.setAttribute('aria-checked', String(v));
+      const r = await sb.from('properties').update({ [f]: v, updated_at: new Date().toISOString() }).eq('id', p.id).select().single();
+      if (r.error) { sw.setAttribute('aria-checked', String(!v)); alert('No se pudo: ' + r.error.message); return; }
+      Object.assign(p, r.data); props();
+    }));
+    $('#n-prop').textContent = n('live') || '';
+  }
+  function propEditor(p) {
+    const isNew = !p; p = p || { tipo: 'venta', estado: 'borrador', ciudad: 'Caracas', img: 'i:avila', orden: 0 };
+    drawer.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span class="lab">${isNew ? 'Nueva propiedad' : 'Propiedad'}</span><span class="state ${p.estado}">${PEST[p.estado]}</span></div>
+      <div class="ed">${F('titulo', 'Título · ej. Apartamento · Altamira', p, 'text', true)}${SEL('tipo', 'Tipo', p, TIPO)}${SEL('estado', 'Estado', p, PEST)}${F('zona', 'Zona', p)}${F('ciudad', 'Ciudad', p)}${F('m2', 'Área (m²)', p, 'number')}${F('precio', 'Precio (US$)', p, 'number')}
+        ${CHK('destacada', 'Destacada', p)}${CHK('patrocinada', 'Patrocinada', p)}${F('patrocinio_hasta', 'Patrocinio hasta', p, 'date')}${F('orden', 'Orden', p, 'number')}</div>
+      <details${isNew ? ' open' : ''}><summary>Anuncio y contacto</summary><div class="ed">${F('subtitulo', 'Línea bajo el título', p, 'text', true)}${F('anunciante', 'Anunciante', p)}${F('contacto', 'Contacto', p)}${SEL('img', 'Ilustración', p, Object.fromEntries(IMG.map((i) => [i, i.slice(2)])))}</div></details>
+      <details><summary>Inglés</summary><div class="ed">${F('titulo_en', 'Title', p, 'text', true)}${F('subtitulo_en', 'Subtitle', p, 'text', true)}</div></details>
+      <details><summary>Notas internas</summary><div class="ed">${F('notas', 'Notas', p, 'area', true)}</div></details>
+      <div class="dbar"><button class="btn" type="button" data-save>Guardar</button>${p.estado !== 'publicado' ? '<button class="btn o" type="button" data-to="publicado">Publicar</button>' : '<button class="btn o" type="button" data-to="pausado">Pausar</button>'}<span class="sm" id="ed-msg"></span><span style="flex:1"></span><button class="btn o" type="button" data-close>Cerrar</button></div>
+      <p class="sm">Destacados muestra las marcadas como destacadas (con área y precio), ordenadas por descuento frente a su zona. Patrocinadas salen marcadas como tales y se ocultan al vencer.</p>`;
+    const save = async (estado) => {
+      const o = readForm(); if (!o.titulo) { $('#ed-msg').textContent = 'Falta el título.'; return; }
+      if (estado) o.estado = estado; if (isNew) o.id = slug(o.titulo);
+      const r = await persist('properties', isNew, p.id, o); if (!r) return;
+      props(); propEditor(r); $('#ed-msg').textContent = r.estado === 'publicado' ? 'Guardado · visible en cauce.blog' : 'Guardado';
+    };
+    wireDrawer(save);
+  }
+  $('#new-prop').addEventListener('click', () => propEditor(null));
+  function wireDrawer(save) {
+    drawer.hidden = false; scrim.hidden = false;
+    $('[data-save]', drawer).addEventListener('click', () => save());
+    $$('[data-to]', drawer).forEach((b) => b.addEventListener('click', () => save(b.dataset.to)));
+    $('[data-close]', drawer).addEventListener('click', close);
+  }
+
+  /* ---------- load ---------- */
   function apply() {
     const show = $('#show-test').checked, keep = (r) => show || !r.is_test;
-    D = { people: RAW.people.filter(keep), subs: RAW.subs.filter(keep), calls: RAW.calls.filter(keep), chats: RAW.chats.filter(keep), visits: RAW.visits.filter(keep), arts: RAW.arts };
-    const nt = RAW.people.filter((r) => r.is_test).length + RAW.subs.filter((r) => r.is_test).length + RAW.calls.filter((r) => r.is_test).length + RAW.chats.filter((r) => r.is_test).length;
-    $('#testbar').hidden = !nt && !RAW.visits.some((v) => v.is_test);
-    $('#test-n').textContent = `${nf(RAW.people.filter((r) => r.is_test).length)} cuentas, ${nf(RAW.visits.filter((r) => r.is_test).length)} visitas y más, marcadas como prueba.`;
-    kpis(); overview(); visitsTab(); people(); calls(); subs(); chats(); arts();
+    D = { people: RAW.people.filter(keep), subs: RAW.subs.filter(keep), calls: RAW.calls.filter(keep), chats: RAW.chats.filter(keep), visits: RAW.visits.filter(keep) };
+    const nt = (k) => RAW[k].filter((r) => r.is_test).length;
+    $('#testbar').hidden = !(nt('people') + nt('subs') + nt('calls') + nt('chats') + nt('visits') + nt('props'));
+    $('#test-n').textContent = [[nt('people'), 'cuenta', 'cuentas'], [nt('visits'), 'visita', 'visitas'], [nt('props'), 'propiedad', 'propiedades']].filter((x) => x[0]).map(([n, a, b]) => nf(n) + ' ' + (n === 1 ? a : b)).join(' · ');
+    $('#n-personas').textContent = D.people.length; $('#n-llamadas').textContent = D.calls.length || ''; $('#n-chats').textContent = D.chats.length || ''; $('#n-boletin').textContent = D.subs.length;
+    overview(); visitsTab(); people(); calls(); subs(); chats(); arts(); props();
   }
   $('#del-test').addEventListener('click', async () => {
-    if (!window.confirm('¿Borrar todos los datos de prueba? Las cuentas y visitas reales no se tocan. No se puede deshacer.')) return;
+    if (!window.confirm('¿Borrar todos los datos de prueba? Lo real no se toca. No se puede deshacer.')) return;
     const r = await sb.rpc('delete_test_data'); if (r.error) { alert('No se pudo: ' + r.error.message); return; } load();
   });
-  async function allVisits() {   // visits come in pages of 1000
+  async function allVisits() {
     const since = new Date(Date.now() - 31 * 864e5).toISOString(); let out = [], from = 0;
     for (;;) { const r = await sb.from('visits').select('at,path,ref,lang,device,tz,session,is_test').gte('at', since).order('at').range(from, from + 999); if (r.error || !r.data.length) break; out = out.concat(r.data); if (r.data.length < 1000) break; from += 1000; }
     return out;
   }
   async function load() {
-    const [p, s, b, c, v, a] = await Promise.all([
+    const [p, s, b, c, v, a, pr] = await Promise.all([
       sb.from('profiles').select('*').order('created_at', { ascending: false }),
       sb.from('subscribers').select('*').order('created_at', { ascending: false }),
       sb.from('bookings').select('*').order('start_time', { ascending: false }),
       sb.from('chats').select('*').order('updated_at', { ascending: false }).limit(200), allVisits(),
-      sb.from('articles').select('*').order('updated_at', { ascending: false })]);
-    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [] };
+      sb.from('articles').select('*').order('updated_at', { ascending: false }),
+      sb.from('properties').select('*').order('orden')]);
+    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [], props: pr.data || [] };
     apply();
-    $('#stamp').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit' });
+    $('#stamp').textContent = new Date().toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit' });
   }
-  let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (RAW.people) { overview(); visitsTab(); } }, 200); });
   $('#refresh').addEventListener('click', (e) => { e.preventDefault(); load(); });
+  let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { overview(); visitsTab(); }, 200); });
 
   (async () => {
     const { data } = await sb.auth.getSession(); const u = data.session && data.session.user;
@@ -334,7 +422,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     const r = await sb.rpc('is_admin');
     if (!r.data) { $('#gate').hidden = false; $('#gate-msg').textContent = 'Tu cuenta (' + u.email + ') no tiene acceso al panel.'; return; }
     $('#who').textContent = u.email; $('#app').hidden = false;
-    await load(); setInterval(() => { if (!$('#art-ed').hidden) return; load(); }, 60000);
+    await load(); setInterval(() => { if (drawer.hidden) load(); }, 60000);
   })();
 })();
 </script>
