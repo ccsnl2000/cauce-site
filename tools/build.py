@@ -32,3 +32,7 @@ s=s.replace('<meta name="claude:viewport-fit-sides" content="cover">\n','').repl
 i=s.index('</style>')+len('</style>')
 s=head+s[:i]+'\n</head>\n<body>\n'+s[i:]+'\n</body>\n</html>\n'
 open(ROOT / "index.html", "w", encoding="utf-8").write(s)
+
+# Warn about visible Spanish text without an English line.
+import subprocess, sys
+subprocess.run([sys.executable, str(ROOT / "tools" / "check_en.py")])
