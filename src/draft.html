@@ -3717,6 +3717,18 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     calLoad().then(() => Cal.ns.consulta('modal', { calLink: CAL_LINK, config }))
       .catch(() => window.open('https://cal.com/' + CAL_LINK + (user ? '?email=' + encodeURIComponent(user.email) : ''), '_blank', 'noopener'));
   }, true);
+  // manage subscription: a one-time portal link for this account; the generic Stripe login is the fallback
+  document.addEventListener('click', async (e) => {
+    const a = e.target.closest('[data-portal]'); if (!a || !user) return;
+    e.preventDefault(); const old = a.textContent; a.textContent = lang === 'en' ? 'Opening…' : 'Abriendo…'; a.setAttribute('aria-busy', 'true');
+    try {
+      const c = await sb(), { data: { session: ses } } = await c.auth.getSession();
+      const r = await c.functions.invoke('portal', { body: { lang }, headers: ses ? { 'x-user-token': ses.access_token } : {} });
+      if (r.data && r.data.url) { location.href = r.data.url; return; }
+      throw new Error((r.data && r.data.error) || 'portal');
+    } catch (err) { location.href = a.href; }
+    finally { a.textContent = old; a.removeAttribute('aria-busy'); }
+  });
   // Stripe (test mode). Swap both for the live links when payments go live.
   const PAY_LINK = 'https://buy.stripe.com/test_9B65kDdNm9p3bmLgG7gjC01', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
   const TIER = { inteligencia: ['Básico', 10, PAY_LINK], pro: ['Pro', 50, ''] };   // add the Stripe links for Pro and Max here
@@ -3831,7 +3843,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       : (lang === 'en' ? '$10/mo' : '$10/mes');
     $('#ac-perks-lab').textContent = paid ? 'Incluido en tu plan' : 'Con Inteligencia Básico también tienes';
     const cta = $('#ac-cta');
-    if (paid) { cta.textContent = late ? 'Actualizar tarjeta' : ending ? 'Reactivar suscripción' : 'Gestionar suscripción'; cta.href = PORTAL + '?prefilled_email=' + encodeURIComponent(user.email); cta.className = late || ending ? 'btn' : 'btn o'; }
+    if (paid) { cta.textContent = late ? 'Actualizar tarjeta' : ending ? 'Reactivar suscripción' : 'Gestionar suscripción'; cta.href = PORTAL + '?prefilled_email=' + encodeURIComponent(user.email); cta.dataset.portal = '1'; cta.className = late || ending ? 'btn' : 'btn o'; }
+    else delete cta.dataset.portal;
     else { let w = 'inteligencia'; try { w = sessionStorage.getItem('cauce-want') || w; } catch (e) {} const t = TIER[w] || TIER.inteligencia;
       cta.textContent = (lang === 'en' ? 'Get Inteligencia ' : 'Pasar a Inteligencia ') + t[0] + ' · $' + t[1] + (lang === 'en' ? '/mo' : '/mes');
       cta.href = t[2] ? payUrl(t[2]) : 'mailto:hola@cauce.blog?subject=' + encodeURIComponent('Inteligencia ' + t[0]); cta.className = 'btn'; }
