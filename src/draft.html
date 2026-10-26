@@ -432,6 +432,8 @@ body.auth header.top, body.auth footer { display: none; }
 @media (max-width: 560px) { .acct-fields { grid-template-columns: 1fr; } }
 .namerow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .auth { row-gap: 40px; }
+/* the card keeps the same distance from the heading whether the profile is open or not */
+#v-entrar .auth-card, #v-contacto .auth-card { align-self: start; margin-top: clamp(32px, 9vh, 110px); }
 .pf-buy, .pf-pro { display: contents; }
 .auth .pf input[type=text], .auth .pf input[type=tel] { height: 48px; border: 1px solid var(--line); border-radius: 12px; font: 400 var(--t-body) var(--sans); padding: 0 14px; text-align: left; background: transparent; color: var(--ink); width: 100%; }
 .pf-check { display: flex !important; gap: 10px; align-items: flex-start; font-size: var(--t-sm); color: var(--ink); cursor: pointer; padding-top: 4px; }
