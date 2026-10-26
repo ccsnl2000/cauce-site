@@ -266,6 +266,12 @@ body.auth .stick-chat { display: none; }
 
 /* PROPIEDADES */
 .phead { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+.phead-r { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; }
+.pspot { display: flex; gap: 14px; align-items: center; border: 1px dashed var(--soft); border-radius: 14px; padding: 12px 18px 12px 14px; color: var(--ink); transition: border-color .2s, background .2s; }
+.pspot:hover { border-color: var(--ink); background: var(--sheet); }
+.pspot .plus { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); font-size: var(--t-lead); color: var(--soft); flex: none; }
+.pspot > span:last-child { display: grid; gap: 2px; } .pspot b { font-size: var(--t-body); }
+@media (max-width: 700px) { .phead-r { align-items: stretch; width: 100%; } }
 .phead h1 { font-family: var(--serif); font-size: var(--t-h1); line-height: 1; }
 .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 20px; margin-top: 28px; }
 .grid a { display: grid; gap: 10px; position: relative; }
@@ -731,7 +737,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
 
 <!-- PROPIEDADES -->
 <section class="view" id="v-propiedades" hidden>
-  <div class="phead" style="position:relative"><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div>
+  <div class="phead" style="position:relative"><div><span class="lab">Propiedades</span><h1 style="margin-top:8px">Inmuebles y terrenos,<br>con nuestra lectura.</h1></div><div class="phead-r"><a class="pspot" id="p-spot" href="#planes" data-plan="duenos"><span class="plus" aria-hidden="true">+</span><span><span class="lab">Espacio destacado</span><b>Tu propiedad aquí</b><span class="sm">$150 por 30 días</span></span></a><a class="btn o" href="#planes" data-plan="duenos">Estudia mi terreno</a></div></div>
   <div class="ptabs" role="group" aria-label="Secciones"><button type="button" aria-pressed="true" data-k="todos">Todos</button><button type="button" aria-pressed="false" data-k="destacados">Destacados</button><button type="button" aria-pressed="false" data-k="patro">Patrocinados</button><button type="button" aria-pressed="false" data-k="estudios">Estudios</button></div>
   <p class="sm" id="p-intro" style="margin-top:16px"></p>
   <div class="grid" id="grid"></div>
@@ -2715,14 +2721,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const PNOTE = { todos: 'Datos de demostración. Los patrocinados están marcados como tales.', destacados: 'Datos de demostración hasta conectar los anuncios. Esta selección no se vende.', patro: 'Espacios pagados, marcados como tales. Ejemplos de demostración. La lectura de precio de Cauce no se edita por pago.', estudios: 'Estudios preliminares con datos públicos. No son tasaciones.' };
   function grid(k) {
     let html = '';
-    if (k === 'todos') { const parts = ['destacados', 'patro', 'estudios'].map((x) => { grid(x); return $('#grid').innerHTML; }); $('#grid').innerHTML = parts.join(''); $('#p-intro').textContent = PINTRO.todos; $('#p-note').textContent = PNOTE.todos; mountFigs(); applyLang(); return; }
+    if (!grid.inner) $('#p-spot').hidden = !(k === 'todos' || k === 'patro');
+    if (k === 'todos') { grid.inner = 1; const parts = ['destacados', 'patro', 'estudios'].map((x) => { grid(x); return $('#grid').innerHTML; }); grid.inner = 0; $('#grid').innerHTML = parts.join('').replace(/ data-ro="1"| data-sz="[^"]*"/g, ''); drawMinis(); $('#p-intro').textContent = PINTRO.todos; $('#p-note').textContent = PNOTE.todos; mountFigs(); applyLang(); return; }
     if (k === 'destacados') {
       const ranked = DEALS.map((d) => Object.assign({ per: d.price / d.m2, med: ZONES[d.zone] }, d)).map((d) => Object.assign(d, { off: d.per / d.med - 1 })).filter((d) => d.off < 0).sort((a, b) => a.off - b.off).slice(0, 5);
       const items = ranked.map((d, i) => `<a class="card-link" href="#propiedad" style="position:relative"><span class="rank">Nº ${i + 1}</span>${media(d.img, i)}<div class="row"><b>${esc(d.t)}</b><span class="tag ok">−${Math.round(-d.off * 100)}% vs zona</span></div><span class="sm">${int(d.m2)} m² · $${int(d.price)} · $${int(d.per)}/m²</span></a>`);
       const paid = PAID.map((p, i) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}">${ill('costa')}<div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`);
       html = items.join('');
     } else if (k === 'patro') {
-      html = SPONS.map((p, i) => `<a class="card-link" href="#propiedad">${media(p.img, i)}<div class="row"><b>${esc(p.t)}</b><span class="tag">Patrocinado</span></div><span class="sm">${esc(p.s)}</span></a>`).join('') + PAID.map((p) => `<a class="card-link" href="${p.href}" data-plan="${p.plan}"><div class="ph fig spot"><span>+</span></div><div class="row"><b>${esc(p.t)}</b></div><span class="sm">${esc(p.s)}</span></a>`).join('');
+      html = SPONS.map((p, i) => `<a class="card-link" href="#propiedad">${media(p.img, i)}<div class="row"><b>${esc(p.t)}</b><span class="tag">Patrocinado</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
     } else {
       const L = k === 'estudios' ? STUDIES : OWN;
       html = L.map((p, i) => `<a class="card-link" href="${p.id ? (p.id === 'porlamar' ? '#articulo' : '#articulo/' + p.id) : '#propiedad'}">${k === 'estudios' ? cover(p.id, i + 1, p.t.split(' · ')[1], '4/5') : ill(i ? 'avila' : 'lote')}<div class="row"><b>${esc(p.t)}</b><span class="tag${p.ok ? ' ok' : ''}">${esc(p.tag)}</span></div><span class="sm">${esc(p.s)}</span></a>`).join('');
@@ -2769,6 +2776,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Tu propiedad aquí": "Your property here",
+    "$150 por 30 días": "$150 for 30 days",
     "Nombre": "First name",
     "Apellido": "Last name",
     "Nombre *": "First name *",
