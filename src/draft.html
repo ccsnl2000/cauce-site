@@ -3243,13 +3243,26 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   /* accounts: Supabase Auth, loaded after the page so it never slows the first view */
   const SB_URL = 'https://gdgmcnqczrbbzwuzkvcv.supabase.co', SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A';
   let sbP = null, user = null;
-  // 1:1 consult: every consult button opens the Cal.com booking page (prefilled when signed in)
-  const CAL = 'https://cal.com/consulta-1-1';
+  // 1:1 consult: booking opens in a Cal.com window on the page (embed loads on first click); new tab if it can't load
+  const CAL_LINK = 'consulta-1-1'; // Cal.com username/event, e.g. 'consulta-1-1/45min'
+  let calReady = null;
+  function calLoad() {
+    if (calReady) return calReady;
+    calReady = new Promise((ok, no) => {
+      (function (C, A, L) { const p = (a, ar) => { a.q.push(ar); }; const d = C.document; C.Cal = C.Cal || function () { const cal = C.Cal, ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; const t = d.head.appendChild(d.createElement('script')); t.src = A; t.onload = ok; t.onerror = no; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }, ns = ar[1]; api.q = api.q || []; if (typeof ns === 'string') { cal.ns[ns] = cal.ns[ns] || api; p(cal.ns[ns], ar); p(cal, ['initNamespace', ns]); } else p(cal, ar); return; } p(cal, ar); }; })(window, 'https://app.cal.com/embed/embed.js', 'init');
+      Cal('init', 'consulta', { origin: 'https://cal.com' });
+      Cal.ns.consulta('ui', { theme: 'light', hideEventTypeDetails: false, layout: 'month_view', cssVarsPerTheme: { light: { 'cal-brand': '#1B1A18' } } });
+      setTimeout(no, 8000);
+    });
+    return calReady;
+  }
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-pick="consulta"], a[data-plan="consulta"]'); if (!b) return;
     e.preventDefault(); e.stopImmediatePropagation();
-    const q = user ? '?email=' + encodeURIComponent(user.email) : '';
-    window.open(CAL + q, '_blank', 'noopener');
+    const config = { layout: 'month_view', locale: lang === 'en' ? 'en' : 'es' };
+    if (user) { config.email = user.email; const n = (acctRow && acctRow.nombre) || getPerfil().nombre; if (n) config.name = n; }
+    calLoad().then(() => Cal.ns.consulta('modal', { calLink: CAL_LINK, config }))
+      .catch(() => window.open('https://cal.com/' + CAL_LINK + (user ? '?email=' + encodeURIComponent(user.email) : ''), '_blank', 'noopener'));
   }, true);
   // Stripe (test mode). Swap both for the live links when payments go live.
   const PAY_LINK = 'https://buy.stripe.com/test_9B65kDdNm9p3bmLgG7gjC01', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
