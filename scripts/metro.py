@@ -1,11 +1,11 @@
 # Caracas Metro from OpenStreetMap → data/metro.json (lines with colour, stations with their lines).
-# Runs on GitHub Actions (.github/workflows/metro.yml). Line names and colours fall back to the official ones.
+# Runs on GitHub Actions (.github/workflows/metro.yml). Line names and colours are the official ones; geometry and stations come from OSM.
 import json, math, re, unicodedata, urllib.parse, urllib.request, pathlib
 
 BBOX = "10.36,-67.10,10.56,-66.72"
 Q = f"""[out:json][timeout:120];
 (relation["route"="subway"]({BBOX}););out body;>;out skel qt;
-node["railway"="station"]["station"="subway"]({BBOX});out body;"""
+(node["railway"="station"]({BBOX});node["public_transport"="station"]({BBOX});node["railway"="stop"]["subway"="yes"]({BBOX}););out body;"""
 OFFICIAL = {
   "1": ("Línea 1", "#E2231A", "Propatria, Pérez Bonalde, Plaza Sucre, Gato Negro, Agua Salud, Caño Amarillo, Capitolio, La Hoyada, Parque Carabobo, Bellas Artes, Colegio de Ingenieros, Plaza Venezuela, Sabana Grande, Chacaíto, Chacao, Altamira, Miranda, Los Dos Caminos, Los Cortijos, La California, Petare, Palo Verde"),
   "2": ("Línea 2", "#00A04A", "El Silencio, Capuchinos, Maternidad, Artigas, La Paz, La Yaguara, Carapita, Antímano, Mamera, Caricuao, Zoológico, Ruiz Pineda, Las Adjuntas"),
@@ -43,11 +43,12 @@ for r in (e for e in d if e["type"] == "relation"):
     segs = [[nodes[n] for n in ways[m["ref"]] if n in nodes] for m in r["members"] if m["type"] == "way" and m["ref"] in ways and m["role"] in ("", "route", "forward", "backward")]
     segs = [s for s in segs if len(s) > 1]
     if not segs: continue
-    L = lines.setdefault(ref, {"ref": ref, "name": OFFICIAL[ref][0], "colour": t.get("colour") or OFFICIAL[ref][1], "segs": []})
+    L = lines.setdefault(ref, {"ref": ref, "name": OFFICIAL[ref][0], "colour": OFFICIAL[ref][1], "segs": []})  # official colours, calmer than the OSM tags
     L["segs"] += segs                          # both directions overlap; harmless for drawing
 stations = {}
 for e in d:
-    if e["type"] != "node" or e.get("tags", {}).get("railway") != "station": continue
+    t = e.get("tags", {})
+    if e["type"] != "node" or not (t.get("railway") in ("station", "stop") or t.get("public_transport") == "station"): continue
     n = e["tags"].get("name:es") or e["tags"].get("name")
     if not n: continue
     k = ALIAS.get(norm(n), norm(n))
