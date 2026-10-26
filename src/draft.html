@@ -87,6 +87,7 @@ a.card-link:hover .ph { transform: scale(.985); }
 #intro.done { opacity: 0; visibility: hidden; }
 #intro .w { padding: 0 .14em; font-weight: 800; font-size: var(--t-display); letter-spacing: -0.07em; line-height: 1; clip-path: inset(0 100% 0 0); animation: wipe .9s var(--ease) forwards; }
 @keyframes wipe { to { clip-path: inset(0 0 0 0); } }
+#intro .w .ed { font-size: .14em; font-weight: 500; letter-spacing: .08em; color: var(--soft); vertical-align: top; position: relative; top: 1.9em; margin-left: .1em; opacity: 0; animation: fade .4s .8s forwards; }
 #intro p { margin-top: 14px; font-size: var(--t-xs); color: var(--soft); text-align: center; opacity: 0; animation: fade .4s .6s forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 @keyframes fade { to { opacity: 1; } }
@@ -98,7 +99,7 @@ header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; 
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
 .bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 76px; }
 .brand { display: flex; align-items: baseline; gap: 0; }
-.wm { font-weight: 800; font-size: var(--t-h3); letter-spacing: -0.06em; line-height: 1; position: relative; } .wm .ed { position: absolute; top: -0.05em; left: 100%; margin-left: 3px; font-size: 8px; font-weight: 700; letter-spacing: .06em; line-height: 1; padding: 2px 4px 1.5px; border: 1px solid currentColor; border-radius: 4px; }
+.wm { font-weight: 800; font-size: var(--t-h3); letter-spacing: -0.06em; line-height: 1; position: relative; } .wm .ed { position: absolute; top: 0.2em; left: 100%; margin-left: 2px; font-size: 7.5px; font-weight: 500; letter-spacing: .08em; line-height: 1; color: var(--soft); }
 .brand .about { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; font-size: var(--t-sm); color: var(--soft); transition: max-width .5s var(--ease), opacity .35s var(--ease), margin .5s var(--ease); }
 .brand:hover .about, .brand:focus-within .about { max-width: 160px; opacity: 1; margin-left: 14px; }
 .brand .about:hover { color: var(--ink); }
@@ -722,7 +723,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; background: url("grain.png") repeat; background-size: 160px; opacity: var(--grain, .45); }
 </style>
 
-<div id="intro" aria-hidden="true"><div><div class="w">cauce</div><p>Datos con fuente, desde Caracas.</p></div></div>
+<div id="intro" aria-hidden="true"><div><div class="w">cauce<sup class="ed">VE</sup></div><p>Datos con fuente, desde Caracas.</p></div></div>
 
 <div class="uc" role="status"><span>Beta</span> <span>Algunas cifras son de demostración mientras conectamos las fuentes.</span></div>
 <header class="top"><div class="wrap">
