@@ -4134,7 +4134,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const V = root.dataset.view.split(',').map(Number), HOME = [[V[0], V[1]], [V[2], V[3]]];
     let map = null, scale = 'p', hov = null, ready = false, pulse = null, pt = 0, home = null, tone = '';
     const lum = (c) => { const m = c.trim().match(/^#([0-9a-f]{6})$/i); if (!m) return 0; const n = parseInt(m[1], 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; };
-    function theme() { const t = lum(getComputedStyle(root).getPropertyValue('--bg')) > 0.5 ? 'light' : 'dark'; if (t === tone) return; tone = t; root.classList.toggle('lt', t === 'light'); if (map && ready) { paintBase(map, t); if (map.getLayer('mst-name')) { map.setPaintProperty('mst-name', 'text-halo-color', t === 'dark' ? 'rgba(255,255,255,.6)' : 'rgba(0,0,0,0)'); map.setPaintProperty('mst-name', 'text-halo-width', t === 'dark' ? 1.6 : 0); map.setPaintProperty('mst-name', 'text-halo-blur', t === 'dark' ? 1.6 : 0); } } }
+    function theme() { const t = lum(getComputedStyle(root).getPropertyValue('--bg')) > 0.5 ? 'light' : 'dark'; if (t === tone) return; tone = t; root.classList.toggle('lt', t === 'light'); if (map && ready) { paintBase(map, t); } }
     theme(); new MutationObserver(theme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }); new MutationObserver(theme).observe(document.body, { attributes: true, attributeFilter: ['class', 'data-view'] });
     function start() {
       if (map || !window.maplibregl || !root.offsetWidth) return;
@@ -4220,7 +4220,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         map.addLayer({ id: 'mline', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#1A1B19', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.8, 15, 2], 'line-opacity': 0.55 } }, before);
         map.addLayer({ id: 'mst', type: 'circle', source: 'mst', paint: { 'circle-color': '#1A1B19', 'circle-stroke-color': '#F1EEE9', 'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 1.6],
           'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 2.4], 15, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 5.5]], 'circle-radius-transition': { duration: 150 } } }, before);
-        map.addLayer({ id: 'mst-name', type: 'symbol', source: 'mst', minzoom: 13.5, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-offset': [0, 1.2], 'text-anchor': 'top' }, paint: { 'text-color': '#111110', 'text-halo-color': tone === 'dark' ? 'rgba(255,255,255,.6)' : 'rgba(0,0,0,0)', 'text-halo-width': tone === 'dark' ? 1.6 : 0, 'text-halo-blur': tone === 'dark' ? 1.6 : 0 } }, before);
+        map.addLayer({ id: 'mst-name', type: 'symbol', source: 'mst', minzoom: 13.5, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-offset': [0, 1.2], 'text-anchor': 'top' }, paint: { 'text-color': '#111110', 'text-halo-width': 0 } }, before);
         ['metro', 'metro-name'].forEach((id) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', 'none'));
         const mb = $('[data-ctx="metro"]', root); if (mb && mb.getAttribute('aria-pressed') === 'false') ['mline-case', 'mline', 'mst', 'mst-name'].forEach((id) => map.setLayoutProperty(id, 'visibility', 'none'));
       }
