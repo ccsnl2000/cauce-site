@@ -57,3 +57,7 @@ alter table public.subscribers enable row level security;
 
 -- Renewal info written by the Stripe webhook.
 alter table public.profiles add column if not exists renews_at timestamptz, add column if not exists cancel_at_period_end boolean not null default false;
+
+-- Added 25 Oct 2026: first name for the account greeting.
+alter table public.profiles add column if not exists nombre text;
+grant update (nombre) on public.profiles to authenticated;
