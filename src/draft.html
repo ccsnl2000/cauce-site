@@ -113,6 +113,7 @@ nav.main a[aria-current]::after { transform: scaleX(1); }
 .lang { position: relative; }
 .lang-cur { display: inline-flex !important; align-items: center; gap: 6px; color: var(--ink) !important; padding: 6px 4px !important; }
 .lang-pop { position: absolute; right: 0; top: calc(100% + 8px); background: var(--sheet); border: 1px solid var(--line); border-radius: 12px; padding: 6px; display: grid; min-width: 130px; box-shadow: 0 18px 44px rgba(27,26,24,.14); z-index: 30; }
+.lang-pop::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 10px; }
 .lang-pop button { text-align: left; padding: 8px 10px !important; border-radius: 8px; color: var(--ink) !important; }
 .lang-pop button:hover, .lang-pop button[aria-pressed=true] { background: var(--fill); }
 .tog button { background: none; border: 0; padding: 4px 3px; font: inherit; color: var(--soft); cursor: pointer; }
@@ -3455,7 +3456,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   new MutationObserver(() => { if (!applying) requestAnimationFrame(applyLang); }).observe(document.body, { childList: true, subtree: true });
   $$('.lang').forEach((m) => { const b = $('.lang-cur', m), pop = $('.lang-pop', m), open = (o) => { pop.hidden = !o; b.setAttribute('aria-expanded', String(o)); };
     b.addEventListener('click', (e) => { e.stopPropagation(); open(pop.hidden); }); $$('[data-lang]', pop).forEach((x) => x.addEventListener('click', () => open(false)));
-    document.addEventListener('click', (e) => { if (!m.contains(e.target)) open(false); }); m.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); b.focus(); } }); });
+    document.addEventListener('click', (e) => { if (!m.contains(e.target)) open(false); }); m.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); b.focus(); } });
+    if (matchMedia('(hover: hover)').matches) { let t; m.addEventListener('mouseenter', () => { clearTimeout(t); open(true); }); m.addEventListener('mouseleave', () => { t = setTimeout(() => open(false), 180); }); } });
 
   /* theme: follows the device until the reader picks one */
   const root = document.documentElement;
