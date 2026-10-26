@@ -44,3 +44,16 @@ create trigger on_auth_user_created
 
 -- Added 25 Oct 2026: the trigger function is not callable through the API.
 revoke execute on function public.handle_new_user() from public, anon, authenticated;
+
+-- Newsletter list (Resend). Only the newsletter function (service role) touches it.
+create table if not exists public.subscribers (
+  email text primary key,
+  source text,
+  perfil text,
+  welcomed_at timestamptz,
+  created_at timestamptz not null default now()
+);
+alter table public.subscribers enable row level security;
+
+-- Renewal info written by the Stripe webhook.
+alter table public.profiles add column if not exists renews_at timestamptz, add column if not exists cancel_at_period_end boolean not null default false;

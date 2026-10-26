@@ -641,7 +641,6 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
         </div>
       </div>
     </div>
-    <p class="sm gd-note">Borrador: el envío de la guía y las cuentas se activan al lanzar el sitio.</p>
     <div class="blk"><span class="lab">Qué cubre la guía</span>
       <ol class="gd-toc"><li><span class="n">01</span><div><b>¿Puede un extranjero ser dueño?</b> <span class="tag">Base legal</span><p>El principio del Código Civil, qué significa tener capacidad para comprar y lo único que decide si puedes firmar el documento.</p></div></li><li><span class="n">02</span><div><b>Los seis tipos de visa y cuál necesitas</b> <span class="tag">Visas</span><p>TR-I, TR-N, TR-E/I, TR-FV, TR-RE y TR-L comparadas: duración, estadía, requisitos y camino a la residencia.</p></div></li><li><span class="n">03</span><div><b>La visa paso a paso</b> <span class="tag">Visas</span><p>Cita en el consulado, lista de documentos, aprobación previa para inversionistas, plazos y costos.</p></div></li><li><span class="n">04</span><div><b>El RIF en el SENIAT</b> <span class="tag">Impuestos</span><p>Registro en línea, validación en persona, documentos que pide a un extranjero y para qué sirve el RIF.</p></div></li><li><span class="n">05</span><div><b>Registro SAREN y revisión del inmueble</b> <span class="tag">Registro</span><p>Registro obligatorio del comprador extranjero, verificación del título, solvencias y alertas antes de firmar.</p></div></li><li><span class="n">06</span><div><b>El cierre: documentos y costos</b> <span class="tag">Registro</span><p>Lista completa del cierre, aranceles, timbres fiscales, impuestos y un presupuesto de 5% a 8% del precio.</p></div></li><li><span class="n">07</span><div><b>Zonas de seguridad, fronteras y Margarita</b> <span class="tag">Restricciones</span><p>Qué zonas piden autorización del Ministerio de la Defensa y qué revisar antes de enamorarte de un inmueble.</p></div></li></ol>
     </div>
@@ -2721,6 +2720,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Listo. Revisa tu correo: te enviamos la bienvenida.": "Done. Check your inbox: we sent you a welcome email.",
+    "Gracias. Revisa tu correo: te enviamos la bienvenida.": "Thanks. Check your inbox: we sent you a welcome email.",
     "Ya eres suscriptor. El modelo completo y la calculadora de este estudio llegan a tu cuenta muy pronto.": "You're a subscriber. The full model and calculator for this study are coming to your account very soon.",
     "Hola.": "Hi.",
     "Tu plan": "Your plan",
@@ -3254,6 +3255,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (!sbP) sbP = new Promise((ok, no) => { const t = document.createElement('script'); t.src = '/vendor/supabase.js'; t.onload = () => ok(window.supabase.createClient(SB_URL, SB_KEY)); t.onerror = no; document.head.appendChild(t); });
     return sbP;
   }
+  // newsletter list + welcome email (Supabase function → Resend); safe to call more than once
+  const nl = (body) => sb().then((c) => c.functions.invoke('newsletter', { body })).catch(() => {});
   const ERR = { 'Invalid login credentials': 'Correo o contraseña incorrectos.', 'Email not confirmed': 'Confirma tu correo primero: revisa tu bandeja de entrada.', 'User already registered': 'Ya existe una cuenta con ese correo. Inicia sesión.' };
   const aSay = (t) => { $('#a-msg').textContent = t; applyLang(); };
   const fail = (e) => aSay(ERR[e && e.message] || (/rate limit|security purposes/i.test(e && e.message || '') ? 'Demasiados intentos. Espera unos minutos.' : 'Algo falló. Inténtalo de nuevo o escríbenos a hola@cauce.blog.'));
@@ -3262,6 +3265,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     user = u || null;
     $$('a.in').forEach((l) => { l.textContent = user ? 'Mi cuenta' : 'Iniciar sesión'; if (user) l.removeAttribute('data-mode'); else l.dataset.mode = 'login'; });
     if (user) syncPerfil();
+    if (user) { try { if (!sessionStorage.getItem('cauce-nl')) { sessionStorage.setItem('cauce-nl', '1'); nl({ email: user.email, source: 'cuenta', perfil: getPerfil().perfil }); } } catch (e) {} }
     checkPlan();
     if (user && current === 'entrar') account();
     if (!user && current === 'entrar' && !$('#a-acct').hidden) setMode('login');
@@ -3371,8 +3375,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   $$('form.nl').forEach((f) => f.addEventListener('submit', (e) => {
     e.preventDefault(); const em = $('input[type=email]', f).value.trim(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return;
     savePerfil({ email: em, boletin: true }); const wrap = f.parentElement, m = wrap.querySelector('.nlmsg'), box = wrap.querySelector('.perfil');
-    if (m) m.textContent = 'Listo. Borrador: el registro se activa al lanzar el sitio.';
-    if (box) askPerfil(box, () => { if (m) m.textContent = 'Gracias. Borrador: el registro se activa al lanzar el sitio.'; setTimeout(() => { box.hidden = true; }, 900); });
+    nl({ email: em, source: 'boletin' });
+    if (m) m.textContent = 'Listo. Revisa tu correo: te enviamos la bienvenida.';
+    if (box) askPerfil(box, () => { nl({ email: em, perfil: getPerfil().perfil }); if (m) m.textContent = 'Gracias. Revisa tu correo: te enviamos la bienvenida.'; setTimeout(() => { box.hidden = true; }, 900); });
     applyLang();
   }));
   $$('form.pinfo').forEach((f) => f.addEventListener('submit', (e) => { e.preventDefault(); $('.pmsg').textContent = 'Recibido. Borrador: el envío se activa al lanzar el sitio.'; }));
@@ -3808,7 +3813,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     f.addEventListener('submit', (e) => {
       e.preventDefault(); const v = $('#gd-email').value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { $('#gd-msg').textContent = document.documentElement.lang === 'en' ? 'Check your email address.' : 'Revisa tu correo.'; $('#gd-email').focus(); return; }
-      $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; savePerfil({ email: v, boletin: $('#gd-news').checked, guia: true }); $('#gd-acc').hidden = true; askPerfil($('#gd-perfil'), () => { $('#gd-acc').hidden = false; }); applyLang();
+      $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; savePerfil({ email: v, boletin: $('#gd-news').checked, guia: true }); nl({ email: v, source: 'guia', boletin: $('#gd-news').checked }); $('#gd-acc').hidden = true; askPerfil($('#gd-perfil'), () => { nl({ email: v, perfil: getPerfil().perfil }); $('#gd-acc').hidden = false; }); applyLang();
     });
     $('#gd-no').addEventListener('click', () => { $('#gd-acc').hidden = true; });
     $('#gd-yes').addEventListener('click', () => {
