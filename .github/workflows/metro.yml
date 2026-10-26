@@ -1,0 +1,24 @@
+name: Metro de Caracas
+on:
+  push:
+    paths: ["scripts/metro.py", ".github/workflows/metro.yml"]
+  schedule:
+    - cron: "41 6 3 * *"   # monthly, 3rd day
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  metro:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/metro.py
+      - name: Commit the metro data
+        run: |
+          git config user.name "cauce-bot"
+          git config user.email "bot@cauce.blog"
+          git add data/metro.json
+          git diff --cached --quiet || (git commit -m "Metro: líneas y estaciones desde OpenStreetMap" && git pull --rebase origin main && git push)
