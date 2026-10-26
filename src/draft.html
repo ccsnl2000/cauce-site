@@ -528,7 +528,7 @@ body.auth header.top, body.auth footer { display: none; }
 .pillars div { border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 8px; align-content: start; }
 .pillars.p2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .routes { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 24px; }
-.plan ul li b { font-weight: 700; } .plan .price.quote { font-size: var(--t-h3); line-height: 1.6; }
+.plan ul li b { font-weight: 700; } .plan .price.quote { font: 700 var(--t-h3)/1.25 var(--sans); letter-spacing: -0.02em; min-height: 41px; display: flex; align-items: flex-end; }
 .plan .pps { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); font: 600 var(--t-xs) var(--sans); color: var(--soft); }
 .pcmp { margin-top: 40px; } .pcmp h3 { font-size: var(--t-h3); letter-spacing: -0.02em; margin-bottom: 14px; } .pcmp-w { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
 .pcmp table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 680px; } .pcmp th, .pcmp td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: center; } .pcmp tr:last-child th, .pcmp tr:last-child td { border-bottom: 0; }
@@ -890,7 +890,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="pcol"><div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado.</p><ul><li><b>1 estudio de regalo</b></li><li>Cifras de la semana, cada jueves</li><li>Ficha de cada zona</li></ul></div><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
     <div class="pcol"><div class="plan" data-plan="inteligencia"><div class="sticker" data-grain="round" data-hex="#BDB8AF,#77736C,#F1EEE9" aria-hidden="true">Popular</div><span class="lab">Inteligencia Básico</span><div class="price">$10<small> /mes</small></div><p class="sm">Para evaluar tu primera compra.</p><ul><li><b>2 estudios por semana</b></li><li>Todo lo del Boletín</li></ul><p class="pps">$1,15 por estudio</p></div><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
     <div class="pcol"><div class="plan" data-plan="pro"><span class="lab">Inteligencia Pro</span><div class="price">$50<small> /mes</small></div><p class="sm">Para comparar antes de decidir.</p><ul><li><b>12 estudios por semana</b></li><li>Comparar zonas lado a lado</li><li>Ranking completo y tendencias de 24 meses</li><li>Datos en CSV</li></ul><p class="pps">$0,96 por estudio</p></div><a class="btn" href="#entrar" data-pick="pro">Suscribirme</a></div>
-    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price quote">Cotización<small> según tus necesidades</small></div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>1 panel web personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
+    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price quote">Según tus necesidades</div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>1 panel web personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Un estudio es el análisis completo de un inmueble o terreno: precio frente a su zona, rendimiento y riesgos. Precios de prueba, en US$. Cancela cuando quieras.</p>
   </div>
@@ -3176,6 +3176,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Panel personalizado': 'Personalized dashboard', 'Prioritario': 'Priority',
     '1 panel web personalizado': '1 personalized web dashboard',
     'Con Inteligencia Básico también tienes': 'With Inteligencia Basic you also get',
+    'Según tus necesidades': 'Based on your needs',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
