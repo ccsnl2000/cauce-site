@@ -195,6 +195,78 @@ def guide_mail(l, saludo="{{saludo}}"):
         + f'<tr><td style="border-top:1px solid {LINE}"><p style="margin:20px 0 0;font-size:16px;color:{INK}"><b>{g["team"]}</b><br><span style="color:{SOFT};font-size:14px">{g["tag"]}</span><br><a href="{SITE}" style="color:{SOFT};font-size:14px">cauce.blog</a></p></td></tr>')
     return page(l, g["sub"] + " " + g["p2"], body, g["foot"])
 
+
+# ---------- Weekly newsletter, issue 01 (Stacked-style depth: editor's desk, more reading, week ahead, subscriber teaser, reader question, one main CTA) ----------
+A = lambda id_: SITE + "/#articulo/" + id_
+def rule(label):
+    return f'<tr><td style="padding:6px 0 18px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="border-top:2px solid {INK};padding-top:10px">{lab(label, INK)}</td></tr></table></td></tr>'
+def p_(html, size=16, color=INK, pad=18):
+    return f'<tr><td style="padding:0 0 {pad}px;font-size:{size}px;line-height:1.6;color:{color}">{html}</td></tr>'
+def a_(t, url):
+    return f'<a href="{url}" style="color:{INK};text-decoration:underline;text-underline-offset:3px">{t}</a>'
+def img(src, alt, cap=None, url=None):
+    i = f'<img src="{SITE}/emails/img/{src}" width="504" alt="{alt}" style="display:block;width:100%;height:auto;border-radius:14px;border:1px solid {LINE}">'
+    if url: i = f'<a href="{url}">{i}</a>'
+    c = f'<p style="margin:8px 0 0;font-size:12px;color:{SOFT}">{cap}</p>' if cap else ""
+    return f'<tr><td style="padding:4px 0 24px">{i}{c}</td></tr>'
+def bullets(items):
+    rows_ = "".join(f'<tr><td valign="top" style="padding:5px 10px 5px 0;font-size:16px;color:{SOFT}">—</td><td style="padding:5px 0;font-size:16px;line-height:1.55;color:{INK}">{x}</td></tr>' for x in items)
+    return f'<tr><td style="padding:0 0 20px"><table role="presentation" cellpadding="0" cellspacing="0">{rows_}</table></td></tr>'
+def story(kicker, title, dek, url, cta):
+    return (f'<tr><td style="padding:0 0 22px">{lab(kicker)}<p style="margin:8px 0 6px;font-size:21px;line-height:1.2;font-weight:800;letter-spacing:-0.6px">'
+            f'<a href="{url}" style="color:{INK};text-decoration:none">{title}</a></p><p style="margin:0 0 8px;font-size:15px;line-height:1.5;color:{SOFT}">{dek}</p>'
+            f'<a href="{url}" style="font-size:14px;color:{INK}">{cta}</a></td></tr>')
+def callout(t):
+    return f'<tr><td style="padding:4px 0 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="border-left:3px solid {INK};padding:4px 0 4px 16px;font-size:19px;line-height:1.4;font-weight:800;letter-spacing:-0.4px;color:{INK}">{t}</td></tr></table></td></tr>'
+def cta_box(label, title, text, btn, url, items=None):
+    li = "".join(f'<tr><td valign="top" style="padding:3px 10px 3px 0;font-size:15px;color:{PAPER}">&#10003;</td><td style="padding:3px 0;font-size:15px;line-height:1.45;color:{PAPER}">{i}</td></tr>' for i in (items or []))
+    lst = f'<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 18px">{li}</table>' if li else ""
+    return (f'<tr><td style="padding:6px 0 30px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{INK};border-radius:18px"><tr><td style="padding:26px">'
+            f'{lab(label, "#A3A49E")}<p style="margin:10px 0 8px;font-size:24px;line-height:1.15;font-weight:800;letter-spacing:-0.8px;color:{PAPER}">{title}</p>'
+            f'<p style="margin:0 0 14px;font-size:15px;line-height:1.55;color:#D9D6CF">{text}</p>{lst}'
+            f'<a href="{url}" style="display:inline-block;background:{PAPER};color:{INK};text-decoration:none;font-size:15px;padding:12px 22px;border-radius:999px">{btn}</a></td></tr></table></td></tr>')
+
+def newsletter_01():
+    CU, DT = SITE + "/#cuestionario", SITE + "/#datos"
+    body = (head("N.º 01 · Lunes 26 oct 2026")
+      + hello("Desde la mesa de Cauce", "Las Mercedes, US$25 millones y lo que de verdad mueve los precios.")
+      + rule("La semana en Caracas")
+      + p_("La noticia de la semana está en Las Mercedes. Invaca avanza con el <b>Bulevar Tolón</b>, una obra de <b>US$25 millones</b> de capital privado que conecta el Tolón Fashion Mall con la Plaza Alfredo Sadel y moderniza el centro comercial. La entrega está prevista para el <b>último trimestre de 2026</b>; después vendrá una redoma para ordenar el tráfico.")
+      + p_("Por sí sola, una obra así no sería extraordinaria. Lo que llama la atención es la escala: según el alcalde de Baruta, Darwin González, esos US$25 millones equivalen prácticamente al <b>presupuesto anual del municipio</b>. Y es solo la primera pieza.")
+      + img("n01-bulevar.gif", "Esquema del Bulevar Tolón", "Esquema ilustrativo: del centro comercial a la plaza, a pie.", A("bulevar-tolon-las-mercedes"))
+      + p_("Según Horacio Velutini, director de Invaca, en Las Mercedes hay unos <b>250.000 m² en desarrollo</b>, cerca de <b>US$400 millones</b> de inversión privada. De esa cifra, el bulevar es apenas un 6%. Sumados, esos metros equivalen a agregarle un <b>17%</b> a todo lo construido hoy en la zona.")
+      + callout("Un bulevar no sube los precios por sí solo: los sube si la gente camina.")
+      + p_("Ahí está la pregunta para quien compra. Un corredor bien iluminado, seguro y mantenido valoriza primero las calles caminables a una o dos cuadras del Tolón. Pero 250.000 m² nuevos, en buena parte comercio y oficinas, también pueden presionar los alquileres mientras se absorben. Invaca proyecta que las ventas del distrito se multipliquen por cuatro en cinco años; eso exige crecer cerca de un 32% al año, de forma sostenida. Es una proyección, no un dato.")
+      + p_("Lo explicamos completo en dos piezas: " + a_("Bulevar Tolón: qué cambia en Las Mercedes", A("bulevar-tolon-las-mercedes")) + " y " + a_("Las Mercedes, el próximo capítulo: lo que dicen las cifras", A("las-mercedes-proximo-capitulo")) + ".")
+      + img("n01-precios.gif", "Precio pedido por m² en zonas de Caracas", "Precio pedido por m², datos de demostración mientras conectamos las fuentes.", DT)
+      + p_("Para ponerlo en contexto, Las Mercedes ya es la zona con el precio pedido por m² más alto de nuestro tablero, casi el triple de la mediana de Caracas. Por eso conviene separar lo que se pide de lo que se cierra: en una zona de moda, la distancia entre ambos suele ser grande.")
+      + p_("Por si te lo perdiste, también publicamos:", pad=6)
+      + bullets(["Por qué " + a_("una fuente dice $1.551 por m² y otra $547", A("fuentes")) + ", y cuál usar para negociar.",
+                 a_("Bello Monte y Colinas", A("bellomonte")) + ": zonas vecinas, $243 de diferencia por m².",
+                 a_("El RIF para extranjeros", A("rif")) + ": qué cambió en 2026 y cómo sacarlo."])
+      + rule("La semana que viene")
+      + p_("Seguiremos de cerca el avance de la obra y el desvío por la calle Nicolás Copérnico. También preparamos una comparación entre alquiler largo y vacacional en Margarita y, para suscriptores de Inteligencia, el ranking actualizado de las 32 parroquias de Caracas.")
+      + p_("¿Tienes una historia, un dato o una pregunta sobre el mercado? Responde este correo o escríbenos a " + a_("hola@cauce.blog", "mailto:hola@cauce.blog") + ". Leemos todo.", color=SOFT)
+      + p_(f"<b>Equipo Cauce</b><br><span style='color:{SOFT};font-size:14px'>Datos inmobiliarios con fuente · Caracas</span>", pad=28)
+      + rule("Lo que más se leyó")
+      + story("Análisis · 7 min", "Rendimiento bruto de 12%: cuánto queda después de gastos", "Del alquiler que te prometen al que de verdad cobras: condominio, vacancia, mantenimiento e impuestos.", A("rendimiento"), "Leer el análisis →")
+      + story("Zonas · 5 min", "Desde $15.000: qué se compra en la costa con cada presupuesto", "Cuatro presupuestos, cuatro tipos de inmueble y lo que conviene revisar antes de pagar.", A("costa"), "Leer el artículo →")
+      + story("Análisis · 5 min", "Airbnb a $63 la noche: ¿conviene más que alquilar por año?", "La ocupación que hace falta para que el alquiler vacacional le gane al largo.", A("airbnb"), "Leer el artículo →")
+      + rule("Para suscriptores de Inteligencia")
+      + p_("Esta semana comparamos Las Mercedes con sus vecinas:", pad=6)
+      + bullets(["Qué parroquias cercanas cuestan menos de la mitad por m²", "Dónde se vende más rápido, según días en venta", "Cómo cambia el puntaje Cauce si priorizas caminar o seguridad", "Cuánto pesa el descuento al cerrar frente al precio pedido"])
+      + callout("Lo que importa no es cuánto sube una zona, sino cuánto de esa subida ya está en el precio.")
+      + p_(a_("Comparar zonas en Inteligencia →", DT), pad=28)
+      + rule("Pregunta de la semana")
+      + story("Una pregunta frecuente", "Vivo afuera y quiero comprar en Caracas. ¿Necesito visa?", "Depende de cómo quieras tener el inmueble. A tu nombre, sí: visa, RIF y registro en el SAREN. A través de una empresa, no necesariamente. La guía y la llamada de diagnóstico explican cuál te conviene.", SITE + "/#guia", "Leer la guía gratis →")
+      + cta_box("Antes de comprar", "¿Estás evaluando un inmueble?", "La mayoría de los errores ocurren antes de firmar. En 45 minutos revisamos tu caso:", "Agendar mi llamada →", CU,
+                ["Si el precio está en línea con la zona", "Qué visa y documentos necesitas desde afuera", "Ruta A o Ruta B: cómo tener el inmueble", "Costos de cierre que nadie te dice"])
+      + p_("¿Te sirvió? " + a_("Reenvíaselo a alguien", "mailto:?subject=Cauce%20Semanal&body=https://cauce.blog") + " que esté pensando en comprar en Venezuela.", size=14, color=SOFT)
+      + f'<tr><td style="padding:14px 0 0;border-top:1px solid {LINE};font-size:12px;letter-spacing:1px;text-transform:uppercase"><a href="{DT}" style="color:{INK}">Inteligencia</a> &nbsp;·&nbsp; <a href="{CU}" style="color:{INK}">Llamada</a> &nbsp;·&nbsp; <a href="{SITE}/#guia" style="color:{INK}">Guía gratis</a> &nbsp;·&nbsp; <a href="{SITE}" style="color:{INK}">cauce.blog</a></td></tr>')
+    return page("es", "US$25 millones en Las Mercedes: qué cambia, para quién y qué vigilar.", body,
+        'Recibes Cauce Semanal porque te suscribiste en cauce.blog. <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:' + SOFT + '">Darte de baja</a>. Cifras marcadas como demostración: no las uses para decidir. Cauce publica información, no asesoría de inversión.')
+
+
 def newsletter_es():
     t = C["es"]
     return page("es", "$1.003 por m² en Porlamar, y por qué no es lo que parece.",
@@ -219,4 +291,5 @@ if __name__ == "__main__":
         (out / f"bienvenida-guia-{l}.html").write_text(guide_mail(l), encoding="utf-8")
         (out / f"guia-{l}-web.html").write_text(guide_mail(l, GUIDE[l]["hi"]), encoding="utf-8")
     (out / "boletin-plantilla.html").write_text(newsletter_es(), encoding="utf-8")
+    (out / "boletin-01.html").write_text(newsletter_01(), encoding="utf-8")
     print("templates:", ", ".join(T), "+ boletin-plantilla")
