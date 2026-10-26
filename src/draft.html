@@ -3187,6 +3187,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const orig = new WeakMap();
   let lang = 'es';
   try { lang = localStorage.getItem('cauce-lang') || ((navigator.languages || [navigator.language || 'es']).some((l) => /^es/i.test(l)) ? 'es' : 'en'); } catch (e) {}
+  document.documentElement.lang = lang;
   function tr(es) {
     if (lang === 'es') return es;
     const k = es.trim();
@@ -3199,7 +3200,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     m = k.match(/^(Apartamento|Casa|Terreno|Local|Posada) · (.+)$/); if (m) return es.replace(k, ({ Apartamento: 'Apartment', Casa: 'House', Terreno: 'Lot', Local: 'Commercial', Posada: 'Inn' })[m[1]] + ' · ' + m[2]);
     return es;
   }
-  let applying = false;
+  let applying = false, REV = null, REVn = 0;
+  const rev = () => { const k = Object.keys(EN); if (!REV || k.length !== REVn) { REV = {}; k.forEach((es) => { REV[EN[es]] = es; }); REVn = k.length; } return REV; };
   function applyLang() {
     if (applying) return; applying = true;
     document.documentElement.lang = lang;
@@ -3207,6 +3209,12 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     let n;
     while ((n = w.nextNode())) {
       if (!/[A-Za-zÁÉÍÓÚáéíóúñ]/.test(n.nodeValue)) continue;
+      if (lang === 'es') { const t = n.nodeValue.trim(); let r = rev()[t], m;
+        // patterned labels built with numbers (tr() handles the Spanish → English side)
+        if (!r && (m = t.match(/^([−+]?\d+)% vs area$/))) r = m[1] + '% vs zona';
+        if (!r && (m = t.match(/^Study Nº (\d+)$/))) r = 'Estudio Nº ' + m[1];
+        if (!r && (m = t.match(/^(Study|Analysis|Areas|Guide) · (\d+ min)$/))) r = (rev()[m[1]] || m[1]) + ' · ' + m[2];
+        if (r && r !== t) { n.nodeValue = n.nodeValue.replace(t, r); orig.set(n, n.nodeValue); continue; } }
       if (!orig.has(n) || (lang === 'es' && n.nodeValue !== orig.get(n) && n.nodeValue !== tr(orig.get(n)))) orig.set(n, n.nodeValue);
       const want = lang === 'es' ? orig.get(n) : tr(orig.get(n));
       if (n.nodeValue !== want) n.nodeValue = want;
@@ -3774,7 +3782,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   let DZ = [];
   (function dash() {
     const el = $('#dash'); if (!el) return;
-    const L = (es, en) => (document.documentElement.lang === 'en' ? en : es);
+    const L = (es, en) => { if (typeof es === 'string' && typeof en === 'string' && es.trim()) EN[es.trim()] = en.trim(); return document.documentElement.lang === 'en' ? en : es; };
     // name: [fallback price, walk, safety, metro minutes on foot, water days a week, power cuts a month, closings a month]
     const T = { 'Chacao': [2600, 92, 78, 6, 6, 1, 38], 'Baruta': [1900, 58, 66, 25, 4, 2, 42], 'El Cafetal': [1450, 40, 68, 30, 4, 2, 30], 'Las Minas de Baruta': [600, 35, 30, 35, 3, 3, 6], 'El Hatillo': [1500, 28, 70, 45, 3, 2, 22], 'Leoncio Martínez': [1500, 74, 62, 8, 5, 2, 34], 'Petare': [650, 55, 28, 10, 3, 3, 12], 'Caucagüita': [320, 25, 24, 40, 2, 4, 3], 'Filas de Mariches': [280, 18, 30, 50, 2, 4, 2], 'La Dolorita': [300, 30, 26, 35, 2, 4, 3], 'El Recreo': [1300, 86, 52, 5, 5, 2, 31], 'San Pedro': [1350, 74, 58, 9, 5, 2, 18], 'San Bernardino': [900, 75, 48, 12, 5, 2, 12], 'Candelaria': [850, 85, 46, 6, 5, 2, 15], 'Catedral': [650, 88, 40, 5, 5, 2, 7], 'Altagracia': [700, 80, 40, 10, 4, 2, 6], 'San José': [600, 72, 36, 12, 4, 3, 5], 'Santa Teresa': [600, 78, 38, 6, 4, 3, 5], 'Santa Rosalía': [650, 68, 34, 11, 4, 3, 8], 'San Juan': [550, 70, 34, 9, 4, 3, 7], 'San Agustín': [550, 64, 32, 8, 4, 3, 6], 'La Pastora': [500, 62, 38, 14, 4, 3, 5], 'Sucre': [520, 65, 30, 7, 3, 3, 14], 'El Paraíso': [800, 66, 45, 10, 4, 2, 13], '23 de Enero': [380, 50, 26, 15, 3, 3, 4], 'La Vega': [400, 45, 25, 18, 3, 3, 6], 'Antímano': [350, 42, 24, 9, 3, 3, 5], 'El Valle': [420, 55, 30, 8, 3, 3, 9], 'Coche': [450, 52, 32, 8, 3, 3, 7], 'Caricuao': [480, 50, 40, 7, 3, 3, 10], 'Macarao': [330, 30, 34, 25, 2, 4, 3], 'El Junquito': [300, 15, 42, 60, 2, 5, 2] };
     const hash = (s) => { let h = 2166136261; for (const ch of s) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296; };
