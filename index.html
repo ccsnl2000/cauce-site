@@ -360,7 +360,7 @@ body.preview .lock > .blur { filter: none; opacity: 1; pointer-events: auto; use
 /* JOIN (extra large, centered) */
 .view.ghost { position: fixed; inset: 0; z-index: 0; overflow: hidden; padding-top: 40px; filter: blur(26px) saturate(.85); transform: scale(1.06); opacity: .9; pointer-events: none; user-select: none; }
 body.auth header.top, body.auth footer { display: none; }
-.auth { position: relative; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; padding-block: 44px 32px; }
+.auth { position: relative; min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; grid-template-columns: minmax(0, 1fr); justify-items: center; padding: 44px 16px 32px; }
 .auth-back { font-size: 14px; color: var(--soft); position: fixed; top: calc(36px + env(safe-area-inset-top, 0px)); left: max(40px, env(safe-area-inset-left, 0px)); z-index: 3; }
 .auth-back:hover { color: var(--ink); }
 .auth-hello { font-size: clamp(24px, 2.4vw, 32px); font-weight: 400; letter-spacing: -0.025em; color: var(--ink); text-shadow: 0 0 18px var(--bg), 0 0 36px var(--bg); }
@@ -392,6 +392,32 @@ body.auth header.top, body.auth footer { display: none; }
 .auth .chip { font-size: 14px; padding: 9px 14px; }
 .auth-done { display: grid; gap: 18px; margin-top: 34px; text-align: center; justify-items: center; }
 .auth-done p.big { font-size: clamp(22px, 2.2vw, 30px); letter-spacing: -0.02em; }
+.acct { display: grid; gap: 22px; margin-top: 4px; }
+.acct-h { font-size: clamp(28px, 3vw, 40px); font-weight: 800; letter-spacing: -0.045em; }
+.acct-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.acct-plan { border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: grid; gap: 6px; justify-items: start; }
+.acct-plan .acct-row { width: 100%; }
+.acct-name { font-size: clamp(24px, 2.4vw, 32px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
+.acct-badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--fill); color: var(--ink); }
+.acct-badge.warn { background: var(--ink); color: var(--bg); }
+.acct-perks { margin: 4px 0 14px; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; }
+.acct-perks li::before { content: "✓"; margin-right: 8px; color: var(--soft); }
+.acct-go { display: grid; border-top: 1px solid var(--line); }
+.acct-go a { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: center; padding: 14px 2px; border-bottom: 1px solid var(--line); }
+.acct-go a .sm { grid-column: 1; }
+.acct-go a svg { grid-column: 2; grid-row: 1 / span 2; width: 22px; height: 16px; transition: transform .3s var(--ease); }
+.acct-go a:hover svg { transform: translateX(4px); }
+.acct-perfil summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
+.acct-perfil summary::-webkit-details-marker { display: none; }
+.acct-perfil[open] summary > .sm { visibility: hidden; }
+.acct .chips { justify-content: flex-start; }
+.acct-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.acct-fields label { display: grid; gap: 6px; }
+.auth .acct input[type=text] { height: 48px; border-radius: 12px; border-width: 1px; border-color: var(--line); font-size: 16px; padding: 0 14px; }
+.acct-foot { font-size: 14px; color: var(--soft); padding-top: 4px; }
+.acct-foot button { background: none; border: 0; padding: 0; font: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.acct-foot a:hover { color: var(--ink); }
+@media (max-width: 560px) { .acct-fields { grid-template-columns: 1fr; } }
 .auth-note { font-size: 12px; color: var(--soft); text-align: center; max-width: 36em; }
 .auth-msg { text-align: center; font-size: 14px; color: var(--soft); min-height: 1.2em; }
 
@@ -806,6 +832,30 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       <label for="a-zonas" hidden>Zonas que te interesan</label><input id="a-zonas" type="text" placeholder="Zonas que te interesan">
       <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
     </form>
+    <div class="acct" id="a-acct" hidden>
+      <div class="acct-hi"><p class="acct-h">Hola.</p><p class="sm" id="ac-email"></p></div>
+      <div class="acct-plan" id="ac-card">
+        <div class="acct-row"><span class="lab">Tu plan</span><span class="acct-badge" id="ac-status"></span></div>
+        <p class="acct-name" id="ac-plan"></p>
+        <p class="sm" id="ac-renew"></p>
+        <p class="lab" id="ac-perks-lab" style="margin-top:18px"></p>
+        <ul class="acct-perks"><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul>
+        <a class="btn" id="ac-cta" href="#planes"></a>
+      </div>
+      <nav class="acct-go" aria-label="Atajos">
+        <a href="#datos"><b>Inteligencia</b><span class="sm">Precios y oferta por zona</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+        <a href="#guia"><b>Guía para comprar</b><span class="sm">Siete capítulos, paso a paso</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+        <a href="#planes" data-plan="consulta"><b>Consulta 1:1</b><span class="sm">45 minutos con el equipo · $60</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+      </nav>
+      <details class="acct-perfil">
+        <summary><span><b>Tu perfil</b> <span class="sm" id="ac-perfil-sum"></span></span><span class="sm">Editar</span></summary>
+        <p class="sm" style="margin:14px 0 10px">Nos ayuda a elegir qué datos y estudios mostrarte primero.</p>
+        <div class="chips" role="group" aria-label="Qué te trae a Cauce"><button type="button" class="chip" aria-pressed="false" data-ap="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-ap="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-ap="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-ap="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-ap="otro">Otro</button></div>
+        <div class="acct-fields"><label><span class="lab">País donde vives</span><input id="ac-pais" type="text" autocomplete="country-name"></label><label><span class="lab">Zonas que te interesan</span><input id="ac-zonas" type="text" placeholder="Ej. Las Mercedes, Margarita"></label></div>
+        <div class="acct-row" style="margin-top:14px"><span class="sm" id="ac-saved" aria-live="polite"></span><button type="button" class="btn o" id="ac-save">Guardar</button></div>
+      </details>
+      <div class="acct-row acct-foot"><button type="button" id="ac-out">Cerrar sesión</button><a href="mailto:hola@cauce.blog">¿Ayuda? hola@cauce.blog</a></div>
+    </div>
     <div class="auth-done" id="a-done" hidden><p class="big" id="d-title"></p><p class="sm" id="d-text"></p><div class="auth-row" style="justify-content:flex-start;gap:16px"><a class="btn" id="d-btn" href="#mercado"></a><button type="button" class="alt" id="d-out" hidden>Salir</button></div></div>
   </div>
   <p class="auth-note">Los pagos y las reservas se activan muy pronto.</p>
@@ -2693,6 +2743,34 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Hola.": "Hi.",
+    "Tu plan": "Your plan",
+    "Activo": "Active",
+    "Cancelado": "Cancelled",
+    "Pago pendiente": "Payment due",
+    "Gratis. El boletín llega cada jueves.": "Free. The newsletter arrives every Thursday.",
+    "No pudimos cobrar tu tarjeta. Actualízala para no perder el acceso.": "We couldn't charge your card. Update it to keep access.",
+    "Incluido en tu plan": "Included in your plan",
+    "Con Inteligencia también tienes": "With Inteligencia you also get",
+    "Actualizar tarjeta": "Update card",
+    "Reactivar suscripción": "Reactivate subscription",
+    "Precios y oferta por zona": "Prices and supply by area",
+    "Guía para comprar": "Buying guide",
+    "Siete capítulos, paso a paso": "Seven chapters, step by step",
+    "45 minutos con el equipo · $60": "45 minutes with the team · $60",
+    "Tu perfil": "Your profile",
+    "Editar": "Edit",
+    "Nos ayuda a elegir qué datos y estudios mostrarte primero.": "Helps us choose which data and studies to show you first.",
+    "País donde vives": "Country you live in",
+    "Zonas que te interesan": "Areas you’re interested in",
+    "Guardar": "Save",
+    "Guardando…": "Saving…",
+    "Guardado.": "Saved.",
+    "No se pudo guardar. Inténtalo de nuevo.": "Couldn't save. Try again.",
+    "Cerrar sesión": "Sign out",
+    "¿Ayuda? hola@cauce.blog": "Need help? hola@cauce.blog",
+    "Bienvenido a Cauce": "Welcome to Cauce",
+    "Mi cuenta": "My account",
     "Gestionar suscripción": "Manage subscription",
     "Pasar a Inteligencia · $10/mes": "Upgrade to Inteligencia · $10/mo",
     "Los pagos y las reservas se activan muy pronto.": "Payments and bookings go live very soon.",
@@ -3164,7 +3242,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   function setPick(p) { auth.plan = p; setMode('join'); }
   function setMode(m) {
     if (user) { account(); return; }
-    auth.mode = m; $('#d-out').hidden = true; $('.auth-tabs').hidden = false;
+    auth.mode = m; $('#d-out').hidden = true; $('.auth-tabs').hidden = false; $('#a-acct').hidden = true; $('#v-entrar .auth-note').hidden = false; $('#v-entrar .auth-hello').textContent = 'Bienvenido a Cauce';
     $$('.auth-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
     $('#f-auth').hidden = false; $('#f-perfil').hidden = true; $('#a-done').hidden = true;
     $('#a-plan').hidden = m !== 'join';
@@ -3198,6 +3276,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     $$('a.in').forEach((l) => { l.textContent = user ? 'Mi cuenta' : 'Iniciar sesión'; if (user) l.removeAttribute('data-mode'); else l.dataset.mode = 'login'; });
     if (user) syncPerfil();
     if (user && current === 'entrar') account();
+    if (!user && current === 'entrar' && !$('#a-acct').hidden) setMode('login');
     applyLang();
   }
   async function syncPerfil() {
@@ -3205,17 +3284,43 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (!Object.keys(row).length) return;
     try { const c = await sb(); await c.from('profiles').update(row).eq('id', user.id); } catch (e) {}
   }
+  const fmtDate = (d) => new Date(d).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-VE', { day: 'numeric', month: 'long', year: 'numeric' });
+  const PERFIL_ES = {}; $$('#f-perfil [data-perfil]').forEach((b) => { PERFIL_ES[b.dataset.perfil] = b.textContent; });
+  let acctRow = {};
   async function account() {
-    $('#f-auth').hidden = true; $('#f-perfil').hidden = true; $('#a-done').hidden = false; $('#d-out').hidden = false; $('.auth-tabs').hidden = true;
-    $('#d-title').textContent = 'Tu cuenta'; $('#d-text').textContent = user.email;
-    const btn = (t, h) => { $('#d-btn').textContent = t; $('#d-btn').setAttribute('href', h); applyLang(); };
-    btn('Ir a Mercado', '#mercado');
-    let plan = 'boletin';
-    try { const c = await sb(), r = await c.from('profiles').select('plan').eq('id', user.id).single(); if (r.data) plan = r.data.plan; } catch (e) {}
-    $('#d-text').textContent = user.email + ' · ' + (PLAN_NAME[plan] || plan);
-    if (plan === 'inteligencia') btn('Gestionar suscripción', PORTAL + '?prefilled_email=' + encodeURIComponent(user.email));
-    else if (PAY_LINK) btn('Pasar a Inteligencia · $10/mes', payUrl());
+    ['#f-auth', '#f-perfil', '#a-done', '#v-entrar .auth-tabs', '#v-entrar .auth-note'].forEach((q) => { $(q).hidden = true; });
+    $('#a-acct').hidden = false; $('#v-entrar .auth-hello').textContent = 'Mi cuenta';
+    $('#ac-email').textContent = user.email;
+    try { const c = await sb(), r = await c.from('profiles').select('plan, plan_status, renews_at, cancel_at_period_end, perfil, pais, zonas').eq('id', user.id).single(); acctRow = r.data || {}; } catch (e) { acctRow = {}; }
+    const r = acctRow, paid = r.plan === 'inteligencia', late = r.plan_status === 'past_due', ending = paid && r.cancel_at_period_end;
+    $('#ac-plan').textContent = paid ? 'Inteligencia' : 'Boletín';
+    const st = $('#ac-status'); st.className = 'acct-badge' + (late || ending ? ' warn' : '');
+    st.textContent = late ? 'Pago pendiente' : ending ? 'Cancelado' : 'Activo';
+    $('#ac-renew').textContent = !paid ? 'Gratis. El boletín llega cada jueves.'
+      : late ? 'No pudimos cobrar tu tarjeta. Actualízala para no perder el acceso.'
+      : r.renews_at ? (lang === 'en' ? (ending ? 'Access until ' : 'Renews on ') + fmtDate(r.renews_at) + (ending ? '.' : ' · $10/mo') : (ending ? 'Tienes acceso hasta el ' : 'Se renueva el ') + fmtDate(r.renews_at) + (ending ? '.' : ' · $10/mes'))
+      : '$10/mes';
+    $('#ac-perks-lab').textContent = paid ? 'Incluido en tu plan' : 'Con Inteligencia también tienes';
+    const cta = $('#ac-cta');
+    if (paid) { cta.textContent = late ? 'Actualizar tarjeta' : ending ? 'Reactivar suscripción' : 'Gestionar suscripción'; cta.href = PORTAL + '?prefilled_email=' + encodeURIComponent(user.email); cta.className = late || ending ? 'btn' : 'btn o'; }
+    else { cta.textContent = 'Pasar a Inteligencia · $10/mes'; cta.href = PAY_LINK ? payUrl() : '#planes'; cta.className = 'btn'; }
+    // profile
+    $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.ap === r.perfil)));
+    $('#ac-pais').value = r.pais || ''; $('#ac-zonas').value = r.zonas || '';
+    $('#ac-perfil-sum').textContent = [PERFIL_ES[r.perfil], r.pais].filter(Boolean).join(' · ');
+    $('#ac-saved').textContent = '';
+    applyLang();
   }
+  $$('#a-acct [data-ap]').forEach((c) => c.addEventListener('click', () => { $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); }));
+  $('#ac-save').addEventListener('click', async () => {
+    const pressed = $('#a-acct [data-ap][aria-pressed=true]');
+    const row = { perfil: pressed ? pressed.dataset.ap : null, pais: $('#ac-pais').value.trim() || null, zonas: $('#ac-zonas').value.trim() || null };
+    $('#ac-saved').textContent = 'Guardando…';
+    try { const c = await sb(), r = await c.from('profiles').update(row).eq('id', user.id); if (r.error) throw r.error; savePerfil(row); $('#ac-saved').textContent = 'Guardado.'; $('#ac-perfil-sum').textContent = [PERFIL_ES[row.perfil], row.pais].filter(Boolean).join(' · '); }
+    catch (e) { $('#ac-saved').textContent = 'No se pudo guardar. Inténtalo de nuevo.'; }
+    applyLang();
+  });
+  $('#ac-out').addEventListener('click', async () => { const c = await sb(); await c.auth.signOut(); });
   $('#d-out').addEventListener('click', async () => { const c = await sb(); await c.auth.signOut(); $('#d-out').hidden = true; setMode('login'); });
   window.addEventListener('hashchange', () => { if (user && location.hash === '#entrar') account(); });
   sb().then((c) => {
