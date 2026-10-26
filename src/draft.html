@@ -3446,6 +3446,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   const ATTRS = ['placeholder', 'aria-label', 'title'];
   const orig = new WeakMap();
   let lang = 'es';
+  try { const ql = new URLSearchParams(location.search).get('lang'); if (ql === 'es' || ql === 'en') localStorage.setItem('cauce-lang', ql); } catch (e) {}
   try { lang = localStorage.getItem('cauce-lang') || ((navigator.languages || [navigator.language || 'es']).some((l) => /^es/i.test(l)) ? 'es' : 'en'); } catch (e) {}
   document.documentElement.lang = lang;
   function tr(es) {

@@ -13,7 +13,7 @@ const resend = (path: string, method: string, body: unknown) =>
 // Email designs are published with the site (tools/emails.py → emails/*.html) and fetched here when sending.
 const SUBJECT: Record<string, string> = {
   "bienvenida-es": "Tu guía gratis de Cauce", "bienvenida-guia-es": "Tu guía gratis de Cauce",
-  "bienvenida-en": "Your free Cauce guide", "bienvenida-guia-en": "Your free Cauce guide",
+  "bienvenida-en": "Your free Cauce guide", "bienvenida-guia-en": "Your guide to buying property in Venezuela",
   "plan-activo-es": "Ya tienes Inteligencia", "plan-activo-en": "Inteligencia is on",
   "plan-cancelado-es": "Cancelaste Inteligencia", "plan-cancelado-en": "You canceled Inteligencia",
 };
@@ -56,8 +56,11 @@ Deno.serve(async (req) => {
     if ((!row || !row.welcomed_at || guide) && !(guide && recent)) {
       const { data: p } = await db.from("profiles").select("nombre").eq("email", email).maybeSingle();
       const n = (p?.nombre || "").trim().split(/\s+/)[0];
-      const saludo = l === "en" ? (n ? `Hi, ${n}.` : "Welcome to Cauce.") : (n ? `Hola, ${n}.` : "Bienvenido a Cauce.");
-      const sent = await sendTpl(`${boletin && !(row && row.welcomed_at) ? "bienvenida" : "bienvenida-guia"}-${l}`, email, { saludo });
+      // the guide email is for investors abroad: it goes in English, with a link to the Spanish version
+      const welcome = boletin && !(row && row.welcomed_at) && !guide;
+      const ll = welcome ? l : "en";
+      const saludo = ll === "en" ? (n ? `Hi ${n},` : (welcome ? "Welcome to Cauce." : "Hi,")) : (n ? `Hola, ${n}.` : "Bienvenido a Cauce.");
+      const sent = await sendTpl(`${welcome ? "bienvenida" : "bienvenida-guia"}-${ll}`, email, { saludo });
       if (sent) await db.from("subscribers").update({ welcomed_at: row?.welcomed_at || new Date().toISOString(), ...(guide ? { guide_sent_at: new Date().toISOString() } : {}) }).eq("email", email);
     }
   }

@@ -154,6 +154,47 @@ def build(l):
         + sign(t["x_note"], t["team"], t["tag"]), f'{t["p_foot"]} {t["legal"]}')
     return {"bienvenida": welcome(True), "bienvenida-guia": welcome(False), "plan-activo": on, "plan-cancelado": off}
 
+
+# Guide email: written for investors. English is sent by default; each version links to the other on the web.
+GUIDE = {
+ "en": dict(lab="Free guide", sub="The asking price is only the starting point.",
+   p1="How does it compare with similar properties? What will closing add? And what needs to be verified before you commit?",
+   p2="Your guide covers the first step: understanding how to buy as a foreigner.",
+   card_l="Your free guide", card_t="Buying property in Venezuela as a foreigner: steps, costs and risks",
+   card_s="Ownership rules, visa options, documentation and example closing costs, in two pages, with sources and an interactive checklist.", card_b="Download your free guide →",
+   h2="Understand the market before making an offer.",
+   p3="Cauce is a real estate market analysis platform focused on Venezuela. We help you assess properties in Caracas and Margarita through local price comparisons, investment scenarios and clearly identified risks.",
+   p4="Use Cauce to investigate three questions:", q=["How does the asking price compare with the area?", "What assumptions would make the investment work?", "What information is still missing?"],
+   b2="Explore the market →", p5="Already considering a property? Reply with the listing and your main question. We’ll explain which analysis or buying support fits your situation.",
+   team="The Cauce team", tag="Real estate market analysis · Venezuela", other="Leer en español →",
+   foot="The guide is informational and does not replace legal, tax or investment advice. You’re getting this email because you requested the guide at cauce.blog.", hi="Hi,"),
+ "es": dict(lab="Guía gratis", sub="El precio pedido es solo el punto de partida.",
+   p1="¿Cómo se compara con inmuebles parecidos? ¿Cuánto suma el cierre? ¿Y qué hay que verificar antes de comprometerte?",
+   p2="Tu guía cubre el primer paso: entender cómo comprar siendo extranjero.",
+   card_l="Tu guía gratis", card_t="Comprar en Venezuela siendo extranjero: pasos, costos y riesgos",
+   card_s="Reglas de propiedad, opciones de visa, documentos y costos de cierre de ejemplo, en dos páginas, con fuentes y una lista interactiva. (PDF en inglés.)", card_b="Descarga tu guía gratis →",
+   h2="Entiende el mercado antes de hacer una oferta.",
+   p3="Cauce es una plataforma de análisis del mercado inmobiliario de Venezuela. Te ayudamos a evaluar inmuebles en Caracas y Margarita con comparaciones de precios locales, escenarios de inversión y riesgos bien identificados.",
+   p4="Usa Cauce para investigar tres preguntas:", q=["¿Cómo se compara el precio pedido con la zona?", "¿Qué supuestos harían que la inversión funcione?", "¿Qué información todavía falta?"],
+   b2="Explorar el mercado →", p5="¿Ya estás considerando un inmueble? Responde con el anuncio y tu pregunta principal. Te diremos qué análisis o qué acompañamiento te conviene.",
+   team="El equipo de Cauce", tag="Análisis del mercado inmobiliario · Venezuela", other="Read in English →",
+   foot="La guía es informativa y no sustituye asesoría legal, fiscal ni de inversión. Recibes este correo porque pediste la guía en cauce.blog.", hi="Hola,"),
+}
+def guide_mail(l, saludo="{{saludo}}"):
+    g = GUIDE[l]; o = "es" if l == "en" else "en"
+    G = SITE + "/guia/cauce-guia-comprador-extranjero-en.pdf"
+    qs = "".join(f'<tr><td valign="top" style="padding:4px 10px 4px 0;font-size:16px;color:{SOFT}">—</td><td style="padding:4px 0;font-size:16px;line-height:1.5;color:{INK}">{x}</td></tr>' for x in g["q"])
+    body = (f'<tr><td align="right" style="padding:0 0 12px"><a href="{SITE}/emails/guia-{o}-web.html" style="font-size:13px;color:{SOFT}">{g["other"]}</a></td></tr>'
+        + head(g["lab"]) + hello(saludo, g["sub"]) + para(g["p1"]) + para(g["p2"])
+        + card(g["card_l"], g["card_t"], g["card_s"], btn=(g["card_b"], G, True))
+        + f'<tr><td style="padding:0 0 14px"><p style="margin:0;font-size:24px;line-height:1.15;font-weight:800;letter-spacing:-0.8px;color:{INK}">{g["h2"]}</p></td></tr>'
+        + para(g["p3"], SOFT) + para(g["p4"])
+        + f'<tr><td style="padding:0 0 24px"><table role="presentation" cellpadding="0" cellspacing="0">{qs}</table></td></tr>'
+        + f'<tr><td style="padding:0 0 30px">{button(g["b2"], SITE + "/?lang=" + l + "#datos", False)}</td></tr>'
+        + para(g["p5"])
+        + f'<tr><td style="border-top:1px solid {LINE}"><p style="margin:20px 0 0;font-size:16px;color:{INK}"><b>{g["team"]}</b><br><span style="color:{SOFT};font-size:14px">{g["tag"]}</span><br><a href="{SITE}" style="color:{SOFT};font-size:14px">cauce.blog</a></p></td></tr>')
+    return page(l, g["sub"] + " " + g["p2"], body, g["foot"])
+
 def newsletter_es():
     t = C["es"]
     return page("es", "$1.003 por m² en Porlamar, y por qué no es lo que parece.",
@@ -175,5 +216,7 @@ if __name__ == "__main__":
     for l in ("es", "en"):
         for k, v in build(l).items():
             T[f"{k}_{l}"] = v; (out / f"{k}-{l}.html").write_text(v, encoding="utf-8")
+        (out / f"bienvenida-guia-{l}.html").write_text(guide_mail(l), encoding="utf-8")
+        (out / f"guia-{l}-web.html").write_text(guide_mail(l, GUIDE[l]["hi"]), encoding="utf-8")
     (out / "boletin-plantilla.html").write_text(newsletter_es(), encoding="utf-8")
     print("templates:", ", ".join(T), "+ boletin-plantilla")
