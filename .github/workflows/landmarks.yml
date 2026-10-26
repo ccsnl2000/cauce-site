@@ -1,0 +1,24 @@
+name: Lugares notables
+on:
+  push:
+    paths: ["scripts/landmarks.py", ".github/workflows/landmarks.yml"]
+  schedule:
+    - cron: "17 7 5 * *"   # monthly, 5th day
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  landmarks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/landmarks.py
+      - name: Commit the landmarks
+        run: |
+          git config user.name "cauce-bot"
+          git config user.email "bot@cauce.blog"
+          git add data/landmarks.json
+          git diff --cached --quiet || (git commit -m "Lugares notables desde OpenStreetMap" && git pull --rebase origin main && git push)
