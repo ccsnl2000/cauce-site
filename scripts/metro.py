@@ -4,7 +4,7 @@ import json, math, re, unicodedata, urllib.parse, urllib.request, pathlib
 
 BBOX = "10.36,-67.10,10.56,-66.72"
 Q = f"""[out:json][timeout:120];
-(relation["route"="subway"]({BBOX}););out body;>;out skel qt;
+(relation["route"="subway"]({BBOX}););out body;>;out body qt;
 (node["railway"="station"]({BBOX});node["public_transport"="station"]["subway"="yes"]({BBOX});node["station"="subway"]({BBOX}););out body;"""
 OFFICIAL = {
   "1": ("Línea 1", "#E2231A", "Propatria, Pérez Bonalde, Plaza Sucre, Gato Negro, Agua Salud, Caño Amarillo, Capitolio, La Hoyada, Parque Carabobo, Bellas Artes, Colegio de Ingenieros, Plaza Venezuela, Sabana Grande, Chacaíto, Chacao, Altamira, Miranda, Los Dos Caminos, Los Cortijos, La California, Petare, Palo Verde"),
@@ -46,8 +46,11 @@ for r in (e for e in d if e["type"] == "relation"):
     L = lines.setdefault(ref, {"ref": ref, "name": OFFICIAL[ref][0], "colour": OFFICIAL[ref][1], "segs": []})  # official colours, calmer than the OSM tags
     L["segs"] += segs                          # both directions overlap; harmless for drawing
 stations = {}
+# stop points listed by each line's route carry station names too (Plaza Venezuela is only mapped this way)
+stops = {m["ref"] for e in d if e["type"] == "relation" for m in e["members"] if m["type"] == "node" and m["role"].startswith("stop")}
 for e in d:
     t = e.get("tags", {})
+    if e["type"] == "node" and e["id"] in stops and t.get("name"): t["public_transport"] = "station"; e["tags"] = t
     if e["type"] != "node" or not (t.get("railway") in ("station", "stop") or t.get("public_transport") == "station"): continue
     n = e["tags"].get("name:es") or e["tags"].get("name")
     if not n: continue
