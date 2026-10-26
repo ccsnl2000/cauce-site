@@ -2716,6 +2716,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const study = !f[4], top = study ? (CH[id] ? `<div class="chart" data-chart="${id}"></div>` : '') : media(f[4], fi);
     art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><span>Equipo Cauce</span><span>${esc(a.date || '20 oct 2026')}</span><span>${esc(f[2])}</span></div>${top}
       ${a.body ? a.body.map((x) => `<div class="blk"><span class="lab">${esc(x.h)}</span>${(x.p || []).map((t) => `<p>${esc(t)}</p>`).join('')}${x.list ? `<ul class="blist">${x.list.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}${x.chart ? `<div class="chart" data-chart="${x.chart}"></div>` : ''}${x.table ? `<figure class="xt"><div class="xtw"><table><thead><tr>${x.table.head.map((t) => `<th>${esc(t)}</th>`).join('')}</tr></thead><tbody>${x.table.rows.map((r) => `<tr>${r.map((t, k) => k ? `<td>${esc(t)}</td>` : `<th scope="row">${esc(t)}</th>`).join('')}</tr>`).join('')}</tbody></table></div><figcaption>${esc(x.table.src)}</figcaption></figure>` : ''}</div>`).join('') : `<div class="blk"><span class="lab">${esc(a.b[0])}</span><p>${esc(a.b[1])}</p>${study ? '' : `<div class="chart" data-chart="${id}"></div>`}</div>`}
+      ${a.md ? mdHTML(lang === 'en' && a.md_en ? a.md_en : a.md) : ''}
       ${a.list ? `<div class="blk"><span class="lab">${esc(a.list[0])}</span><ol class="chap">${a.list[1].map((x) => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
       <div class="blk"><span class="lab">La lectura de Cauce</span><p>${esc(a.c)}</p></div>${a.refs ? `<div class="blk"><span class="lab">Fuentes</span><ol class="srcs">${a.refs.map((r) => `<li><a href="${r[4]}" target="_blank" rel="noopener">${esc(r[3])}</a><span class="sm">${[r[0], r[1], r[2]].filter(Boolean).map(esc).join(' · ')}</span></li>`).join('')}</ol></div>` : ''}${a.cta ? '<div class="wall"><span class="lab">Gratis</span><p class="serif" style="font-size:var(--t-h3);line-height:1.1">Recibe la guía completa en tu correo.</p><a class="btn" href="#guia">Recibir la guía</a></div>' : ''}${f[3] ? '<div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:var(--t-h3);line-height:1.1">El análisis completo, con datos descargables.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>' : ''}`;
     if (!a.refs) art.insertAdjacentHTML('beforeend', readsHTML()); wireCharts(art); mountFigs();
@@ -4322,7 +4323,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     artId = h === 'articulo' ? arg || '' : artId;
     if (current && AREA[current]) lastArea = AREA[current];
     if (h !== 'planes' && h !== 'entrar') planIntent = null;
-    current = h;
+    current = h; logVisit(h + (arg ? '/' + arg : ''));
     document.title = h === 'mercado' ? 'Cauce · Datos inmobiliarios con fuente' : (TITLES[h] || 'Cauce') + ' · Cauce';
     if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
   }
@@ -4330,7 +4331,36 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   const heroFit = () => {};  // the map now stretches to the side column in CSS
   if (window.ResizeObserver) new ResizeObserver(heroFit).observe($('.hero .lead .cmap'));
   window.addEventListener('resize', heroFit);
-  feed('all'); grid('todos'); mountFigs(); show(); heroFit();
+  /* page views without cookies: no IP, no lasting id (the session id lives only in this tab) */
+  let lastLogged = '';
+  function logVisit(path) {
+    if (location.hostname !== 'cauce.blog' || path === lastLogged) return; lastLogged = path;
+    let sid = ''; try { sid = sessionStorage.getItem('cauce-s') || ''; if (!sid) { sid = Math.random().toString(36).slice(2, 14); sessionStorage.setItem('cauce-s', sid); } } catch (e) {}
+    let ref = ''; try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; if (ref === 'cauce.blog') ref = ''; } catch (e) {}
+    const q = new URLSearchParams(location.search).get('utm_source'); if (q) ref = q.slice(0, 40);
+    const row = { path: path.slice(0, 100), ref: ref.slice(0, 100), lang, device: matchMedia('(max-width: 760px)').matches ? 'mobile' : 'desktop', tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || '').slice(0, 50), session: sid };
+    fetch(SB_URL + '/rest/v1/visits', { method: 'POST', keepalive: true, headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify(row) }).catch(() => {});
+  }
+  /* articles: the dashboard decides what is published. Built-in articles stay unless unpublished; new ones are added. */
+  const mdHTML = (md) => String(md || '').split(/\n(?=## )/).map((blk) => {
+    const m = blk.match(/^## (.*)\n?([\s\S]*)$/), h = m ? m[1] : '', rest = (m ? m[2] : blk).trim();
+    const parts = rest.split(/\n{2,}/).map((x) => /^- /m.test(x) ? `<ul class="blist">${x.split('\n').filter((l) => l.startsWith('- ')).map((l) => `<li>${esc(l.slice(2))}</li>`).join('')}</ul>` : `<p>${esc(x.replace(/\n/g, ' '))}</p>`).join('');
+    return `<div class="blk">${h ? `<span class="lab">${esc(h)}</span>` : ''}${parts}</div>`; }).join('');
+  async function loadArticles() {
+    let list; try { const r = await fetch(SB_URL + '/rest/v1/articles?select=id,seccion,titulo,titulo_en,entradilla,entradilla_en,cuerpo,cuerpo_en,lectura,lectura_en,minutos,pro,builtin,publicado_at&estado=eq.publicado&order=publicado_at.desc', { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } }); if (!r.ok) return; list = await r.json(); } catch (e) { return; }
+    if (!Array.isArray(list) || !list.length) return;
+    const pub = new Set(list.map((a) => a.id));
+    for (let i = FID.length - 1; i >= 0; i--) if (!pub.has(FID[i])) { FID.splice(i, 1); FEED.splice(i, 1); }
+    list.filter((a) => !a.builtin && !FID.includes(a.id)).reverse().forEach((a) => {
+      const d = a.publicado_at ? new Date(a.publicado_at).toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' }).replace('.', '') : '';
+      ARTS[a.id] = { dek: a.entradilla || '', md: a.cuerpo || '', md_en: a.cuerpo_en || '', c: a.lectura || '', date: d, sec: a.seccion, t: a.titulo, mins: a.minutos + ' min', pro: a.pro ? 1 : 0 };
+      FID.unshift(a.id); FEED.unshift([a.seccion, a.titulo, a.minutos + ' min', a.pro ? 1 : 0, 'i:avila']);
+      [[a.titulo, a.titulo_en], [a.entradilla, a.entradilla_en], [a.lectura, a.lectura_en]].forEach(([es, en]) => { if (es && en) EN[es.trim()] = en.trim(); });
+    });
+    const f = $('#v-mercado .chips .chip[aria-pressed=true]'); feed(f ? f.dataset.f : 'all');
+    if (current === 'articulo') renderArticle(artId);
+  }
+  feed('all'); grid('todos'); mountFigs(); show(); heroFit(); loadArticles();
   setTimeout(() => $('#intro').classList.add('done'), reduce ? 0 : 1300);
 })();
 </script>

@@ -76,3 +76,8 @@ alter table public.profiles add column if not exists empresa text, add column if
 -- Added 25 Oct 2026: discovery calls (Cal.com webhook), assistant chats, admins. See migration bookings_chats_admins.
 -- Tables: bookings (uid, user_id, email, start_time, status, paid, meeting_url…), chats (session, user_id, messages jsonb), admins (user_id).
 -- public.is_admin() gates read access to profiles, subscribers, bookings and chats for the dashboard.
+
+-- Added 25 Oct 2026: cookieless visits (anon insert only, admin read) and articles with an approval workflow
+-- (borrador → revision → legal → aprobado → publicado → archivado). Anyone reads estado='publicado'; admins read/write all.
+-- Test rows: is_test = true (profiles, subscribers, bookings, chats, visits) and article ids 'prueba-*'.
+-- public.delete_test_data() (admin only) removes them before launch.

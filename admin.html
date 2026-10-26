@@ -58,6 +58,25 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 .gate { max-width: 460px; margin: 12vh auto; text-align: center; display: grid; gap: 14px; justify-items: center; }
 .steps { display: flex; gap: 8px; flex-wrap: wrap; }
 .steps span { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px; margin-bottom: 26px; }
+.chart { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px 12px; display: grid; gap: 10px; position: relative; min-width: 0; align-content: start; }
+.chart.wide { grid-column: 1 / -1; }
+.chart h3 { margin: 0; font-size: 16px; font-weight: 800; letter-spacing: -0.02em; } .chart .sub { font-size: 12px; color: var(--soft); margin-top: -6px; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .gl { stroke: var(--line); } .chart .ax { fill: var(--soft); font-size: 11px; font-family: inherit; }
+.chart .bar { fill: var(--ink); } .chart .bar.soft { fill: var(--soft); opacity: .45; } .chart .hit { fill: transparent; cursor: default; } .chart .hit:hover + .bar, .chart g:hover .bar { opacity: .7; }
+.hbars { display: grid; gap: 8px; } .hb { display: grid; grid-template-columns: minmax(90px, 38%) 1fr auto; gap: 10px; align-items: center; font-size: 13px; }
+.hb .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .hb .track { height: 10px; border-radius: 0 4px 4px 0; background: var(--fill); overflow: hidden; } .hb .fillb { height: 100%; background: var(--ink); border-radius: 0 4px 4px 0; } .hb .v { font-variant-numeric: tabular-nums; color: var(--soft); min-width: 3ch; text-align: right; }
+.funnel { display: grid; gap: 10px; } .fn { display: grid; grid-template-columns: 150px 1fr 90px; gap: 12px; align-items: center; font-size: 14px; } .fn .track { height: 26px; background: var(--fill); border-radius: 0 6px 6px 0; } .fn .fillb { height: 100%; background: var(--ink); border-radius: 0 6px 6px 0; min-width: 2px; } .fn .v { text-align: right; font-variant-numeric: tabular-nums; } .fn .v small { display: block; color: var(--soft); font-size: 11px; }
+.tip { position: fixed; z-index: 50; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 12px; padding: 6px 10px; border-radius: 8px; white-space: nowrap; transform: translate(-50%, calc(-100% - 10px)); }
+.testbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-size: 13px; background: var(--fill); border-radius: 12px; padding: 10px 14px; margin: 14px 0 0; }
+.testbar b { font-weight: 700; } .testbar .sp { flex: 1; }
+.tag-test { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1px dashed var(--soft); color: var(--soft); border-radius: 999px; padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+.ed { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } .ed .full { grid-column: 1 / -1; } .ed label { display: grid; gap: 5px; font-size: 12px; color: var(--soft); }
+.ed input, .ed select, .ed textarea { font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; width: 100%; }
+.ed textarea { min-height: 120px; resize: vertical; line-height: 1.5; } .ed .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.state { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; } .state.publicado { background: var(--ink); color: var(--bg); border-color: var(--ink); } .state.aprobado { border-color: var(--ink); } .state.legal, .state.revision { background: var(--fill); }
+@media (max-width: 760px) { .ed { grid-template-columns: 1fr; } .fn { grid-template-columns: 100px 1fr 70px; } }
 @media (max-width: 760px) { .chats { grid-template-columns: 1fr; } .tools input[type=search] { min-width: 0; flex: 1; } }
 </style>
 </head>
@@ -74,14 +93,16 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 <main id="app" hidden>
   <h1 id="hello">Hoy en Cauce</h1>
   <p class="sm"><span id="stamp"></span> · <a href="#" id="refresh">Actualizar</a> · se actualiza solo cada minuto</p>
+  <div class="testbar" id="testbar"><b>Datos de prueba</b><span id="test-n"></span><label><input type="checkbox" id="show-test" checked> Mostrar en el panel</label><span class="sp"></span><button class="btn o" id="del-test" type="button">Borrar datos de prueba</button></div>
   <div class="kpis" id="kpis"></div>
+  <div class="charts" id="charts"></div>
   <nav class="tabs" id="tabs">
     <button type="button" data-t="personas" aria-pressed="true">Personas<span class="n" id="n-personas"></span></button>
     <button type="button" data-t="llamadas" aria-pressed="false">Llamadas<span class="n" id="n-llamadas"></span></button>
     <button type="button" data-t="chats" aria-pressed="false">Conversaciones<span class="n" id="n-chats"></span></button>
     <button type="button" data-t="boletin" aria-pressed="false">Boletín<span class="n" id="n-boletin"></span></button>
     <button type="button" data-t="visitas" aria-pressed="false">Visitas</button>
-    <button type="button" data-t="articulos" aria-pressed="false">Artículos</button>
+    <button type="button" data-t="articulos" aria-pressed="false">Artículos<span class="n" id="n-art"></span></button>
     <button type="button" data-t="whatsapp" aria-pressed="false">WhatsApp</button>
   </nav>
 
@@ -99,15 +120,13 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Origen</th><th>Perfil</th><th>Bienvenida</th><th>Alta</th></tr></thead><tbody id="t-boletin"></tbody></table></div>
   </section>
   <section class="panel" data-p="visitas" hidden>
-    <div class="card"><span class="lab">Visitas</span><b>Se conectan con Cloudflare Web Analytics</b>
-      <p>Para ver aquí visitas, páginas y países en vivo, necesitamos un token de solo lectura de Cloudflare. Mientras tanto, las cifras están en el panel de Cloudflare.</p>
-      <ol><li>Cloudflare → My Profile → API Tokens → Create Token → plantilla "Read analytics and logs".</li><li>Pega el token en Supabase → Edge Functions → Secrets con el nombre <code>CF_API_TOKEN</code>.</li><li>Avísanos y activamos la pestaña.</li></ol>
-      <p><a class="btn o" href="https://dash.cloudflare.com/?to=/:account/web-analytics" target="_blank" rel="noopener">Abrir Cloudflare Web Analytics</a></p></div>
+    <div class="charts" id="v-charts"></div>
+    <p class="sm">Visitas contadas sin cookies ni IP: una sesión es una pestaña del navegador. El país se estima por la zona horaria. Cloudflare Web Analytics sigue activo en paralelo.</p>
   </section>
   <section class="panel" data-p="articulos" hidden>
-    <div class="card"><span class="lab">Artículos</span><b>Flujo de aprobación (próximo paso)</b>
-      <div class="steps"><span>Borrador</span><span>→ En revisión</span><span>→ Revisión legal</span><span>→ Aprobado</span><span>→ Publicado</span></div>
-      <p>Hoy los artículos viven en el código del sitio. Para aprobarlos desde aquí, los pasamos a una tabla con estado, autor, revisor, fecha de publicación y comentarios. El sitio solo mostrará los que estén en "Publicado".</p></div>
+    <div class="tools"><select id="f-estado"><option value="">Todos los estados</option><option value="borrador">Borrador</option><option value="revision">En revisión</option><option value="legal">Revisión legal</option><option value="aprobado">Aprobado</option><option value="publicado">Publicado</option><option value="archivado">Archivado</option></select><span class="sp" style="flex:1"></span><button class="btn" id="new-art" type="button">Nuevo artículo</button></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Título</th><th>Sección</th><th>Estado</th><th>Autor · revisor</th><th>Notas</th><th>Actualizado</th></tr></thead><tbody id="t-art"></tbody></table></div>
+    <div class="card" id="art-ed" hidden style="margin-top:14px;max-width:none"></div>
   </section>
   <section class="panel" data-p="whatsapp" hidden>
     <div class="card"><span class="lab">WhatsApp</span><b>Mensajes en vivo con WhatsApp Business</b>
@@ -127,23 +146,82 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   const PERFIL = { particular: 'Particular', agente: 'Agente inmobiliario', inmobiliaria: 'Inmobiliaria', 'inv-local': 'Inversionista local', 'inv-int': 'Inversionista internacional', desarrollador: 'Desarrollador · Analista', otro: 'Otro' };
   const BUD = { '<50k': '< $50k', '50-100k': '$50–100k', '100-250k': '$100–250k', '250-500k': '$250–500k', '500k+': '> $500k', nose: 'No sabe' };
   const WHEN = { '0-3': '0–3 meses', '3-6': '3–6 meses', '6-12': '6–12 meses', '12+': '+1 año', explorando: 'Explorando' };
+  const ESTADO = { borrador: 'Borrador', revision: 'En revisión', legal: 'Revisión legal', aprobado: 'Aprobado', publicado: 'Publicado', archivado: 'Archivado' };
+  const TZC = { 'America/Caracas': 'VE', 'America/New_York': 'US', 'America/Chicago': 'US', 'America/Denver': 'US', 'America/Los_Angeles': 'US', 'America/Phoenix': 'US', 'Europe/Madrid': 'ES', 'America/Bogota': 'CO', 'America/Panama': 'PA', 'America/Mexico_City': 'MX', 'Europe/Rome': 'IT', 'America/Toronto': 'CA', 'Europe/Berlin': 'DE', 'Europe/Paris': 'FR', 'Europe/Lisbon': 'PT', 'America/Santiago': 'CL', 'America/Lima': 'PE', 'America/Argentina/Buenos_Aires': 'AR', 'America/Santo_Domingo': 'DO', 'Europe/London': 'GB', 'America/Guayaquil': 'EC' };
   const country = (c) => { try { return c ? new Intl.DisplayNames(['es'], { type: 'region' }).of(c) : ''; } catch (e) { return c || ''; } };
   const day = (d) => (d ? new Date(d).toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
   const when = (d) => (d ? new Date(d).toLocaleString('es-VE', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : '');
-  let D = { people: [], subs: [], calls: [], chats: [] };
+  const nf = (n) => Math.round(n).toLocaleString('es-VE');
+  let RAW = { people: [], subs: [], calls: [], chats: [], visits: [], arts: [] }, D = RAW;
+  const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; document.body.appendChild(tip);
 
   Object.entries(PERFIL).forEach(([v, t]) => $('#f-perfil').insertAdjacentHTML('beforeend', `<option value="${v}">${t}</option>`));
-  $$('#tabs button').forEach((b) => b.addEventListener('click', () => { $$('#tabs button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); $$('.panel').forEach((p) => { p.hidden = p.dataset.p !== b.dataset.t; }); }));
+  $$('#tabs button').forEach((b) => b.addEventListener('click', () => { $$('#tabs button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); $$('.panel').forEach((p) => { p.hidden = p.dataset.p !== b.dataset.t; }); if (b.dataset.t === 'visitas') visitsTab(); }));
   ['#q', '#f-perfil', '#f-plan', '#f-ok'].forEach((q) => $(q).addEventListener('input', people));
+  $('#f-estado').addEventListener('input', arts);
+  $('#show-test').addEventListener('change', () => { apply(); });
+  const testTag = (r) => (r.is_test ? '<span class="tag-test">prueba</span>' : '');
 
+  /* ---------- charts: one ink colour, hover tooltips, tables below are the data view ---------- */
+  function bars(el, data, opt = {}) {      // vertical bars over time: data = [{ label, v, tip }]
+    const W = Math.max(280, Math.round(el.clientWidth || 640)), H = opt.h || 200, L = 34, B = 22, T = 8, max = Math.max(1, ...data.map((d) => d.v)), step = niceStep(max), top = Math.ceil(max / step) * step;
+    const bw = (W - L) / data.length, gap = Math.min(4, bw * .25);
+    let g = '';
+    for (let y = 0; y <= top; y += step) { const yy = T + (H - T - B) * (1 - y / top); g += `<line class="gl" x1="${L}" x2="${W}" y1="${yy}" y2="${yy}"/><text class="ax" x="${L - 6}" y="${yy + 4}" text-anchor="end">${nf(y)}</text>`; }
+    const every = Math.ceil(data.length / (opt.ticks || 8));
+    data.forEach((d, i) => { const x = L + i * bw + gap / 2, w = bw - gap, h = (H - T - B) * d.v / top, y = H - B - h, r = Math.min(4, w / 2, h);
+      g += `<g data-tip="${esc(d.tip || d.label + ': ' + nf(d.v))}"><rect class="hit" x="${L + i * bw}" y="${T}" width="${bw}" height="${H - T - B}"/>${h > 0 ? `<path class="bar" d="M${x},${H - B}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${H - B}Z"/>` : ''}</g>`;
+      if (i % every === 0) g += `<text class="ax" x="${x + w / 2}" y="${H - 6}" text-anchor="middle">${esc(d.label)}</text>`; });
+    el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria || '')}">${g}</svg>`;
+    $$('[data-tip]', el).forEach((n) => { n.addEventListener('mousemove', (e) => { tip.textContent = n.dataset.tip; tip.style.left = e.clientX + 'px'; tip.style.top = e.clientY + 'px'; tip.hidden = false; }); n.addEventListener('mouseleave', () => { tip.hidden = true; }); });
+  }
+  const niceStep = (m) => { const raw = m / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p; return Math.max(1, (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p); };
+  function hbars(el, rows, n = 8) {        // ranked list: rows = [[label, value]]
+    const top = rows.sort((a, b) => b[1] - a[1]).slice(0, n), max = Math.max(1, ...top.map((r) => r[1])), tot = rows.reduce((a, r) => a + r[1], 0) || 1;
+    el.innerHTML = top.length ? `<div class="hbars">${top.map(([l, v]) => `<div class="hb" title="${esc(l)}: ${nf(v)} (${Math.round(v / tot * 100)}%)"><span class="t">${esc(l)}</span><span class="track"><span class="fillb" style="display:block;width:${(v / max * 100).toFixed(1)}%"></span></span><span class="v">${nf(v)}</span></div>`).join('')}</div>` : '<p class="sm">Sin datos aún.</p>';
+  }
+  const count = (arr, f) => { const m = new Map(); arr.forEach((x) => [].concat(f(x) ?? []).forEach((k) => { if (k !== null && k !== undefined && k !== '') m.set(k, (m.get(k) || 0) + 1); })); return [...m.entries()]; };
+  const card = (id, title, sub, wide) => `<div class="chart${wide ? ' wide' : ''}"><h3>${title}</h3>${sub ? `<p class="sub">${sub}</p>` : ''}<div id="${id}"></div></div>`;
+  const days = (n) => { const out = []; const d0 = new Date(); d0.setHours(0, 0, 0, 0); for (let i = n - 1; i >= 0; i--) { const d = new Date(d0); d.setDate(d.getDate() - i); out.push(d); } return out; };
+  const key = (d) => new Date(d).toLocaleDateString('en-CA');
+  function sessionsByDay(n) {
+    const by = new Map(); D.visits.forEach((v) => { const k = key(v.at); if (!by.has(k)) by.set(k, { s: new Set(), p: 0 }); const o = by.get(k); o.s.add(v.session); o.p++; });
+    return days(n).map((d) => { const o = by.get(key(d)) || { s: new Set(), p: 0 }; const lab = d.toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', ''); return { label: lab, v: o.s.size, tip: `${lab}: ${nf(o.s.size)} visitantes · ${nf(o.p)} páginas` }; });
+  }
+  function overview() {
+    const wk = (d) => { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return key(x); };
+    const weeks = []; for (let i = 7; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i * 7); weeks.push(wk(d)); }
+    const sess30 = new Set(D.visits.filter((v) => new Date(v.at) > Date.now() - 30 * 864e5).map((v) => v.session)).size;
+    const acc30 = D.people.filter((r) => new Date(r.created_at) > Date.now() - 30 * 864e5);
+    $('#charts').innerHTML = card('c-vis', 'Visitantes por día', 'Últimos 30 días · pasa el cursor para ver páginas', true) + card('c-acc', 'Cuentas nuevas por semana', 'Últimas 8 semanas') + card('c-fun', 'Del visitante al cliente', 'Últimos 30 días') + card('c-perf', 'Quiénes son', 'Perfil de las cuentas') + card('c-zon', 'Zonas que buscan', 'Interés o zonas de trabajo') + card('c-pais', 'Dónde viven', 'País declarado en la cuenta') + card('c-bud', 'Presupuesto', 'Compradores e inversionistas');
+    bars($('#c-vis'), sessionsByDay(30), { aria: 'Visitantes por día', ticks: 10 });
+    bars($('#c-acc'), weeks.map((w) => { const n = D.people.filter((r) => wk(r.created_at) === w).length, lab = new Date(w + 'T12:00').toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', ''); return { label: lab, v: n, tip: `Semana del ${lab}: ${n} cuentas` }; }), { h: 180, aria: 'Cuentas nuevas por semana' });
+    const steps = [['Visitantes', sess30], ['Cuentas nuevas', acc30.length], ['Inteligencia', acc30.filter((r) => r.plan === 'inteligencia').length], ['Llamadas', D.calls.filter((b) => new Date(b.created_at) > Date.now() - 30 * 864e5 && b.status !== 'cancelada').length]];
+    $('#c-fun').innerHTML = `<div class="funnel">${steps.map(([l, v], i) => `<div class="fn"><span>${l}</span><span class="track"><span class="fillb" style="display:block;width:${Math.max(.4, v / Math.max(1, steps[0][1]) * 100).toFixed(2)}%"></span></span><span class="v">${nf(v)}${i ? `<small>${steps[i - 1][1] ? (v / steps[i - 1][1] * 100).toLocaleString('es-VE', { maximumFractionDigits: 1 }) : 0} % del paso anterior</small>` : ''}</span></div>`).join('')}</div>`;
+    hbars($('#c-perf'), count(D.people, (r) => PERFIL[r.perfil]));
+    hbars($('#c-zon'), count(D.people, (r) => r.zonas), 10);
+    hbars($('#c-pais'), count(D.people, (r) => country(r.pais)));
+    hbars($('#c-bud'), Object.keys(BUD).map((k) => [BUD[k], D.people.filter((r) => r.presupuesto === k).length]).filter((r) => r[1]), 6);
+  }
+  function visitsTab() {
+    const v30 = D.visits.filter((v) => new Date(v.at) > Date.now() - 30 * 864e5), ses = new Map(); v30.forEach((v) => { if (!ses.has(v.session)) ses.set(v.session, v); });
+    const S = [...ses.values()], PAGE = { mercado: 'Mercado (inicio)', datos: 'Inteligencia', propiedades: 'Propiedades', guia: 'Guía', planes: 'Planes', entrar: 'Entrar / Perfil', sobre: 'Sobre Cauce', analizar: 'Analizar', contacto: 'Contacto' };
+    $('#v-charts').innerHTML = card('v-day', 'Visitantes por día', `${nf(S.length)} visitantes y ${nf(v30.length)} páginas en 30 días`, true) + card('v-pages', 'Páginas más vistas') + card('v-ref', 'De dónde llegan', 'Primera página de cada visita') + card('v-ctry', 'Países', 'Estimado por zona horaria') + card('v-dev', 'Dispositivo y idioma');
+    bars($('#v-day'), sessionsByDay(30), { aria: 'Visitantes por día', ticks: 10 });
+    hbars($('#v-pages'), count(v30, (v) => (v.path || '').startsWith('articulo/') ? 'Artículo · ' + v.path.slice(9) : PAGE[v.path] || v.path), 10);
+    hbars($('#v-ref'), count(S, (v) => v.ref || 'Directo'), 8);
+    hbars($('#v-ctry'), count(S, (v) => country(TZC[v.tz]) || v.tz || 'Desconocido'), 8);
+    hbars($('#v-dev'), [...count(S, (v) => v.device === 'mobile' ? 'Teléfono' : 'Computadora'), ...count(S, (v) => v.lang === 'en' ? 'Inglés' : 'Español')]);
+  }
+
+  /* ---------- tables ---------- */
   function filtered() {
     const q = $('#q').value.trim().toLowerCase(), pf = $('#f-perfil').value, pl = $('#f-plan').value, ok = $('#f-ok').checked;
-    return D.people.filter((r) => (!pf || r.perfil === pf) && (!pl || r.plan === pl) && (!ok || r.acepta_contacto) &&
-      (!q || [r.nombre, r.apellido, r.email, r.empresa, (r.zonas || []).join(' ')].join(' ').toLowerCase().includes(q)));
+    return D.people.filter((r) => (!pf || r.perfil === pf) && (!pl || r.plan === pl) && (!ok || r.acepta_contacto) && (!q || [r.nombre, r.apellido, r.email, r.empresa, (r.zonas || []).join(' ')].join(' ').toLowerCase().includes(q)));
   }
   function people() {
     const rows = filtered();
-    $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr><td><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b><br><span class="sm">${esc(r.email)}</span></td>
+    $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr><td><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b>${testTag(r)}<br><span class="sm">${esc(r.email)}</span></td>
       <td>${esc(PERFIL[r.perfil] || '—')}${r.empresa ? `<br><span class="sm">${esc(r.empresa)}${r.asesores ? ' · ' + esc(r.asesores) : ''}</span>` : ''}</td>
       <td>${esc(country(r.pais))}</td><td class="sm">${esc((r.zonas || []).join(', '))}</td>
       <td>${esc([BUD[r.presupuesto], WHEN[r.plazo]].filter(Boolean).join(' · '))}</td><td class="sm">${esc((r.objetivos || []).join(', '))}</td>
@@ -153,48 +231,101 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   }
   function calls() {
     const rows = [...D.calls].sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
-    $('#t-llamadas').innerHTML = rows.length ? rows.map((b) => { const a = b.answers || {}, desde = a.desde?.value || a['desde-donde-compras']?.value || '', note = a.notes?.value || a['que-quieres-revisar']?.value || '';
-      return `<tr><td>${esc(when(b.start_time))}</td><td>${esc(b.name || '')}</td><td><a href="mailto:${esc(b.email)}">${esc(b.email || '')}</a></td><td><span class="pill${b.status === 'reservada' ? ' ink' : ''}">${esc(b.status)}</span></td><td>${b.paid ? 'Pagado' : '—'}</td><td class="sm">${esc(desde)}</td><td class="sm">${esc(note)}</td></tr>`; }).join('')
-      : '<tr><td colspan="7" class="empty">Todavía no hay llamadas. Aparecen aquí al conectar el aviso de Cal.com.</td></tr>';
+    $('#t-llamadas').innerHTML = rows.length ? rows.map((b) => { const a = b.answers || {}, desde = a.desde?.value || '', note = a.notes?.value || '';
+      return `<tr><td>${esc(when(b.start_time))}</td><td>${esc(b.name || '')}${testTag(b)}</td><td><a href="mailto:${esc(b.email)}">${esc(b.email || '')}</a></td><td><span class="pill${b.status === 'reservada' ? ' ink' : ''}">${esc(b.status)}</span></td><td>${b.paid ? 'Pagado' : '—'}</td><td class="sm">${esc(desde)}</td><td class="sm">${esc(note)}</td></tr>`; }).join('')
+      : '<tr><td colspan="7" class="empty">Todavía no hay llamadas.</td></tr>';
   }
-  function subs() {
-    $('#t-boletin').innerHTML = D.subs.length ? D.subs.map((s) => `<tr><td>${esc(s.email)}</td><td>${esc(s.source || '')}</td><td>${esc(PERFIL[s.perfil] || '')}</td><td>${s.welcomed_at ? 'Enviada' : '—'}</td><td class="sm">${day(s.created_at)}</td></tr>`).join('') : '<tr><td colspan="5" class="empty">Sin suscriptores aún.</td></tr>';
-  }
+  function subs() { $('#t-boletin').innerHTML = D.subs.length ? D.subs.map((s) => `<tr><td>${esc(s.email)}${testTag(s)}</td><td>${esc(s.source || '')}</td><td>${esc(PERFIL[s.perfil] || '')}</td><td>${s.welcomed_at ? 'Enviada' : '—'}</td><td class="sm">${day(s.created_at)}</td></tr>`).join('') : '<tr><td colspan="5" class="empty">Sin suscriptores aún.</td></tr>'; }
   function chats() {
     const L = $('#chat-list');
     L.innerHTML = D.chats.length ? D.chats.map((c, i) => { const last = (c.messages || []).filter((m) => m.role === 'user').slice(-1)[0];
-      return `<button type="button" data-i="${i}" aria-pressed="false"><b>${esc(c.email || 'Visitante')}</b><span class="sm">${esc((last && last.content || '').slice(0, 80))}</span><span class="sm">${esc(when(c.updated_at))} · ${(c.messages || []).length} mensajes</span></button>`; }).join('') : '<p class="empty">Sin conversaciones aún.</p>';
+      return `<button type="button" data-i="${i}" aria-pressed="false"><b>${esc(c.email || 'Visitante')}${testTag(c)}</b><span class="sm">${esc((last && last.content || '').slice(0, 80))}</span><span class="sm">${esc(when(c.updated_at))} · ${(c.messages || []).length} mensajes</span></button>`; }).join('') : '<p class="empty">Sin conversaciones aún.</p>';
     $$('button', L).forEach((b) => b.addEventListener('click', () => { $$('button', L).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); const c = D.chats[+b.dataset.i];
       $('#chat-thread').innerHTML = (c.messages || []).map((m) => `<div class="bub${m.role === 'user' ? ' me' : ''}">${esc(m.content)}</div>`).join('') + (c.email ? `<p><a class="btn o" href="mailto:${esc(c.email)}?subject=${encodeURIComponent('Tu consulta en Cauce')}">Responder por correo</a></p>` : ''); }));
   }
+
+  /* ---------- articles: approval workflow ---------- */
+  const NEXT = { borrador: [['revision', 'Enviar a revisión']], revision: [['legal', 'Pasar a revisión legal'], ['aprobado', 'Aprobar'], ['borrador', 'Devolver a borrador']], legal: [['aprobado', 'Aprobar'], ['revision', 'Devolver a revisión']], aprobado: [['publicado', 'Publicar'], ['revision', 'Devolver a revisión']], publicado: [['archivado', 'Despublicar']], archivado: [['borrador', 'Volver a borrador'], ['publicado', 'Publicar de nuevo']] };
+  function arts() {
+    const f = $('#f-estado').value, rows = RAW.arts.filter((a) => (!f || a.estado === f) && ($('#show-test').checked || !a.id.startsWith('prueba-')));
+    const order = ['revision', 'legal', 'aprobado', 'borrador', 'publicado', 'archivado'];
+    rows.sort((a, b) => order.indexOf(a.estado) - order.indexOf(b.estado) || new Date(b.updated_at) - new Date(a.updated_at));
+    $('#t-art').innerHTML = rows.map((a) => `<tr data-id="${esc(a.id)}" style="cursor:pointer"><td><b>${esc(a.titulo)}</b>${a.builtin ? '<br><span class="sm">texto en el sitio</span>' : ''}</td><td>${esc(a.seccion)}</td><td><span class="state ${a.estado}">${ESTADO[a.estado]}</span></td><td class="sm">${esc([a.autor, a.revisor].filter(Boolean).join(' · '))}</td><td class="sm">${esc(a.notas || '')}</td><td class="sm">${day(a.updated_at)}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">Sin artículos.</td></tr>';
+    $$('#t-art tr[data-id]').forEach((tr) => tr.addEventListener('click', () => editor(RAW.arts.find((a) => a.id === tr.dataset.id))));
+    const pend = RAW.arts.filter((a) => ['revision', 'legal', 'aprobado'].includes(a.estado)).length; $('#n-art').textContent = pend ? pend + ' por revisar' : '';
+  }
+  const F = (k, label, a, type = 'text', full) => `<label${full ? ' class="full"' : ''}>${label}${type === 'area' ? `<textarea data-k="${k}">${esc(a[k] || '')}</textarea>` : `<input data-k="${k}" type="${type}" value="${esc(a[k] ?? '')}">`}</label>`;
+  function editor(a) {
+    const isNew = !a; a = a || { id: '', seccion: 'Análisis', estado: 'borrador', minutos: 5, autor: 'Equipo Cauce' };
+    const E = $('#art-ed'); E.hidden = false;
+    E.innerHTML = `<div class="ed-head" style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><span class="lab">${isNew ? 'Nuevo artículo' : 'Editar artículo'}</span><span class="state ${a.estado}">${ESTADO[a.estado]}</span></div>
+      ${a.builtin ? '<p class="sm">El texto de este artículo vive en el sitio. Aquí controlas su estado (publicado o no) y sus notas.</p>' : ''}
+      <div class="ed">
+        ${F('titulo', 'Título', a, 'text', true)}${F('titulo_en', 'Título en inglés', a, 'text', true)}
+        <label>Sección<select data-k="seccion">${['Análisis', 'Zonas', 'Estudio', 'Guía', 'Marco legal'].map((x) => `<option${x === a.seccion ? ' selected' : ''}>${x}</option>`).join('')}</select></label>
+        <label>Minutos de lectura<input data-k="minutos" type="number" min="1" max="60" value="${esc(a.minutos)}"></label>
+        ${a.builtin ? '' : F('entradilla', 'Entradilla', a, 'area') + F('entradilla_en', 'Entradilla en inglés', a, 'area') + F('cuerpo', 'Cuerpo (## Subtítulo, párrafos, - listas)', a, 'area') + F('cuerpo_en', 'Cuerpo en inglés', a, 'area') + F('lectura', 'La lectura de Cauce (opinión)', a, 'area') + F('lectura_en', 'La lectura de Cauce, en inglés', a, 'area')}
+        ${F('autor', 'Autor', a)}${F('revisor', 'Revisor', a)}${F('notas', 'Notas de revisión', a, 'area', true)}
+        <label class="full" style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input data-k="pro" type="checkbox" style="width:auto"${a.pro ? ' checked' : ''}> Solo suscriptores (PRO)</label>
+        <div class="row full"><button class="btn o" type="button" data-save>Guardar</button>${(NEXT[a.estado] || []).map(([to, l]) => `<button class="btn${to === 'publicado' || to === 'aprobado' ? '' : ' o'}" type="button" data-to="${to}">${l}</button>`).join('')}<span class="sm" id="ed-msg"></span><span style="flex:1"></span><button class="btn o" type="button" data-close>Cerrar</button></div>
+      </div>`;
+    const read = () => { const o = {}; $$('[data-k]', E).forEach((i) => { o[i.dataset.k] = i.type === 'checkbox' ? i.checked : i.type === 'number' ? +i.value || 5 : i.value.trim() || null; }); return o; };
+    const save = async (estado) => {
+      const o = read(); if (!o.titulo) { $('#ed-msg').textContent = 'Falta el título.'; return; }
+      if (estado) { o.estado = estado; if (estado === 'publicado' && !a.publicado_at) o.publicado_at = new Date().toISOString(); }
+      o.updated_at = new Date().toISOString();
+      let r;
+      if (isNew) { o.id = o.titulo.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'articulo-' + Date.now(); o.estado = o.estado || 'borrador'; r = await sb.from('articles').insert(o).select().single(); }
+      else r = await sb.from('articles').update(o).eq('id', a.id).select().single();
+      if (r.error) { $('#ed-msg').textContent = 'No se pudo guardar: ' + r.error.message; return; }
+      const i = RAW.arts.findIndex((x) => x.id === r.data.id); if (i >= 0) RAW.arts[i] = r.data; else RAW.arts.unshift(r.data);
+      arts(); editor(r.data); $('#ed-msg').textContent = estado ? 'Ahora: ' + ESTADO[r.data.estado] + (estado === 'publicado' ? ' · ya aparece en cauce.blog' : '') : 'Guardado.';
+    };
+    $('[data-save]', E).addEventListener('click', () => save());
+    $$('[data-to]', E).forEach((b) => b.addEventListener('click', () => save(b.dataset.to)));
+    $('[data-close]', E).addEventListener('click', () => { E.hidden = true; });
+    E.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  $('#new-art').addEventListener('click', () => editor(null));
+
   function kpis() {
     const wk = Date.now() - 7 * 864e5, now = Date.now();
-    const K = [['Cuentas', D.people.length, D.people.filter((r) => new Date(r.created_at) > wk).length + ' esta semana'],
-      ['Inteligencia', D.people.filter((r) => r.plan === 'inteligencia').length, 'suscripciones activas'],
-      ['Boletín', D.subs.length, D.subs.filter((s) => new Date(s.created_at) > wk).length + ' esta semana'],
-      ['Llamadas', D.calls.filter((b) => b.status === 'reservada' && new Date(b.start_time) > now).length, 'próximas'],
-      ['Conversaciones', D.chats.length, D.chats.filter((c) => new Date(c.updated_at) > wk).length + ' esta semana'],
-      ['Aceptan contacto', D.people.filter((r) => r.acepta_contacto).length, 'agentes e inmobiliarias']];
-    $('#kpis').innerHTML = K.map(([l, n, s]) => `<div class="kpi"><span class="lab">${l}</span><b>${n}</b><span class="sm">${s}</span></div>`).join('');
+    const ses7 = new Set(D.visits.filter((v) => new Date(v.at) > wk).map((v) => v.session)).size;
+    const K = [['Visitantes', ses7, 'últimos 7 días'], ['Cuentas', D.people.length, D.people.filter((r) => new Date(r.created_at) > wk).length + ' esta semana'],
+      ['Inteligencia', D.people.filter((r) => r.plan === 'inteligencia').length, 'suscripciones activas'], ['Boletín', D.subs.length, D.subs.filter((s) => new Date(s.created_at) > wk).length + ' esta semana'],
+      ['Llamadas', D.calls.filter((b) => b.status === 'reservada' && new Date(b.start_time) > now).length, 'próximas'], ['Aceptan contacto', D.people.filter((r) => r.acepta_contacto).length, 'agentes e inmobiliarias']];
+    $('#kpis').innerHTML = K.map(([l, n, s]) => `<div class="kpi"><span class="lab">${l}</span><b>${nf(n)}</b><span class="sm">${s}</span></div>`).join('');
     $('#n-personas').textContent = D.people.length; $('#n-llamadas').textContent = D.calls.length; $('#n-chats').textContent = D.chats.length; $('#n-boletin').textContent = D.subs.length;
   }
-  $('#csv').addEventListener('click', () => {
-    const cols = ['nombre', 'apellido', 'email', 'perfil', 'empresa', 'asesores', 'pais', 'zonas', 'presupuesto', 'plazo', 'objetivos', 'plan', 'contacto', 'whatsapp', 'acepta_contacto', 'created_at'];
-    const q = (v) => '"' + String(Array.isArray(v) ? v.join('; ') : v ?? '').replace(/"/g, '""') + '"';
-    const csv = [cols.join(','), ...filtered().map((r) => cols.map((c) => q(r[c])).join(','))].join('\n');
-    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = 'cauce-personas-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();
+  function apply() {
+    const show = $('#show-test').checked, keep = (r) => show || !r.is_test;
+    D = { people: RAW.people.filter(keep), subs: RAW.subs.filter(keep), calls: RAW.calls.filter(keep), chats: RAW.chats.filter(keep), visits: RAW.visits.filter(keep), arts: RAW.arts };
+    const nt = RAW.people.filter((r) => r.is_test).length + RAW.subs.filter((r) => r.is_test).length + RAW.calls.filter((r) => r.is_test).length + RAW.chats.filter((r) => r.is_test).length;
+    $('#testbar').hidden = !nt && !RAW.visits.some((v) => v.is_test);
+    $('#test-n').textContent = `${nf(RAW.people.filter((r) => r.is_test).length)} cuentas, ${nf(RAW.visits.filter((r) => r.is_test).length)} visitas y más, marcadas como prueba.`;
+    kpis(); overview(); visitsTab(); people(); calls(); subs(); chats(); arts();
+  }
+  $('#del-test').addEventListener('click', async () => {
+    if (!window.confirm('¿Borrar todos los datos de prueba? Las cuentas y visitas reales no se tocan. No se puede deshacer.')) return;
+    const r = await sb.rpc('delete_test_data'); if (r.error) { alert('No se pudo: ' + r.error.message); return; } load();
   });
-
+  async function allVisits() {   // visits come in pages of 1000
+    const since = new Date(Date.now() - 31 * 864e5).toISOString(); let out = [], from = 0;
+    for (;;) { const r = await sb.from('visits').select('at,path,ref,lang,device,tz,session,is_test').gte('at', since).order('at').range(from, from + 999); if (r.error || !r.data.length) break; out = out.concat(r.data); if (r.data.length < 1000) break; from += 1000; }
+    return out;
+  }
   async function load() {
-    const [p, s, b, c] = await Promise.all([
+    const [p, s, b, c, v, a] = await Promise.all([
       sb.from('profiles').select('*').order('created_at', { ascending: false }),
       sb.from('subscribers').select('*').order('created_at', { ascending: false }),
       sb.from('bookings').select('*').order('start_time', { ascending: false }),
-      sb.from('chats').select('*').order('updated_at', { ascending: false }).limit(200)]);
-    D = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [] };
-    kpis(); people(); calls(); subs(); chats();
+      sb.from('chats').select('*').order('updated_at', { ascending: false }).limit(200), allVisits(),
+      sb.from('articles').select('*').order('updated_at', { ascending: false })]);
+    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [] };
+    apply();
     $('#stamp').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit' });
   }
+  let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (RAW.people) { overview(); visitsTab(); } }, 200); });
   $('#refresh').addEventListener('click', (e) => { e.preventDefault(); load(); });
 
   (async () => {
@@ -203,7 +334,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     const r = await sb.rpc('is_admin');
     if (!r.data) { $('#gate').hidden = false; $('#gate-msg').textContent = 'Tu cuenta (' + u.email + ') no tiene acceso al panel.'; return; }
     $('#who').textContent = u.email; $('#app').hidden = false;
-    await load(); setInterval(load, 60000);
+    await load(); setInterval(() => { if (!$('#art-ed').hidden) return; load(); }, 60000);
   })();
 })();
 </script>
