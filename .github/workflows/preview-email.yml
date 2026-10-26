@@ -1,0 +1,17 @@
+name: Email preview
+on:
+  workflow_dispatch:
+    inputs:
+      tpl: { description: "Template name, e.g. boletin-01", required: true, default: "boletin-01" }
+      subject: { description: "Subject", required: false, default: "" }
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send the preview to the owner's inbox
+        run: |
+          sleep 5
+          curl -sS -w "\nHTTP %{http_code}\n" -X POST "https://gdgmcnqczrbbzwuzkvcv.supabase.co/functions/v1/preview-email" \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A" \
+            -H "Content-Type: application/json" \
+            -d "{\"tpl\":\"${{ inputs.tpl }}\",\"subject\":\"${{ inputs.subject }}\"}"
