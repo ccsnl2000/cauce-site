@@ -652,6 +652,7 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap .seg { display: inline-flex; background: rgba(20,20,20,.85); border-radius: 999px; padding: 3px; }
 .cmap .seg button { background: none; border: 0; font: inherit; font-size: 13px; color: #a6a49f; padding: 6px 12px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
 .cmap .seg button[aria-pressed="true"] { background: #f2f0ec; color: #111; font-weight: 700; }
+@media (max-width: 760px) { .cmap .mctl { left: 10px; right: 10px; gap: 6px; } .cmap .seg.lines { flex-wrap: wrap; gap: 4px; background: transparent; padding: 0; } .cmap .seg.lines button { padding: 5px 10px; font-size: 12px; } .cmap .seg.lines button[disabled] { display: none; } .mplaces { left: 0; right: auto; max-width: calc(100vw - 40px); } }
 .cmap .seg .lk { color: #f2f0ec; }
 .cmap .seg.lines { background: none !important; padding: 0; gap: 6px; } .cmap .seg.lines button { border: 1px solid color-mix(in srgb, var(--m-ink) 35%, transparent); color: var(--m-ink); background: none !important; padding: 5px 12px; font-weight: 500; text-shadow: 0 0 6px var(--m-bg), 0 0 2px var(--m-bg); }
 .cmap .seg.lines button[aria-pressed="true"] { border-color: var(--m-ink); box-shadow: inset 0 0 0 1px var(--m-ink); font-weight: 700; color: var(--m-ink) !important; } .cmap .seg.lines button:disabled { border-style: dashed; }
@@ -722,7 +723,8 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 @keyframes pulse { 50% { opacity: .3; } }
 
 @media (max-width: 900px) {
-  .hero, .duo, .split, .pd, .mgrid, .art { grid-template-columns: 1fr; }
+  .hero, .duo, .split, .pd, .mgrid, .art { grid-template-columns: minmax(0, 1fr); }
+  .art > *, .art article > * { min-width: 0; } .art h1 { overflow-wrap: break-word; hyphens: auto; } .xtw table { min-width: 100%; }
   .feed { grid-template-columns: 1fr 1fr; } .grid, .plans { grid-template-columns: 1fr 1fr; }
   .m3, .pillars, .pillars.p2, .routes { grid-template-columns: 1fr; }
   .about-flow p, .about-flow .pull, .about-flow .side, .about-end > div { grid-column: 1 / -1; } .about-flow .side { position: static; margin-bottom: 20px; }
