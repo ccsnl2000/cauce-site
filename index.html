@@ -3262,6 +3262,14 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   /* accounts: Supabase Auth, loaded after the page so it never slows the first view */
   const SB_URL = 'https://gdgmcnqczrbbzwuzkvcv.supabase.co', SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A';
   let sbP = null, user = null;
+  // 1:1 consult: every consult button opens the Cal.com booking page (prefilled when signed in)
+  const CAL = 'https://cal.com/consulta-1-1';
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-pick="consulta"], a[data-plan="consulta"]'); if (!b) return;
+    e.preventDefault(); e.stopImmediatePropagation();
+    const q = user ? '?email=' + encodeURIComponent(user.email) : '';
+    window.open(CAL + q, '_blank', 'noopener');
+  }, true);
   // Stripe (test mode). Swap both for the live links when payments go live.
   const PAY_LINK = 'https://buy.stripe.com/test_9B65kDdNm9p3bmLgG7gjC01', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
   const payUrl = () => PAY_LINK + '?client_reference_id=' + user.id + '&prefilled_email=' + encodeURIComponent(user.email);
