@@ -122,14 +122,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .brand .about { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; font-size: var(--t-sm); color: var(--soft); transition: max-width .5s var(--ease), opacity .35s var(--ease), margin .5s var(--ease); }
 .brand:hover .about, .brand:focus-within .about { max-width: 160px; opacity: 1; margin-left: 14px; }
 .brand .about:hover { color: var(--ink); }
-nav.main { display: flex; gap: 32px; }
+nav.main { display: flex; gap: clamp(18px, 2vw, 32px); }
 nav.main a { font-size: var(--t-body); color: var(--soft); transition: color .2s; position: relative; }
 nav.main a:hover, nav.main a[aria-current] { color: var(--ink); }
 nav.main a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1.5px; background: var(--ink); transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
 nav.main a[aria-current]::after { transform: scaleX(1); }
-.bar .r { justify-self: end; display: flex; align-items: center; gap: 18px; font-size: var(--t-body); }
+.bar .r { justify-self: end; display: flex; align-items: center; gap: clamp(10px, 1.2vw, 18px); font-size: var(--t-body); white-space: nowrap; }
 .bar .r .in { color: var(--ink); }
 .tog { display: inline-flex; align-items: center; gap: 2px; font-size: var(--t-sm); }
+.lang { position: relative; }
+.lang-cur { display: inline-flex !important; align-items: center; gap: 6px; color: var(--ink) !important; padding: 6px 4px !important; }
+.lang-pop { position: absolute; right: 0; top: calc(100% + 8px); background: var(--sheet); border: 1px solid var(--line); border-radius: 12px; padding: 6px; display: grid; min-width: 130px; box-shadow: 0 18px 44px rgba(27,26,24,.14); z-index: 30; }
+.lang-pop button { text-align: left; padding: 8px 10px !important; border-radius: 8px; color: var(--ink) !important; }
+.lang-pop button:hover, .lang-pop button[aria-pressed=true] { background: var(--fill); }
 .tog button { background: none; border: 0; padding: 4px 3px; font: inherit; color: var(--soft); cursor: pointer; }
 .tog button[aria-pressed=true] { color: var(--ink); }
 .theme { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: none; color: var(--ink); cursor: pointer; display: grid; place-items: center; }
@@ -425,6 +430,8 @@ body.auth header.top, body.auth footer { display: none; }
 .acct { display: grid; gap: 22px; margin-top: 4px; }
 .acct-h { font-size: var(--t-h1); font-weight: 800; letter-spacing: -0.045em; }
 .acct-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.acct-call { border: 1px solid var(--ink); border-radius: 18px; padding: 22px; display: grid; gap: 6px; }
+.acct-call .acct-name { font-size: var(--t-h3); }
 .acct-plan { border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: grid; gap: 6px; justify-items: start; }
 .acct-plan .acct-row { width: 100%; }
 .acct-name { font-size: var(--t-h2); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; }
@@ -574,6 +581,7 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .abroad .secthead { margin-top: 40px; }
 /* the map: solid translucent zones over a grayscale OSM base, as in the reference */
 .cmap { position: relative; background: #1b1b1b; color: #f2f0ec; border-radius: 16px; overflow: hidden; isolation: isolate; }
+.cmap::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 150px; background: linear-gradient(rgba(20,20,19,.5), rgba(20,20,19,0)); z-index: 1; pointer-events: none; }
 .cmap .mgl { position: absolute; inset: 0; }
 .cmap.full { height: clamp(460px, 62vh, 720px); margin-top: 28px; }
 .cmap .mhead { position: absolute; left: 20px; top: 18px; z-index: 2; display: grid; gap: 6px; max-width: 320px; pointer-events: none; }
@@ -682,7 +690,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="r">
       <a class="btn" href="#planes">Suscríbete</a>
       <a class="in" href="#entrar" data-mode="login">Iniciar sesión</a>
-      <div class="tog" role="group" aria-label="Idioma"><button type="button" data-lang="es" aria-pressed="true">ES</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+      <div class="tog lang" aria-label="Idioma"><button type="button" class="lang-cur" aria-haspopup="true" aria-expanded="false"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span class="cur">ES</span></button><div class="lang-pop" hidden><button type="button" data-lang="es" aria-pressed="true">Español</button><button type="button" data-lang="en" aria-pressed="false">English</button></div></div>
       <button type="button" class="theme" id="theme" aria-label="Cambiar a modo noche"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 1 0 0 13z" fill="currentColor"/><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor"/></svg></button>
     </div>
   </div>
@@ -900,7 +908,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="thread" id="c-thread" aria-live="polite"></div>
     <div class="qchips" id="c-chips"><button type="button">Estoy evaluando un inmueble</button><button type="button">Tengo un terreno</button><button type="button">¿Está bien de precio?</button></div>
     <form class="ask" id="c-form"><label for="c-in" hidden>Tu mensaje</label><input id="c-in" placeholder="Escribe tu pregunta" autocomplete="off"><button type="submit" aria-label="Enviar"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button></form>
-    <p class="chat-note">Vista previa: el asistente todavía no está conectado. Para hablar con una persona, escribe a <span style="user-select:all;color:var(--ink)">hola@cauce.blog</span>.</p>
+    <p class="chat-note">Responde un asistente con inteligencia artificial; puede equivocarse. Para hablar con una persona: <a class="wa-link" href="mailto:hola@cauce.blog" style="text-decoration:underline">hola@cauce.blog</a></p>
   </div>
   <aside class="c-res" id="c-res" aria-live="polite"></aside>
 </section>
@@ -937,6 +945,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
         <div class="acct-fields"><label><span class="lab">Nombre *</span><input id="ac-nombre" type="text" autocomplete="given-name" required></label><label><span class="lab">Apellido *</span><input id="ac-apellido" type="text" autocomplete="family-name" required></label></div><div class="pf" id="ac-pf"></div>
         <div class="acct-row" style="margin-top:14px"><span class="sm" id="ac-saved" aria-live="polite"></span><button type="button" class="btn o" id="ac-save">Guardar</button></div>
       </details>
+      <div class="acct-call" id="ac-call" hidden><div class="acct-row"><span class="lab">Tu próxima llamada</span><span class="acct-badge" id="ac-call-st"></span></div><p class="acct-name" id="ac-call-when"></p><p class="sm" id="ac-call-sub"></p><div class="acct-row" style="justify-content:flex-start;gap:10px;margin-top:6px"><a class="btn" id="ac-call-join" target="_blank" rel="noopener">Unirse a la llamada</a><a class="btn o" id="ac-call-move" target="_blank" rel="noopener">Cambiar fecha</a><a class="sm" id="ac-call-cancel" target="_blank" rel="noopener" style="text-decoration:underline">Cancelar</a></div></div>
       <div class="acct-plan" id="ac-card">
         <div class="acct-row"><span class="lab">Tu plan</span><span class="acct-badge" id="ac-status"></span></div>
         <p class="acct-name" id="ac-plan"></p>
@@ -951,7 +960,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
         <a href="#planes" data-plan="consulta"><b>Llamada de diagnóstico</b><span class="sm">45 minutos con el equipo · $149</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
       </nav>
 
-      <div class="acct-row acct-foot"><button type="button" id="ac-out">Cerrar sesión</button><a href="mailto:hola@cauce.blog">¿Ayuda? hola@cauce.blog</a></div>
+      <div class="acct-row acct-foot"><button type="button" id="ac-out">Cerrar sesión</button><a href="#contacto">¿Ayuda? Escríbenos</a></div>
     </div>
     <div class="auth-done" id="a-done" hidden><p class="big" id="d-title"></p><p class="sm" id="d-text"></p><div class="auth-row" style="justify-content:flex-start;gap:16px"><a class="btn" id="d-btn" href="#mercado"></a><button type="button" class="alt" id="d-out" hidden>Salir</button></div></div>
   </div>
@@ -2843,6 +2852,19 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Español": "Español",
+    "Responde un asistente con inteligencia artificial; puede equivocarse. Para hablar con una persona:": "An AI assistant answers here; it can make mistakes. To reach a person:",
+    "Perfil": "Profile",
+    "¿Ayuda? Escríbenos": "Need help? Message us",
+    "Seguir por WhatsApp": "Continue on WhatsApp",
+    "Pensando…": "Thinking…",
+    "Crea tu cuenta para agendar la llamada. Así guardamos tu caso y tu informe en un solo lugar.": "Create your account to book the call. That way your case and report stay in one place.",
+    "Tu próxima llamada": "Your next call",
+    "Unirse a la llamada": "Join the call",
+    "Cambiar fecha": "Reschedule",
+    "Cancelar": "Cancel",
+    "Pago pendiente": "Payment due",
+    "Confirmada": "Confirmed",
     "Desarrollador · Analista": "Developer · Analyst",
     "Tu cuenta": "Your account",
     "Hola de nuevo.": "Welcome back.",
@@ -3390,11 +3412,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       const es = el.getAttribute(key), want = lang === 'es' ? es : (EN[es] || es);
       if (el.getAttribute(a) !== want) el.setAttribute(a, want);
     }));
-    $$('.tog button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    $$('.tog button[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    $$('.lang .cur').forEach((c) => { c.textContent = lang.toUpperCase(); });
     applying = false;
   }
-  $$('.tog button').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); if (typeof user !== 'undefined' && user) { syncPerfil(); if (acctRow && acctRow._hi && current === 'entrar') acctRow._hi(); } }));
+  $$('.tog button[data-lang]').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); if (typeof user !== 'undefined' && user) { syncPerfil(); if (acctRow && acctRow._hi && current === 'entrar') acctRow._hi(); } }));
   new MutationObserver(() => { if (!applying) requestAnimationFrame(applyLang); }).observe(document.body, { childList: true, subtree: true });
+  $$('.lang').forEach((m) => { const b = $('.lang-cur', m), pop = $('.lang-pop', m), open = (o) => { pop.hidden = !o; b.setAttribute('aria-expanded', String(o)); };
+    b.addEventListener('click', (e) => { e.stopPropagation(); open(pop.hidden); }); $$('[data-lang]', pop).forEach((x) => x.addEventListener('click', () => open(false)));
+    document.addEventListener('click', (e) => { if (!m.contains(e.target)) open(false); }); m.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); b.focus(); } }); });
 
   /* theme: follows the device until the reader picks one */
   const root = document.documentElement;
@@ -3559,13 +3585,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const PF = ['#a-pf', '#ac-pf'];
   PF.forEach((q) => { const b = $(q); if (b) pfRender(b); });
   // country names follow the site language
-  $$('.tog button').forEach((b) => b.addEventListener('click', () => PF.forEach((q) => { const box = $(q); if (!box) return; const sel = $('[data-f=pais]', box), v = sel.value; sel.innerHTML = countryOpts(); sel.value = v; applyLang(); })));
+  $$('.tog button[data-lang]').forEach((b) => b.addEventListener('click', () => PF.forEach((q) => { const box = $(q); if (!box) return; const sel = $('[data-f=pais]', box), v = sel.value; sel.innerHTML = countryOpts(); sel.value = v; applyLang(); })));
 
   /* accounts: Supabase Auth, loaded after the page so it never slows the first view */
   const SB_URL = 'https://gdgmcnqczrbbzwuzkvcv.supabase.co', SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A';
   let sbP = null, user = null;
   // 1:1 consult: booking opens in a Cal.com window on the page (embed loads on first click); new tab if it can't load
-  const CAL_LINK = 'cauceblog/discovery'; // Cal.com username/event, e.g. 'consulta-1-1/45min'
+  const CAL_LINK = 'cauceblog/discovery';
+  const WA_NUMBER = ''; // e.g. '584120000000'; when set, the chat offers "Seguir por WhatsApp"
+  if (WA_NUMBER) $$('.wa-link').forEach((a) => { a.href = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent('Hola, vengo de cauce.blog'); a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Seguir por WhatsApp'; }); // Cal.com username/event, e.g. 'consulta-1-1/45min'
   let calReady = null;
   function calLoad() {
     if (calReady) return calReady;
@@ -3580,8 +3608,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-pick="consulta"], a[data-plan="consulta"]'); if (!b) return;
     e.preventDefault(); e.stopImmediatePropagation();
+    if (!user) { auth.plan = 'consulta'; planIntent = 'consulta'; location.hash = '#entrar'; setTimeout(() => { setMode('join'); aSay('Crea tu cuenta para agendar la llamada. Así guardamos tu caso y tu informe en un solo lugar.'); }, 80); return; }
     const config = { layout: 'month_view', locale: lang === 'en' ? 'en' : 'es' };
-    if (user) { config.email = user.email; const n = (acctRow && acctRow.nombre) || getPerfil().nombre; if (n) config.name = n; }
+    if (user) { config.email = user.email; const pr = getPerfil(), n = [(acctRow && acctRow.nombre) || pr.nombre, (acctRow && acctRow.apellido) || pr.apellido].filter(Boolean).join(' '); if (n) config.name = n; config['metadata[userId]'] = user.id; }
     calLoad().then(() => Cal.ns.consulta('modal', { calLink: CAL_LINK, config }))
       .catch(() => window.open('https://cal.com/' + CAL_LINK + (user ? '?email=' + encodeURIComponent(user.email) : ''), '_blank', 'noopener'));
   }, true);
@@ -3600,7 +3629,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const back = () => location.origin + '/#entrar';
   function setUser(u) {
     user = u || null;
-    $$('a.in').forEach((l) => { l.textContent = user ? 'Mi cuenta' : 'Iniciar sesión'; if (user) l.removeAttribute('data-mode'); else l.dataset.mode = 'login'; });
+    $$('a.in').forEach((l) => { l.textContent = user ? 'Perfil' : 'Iniciar sesión'; if (user) l.removeAttribute('data-mode'); else l.dataset.mode = 'login'; });
     if (user) syncPerfil();
     if (user) { try { if (!sessionStorage.getItem('cauce-nl')) { sessionStorage.setItem('cauce-nl', '1'); nl({ email: user.email, source: 'cuenta', perfil: getPerfil().perfil }); } } catch (e) {} }
     checkPlan();
@@ -3638,6 +3667,20 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     const pt = ([x, y]) => (ox + (x - x0) * Math.cos(10.5 * Math.PI / 180) * k).toFixed(1) + ' ' + (oy + (y1 - y) * k).toFixed(1);
     IDGEO = P.map((f) => ({ n: f.n, d: f.r.map((r) => { const st = Math.max(1, Math.floor(r.length / 60)); return 'M' + r.filter((_, i) => i % st === 0).map(pt).join('L') + 'Z'; }).join('') }));
     return IDGEO;
+  }
+  async function loadCall() {
+    const box = $('#ac-call'); box.hidden = true;
+    try {
+      const c = await sb(), r = await c.from('bookings').select('uid, start_time, status, paid, meeting_url').in('status', ['reservada']).gte('end_time', new Date().toISOString()).order('start_time').limit(1);
+      const b = r.data && r.data[0]; if (!b) return;
+      const en = lang === 'en', d = new Date(b.start_time);
+      $('#ac-call-when').textContent = d.toLocaleString(en ? 'en-US' : 'es-VE', { weekday: 'long', day: 'numeric', month: 'long', hour: 'numeric', minute: '2-digit' });
+      $('#ac-call-sub').textContent = (en ? 'Discovery call · 45 min · your time zone' : 'Llamada de diagnóstico · 45 min · en tu hora local');
+      $('#ac-call-st').textContent = b.paid ? 'Confirmada' : 'Pago pendiente';
+      const j = $('#ac-call-join'); j.hidden = !b.meeting_url; if (b.meeting_url) j.href = b.meeting_url;
+      $('#ac-call-move').href = 'https://cal.com/reschedule/' + b.uid; $('#ac-call-cancel').href = 'https://cal.com/booking/' + b.uid + '?cancel=true';
+      box.hidden = false; applyLang();
+    } catch (e) {}
   }
   function renderHead() {
     const r = acctRow, en = lang === 'en', tr1 = (t) => (en && EN[t]) || t;
@@ -3697,7 +3740,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     }; hi(); acctRow._hi = hi;
     $('#ac-perfil-sum').textContent = [PERFIL_ES[r.perfil], r.empresa, r.pais && country(r.pais)].filter(Boolean).join(' · ');
     const opn = !r.nombre || !r.apellido; $('#ac-perfil').open = opn; $('#ac-edit').setAttribute('aria-expanded', String(opn));
-    renderHead();
+    renderHead(); loadCall();
     $('#ac-saved').textContent = '';
     applyLang();
   }
@@ -3756,6 +3799,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     $('#d-title').textContent = auth.confirm ? 'Revisa tu correo.' : n[0];
     $('#d-text').textContent = auth.confirm ? 'Te enviamos un enlace para confirmar tu cuenta. Ábrelo y quedas dentro.' : n[1];
     $('#d-btn').textContent = auth.confirm ? 'Ir a Mercado' : n[2]; $('#d-btn').setAttribute('href', auth.confirm ? '#mercado' : n[3]);
+    if (!auth.confirm && auth.plan === 'consulta') $('#d-btn').dataset.pick = 'consulta'; else delete $('#d-btn').dataset.pick;
     applyLang();
   }
   $('#f-perfil').addEventListener('submit', (e) => { e.preventDefault(); done(); });
@@ -3814,8 +3858,19 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   }
   function say(t) {
     t = t.trim(); if (!t) return;
-    CHAT.m.push({ w: 'me', t }); drawChat(); saveChat();
-    setTimeout(() => { const a = canned(t); CHAT.m.push({ w: 'c', t: a.t, r: a.r, wide: a.wide, q: a.q }); drawChat(); saveChat(); }, reduce ? 0 : 650);
+    CHAT.m.push({ w: 'me', t }); CHAT.m.push({ w: 'c', t: 'Pensando…', wait: 1 }); drawChat(); saveChat();
+    const done = (text) => { CHAT.m = CHAT.m.filter((x) => !x.wait); const a = canned(t); CHAT.m.push({ w: 'c', t: text || a.t, r: a.r, wide: a.wide, q: a.q }); drawChat(); saveChat(); };
+    askAI().then(done).catch(() => setTimeout(() => done(''), reduce ? 0 : 300));
+  }
+  // the assistant lives in a Supabase function; if it isn't set up yet, the built-in answers reply
+  let CHAT_ID = ''; try { CHAT_ID = sessionStorage.getItem('cauce-chat-id') || ''; if (!CHAT_ID) { CHAT_ID = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem('cauce-chat-id', CHAT_ID); } } catch (e) { CHAT_ID = String(Date.now()); }
+  async function askAI() {
+    const messages = CHAT.m.filter((x) => !x.wait).map((x) => ({ role: x.w === 'me' ? 'user' : 'assistant', content: x.t }));
+    while (messages.length && messages[0].role !== 'user') messages.shift();
+    const c = await sb(); const ses = (await c.auth.getSession()).data.session;
+    const r = await c.functions.invoke('chat', { body: { session: CHAT_ID, messages, lang }, headers: ses ? { 'x-user-token': ses.access_token } : {} });
+    if (r.error || !r.data || !r.data.text) throw new Error('no reply');
+    return r.data.text;
   }
   function chatRoute(h) { if (h === 'contacto') { CHAT.used = true; saveChat(); setTimeout(() => $('#c-in').focus(), 50); } $('#v-contacto').classList.toggle('wide', h === 'contacto' && !!CHAT.wide); if (h === 'contacto' && CHAT.wide) drawRes(); drawChat(); }
   const leave = (state) => { CHAT.s = state; saveChat(); location.hash = backTo || '#mercado'; };

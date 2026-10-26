@@ -72,3 +72,7 @@ alter table public.profiles add column if not exists apellido text, add column i
 
 -- Added 25 Oct 2026: agent/agency fields.
 alter table public.profiles add column if not exists empresa text, add column if not exists asesores text, add column if not exists contacto text, add column if not exists whatsapp text, add column if not exists acepta_contacto boolean not null default false;
+
+-- Added 25 Oct 2026: discovery calls (Cal.com webhook), assistant chats, admins. See migration bookings_chats_admins.
+-- Tables: bookings (uid, user_id, email, start_time, status, paid, meeting_url…), chats (session, user_id, messages jsonb), admins (user_id).
+-- public.is_admin() gates read access to profiles, subscribers, bookings and chats for the dashboard.
