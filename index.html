@@ -348,12 +348,13 @@ form.f select option { background: var(--card); }
 .dm svg { width: 16px; height: 16px; color: var(--ink); fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: square; stroke-linejoin: miter; overflow: visible; } .dm svg .f { fill: currentColor; stroke: none; }
 .dm > span:last-of-type { font-family: var(--mono); font-size: var(--t-xs); color: var(--soft); white-space: nowrap; }
 .dm .seg { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; } .dm .seg u { display: block; height: 7px; border-radius: 2px; background: color-mix(in srgb, var(--ink) 13%, transparent); overflow: hidden; } .dm .seg u b { display: block; height: 100%; background: var(--ink); }
-.ic-ft { animation: ic-step 1s steps(1) infinite; } .ic-ft.b { animation-delay: -.5s; } @keyframes ic-step { 0% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(-2px); opacity: .35; } }
-.ic-sh { animation: ic-lock 3s ease-in-out infinite; } @keyframes ic-lock { 0%, 55%, 100% { transform: translateY(0); } 70%, 85% { transform: translateY(-1.6px); } }
+.dm svg .ic-w path, .dm svg .ic-w circle { stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ic-lg { transform-origin: 7.3px 9.8px; animation: ic-sw .9s ease-in-out infinite alternate; } .ic-lg.b { animation-direction: alternate-reverse; }
+.ic-ar { transform-origin: 8.1px 6.1px; animation: ic-sw .9s ease-in-out infinite alternate-reverse; } .ic-ar.b { animation-direction: alternate; }
+@keyframes ic-sw { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+.ic-gr { stroke-dasharray: 1 2; stroke-linecap: round !important; animation: ic-run .6s linear infinite; opacity: .7; }
 .ic-dr { animation: ic-drip 1.4s ease-in infinite; } @keyframes ic-drip { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translateY(5px); opacity: 0; } }
-.ic-c { animation: ic-on 2.4s steps(1) infinite; } .ic-c.c2 { animation-delay: .4s; } .ic-c.c3 { animation-delay: .8s; } @keyframes ic-on { 0% { opacity: .15; } 20%, 80% { opacity: 1; } 95% { opacity: .15; } }
-.ic-rail { stroke-dasharray: 2 2; animation: ic-run .5s linear infinite; } @keyframes ic-run { to { stroke-dashoffset: 4; } }
-.ic-sg { animation: ic-on 2.4s steps(1) infinite; } .ic-sg.s2 { animation-delay: .3s; } .ic-sg.s3 { animation-delay: .6s; } .ic-sg.s4 { animation-delay: .9s; }
+.ic-rail { stroke-dasharray: 2 2; animation: ic-run .5s linear infinite; } @keyframes ic-run { to { stroke-dashoffset: 3; } }
 @media (prefers-reduced-motion: reduce) { .dm svg * { animation: none !important; } }
 .dpair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; } .dpair > * { min-width: 0; } .dpair .lock, .dpair .blur, .dpair .dcard { height: 100%; }
 .dpair .dk { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dpair .dch h3 { font-size: var(--t-h3); } .dpair .dsc b { font-size: var(--t-h2); }
@@ -4300,12 +4301,12 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const pct = (v) => (v > 0 ? '+' : '') + N0(v, 1) + '%';
     const vsC = (z) => { const d = (z.price / CCS.price - 1) * 100; return pct(d) + ' ' + L('vs. Caracas', 'vs. Caracas'); };
     const IC = {
-      walk: '<rect class="ic-ft" x="3.5" y="6" width="3.5" height="6" rx="1.2"/><rect class="ic-ft b" x="9" y="3" width="3.5" height="6" rx="1.2"/>',
-      safe: '<rect x="3" y="7" width="10" height="7.5" rx="1.5"/><path class="ic-sh" d="M5.5 7V4.8a2.5 2.5 0 0 1 5 0V7"/><rect class="f" x="7.3" y="9.6" width="1.4" height="2.4"/>',
+      walk: '<g class="ic-w"><circle cx="8.8" cy="2.2" r="1.8"/><path d="M8.4 5 7.3 9.8"/><path class="ic-ar" d="M8.1 6.1 10.9 8.6"/><path class="ic-ar b" d="M8.1 6.1 5.3 8.4"/><path class="ic-lg" d="M7.3 9.8 10.2 14.2"/><path class="ic-lg b" d="M7.3 9.8 4.5 14.3"/></g><path class="ic-gr" d="M0.5 15.6h15"/>',
+      safe: '<path d="M8 1.5 13.5 3.5v4.2c0 3.3-2.3 5.7-5.5 6.8-3.2-1.1-5.5-3.5-5.5-6.8V3.5z"/><path d="M5.6 8 7.3 9.7 10.6 6.3"/>',
       water: '<path d="M1.5 5.5h7.5v2.5"/><path d="M4.5 2.5v3M3 2.5h3"/><rect class="f ic-dr" x="8.1" y="9.2" width="1.8" height="1.8" rx=".5"/><path d="M5.5 14.5h7" opacity=".45"/>',
-      power: '<rect x="1.5" y="4.5" width="11.5" height="7" rx="1.5"/><path d="M14.5 7v2"/><rect class="f ic-c" x="3.2" y="6.2" width="2.2" height="3.6"/><rect class="f ic-c c2" x="6.1" y="6.2" width="2.2" height="3.6"/><rect class="f ic-c c3" x="9" y="6.2" width="2.2" height="3.6"/>',
+      power: '<rect x="1.5" y="4.5" width="11.5" height="7" rx="1.5"/><path d="M14.5 7v2"/><rect class="f" x="3.2" y="6.2" width="2.2" height="3.6"/><rect class="f" x="6.1" y="6.2" width="2.2" height="3.6"/><rect class="f" x="9" y="6.2" width="2.2" height="3.6"/>',
       metro: '<rect x="3.5" y="1.5" width="9" height="10" rx="2"/><path d="M3.5 6.5h9"/><rect class="f" x="5.3" y="8.3" width="1.4" height="1.4"/><rect class="f" x="9.3" y="8.3" width="1.4" height="1.4"/><path class="ic-rail" d="M0.5 14.5h15"/>',
-      net: '<rect class="f ic-sg" x="1.5" y="10.5" width="2.4" height="3.5"/><rect class="f ic-sg s2" x="5.3" y="8" width="2.4" height="6"/><rect class="f ic-sg s3" x="9.1" y="5.2" width="2.4" height="8.8"/><rect class="f ic-sg s4" x="12.9" y="2" width="2.4" height="12"/>'
+      net: '<rect class="f" x="1.5" y="10.5" width="2.4" height="3.5"/><rect class="f" x="5.3" y="8" width="2.4" height="6"/><rect class="f" x="9.1" y="5.2" width="2.4" height="8.8"/><rect class="f" x="12.9" y="2" width="2.4" height="12"/>'
     };
     const meter = (ic, lab, v, txt) => { const x = Math.max(0, Math.min(100, v)) / 10; return `<div class="dm"><svg viewBox="0 0 16 16" aria-hidden="true">${IC[ic]}</svg><span>${lab}</span><span>${txt}</span><span class="seg" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<u><b style="width:${Math.round(Math.max(0, Math.min(1, x - i)) * 100)}%"></b></u>`).join('')}</span></div>`; };
     const opts = (sel) => Z.slice().sort((a, b) => a.n.localeCompare(b.n, 'es')).map((z) => `<option value="${esc(z.n)}"${z.n === sel ? ' selected' : ''}>${esc(z.n)}${z.m && z.m !== z.n ? ' · ' + esc(z.m) : ''}</option>`).join('');
