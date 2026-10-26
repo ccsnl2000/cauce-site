@@ -3413,7 +3413,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       if (el.getAttribute(a) !== want) el.setAttribute(a, want);
     }));
     $$('.tog button[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
-    $$('.lang .cur').forEach((c) => { c.textContent = lang.toUpperCase(); });
+    $$('.lang .cur').forEach((c) => { const t = lang.toUpperCase(); if (c.textContent !== t) c.textContent = t; });
     applying = false;
   }
   $$('.tog button[data-lang]').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); if (typeof user !== 'undefined' && user) { syncPerfil(); if (acctRow && acctRow._hi && current === 'entrar') acctRow._hi(); } }));
