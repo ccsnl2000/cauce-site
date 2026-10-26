@@ -438,6 +438,19 @@ body.auth header.top, body.auth footer { display: none; }
 .acct-go a:hover svg { transform: translateX(4px); }
 .acct-perfil summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
 .acct-perfil summary::-webkit-details-marker { display: none; }
+.acct-hd { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 20px; align-items: center; }
+.acct-who { display: grid; gap: 4px; min-width: 0; }
+.acct-who .acct-h { overflow-wrap: anywhere; }
+.acct-role { font-size: var(--t-sm); color: var(--ink); }
+.acct-perfil > summary { display: none; }
+.acct-perfil { border-top: 1px solid var(--line); padding-top: 18px; }
+.acct-perfil:not([open]) { display: none; }
+#ac-edit { align-self: start; cursor: pointer; background: transparent; font: inherit; font-size: var(--t-sm); }
+#ac-edit .cl, #ac-edit[aria-expanded=true] .ed { display: none; } #ac-edit[aria-expanded=true] .cl { display: inline; }
+#ac-edit[aria-expanded=true] svg { transform: rotate(180deg); }
+.idc { width: 136px; flex: none; }
+.idc svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 10px 24px rgba(27,26,24,.12)); }
+@media (max-width: 560px) { .acct-hd { grid-template-columns: auto minmax(0, 1fr); } #ac-edit { grid-column: 1 / -1; justify-self: start; } .idc { width: 104px; } }
 .pf-tog { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; color: var(--ink); white-space: nowrap; }
 .pf-tog svg { transition: transform .2s var(--ease); } .acct-perfil[open] .pf-tog svg { transform: rotate(180deg); }
 .pf-tog .cl, .acct-perfil[open] .pf-tog .ed { display: none; } .acct-perfil[open] .pf-tog .cl { display: inline; }
@@ -908,7 +921,14 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
       <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
     </form>
     <div class="acct" id="a-acct" hidden>
-      <div class="acct-hi"><p class="acct-h">Tu cuenta</p><p class="sm" id="ac-email"></p></div>
+      <div class="acct-hd"><div class="idc" id="ac-idc" aria-hidden="true"></div><div class="acct-who"><p class="acct-h" id="ac-name">Tu cuenta</p><p class="acct-role" id="ac-role"></p><p class="sm" id="ac-email"></p></div><button type="button" class="pf-tog" id="ac-edit" aria-expanded="false" aria-controls="ac-perfil"><span class="ed">Editar</span><span class="cl">Cerrar</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></div>
+      <details class="acct-perfil" id="ac-perfil">
+        <summary hidden><span id="ac-perfil-sum"></span></summary>
+        <p class="sm" style="margin:14px 0 10px">Nos ayuda a elegir qué datos y estudios mostrarte primero.</p>
+        <div class="chips" role="group" aria-label="Qué te trae a Cauce"><button type="button" class="chip" aria-pressed="false" data-ap="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-ap="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-ap="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-ap="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-ap="otro">Otro</button></div>
+        <div class="acct-fields"><label><span class="lab">Nombre *</span><input id="ac-nombre" type="text" autocomplete="given-name" required></label><label><span class="lab">Apellido *</span><input id="ac-apellido" type="text" autocomplete="family-name" required></label></div><div class="pf" id="ac-pf"></div>
+        <div class="acct-row" style="margin-top:14px"><span class="sm" id="ac-saved" aria-live="polite"></span><button type="button" class="btn o" id="ac-save">Guardar</button></div>
+      </details>
       <div class="acct-plan" id="ac-card">
         <div class="acct-row"><span class="lab">Tu plan</span><span class="acct-badge" id="ac-status"></span></div>
         <p class="acct-name" id="ac-plan"></p>
@@ -922,13 +942,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
         <a href="#guia"><b>Guía para inversionistas extranjeros</b><span class="sm">Siete capítulos, paso a paso</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
         <a href="#planes" data-plan="consulta"><b>Llamada de diagnóstico</b><span class="sm">45 minutos con el equipo · $149</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
       </nav>
-      <details class="acct-perfil">
-        <summary><span><b>Tu perfil</b> <span class="sm" id="ac-perfil-sum"></span></span><span class="sm pf-tog"><span class="ed">Editar</span><span class="cl">Cerrar</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span></summary>
-        <p class="sm" style="margin:14px 0 10px">Nos ayuda a elegir qué datos y estudios mostrarte primero.</p>
-        <div class="chips" role="group" aria-label="Qué te trae a Cauce"><button type="button" class="chip" aria-pressed="false" data-ap="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-ap="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-ap="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-ap="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-ap="otro">Otro</button></div>
-        <div class="acct-fields"><label><span class="lab">Nombre *</span><input id="ac-nombre" type="text" autocomplete="given-name" required></label><label><span class="lab">Apellido *</span><input id="ac-apellido" type="text" autocomplete="family-name" required></label></div><div class="pf" id="ac-pf"></div>
-        <div class="acct-row" style="margin-top:14px"><span class="sm" id="ac-saved" aria-live="polite"></span><button type="button" class="btn o" id="ac-save">Guardar</button></div>
-      </details>
+
       <div class="acct-row acct-foot"><button type="button" id="ac-out">Cerrar sesión</button><a href="mailto:hola@cauce.blog">¿Ayuda? hola@cauce.blog</a></div>
     </div>
     <div class="auth-done" id="a-done" hidden><p class="big" id="d-title"></p><p class="sm" id="d-text"></p><div class="auth-row" style="justify-content:flex-start;gap:16px"><a class="btn" id="d-btn" href="#mercado"></a><button type="button" class="alt" id="d-out" hidden>Salir</button></div></div>
@@ -3598,11 +3612,56 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const fmtDate = (d) => new Date(d).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-VE', { day: 'numeric', month: 'long', year: 'numeric' });
   const PERFIL_ES = {}; $$('#f-perfil [data-perfil]').forEach((b) => { PERFIL_ES[b.dataset.perfil] = b.textContent; });
   let acctRow = {};
+  /* account header: name, role line and a small member card drawn from the profile */
+  const URB = { 'Altamira': 'Chacao', 'Los Palos Grandes': 'Chacao', 'La Castellana': 'Chacao', 'Campo Alegre': 'Chacao', 'El Rosal': 'Chacao', 'Country Club': 'Chacao', 'Chacao': 'Chacao',
+    'Bello Monte': 'El Recreo', 'La Florida': 'El Recreo', 'San Bernardino': 'San Bernardino', 'Sebucán': 'Leoncio Martínez', 'Los Dos Caminos': 'Leoncio Martínez',
+    'Las Mercedes': 'Baruta', 'Chuao': 'Baruta', 'Colinas de Bello Monte': 'Baruta', 'La Trinidad': 'Baruta', 'Prados del Este': 'Baruta', 'Santa Fe': 'Baruta', 'Valle Arriba': 'Baruta',
+    'El Cafetal': 'El Cafetal', 'Los Naranjos': 'El Cafetal', 'El Hatillo': 'El Hatillo', 'La Boyera': 'El Hatillo', 'La Lagunita': 'El Hatillo' };
+  let IDGEO = null;
+  function idGeo() {
+    if (IDGEO) return IDGEO;
+    const rings = (c, out) => { if (typeof c[0][0] === 'number') out.push(c); else c.forEach((x) => rings(x, out)); return out; };
+    const P = GEO.p.map((f) => ({ n: f.n, r: rings(f.c, []) }));
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; P.forEach((f) => f.r.forEach((r) => r.forEach(([x, y]) => { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); })));
+    const W = 104, H = 70, k = Math.min(W / ((x1 - x0) * Math.cos(10.5 * Math.PI / 180)), H / (y1 - y0)), ox = (W - (x1 - x0) * Math.cos(10.5 * Math.PI / 180) * k) / 2, oy = (H - (y1 - y0) * k) / 2;
+    const pt = ([x, y]) => (ox + (x - x0) * Math.cos(10.5 * Math.PI / 180) * k).toFixed(1) + ' ' + (oy + (y1 - y) * k).toFixed(1);
+    IDGEO = P.map((f) => ({ n: f.n, d: f.r.map((r) => { const st = Math.max(1, Math.floor(r.length / 60)); return 'M' + r.filter((_, i) => i % st === 0).map(pt).join('L') + 'Z'; }).join('') }));
+    return IDGEO;
+  }
+  function renderHead() {
+    const r = acctRow, en = lang === 'en', tr1 = (t) => (en && EN[t]) || t;
+    const full = [r.nombre, r.apellido].filter(Boolean).join(' ');
+    $('#ac-name').textContent = full || (en ? 'Your account' : 'Tu cuenta');
+    const abroad = r.pais && r.pais !== 'VE';
+    const role = [r.perfil && tr1(PERFIL_ES[r.perfil] || ''), r.empresa, r.pais && (abroad ? (en ? 'based in ' : 'desde ') + country(r.pais) : country(r.pais))].filter(Boolean).join(' · ');
+    $('#ac-role').textContent = role; $('#ac-perfil-sum').textContent = role;
+    // member card
+    const zones = Array.isArray(r.zonas) ? r.zonas : [], par = new Set(zones.map((z) => URB[z] || z));
+    const extra = zones.filter((z) => !URB[z] && !GEO.p.some((f) => f.n === z));
+    let seed = 0; for (const ch of (r.nombre || '') + (r.perfil || '')) seed = (seed * 31 + ch.charCodeAt(0)) >>> 0;
+    const tint = MPAL[seed % MPAL.length];
+    let art = '';
+    try { art = idGeo().map((f, i) => `<path d="${f.d}" fill="${par.has(f.n) ? MPAL[(i * 5 + seed) % MPAL.length] : 'none'}" stroke="#1B1A18" stroke-opacity="${par.has(f.n) ? .55 : .22}" stroke-width=".5"/>`).join(''); } catch (e) {}
+    const PR = { particular: ['Particular', 'Buyer'], agente: ['Agente', 'Agent'], inmobiliaria: ['Inmobiliaria', 'Agency'], 'inv-local': ['Inversionista', 'Investor'], 'inv-int': ['Inversionista', 'Investor'], desarrollador: ['Desarrollador', 'Developer'], otro: ['Lector', 'Reader'] };
+    const label = (PR[r.perfil] || ['Lector', 'Reader'])[en ? 1 : 0].toUpperCase();
+    const where = abroad ? (en ? 'ABROAD · ' : 'EXTERIOR · ') + r.pais : par.size ? [...par][0].toUpperCase() + (par.size > 1 ? ' +' + (par.size - 1) : '') : extra.length ? extra[0].toUpperCase() : 'CARACAS';
+    const since = r.created_at ? new Date(r.created_at).toLocaleDateString(en ? 'en-US' : 'es-VE', { month: 'short', year: 'numeric' }).replace('.', '').toUpperCase() : '';
+    const first = (r.nombre || (en ? 'Reader' : 'Lector')).trim().split(/\s+/)[0];
+    $('#ac-idc').innerHTML = `<svg viewBox="0 0 120 160" role="img"><rect x=".5" y=".5" width="119" height="159" rx="9" fill="#FAF8F5" stroke="#DCD6CC"/>
+      <rect x="8" y="8" width="104" height="74" rx="5" fill="${tint}" fill-opacity=".14"/><g transform="translate(8 10)">${art}</g>
+      ${extra.length && !abroad ? `<text x="108" y="78" text-anchor="end" font-size="5.5" fill="#6B675F" font-family="HND, Helvetica, Arial">+ ${esc(extra.slice(0, 2).join(', '))}</text>` : ''}
+      <text x="10" y="104" font-size="15" font-weight="800" letter-spacing="-.6" fill="#1B1A18" font-family="HND, Helvetica, Arial">${esc(first.slice(0, 12))}</text>
+      <text x="10" y="116" font-size="6.5" letter-spacing=".5" fill="#6B675F" font-family="HND, Helvetica, Arial">${esc(label)}</text>
+      <text x="10" y="125" font-size="6.5" letter-spacing=".5" fill="#1B1A18" font-family="HND, Helvetica, Arial">${esc(where.slice(0, 26))}</text>
+      <g font-family="HND, Helvetica, Arial" font-size="5.5" font-weight="700" fill="#1B1A18"><rect x="10" y="140" width="72" height="11" rx="2" fill="none" stroke="#1B1A18" stroke-width=".7"/>
+      <text x="14" y="147.6">cauce</text><rect x="33" y="140" width="9" height="11" fill="url(#hatch)"/><line x1="33" y1="140" x2="33" y2="151" stroke="#1B1A18" stroke-width=".7"/><line x1="42" y1="140" x2="42" y2="151" stroke="#1B1A18" stroke-width=".7"/><text x="46" y="147.6">${esc(since)}</text></g>
+      <defs><pattern id="hatch" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2" stroke="#1B1A18" stroke-width=".6"/></pattern></defs></svg>`;
+  }
   async function account() {
     ['#f-auth', '#f-perfil', '#a-done', '#v-entrar .auth-tabs', '#v-entrar .auth-note'].forEach((q) => { $(q).hidden = true; });
     $('#a-acct').hidden = false; $('#v-entrar .auth-hello').textContent = 'Hola de nuevo.';
     $('#ac-email').textContent = user.email;
-    try { const c = await sb(), r = await c.from('profiles').select('plan, plan_status, renews_at, cancel_at_period_end, perfil, pais, zonas, nombre, apellido, presupuesto, plazo, objetivos, empresa, asesores, contacto, whatsapp, acepta_contacto').eq('id', user.id).single(); acctRow = r.data || {}; } catch (e) { acctRow = {}; }
+    try { const c = await sb(), r = await c.from('profiles').select('plan, plan_status, renews_at, cancel_at_period_end, perfil, pais, zonas, nombre, apellido, presupuesto, plazo, objetivos, empresa, asesores, contacto, whatsapp, acepta_contacto, created_at').eq('id', user.id).single(); acctRow = r.data || {}; } catch (e) { acctRow = {}; }
     const r = acctRow, paid = r.plan === 'inteligencia', late = r.plan_status === 'past_due', ending = paid && r.cancel_at_period_end;
     $('#ac-plan').textContent = paid ? 'Inteligencia' : 'Boletín';
     const st = $('#ac-status'); st.className = 'acct-badge' + (late || ending ? ' warn' : '');
@@ -3618,20 +3677,28 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     // profile
     $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.ap === r.perfil)));
     $('#ac-nombre').value = r.nombre || ''; $('#ac-apellido').value = r.apellido || ''; pfSet($('#ac-pf'), r);
-    const hi = () => { const n = (acctRow.nombre || '').split(' ')[0]; $('#v-entrar .auth-hello').textContent = (lang === 'en' ? 'Welcome back' : 'Hola de nuevo') + (n ? ', ' + n : '') + '.'; }; hi(); acctRow._hi = hi;
+    const hi = () => {
+      const n = (acctRow.nombre || '').trim().split(/\s+/)[0];
+      const G = lang === 'en' ? ['Welcome back', 'Hey', 'Good to see you', 'What’s new', 'Hi again'] : ['Hola de nuevo', 'Épale', '¿Qué más', '¿Cómo va todo', 'Qué bueno verte'];
+      let i = 0; try { i = +sessionStorage.getItem('cauce-hi'); if (!sessionStorage.getItem('cauce-hi')) { i = Math.floor(Math.random() * G.length); sessionStorage.setItem('cauce-hi', String(i)); } } catch (e) {}
+      const g = G[i % G.length], q = g.endsWith('?') || g.startsWith('¿') || g.startsWith('What');
+      $('#v-entrar .auth-hello').textContent = g + (n ? ', ' + n : '') + (q ? '?' : '.');
+    }; hi(); acctRow._hi = hi;
     $('#ac-perfil-sum').textContent = [PERFIL_ES[r.perfil], r.empresa, r.pais && country(r.pais)].filter(Boolean).join(' · ');
-    if (!r.nombre || !r.apellido) $('.acct-perfil').open = true;
+    const opn = !r.nombre || !r.apellido; $('#ac-perfil').open = opn; $('#ac-edit').setAttribute('aria-expanded', String(opn));
+    renderHead();
     $('#ac-saved').textContent = '';
     applyLang();
   }
   $$('#a-acct [data-ap]').forEach((c) => c.addEventListener('click', () => { $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); pfMode($('#ac-pf'), c.dataset.ap); }));
+  $('#ac-edit').addEventListener('click', () => { const d = $('#ac-perfil'), o = !d.open; d.open = o; $('#ac-edit').setAttribute('aria-expanded', String(o)); if (o) d.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
   $('#ac-save').addEventListener('click', async () => {
     const pressed = $('#a-acct [data-ap][aria-pressed=true]');
     const row = { perfil: pressed ? pressed.dataset.ap : null, nombre: $('#ac-nombre').value.trim(), apellido: $('#ac-apellido').value.trim(), ...pfGet($('#ac-pf')) };
     if (row.contacto === 'whatsapp' && !row.whatsapp) { $('#ac-saved').textContent = 'Escribe tu número de WhatsApp.'; $('#ac-pf [data-f=whatsapp]').focus(); applyLang(); return; }
     if (!row.nombre || !row.apellido) { $('#ac-saved').textContent = 'Escribe tu nombre y apellido.'; (!row.nombre ? $('#ac-nombre') : $('#ac-apellido')).focus(); applyLang(); return; }
     $('#ac-saved').textContent = 'Guardando…';
-    try { const c = await sb(), r = await c.from('profiles').update(row).eq('id', user.id); if (r.error) throw r.error; savePerfil(row); acctRow.nombre = row.nombre; if (acctRow._hi) acctRow._hi(); $('#ac-saved').textContent = 'Guardado.'; $('#ac-perfil-sum').textContent = [PERFIL_ES[row.perfil], row.empresa, row.pais && country(row.pais)].filter(Boolean).join(' · '); }
+    try { const c = await sb(), r = await c.from('profiles').update(row).eq('id', user.id); if (r.error) throw r.error; savePerfil(row); Object.assign(acctRow, row); renderHead(); if (acctRow._hi) acctRow._hi(); $('#ac-saved').textContent = 'Guardado.'; $('#ac-perfil-sum').textContent = [PERFIL_ES[row.perfil], row.empresa, row.pais && country(row.pais)].filter(Boolean).join(' · '); }
     catch (e) { $('#ac-saved').textContent = 'No se pudo guardar. Inténtalo de nuevo.'; }
     applyLang();
   });
