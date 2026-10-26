@@ -66,6 +66,13 @@ for e in els:
     if key in seen: continue
     seen.add(key)
     out.append({"n": n, "c": cat_of(t), "x": round(lon, 5), "y": round(lat, 5), **({"w": t["wikidata"]} if t.get("wikidata") else {})})
+# names everyone uses that OSM files under another feature; placed at that feature
+ALIAS = [("Complejo Parque Central", "hitos", "Torre Este"), ("Ciudad Universitaria de Caracas (UNESCO)", "hitos", "Universidad Central de Venezuela")]
+EXCLUDE = {"automercados plaza's", "tire center los próceres"}
+out = [x for x in out if x["n"].lower() not in EXCLUDE]
+for n, c, at in ALIAS:
+    ref = next((x for x in out if x["n"] == at), None)
+    if ref and n.lower() not in seen: out.append({"n": n, "c": c, "x": ref["x"], "y": ref["y"]}); seen.add(n.lower())
 out.sort(key=lambda p: (p["c"], p["n"]))
 p = pathlib.Path(__file__).resolve().parent.parent / "data" / "landmarks.json"
 if missing and p.exists():
