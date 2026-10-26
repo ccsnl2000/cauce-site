@@ -532,7 +532,7 @@ body.auth header.top, body.auth footer { display: none; }
 .rnotes { display: grid; gap: 12px; margin-top: 18px; } .rnotes p { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; font-size: var(--t-sm); color: var(--soft); } .rnotes b { color: var(--ink); }
 .intake { max-width: 760px; margin: 0 auto; padding-top: 48px; display: grid; gap: 14px; } .intake h1 { margin: 4px 0 0; } .intake .qb { margin-top: 18px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
 .qis { display: grid; gap: 8px; } .qi { display: flex; gap: 12px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; cursor: pointer; } .qi:has(input:checked) { border-color: var(--ink); } .qi input { margin-top: 4px; accent-color: var(--ink); } .qi span { display: grid; gap: 2px; }
-.q { border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 0; background: var(--card); display: grid; gap: 12px; } .q legend { display: contents; } .q legend b { display: block; font-size: var(--t-body); } .q .qn { font-style: normal; color: var(--soft); } .q legend .sm { display: block; font-style: italic; }
+.intake .q { border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 0; background: var(--card); display: grid; gap: 12px; } .intake .q legend { display: contents; } .intake .q legend b { display: block; font-size: var(--t-body); } .intake .q .qn { font-style: normal; color: var(--soft); } .intake .q legend .sm { display: block; font-style: italic; }
 .q.miss { border-color: #B4533C; } .qo { display: flex; flex-wrap: wrap; gap: 8px; } .qo button { font: 500 var(--t-sm) var(--sans); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; } .qo button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .qgo { justify-self: start; margin-top: 8px; }
 .plan ul li b { font-weight: 700; }
@@ -669,9 +669,12 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap.lt .maplibregl-ctrl-icon { filter: none; }
 .cmap .mpulse::after { border-color: var(--m-ink); }
 .cmap .maplibregl-marker:has(.mlab) { pointer-events: none; }
-.mtip { position: absolute; z-index: 3; pointer-events: none; background: #fff; color: #111; border-radius: 3px; padding: 10px 12px; min-width: 170px; box-shadow: 0 10px 30px rgba(0,0,0,.45); font-size: var(--t-xs); display: grid; gap: 3px; }
+.mtip { position: absolute; z-index: 3; pointer-events: none; background: #fff; color: #111; border-radius: 14px; padding: 12px 14px; min-width: 170px; box-shadow: 0 10px 30px rgba(0,0,0,.45); font-size: var(--t-xs); display: grid; gap: 3px; }
 .mtip .q { font-size: var(--t-micro); letter-spacing: .12em; color: #888; text-transform: uppercase; } .mtip b { font-size: var(--t-sm); } .mtip .row { display: flex; justify-content: space-between; gap: 14px; color: #444; }
 .mtip .bar { height: 3px; border-radius: 1px; margin-top: 2px; }
+.mtip.pin { pointer-events: auto; padding-top: 0; z-index: 6; min-width: 210px; } .mtip .tbar { display: none; }
+.mtip.pin .tbar { display: flex; justify-content: flex-end; align-items: center; margin: 0 -14px 4px; padding: 6px 8px 2px 14px; cursor: grab; touch-action: none; user-select: none; } .mtip.pin .tbar::before { content: ""; width: 26px; height: 3px; border-radius: 3px; background: #ddd; margin-right: auto; margin-left: calc(50% - 27px); }
+.mtip.pin.drag .tbar { cursor: grabbing; } .mtip .tbar button { width: 26px; height: 26px; border: 0; border-radius: 50%; background: #f1eee9; color: #111; font-size: 15px; line-height: 1; cursor: pointer; display: grid; place-items: center; } .mtip .tbar button:hover { background: #e3ded5; }
 .mlock { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; background: rgba(20,20,20,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .mlock > div { background: #f2f0ec; color: #111; border-radius: 16px; padding: 22px; max-width: 340px; display: grid; gap: 10px; text-align: center; }
 .mlock .btn { justify-self: center; } .mlock button.x { background: none; border: 0; font: inherit; font-size: var(--t-sm); color: #666; cursor: pointer; }
@@ -4279,19 +4282,41 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         hovO = hoverDot('offers', o ? o.id : null, hovO); hovS = map.getSource('mst') ? hoverDot('mst', st ? st.id : null, hovS) : null;
         const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0];
         setHover(z); map.getCanvas().style.cursor = z || o || st ? 'pointer' : '';
+        if (tip.classList.contains('pin')) return;
         if (st && !o) { tip.hidden = true; return; }
         if (o) tip.innerHTML = `<span class="q">Propiedad en Cauce · ejemplo</span><b>${esc(o.properties.t)}</b><div class="row"><span>${N0(o.properties.a)} m²</span><span>${FMT.usd(o.properties.p)}</span></div>`;
         else if (z) tip.innerHTML = `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>` : '');
         tip.hidden = !(o || z); if (!tip.hidden) { applyLang(); place(e); }
       });
-      map.on('mouseout', () => { setHover(null); hovO = hoverDot('offers', null, hovO); if (map.getSource('mst')) hovS = hoverDot('mst', null, hovS); tip.hidden = true; });
+      map.on('mouseout', () => { setHover(null); hovO = hoverDot('offers', null, hovO); if (map.getSource('mst')) hovS = hoverDot('mst', null, hovS); if (!tip.classList.contains('pin')) tip.hidden = true; });
       map.on('click', (e) => {
         if (!ready) return;
         const st = map.getLayer('mst') && map.queryRenderedFeatures(e.point, { layers: ['mst'] })[0];
         if (st) { stationCard(st); return; }
-        const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0]; if (!z) return;
+        const o = map.queryRenderedFeatures(e.point, { layers: ['offers'] })[0];
+        const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0]; if (!z) { unpin(); return; }
+        pin(e, o, z);
         const f = ZN[scale][z.id]; const b = bboxOf(f.c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: full ? 60 : 30, maxZoom: 16, duration: reduce ? 0 : 900 }); resetB.hidden = false; if (full) { select(z.id); document.dispatchEvent(new CustomEvent('cauce-zone', { detail: { n: f.n, s: scale } })); }
       });
+      // clicked bubble: stays open, closes with ×, Esc or a click on empty map; drag it by its top bar
+      function tipHTML(o, z) { return o ? `<span class="q">Propiedad en Cauce · ejemplo</span><b>${esc(o.properties.t)}</b><div class="row"><span>${N0(o.properties.a)} m²</span><span>${FMT.usd(o.properties.p)}</span></div>`
+        : `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>` : ''); }
+      function pin(e, o, z) {
+        tip.innerHTML = `<div class="tbar"><button type="button" aria-label="${lang === 'en' ? 'Close' : 'Cerrar'}">×</button></div>` + tipHTML(o, z);
+        tip.classList.add('pin'); tip.hidden = false; applyLang(); place(e);
+        $('.tbar button', tip).addEventListener('click', (ev) => { ev.stopPropagation(); unpin(); });
+        const bar = $('.tbar', tip);
+        bar.addEventListener('pointerdown', (ev) => {
+          if (ev.target.closest('button')) return; ev.preventDefault(); bar.setPointerCapture(ev.pointerId); tip.classList.add('drag');
+          const sx = ev.clientX, sy = ev.clientY, l0 = tip.offsetLeft, t0 = tip.offsetTop;
+          const mv = (m) => { tip.style.left = Math.max(0, Math.min(root.clientWidth - tip.offsetWidth, l0 + m.clientX - sx)) + 'px'; tip.style.top = Math.max(0, Math.min(root.clientHeight - tip.offsetHeight, t0 + m.clientY - sy)) + 'px'; };
+          const up = () => { tip.classList.remove('drag'); bar.removeEventListener('pointermove', mv); bar.removeEventListener('pointerup', up); };
+          bar.addEventListener('pointermove', mv); bar.addEventListener('pointerup', up);
+        });
+      }
+      function unpin() { tip.classList.remove('pin', 'drag'); tip.hidden = true; }
+      root.addEventListener('keydown', (e) => { if (e.key === 'Escape' && tip.classList.contains('pin')) unpin(); });
+      ['pointerdown', 'mousedown', 'click', 'wheel', 'touchstart'].forEach((ev) => tip.addEventListener(ev, (e) => e.stopPropagation(), { passive: ev === 'wheel' || ev === 'touchstart' }));
       let selId = null; const select = (id) => { if (selId !== null) map.setFeatureState({ source: 'zp', id: selId }, { sel: false }); selId = id; if (id !== null && scale === 'p') map.setFeatureState({ source: 'zp', id }, { sel: true }); };
       root._focus = (n) => { if (!ready) return; if (scale !== 'p') { const b = $('[data-scale="p"]', root); if (b) b.click(); } const id = ZN.p.findIndex((f) => f.n === n); if (id < 0) return; select(id); const b = bboxOf(ZN.p[id].c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 60, maxZoom: 15, duration: reduce ? 0 : 900 }); resetB.hidden = false; };
       map.on('moveend', () => { if (!inited || !home) return; const c = map.getCenter(); resetB.hidden = Math.abs(map.getZoom() - home.zoom) < 0.05 && Math.abs(c.lng - home.center.lng) < 0.002 && Math.abs(c.lat - home.center.lat) < 0.002; });
@@ -4309,7 +4334,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       scale = b.dataset.scale; $$('[data-scale]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
       if (map && ready) { hov = null; ['p', 'm'].forEach((k) => ['fill-', 'line-'].forEach((l) => map.setLayoutProperty(l + k, 'visibility', k === scale ? 'visible' : 'none'))); }
       if (map && map._labsSwap) map._labsSwap();
-      tip.hidden = true;
+      tip.classList.remove('pin', 'drag'); tip.hidden = true;
     }));
     const CTX = { metro: ['metro', 'metro-name', 'mline-case', 'mline', 'mst', 'mst-name'], streets: ['road-name', 'roads-minor'], buildings: ['building', 'building-line'] };
     $$('[data-ctx]', root).forEach((b) => b.addEventListener('click', () => { if (!map || !ready) return; const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', String(on)); CTX[b.dataset.ctx].forEach((id) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none')); }));
