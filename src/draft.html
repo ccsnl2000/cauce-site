@@ -588,7 +588,7 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 @keyframes nudgeup { 50% { transform: translateY(-4px); } }
 .mktw { transition: filter .7s var(--ease), opacity .7s var(--ease); } .mktw.blurred { filter: blur(8px); opacity: .5; pointer-events: none; user-select: none; }
 @keyframes nudge { 50% { transform: translateY(4px); } }
-.abroad { transition: filter .7s var(--ease), opacity .7s var(--ease); padding-bottom: 30vh; }
+.abroad { transition: filter .7s var(--ease), opacity .7s var(--ease); }
 .abroad.blurred { filter: blur(8px); opacity: .5; pointer-events: none; user-select: none; }
 .abroad .secthead { margin-top: 40px; }
 /* the map: solid translucent zones over a grayscale OSM base, as in the reference */
@@ -893,19 +893,6 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price">Cotización<small> según tus necesidades</small></div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>Atención uno a uno</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Un estudio es el análisis completo de un inmueble o terreno: precio frente a su zona, rendimiento y riesgos. Precios de prueba, en US$. Sin comisión por ventas. Cancela cuando quieras.</p>
-  <div class="pcmp"><h3>Compara los planes</h3><div class="pcmp-w"><table><thead><tr><th></th><th>Boletín<small>$0</small></th><th>Básico<small>$10/mes</small></th><th class="hi">Pro<small>$50/mes</small></th><th>A medida<small>Cotización</small></th></tr></thead><tbody>
-    <tr><th scope="row">Estudios completos</th><td>1 de regalo</td><td>2 por semana</td><td class="hi">12 por semana</td><td>Los que necesites</td></tr>
-    <tr><th scope="row">Costo por estudio</th><td><span class="no" aria-label="No">—</span></td><td>$1,15</td><td class="hi">$0,96</td><td>Según volumen</td></tr>
-    <tr><th scope="row">Cifras de la semana, cada jueves</th><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
-    <tr><th scope="row">Ficha de cada zona: precio, cierres, servicios y seguridad</th><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
-    <tr><th scope="row">Ranking de zonas</th><td>Top 10</td><td>Top 10</td><td class="hi">Completo</td><td>Completo</td></tr>
-    <tr><th scope="row">Comparar dos zonas lado a lado</th><td><span class="no" aria-label="No">—</span></td><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
-    <tr><th scope="row">Tendencias de precio y cierres, 24 meses</th><td><span class="no" aria-label="No">—</span></td><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
-    <tr><th scope="row">Descarga de datos en CSV</th><td><span class="no" aria-label="No">—</span></td><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
-    <tr><th scope="row">Inmuebles patrocinados en Cauce</th><td><span class="no" aria-label="No">—</span></td><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="no" aria-label="No">—</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
-    <tr><th scope="row">Estudio de rendimiento para tu proyecto</th><td><span class="no" aria-label="No">—</span></td><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="no" aria-label="No">—</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
-    <tr><th scope="row">Soporte</th><td>Correo</td><td>Correo</td><td class="hi">Correo</td><td>Uno a uno</td></tr>
-  </tbody></table></div></div>
   </div>
   <button class="peek" type="button" id="peek" aria-controls="abroad"><span>Cómo comprar, paso a paso</span><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   <div class="abroad blurred" id="abroad">
@@ -919,6 +906,19 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Precio según el alcance de cada caso. También: traducción de documentos, poderes para comprar a distancia y administración después de la compra.</p>
   </div>
+  <div class="pcmp" style="margin-top:56px"><h3>Compara los planes</h3><div class="pcmp-w"><table><thead><tr><th></th><th>Boletín<small>$0</small></th><th class="hi">Básico<small>$10/mes</small></th><th>Pro<small>$50/mes</small></th><th>A medida<small>Cotización</small></th></tr></thead><tbody>
+    <tr><th scope="row">Estudios completos</th><td>1 de regalo</td><td class="hi">2 por semana</td><td>12 por semana</td><td>Los que necesites</td></tr>
+    <tr><th scope="row">Costo por estudio</th><td><span class="no" aria-label="No">—</span></td><td class="hi">$1,15</td><td>$0,96</td><td>Según volumen</td></tr>
+    <tr><th scope="row">Cifras de la semana, cada jueves</th><td><span class="y" aria-label="Sí">✓</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
+    <tr><th scope="row">Ficha de cada zona: precio, cierres, servicios y seguridad</th><td><span class="y" aria-label="Sí">✓</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
+    <tr><th scope="row">Ranking de zonas</th><td>Top 10</td><td class="hi">Top 10</td><td>Completo</td><td>Completo</td></tr>
+    <tr><th scope="row">Comparar dos zonas lado a lado</th><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="no" aria-label="No">—</span></td><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
+    <tr><th scope="row">Tendencias de precio y cierres, 24 meses</th><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="no" aria-label="No">—</span></td><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
+    <tr><th scope="row">Descarga de datos en CSV</th><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="no" aria-label="No">—</span></td><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
+    <tr><th scope="row">Inmuebles patrocinados en Cauce</th><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="no" aria-label="No">—</span></td><td><span class="no" aria-label="No">—</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
+    <tr><th scope="row">Estudio de rendimiento para tu proyecto</th><td><span class="no" aria-label="No">—</span></td><td class="hi"><span class="no" aria-label="No">—</span></td><td><span class="no" aria-label="No">—</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
+    <tr><th scope="row">Soporte</th><td>Correo</td><td class="hi">Correo</td><td>Correo</td><td>Uno a uno</td></tr>
+  </tbody></table></div></div>
 </section>
 
 <!-- ENTRAR / REGISTRARME -->
