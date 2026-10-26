@@ -800,7 +800,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div><span class="lab">Boletín de los jueves</span><h2>Una cifra, una historia y un terreno. Cada semana.</h2>
       <form class="pillfield nl"><label for="nl1" hidden>Correo</label><input id="nl1" type="email" required placeholder="tu@correo.com"><button class="btn">Unirme</button></form>
       <p class="sm nlmsg" style="margin-top:10px">Gratis. Al unirte, recibes un estudio completo de regalo.</p><div class="perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div></div>
-    <div><span class="lab">Llamada de diagnóstico</span><h2>¿Tienes un inmueble, un terreno o una duda? Revisémoslo juntos.</h2><a class="btn o" href="#planes" data-plan="consulta">Agendar una llamada</a></div>
+    <div><span class="lab">Para agencias, desarrolladores y dueños</span><h2>¿Tienes un inmueble, un terreno o una duda? Revisémoslo juntos.</h2><a class="btn o" href="https://cal.com/cauceblog/quick-chat" target="_blank" rel="noopener" data-charla>Agendar 30 minutos</a></div>
   </div>
 </section>
 
@@ -941,7 +941,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="pcol"><div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado.</p><ul><li><b>1 estudio de regalo</b></li><li>Cifras de la semana, cada jueves</li><li>Ficha de cada zona</li></ul></div><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
     <div class="pcol"><div class="plan" data-plan="inteligencia"><div class="sticker" data-grain="round" data-hex="#BDB8AF,#77736C,#F1EEE9" aria-hidden="true">Popular</div><span class="lab">Inteligencia Básico</span><div class="price">$10<small> /mes</small></div><p class="sm">Para evaluar tu primera compra.</p><ul><li><b>2 estudios por semana</b></li><li>Todo lo del Boletín</li></ul><p class="pps">$1,15 por estudio</p></div><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
     <div class="pcol"><div class="plan" data-plan="pro"><span class="lab">Inteligencia Pro</span><div class="price">$50<small> /mes</small></div><p class="sm">Para comparar antes de decidir.</p><ul><li><b>12 estudios por semana</b></li><li>Comparar zonas lado a lado</li><li>Ranking completo y tendencias de 24 meses</li><li>Datos en CSV</li></ul><p class="pps">$0,96 por estudio</p></div><a class="btn" href="#entrar" data-pick="pro">Suscribirme</a></div>
-    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price quote">Según tus necesidades</div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>1 panel web personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
+    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price quote">Según tus necesidades</div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>1 panel web personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="https://cal.com/cauceblog/quick-chat" target="_blank" rel="noopener" data-charla>Pedir cotización</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Un estudio es el análisis completo de un inmueble o terreno: precio frente a su zona, rendimiento y riesgos. Precios de prueba, en US$. Cancela cuando quieras.</p>
   </div>
@@ -3262,6 +3262,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Descargar la guía': 'Download the guide',
     'Cómo comprar para extranjeros, paso a paso': 'How to buy as a foreigner, step by step', 'Para extranjeros': 'For foreign buyers',
     'Lugares': 'Places',
+    'Para agencias, desarrolladores y dueños': 'For agencies, developers and owners', 'Agendar 30 minutos': 'Book 30 minutes',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -3775,6 +3776,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     } catch (err) { location.href = a.href; }
     finally { a.textContent = old; a.removeAttribute('aria-busy'); }
   });
+  // quick chat for agencies, developers and owners: featured listings, data access, custom studies, A medida. No questionnaire or account needed.
+  const CHARLA = 'cauceblog/quick-chat';
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-charla]'); if (!b) return;
+    e.preventDefault(); track('charla', b.textContent.trim());
+    const config = { layout: 'month_view', locale: lang === 'en' ? 'en' : 'es' };
+    if (user) { config.email = user.email; config['metadata[userId]'] = user.id; const n = [(acctRow && acctRow.nombre) || getPerfil().nombre, (acctRow && acctRow.apellido) || getPerfil().apellido].filter(Boolean).join(' '); if (n) config.name = n; }
+    calLoad().then(() => Cal.ns.consulta('modal', { calLink: CHARLA, config })).catch(() => window.open('https://cal.com/' + CHARLA, '_blank', 'noopener'));
+  }, true);
   // Stripe (test mode). Swap both for the live links when payments go live.
   const PAY_LINK = 'https://buy.stripe.com/test_9B65kDdNm9p3bmLgG7gjC01', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
   const TIER = { inteligencia: ['Básico', 10, PAY_LINK, 'Basic'], pro: ['Pro', 50, '', 'Pro'] };   // add the Stripe links for Pro and Max here
