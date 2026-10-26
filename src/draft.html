@@ -535,7 +535,14 @@ body.auth header.top, body.auth footer { display: none; }
 .q { border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 0; background: var(--card); display: grid; gap: 12px; } .q legend { display: contents; } .q legend b { display: block; font-size: var(--t-body); } .q .qn { font-style: normal; color: var(--soft); } .q legend .sm { display: block; font-style: italic; }
 .q.miss { border-color: #B4533C; } .qo { display: flex; flex-wrap: wrap; gap: 8px; } .qo button { font: 500 var(--t-sm) var(--sans); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; } .qo button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .qgo { justify-self: start; margin-top: 8px; }
-.plan ul li b { font-weight: 700; } .plan .price.quote { font: 700 var(--t-h3)/1.25 var(--sans); letter-spacing: -0.02em; min-height: 41px; display: flex; align-items: flex-end; }
+.plan ul li b { font-weight: 700; }
+.m3hint { position: absolute; left: 50%; bottom: 64px; transform: translateX(-50%); z-index: 6; display: flex; gap: 10px; pointer-events: none; transition: opacity .4s; } .m3hint.out { opacity: 0; }
+.m3hint .h { display: flex; align-items: center; gap: 10px; background: rgba(27,26,24,.82); color: #F1EEE9; font: 500 var(--t-xs)/1.2 var(--sans); padding: 9px 14px 9px 10px; border-radius: 999px; white-space: nowrap; backdrop-filter: blur(6px); }
+.m3hint .ic { width: 26px; height: 26px; display: grid; place-items: center; } .m3hint svg { width: 14px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; } .m3hint svg .b { fill: currentColor; stroke: none; }
+.m3hint .pan .ic svg { animation: m3pan 2s ease-in-out infinite; } .m3hint .orb .ic svg { animation: m3orb 2.4s ease-in-out infinite; }
+@keyframes m3pan { 0%, 100% { transform: translateX(-5px); } 50% { transform: translateX(5px); } } @keyframes m3orb { 0% { transform: rotate(-22deg) translateY(-2px); } 50% { transform: rotate(22deg) translateY(-2px); } 100% { transform: rotate(-22deg) translateY(-2px); } }
+@media (prefers-reduced-motion: reduce) { .m3hint svg { animation: none !important; } }
+@media (max-width: 760px) { .m3hint { flex-direction: column; align-items: center; bottom: 70px; } } .plan .price.quote { font: 700 var(--t-h3)/1.25 var(--sans); letter-spacing: -0.02em; min-height: 41px; display: flex; align-items: flex-end; }
 .plan .pps { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); font: 600 var(--t-xs) var(--sans); color: var(--soft); }
 .pcmp { margin-top: 40px; } .pcmp h3 { font-size: var(--t-h3); letter-spacing: -0.02em; margin-bottom: 14px; } .pcmp-w { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
 .pcmp table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 680px; } .pcmp th, .pcmp td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: center; } .pcmp tr:last-child th, .pcmp tr:last-child td { border-bottom: 0; }
@@ -4203,7 +4210,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         map.addLayer({ id: 'mline', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#1A1B19', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.8, 15, 2], 'line-opacity': 0.55 } }, before);
         map.addLayer({ id: 'mst', type: 'circle', source: 'mst', paint: { 'circle-color': '#1A1B19', 'circle-stroke-color': '#F1EEE9', 'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 1.6],
           'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 2.4], 15, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 5.5]], 'circle-radius-transition': { duration: 150 } } }, before);
-        map.addLayer({ id: 'mst-name', type: 'symbol', source: 'mst', minzoom: 13.5, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-offset': [0, 1.2], 'text-anchor': 'top' }, paint: { 'text-color': '#6B675F', 'text-halo-color': '#F1EEE9', 'text-halo-width': 1.2 } }, before);
+        map.addLayer({ id: 'mst-name', type: 'symbol', source: 'mst', minzoom: 13.5, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-offset': [0, 1.2], 'text-anchor': 'top' }, paint: { 'text-color': '#6B675F', 'text-halo-color': '#F1EEE9', 'text-halo-width': 0.6, 'text-halo-blur': 0.2 } }, before);
         ['metro', 'metro-name'].forEach((id) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', 'none'));
         const mb = $('[data-ctx="metro"]', root); if (mb && mb.getAttribute('aria-pressed') === 'false') ['mline-case', 'mline', 'mst', 'mst-name'].forEach((id) => map.setLayoutProperty(id, 'visibility', 'none'));
       }
@@ -4261,7 +4268,21 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       if (!map || !ready) return; const on = b.dataset.v3 === '1'; $$('[data-v3]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
       map.setLayoutProperty('building-3d', 'visibility', on ? 'visible' : 'none'); on ? map.dragRotate.enable() : map.dragRotate.disable();
       map.easeTo({ pitch: on ? 55 : 0, bearing: on ? -17 : 0, zoom: on ? Math.max(map.getZoom(), 15) : map.getZoom(), duration: reduce ? 0 : 900 });
+      hint3d(on);
     }));
+    // 3D help: how to pan and orbit, gone after 10 seconds or at the first drag
+    function hint3d(on) {
+      let h = $('.m3hint', root); if (h) { clearTimeout(h._t); h.remove(); } if (!on) return;
+      const touch = matchMedia('(hover: none)').matches, en = lang === 'en';
+      const mouse = (side) => `<svg viewBox="0 0 24 34" aria-hidden="true"><rect x="2" y="2" width="20" height="30" rx="10"/><path d="M12 2v11M2 13h20"/><path class="b" d="${side === 'l' ? 'M12 2.6v10.4H2.6V12a9.4 9.4 0 0 1 9.4-9.4z' : 'M12 2.6v10.4h9.4V12A9.4 9.4 0 0 0 12 2.6z'}"/></svg>`;
+      h = document.createElement('div'); h.className = 'm3hint'; h.setAttribute('role', 'note');
+      h.innerHTML = touch
+        ? `<div class="h pan"><span class="ic">${mouse('l')}</span><span>${en ? 'One finger to move' : 'Un dedo para mover'}</span></div><div class="h orb"><span class="ic">${mouse('r')}</span><span>${en ? 'Two fingers to rotate and tilt' : 'Dos dedos para girar e inclinar'}</span></div>`
+        : `<div class="h pan"><span class="ic">${mouse('l')}</span><span>${en ? 'Drag to move' : 'Arrastra para mover'}</span></div><div class="h orb"><span class="ic">${mouse('r')}</span><span>${en ? 'Right-click and drag to orbit' : 'Clic derecho y arrastra para girar'}</span></div>`;
+      root.appendChild(h);
+      const go = () => { h.classList.add('out'); setTimeout(() => h.remove(), 400); };
+      h._t = setTimeout(go, 10000); map.once('dragstart', go); map.once('rotatestart', go);
+    }
     $$('[data-layer]', root).forEach((b) => b.addEventListener('click', () => {
       $$('[data-layer]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); if (!map || !ready) return;
       if (root._paint) root._paint(b.dataset.layer);
