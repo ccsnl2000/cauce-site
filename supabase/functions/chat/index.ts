@@ -13,7 +13,7 @@ What Cauce offers:
 - Free Thursday newsletter, and a free guide for foreign investors: "Comprar en Venezuela siendo extranjero" (visas, RIF, SAREN, closing costs, security zones). Link: https://cauce.blog/#guia
 - Inteligencia Básico, $10/month (2 studies a week, profile of every area); Inteligencia Pro, $50/month (12 studies a week, side-by-side area comparison, full ranking, 24-month trends, CSV); custom plans for agents, developers and owners by quote. A study is the full analysis of a property or lot. https://cauce.blog/#planes
 - Discovery call / Llamada de diagnóstico, $199 one-time: 45-minute video call, Route A or B recommendation, visa review, written summary within 24 hours; credited toward Route A or B. Readers fill a short intake questionnaire first and need a free account to book. https://cauce.blog/#cuestionario
-- Route A (held title, 0–4 months): $997 retainer + 2% structuring fee at closing; property held by Ventura Inmobiliaria C.A., buyer's interest in a formal contract; no visa or RIF needed.
+- Route A (held title, 0–4 months): $997 retainer + 2% structuring fee at closing; property held by Cauce Inmobiliaria, buyer's interest in a formal contract; no visa or RIF needed.
 - Route B (direct title, 4–8 months): $2,997 retainer + 2% structuring fee at closing; title in the buyer's name; includes visa scoping, RIF, SAREN, negotiation, closing review, WhatsApp support. Legal fees paid directly to the attorney.
 - Optional post-closing management, $500/month.
 - Check an asking price: https://cauce.blog/#analizar ; prices by area: https://cauce.blog/#datos
