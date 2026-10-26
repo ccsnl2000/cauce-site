@@ -91,3 +91,6 @@ alter table public.profiles add column if not exists empresa text, add column if
 
 -- Added 26 Oct 2026: public.intakes (questionnaire before a discovery call: interes text[], answers jsonb, user_id, email).
 -- Anyone inserts (saved by the site when a signed-in reader books); admins read. Shown in the panel's Llamadas and person drawer.
+
+-- Added 26 Oct 2026: public.admin_invites (email). is_admin() is true for public.admins OR a confirmed account whose email is invited.
+-- Michelle Bocanegra (a00959936@gmail.com) invited as admin for QA on design, flows and funnels.
