@@ -18,21 +18,23 @@ CATS = {
   "religion":    ("Templos", ['nwr["amenity"="place_of_worship"]["wikidata"]'], True),
 }
 
-def query():
-    parts = []
-    for k, (_, sels, notable) in CATS.items():
-        for s in sels:
-            parts.append(f'{s}["name"]{"[wikidata]" if notable and "[wikidata]" not in s and "embassy" not in s else ""}({BBOX});')
-    return "[out:json][timeout:180];(" + "".join(parts) + ");out center tags;"
+def query(k):
+    _, sels, notable = CATS[k]
+    parts = [f'{s}["name"]{"[wikidata]" if notable and "[wikidata]" not in s else ""}({BBOX});' for s in sels]
+    return "[out:json][timeout:90];(" + "".join(parts) + ");out center tags;"
 
-def get(q):
-    for host in ("https://overpass-api.de/api/interpreter", "https://overpass.private.coffee/api/interpreter", "https://overpass.kumi.systems/api/interpreter"):
-        try:
-            req = urllib.request.Request(host, data=urllib.parse.urlencode({"data": q}).encode(), headers={"User-Agent": "cauce.blog landmarks"})
-            return json.load(urllib.request.urlopen(req, timeout=240))["elements"]
-        except Exception as e:
-            print(f"::warning::overpass failed at {host}: {type(e).__name__}: {e}")
-    print("::error::Could not download landmarks from Overpass"); sys.exit(1)
+HOSTS = ["https://overpass-api.de/api/interpreter", "https://overpass.private.coffee/api/interpreter", "https://maps.mail.ru/osm/tools/overpass/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
+def get(q, label):
+    import time
+    for attempt in range(2):
+        for host in HOSTS:
+            try:
+                req = urllib.request.Request(host, data=urllib.parse.urlencode({"data": q}).encode(), headers={"User-Agent": "cauce.blog landmarks"})
+                return json.load(urllib.request.urlopen(req, timeout=120))["elements"]
+            except Exception as e:
+                print(f"::warning::{label}: {host}: {type(e).__name__}: {e}")
+                time.sleep(3)
+    return None
 
 def cat_of(t):
     g = t.get
@@ -47,7 +49,13 @@ def cat_of(t):
     if g("amenity") == "townhall" or g("office") == "government" or g("government"): return "gobierno"
     return "hitos"
 
-els = get(query())
+els, missing = [], []
+for k in CATS:
+    got = get(query(k), k)
+    if got is None: missing.append(k); continue
+    els += got
+if not els: print("::error::Could not download any landmarks"); sys.exit(1)
+if missing: print("::warning::missing categories: " + ", ".join(missing))
 print(f"::notice::Overpass returned {len(els)} elements")
 seen, out = set(), []
 for e in els:
@@ -59,8 +67,11 @@ for e in els:
     seen.add(key)
     out.append({"n": n, "c": cat_of(t), "x": round(lon, 5), "y": round(lat, 5), **({"w": t["wikidata"]} if t.get("wikidata") else {})})
 out.sort(key=lambda p: (p["c"], p["n"]))
-res = {"cats": {k: v[0] for k, v in CATS.items()}, "places": out}
 p = pathlib.Path(__file__).resolve().parent.parent / "data" / "landmarks.json"
+if missing and p.exists():
+    old = json.loads(p.read_text(encoding="utf-8"))["places"]
+    out += [x for x in old if x["c"] in missing and x["n"].lower() not in seen]
+res = {"cats": {k: v[0] for k, v in CATS.items()}, "places": out}
 p.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 from collections import Counter
 print("::notice::" + ", ".join(f"{k}: {v}" for k, v in Counter(x["c"] for x in out).items()))
