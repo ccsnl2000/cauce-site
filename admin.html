@@ -143,7 +143,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     <div class="scroll"><table class="tbl"><thead><tr><th>Inmueble</th><th>Precio</th><th>Estado</th><th>Destacada</th><th>Patrocinada</th><th>Actualizado</th></tr></thead><tbody id="t-prop"></tbody></table></div>
   </section>
   <section class="panel" data-p="personas" hidden>
-    <div class="tools"><input type="search" id="q" placeholder="Buscar"><select id="f-perfil"><option value="">Perfil</option></select><select id="f-plan"><option value="">Plan</option><option value="inteligencia">Inteligencia</option><option value="boletin">Boletín</option></select><label class="sm"><input type="checkbox" id="f-ok"> Aceptan contacto</label><button class="btn o" id="csv">CSV</button></div>
+    <div class="tools"><input type="search" id="q" placeholder="Buscar"><select id="f-perfil"><option value="">Perfil</option></select><select id="f-plan"><option value="">Plan</option><option value="inteligencia">Básico</option><option value="boletin">Boletín</option></select><label class="sm"><input type="checkbox" id="f-ok"> Aceptan contacto</label><button class="btn o" id="csv">CSV</button></div>
     <div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Perfil</th><th>País</th><th>Busca</th><th>Plan</th><th>Actividad</th><th>Contacto</th><th>Alta</th></tr></thead><tbody id="t-personas"></tbody></table></div>
   </section>
   <section class="panel" data-p="llamadas" hidden>
@@ -284,7 +284,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr data-id="${esc(r.id)}"><td class="t"><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b>${testTag(r)}<span class="sub">${esc(r.email)}</span></td>
       <td>${esc(PERFIL[r.perfil] || '—')}${r.empresa ? `<span class="sub">${esc(r.empresa)}</span>` : ''}</td><td>${esc(country(r.pais))}</td>
       <td class="t">${more([(r.zonas || []).join(', '), [BUD[r.presupuesto], WHEN[r.plazo]].filter(Boolean).join(' · '), (r.objetivos || []).map((o) => OBJ[o] || o).join(', ')].filter(Boolean).join(' · '))}</td>
-      <td>${r.plan === 'inteligencia' ? '<span class="pill ink">Inteligencia</span>' : '<span class="pill">Boletín</span>'}</td>
+      <td>${r.plan === 'inteligencia' ? '<span class="pill ink">Básico</span>' : '<span class="pill">Boletín</span>'}</td>
       <td class="sm">${(() => { const a = ACTV.get(r.id); return a ? `${nf(a.pv)} páginas · ${nf(a.ev)} interacc.<span class="sub">visto ${day(a.last)}</span>` : '—'; })()}</td>
       <td>${r.contacto === 'whatsapp' && r.whatsapp ? `<a href="https://wa.me/${esc(r.whatsapp.replace(/\D/g, ''))}" target="_blank" rel="noopener">WhatsApp</a>` : `<a href="mailto:${esc(r.email)}">Correo</a>`}${r.acepta_contacto ? ' <span class="pill">acepta</span>' : ''}</td>
       <td class="sm">${day(r.created_at)}</td></tr>`).join('') : '<tr><td colspan="8" class="empty">Sin resultados.</td></tr>';

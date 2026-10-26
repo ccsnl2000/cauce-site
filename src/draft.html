@@ -975,7 +975,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
         <p class="acct-name" id="ac-plan"></p>
         <p class="sm" id="ac-renew"></p>
         <p class="lab" id="ac-perks-lab" style="margin-top:18px"></p>
-        <ul class="acct-perks"><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul>
+        <ul class="acct-perks"><li>2 estudios por semana</li><li>Ficha de cada zona</li><li>Cifras de la semana, cada jueves</li></ul>
         <a class="btn" id="ac-cta" href="#planes"></a>
       </div>
       <nav class="acct-go" aria-label="Atajos">
@@ -3175,6 +3175,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     "Cotización": "Quote", "según tus necesidades": "based on your needs", "Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:": "For agents, developers and owners. We build an offer around what you need. For example:", "25 estudios por semana": "25 studies a week", "1 inmueble patrocinado": "1 sponsored listing", "1 estudio de rendimiento para tu obra nueva o remodelación": "1 yield study for your new build or renovation", "Atención uno a uno": "One-on-one support", "Precio por estudio según volumen": "Price per study based on volume", "Pedir cotización": "Get a quote", "Los que necesites": "As many as you need", "Según volumen": "Based on volume", "Inmuebles patrocinados en Cauce": "Sponsored listings on Cauce", "Estudio de rendimiento para tu proyecto": "Yield study for your project", "Uno a uno": "One-on-one", "Cuenta creada. Cuéntanos qué necesitas.": "Account created. Tell us what you need.", "Cuántos estudios, qué inmuebles o qué proyecto. Te enviamos una cotización en dos días hábiles.": "How many studies, which properties or what project. We send you a quote within two business days.",
     'Panel personalizado': 'Personalized dashboard', 'Prioritario': 'Priority',
     '1 panel web personalizado': '1 personalized web dashboard',
+    'Con Inteligencia Básico también tienes': 'With Inteligencia Basic you also get',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -3754,14 +3755,14 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     $('#ac-email').textContent = user.email;
     try { const c = await sb(), r = await c.from('profiles').select('plan, plan_status, renews_at, cancel_at_period_end, perfil, pais, zonas, nombre, apellido, presupuesto, plazo, objetivos, empresa, asesores, contacto, whatsapp, acepta_contacto, created_at').eq('id', user.id).single(); acctRow = r.data || {}; } catch (e) { acctRow = {}; }
     const r = acctRow, paid = r.plan === 'inteligencia', late = r.plan_status === 'past_due', ending = paid && r.cancel_at_period_end;
-    $('#ac-plan').textContent = paid ? 'Inteligencia' : 'Boletín';
+    $('#ac-plan').textContent = paid ? 'Inteligencia Básico' : 'Boletín';
     const st = $('#ac-status'); st.className = 'acct-badge' + (late || ending ? ' warn' : '');
     st.textContent = late ? 'Pago pendiente' : ending ? 'Cancelado' : 'Activo';
     $('#ac-renew').textContent = !paid ? 'Gratis. El boletín llega cada jueves.'
       : late ? 'No pudimos cobrar tu tarjeta. Actualízala para no perder el acceso.'
       : r.renews_at ? (lang === 'en' ? (ending ? 'Access until ' : 'Renews on ') + fmtDate(r.renews_at) + (ending ? '.' : ' · $10/mo') : (ending ? 'Tienes acceso hasta el ' : 'Se renueva el ') + fmtDate(r.renews_at) + (ending ? '.' : ' · $10/mes'))
       : (lang === 'en' ? '$10/mo' : '$10/mes');
-    $('#ac-perks-lab').textContent = paid ? 'Incluido en tu plan' : 'Con Inteligencia también tienes';
+    $('#ac-perks-lab').textContent = paid ? 'Incluido en tu plan' : 'Con Inteligencia Básico también tienes';
     const cta = $('#ac-cta');
     if (paid) { cta.textContent = late ? 'Actualizar tarjeta' : ending ? 'Reactivar suscripción' : 'Gestionar suscripción'; cta.href = PORTAL + '?prefilled_email=' + encodeURIComponent(user.email); cta.className = late || ending ? 'btn' : 'btn o'; }
     else { let w = 'inteligencia'; try { w = sessionStorage.getItem('cauce-want') || w; } catch (e) {} const t = TIER[w] || TIER.inteligencia;
