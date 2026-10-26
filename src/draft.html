@@ -452,6 +452,16 @@ body.auth header.top, body.auth footer { display: none; }
 .pf .chips { justify-content: flex-start; }
 .pf-err { color: var(--ink); font-size: var(--t-sm); }
 @media (max-width: 560px) { .pf, .namerow { grid-template-columns: 1fr; } }
+.mst-pop .maplibregl-popup-content { background: var(--sheet); color: var(--ink); border-radius: 14px; padding: 12px 30px 12px 12px; box-shadow: 0 18px 50px rgba(27,26,24,.18); font-family: var(--sans); }
+.mst-pop .maplibregl-popup-tip { border-top-color: var(--sheet); border-bottom-color: var(--sheet); }
+.mst-pop .maplibregl-popup-close-button { font-size: 18px; color: var(--soft); right: 6px; top: 4px; }
+.mst-card { display: flex; gap: 10px; align-items: flex-start; }
+.mst-ico { width: 30px; height: 30px; border-radius: 50%; background: var(--c); color: #fff; font: 800 15px var(--sans); display: grid; place-items: center; flex: none; }
+.mst-card .q { display: block; font-size: var(--t-lab); letter-spacing: var(--tr-lab); text-transform: uppercase; color: var(--soft); }
+.mst-card b { display: block; font-size: var(--t-body); margin: 2px 0 6px; }
+.mst-lines { display: flex; flex-wrap: wrap; gap: 6px; }
+.mst-lines span { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-xs); border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px 2px 6px; }
+.mst-lines i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .auth-note { font-size: var(--t-xs); color: var(--soft); text-align: center; max-width: 36em; }
 .auth-msg { text-align: center; font-size: var(--t-sm); color: var(--soft); min-height: 1.2em; }
 
@@ -792,7 +802,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   <div class="cmap full" id="map-full" data-view="-67.075,10.372,-66.72,10.548" data-full="1">
     <div class="mgl" aria-label="Mapa de Caracas por parroquia o municipio"></div>
     <div class="mhead"><span class="lab">Mapa · Caracas</span><h2>Precio y oferta por zona</h2><p>Límites oficiales. Una escala a la vez.</p></div>
-    <div class="mctl"><div class="seg" role="group" aria-label="Escala"><button type="button" data-scale="m" aria-pressed="false">Municipios</button><button type="button" data-scale="p" aria-pressed="true">Parroquias</button></div><div class="seg" role="group" aria-label="Dato"><button type="button" data-layer="o" aria-pressed="true">Zonas</button><button type="button" data-layer="v" aria-pressed="false"><span>Precio m²</span> <svg class="lk" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div><div class="seg" role="group" aria-label="Vista"><button type="button" data-v3="0" aria-pressed="true">2D</button><button type="button" data-v3="1" aria-pressed="false">3D</button></div><div class="seg lines" role="group" aria-label="Contexto"><button type="button" data-ctx="metro" aria-pressed="true">Metro</button><button type="button" data-ctx="streets" aria-pressed="true">Calles</button><button type="button" data-ctx="buildings" aria-pressed="true">Edificios</button><button type="button" disabled aria-disabled="true">Ocupación · pronto</button></div></div>
+    <div class="mctl"><div class="seg" role="group" aria-label="Escala"><button type="button" data-scale="m" aria-pressed="false">Municipios</button><button type="button" data-scale="p" aria-pressed="true">Parroquias</button></div><div class="seg" role="group" aria-label="Dato"><button type="button" data-layer="v" aria-pressed="true"><span>Precio m²</span></button><button type="button" data-layer="o" aria-pressed="false">Zonas</button></div><div class="seg" role="group" aria-label="Vista"><button type="button" data-v3="0" aria-pressed="true">2D</button><button type="button" data-v3="1" aria-pressed="false">3D</button></div><div class="seg lines" role="group" aria-label="Contexto"><button type="button" data-ctx="metro" aria-pressed="true">Metro</button><button type="button" data-ctx="streets" aria-pressed="true">Calles</button><button type="button" data-ctx="buildings" aria-pressed="true">Edificios</button><button type="button" disabled aria-disabled="true">Ocupación · pronto</button></div></div>
     <button class="reset" type="button" hidden>← Caracas</button>
     <div class="mtip" hidden></div>
     <div class="mpay" hidden><div><span class="lab">Inteligencia</span><b>Sigue explorando el mapa</b><p class="sm">Precios por zona, capas y comparaciones sin límite de tiempo.</p><a class="btn" href="#planes" data-plan="inteligencia">Suscríbete por $10 al mes</a><a class="sm" href="#entrar">Ya tengo cuenta</a></div></div><div class="mlock" hidden><div><b style="font-size:var(--t-lead)">El precio por m² de cada zona</b><span class="sm" style="color:#555">Con Inteligencia ves la mediana por parroquia y municipio, su serie semanal y las propiedades bajo la media.</span><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a><button type="button" class="x">Seguir explorando</button></div></div>
@@ -3805,8 +3815,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
         map.addLayer({ id: 'osm-places', type: 'symbol', source: 'omt', 'source-layer': 'place', minzoom: 13, filter: ['in', ['get', 'class'], ['literal', ['suburb', 'neighbourhood', 'quarter']]], layout: { 'text-field': ['upcase', ['coalesce', ['get', 'name:es'], ['get', 'name']]], 'text-font': ['Noto Sans Bold'], 'text-size': 9, 'text-letter-spacing': 0.14 }, paint: { 'text-color': MOFF, 'text-opacity': 0.95 } });
         ['p', 'm'].forEach(buildLabels);
         map.addSource('offers', { type: 'geojson', data: offersFC() });
-        map.addLayer({ id: 'offers', type: 'circle', source: 'offers', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 3, 15, 5], 'circle-color': '#ffffff', 'circle-stroke-color': '#151515', 'circle-stroke-width': 1.4 } });
-        ready = true; paintBase(map, tone);
+        map.addLayer({ id: 'offers', type: 'circle', source: 'offers', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.8, 1], 3], 15, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.8, 1], 5]], 'circle-radius-transition': { duration: 150 }, 'circle-color': '#ffffff', 'circle-stroke-color': '#151515', 'circle-stroke-width': 1.4 } });
+        ready = true; root._map = map; paintBase(map, tone); paintLayer('v'); addMetro();
         let srcLevel = 0;
         const applyZones = (p, m, level, label) => {
           if (level <= srcLevel) return; srcLevel = level;
@@ -3821,20 +3831,57 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
         if (!full && !reduce) { const el = document.createElement('div'); el.className = 'mpulse'; pulse = new maplibregl.Marker({ element: el }).setLngLat([GEO.x[0][0], GEO.x[0][1]]).addTo(map); setInterval(() => { if (!root.closest('[hidden]')) { pt = (pt + 7) % GEO.x.length; pulse.setLngLat([GEO.x[pt][0], GEO.x[pt][1]]); } }, 3200); }
       };
       map.once('style.load', init); map.once('load', init);
+      let hovO = null, hovS = null;
+      const hoverDot = (src, id, cur) => { if (cur !== null) map.setFeatureState({ source: src, id: cur }, { hv: false }); if (id !== null && id !== undefined) map.setFeatureState({ source: src, id }, { hv: true }); return id ?? null; };
       const setHover = (f) => { const st = (id, v) => { map.setFeatureState({ source: 'z' + scale, id }, { h: v }); if (scale === 'm') map.setFeatureState({ source: 'zml', id }, { h: v }); }; if (hov !== null) st(hov, false); hov = f ? f.id : null; if (hov !== null) st(hov, true); };
+      // map colours: price per m² (default, open to everyone) or zones
+      function paintLayer(k) {
+        const price = ['case', ['==', ['typeof', ['get', 'v']], 'number'], ['interpolate', ['linear'], ['get', 'v'], 400, '#3A3128', 1200, '#F5C443', 3000, '#F2734F'], '#555'];
+        ['p', 'm'].forEach((x) => map.getLayer('fill-' + x) && map.setPaintProperty('fill-' + x, 'fill-color', k === 'v' ? price : ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]]));
+      }
+      // Metro: lines in their colours and stations from data/metro.json (OpenStreetMap, refreshed monthly)
+      let METRO = null;
+      async function addMetro() {
+        try { const r = await fetch('/data/metro.json', { cache: 'no-cache' }); if (!r.ok) return; METRO = await r.json(); } catch (e) { return; }
+        const col = {}; METRO.lines.forEach((l) => { col[l.ref] = l.colour; });
+        map.addSource('mline', { type: 'geojson', data: { type: 'FeatureCollection', features: METRO.lines.map((l) => ({ type: 'Feature', properties: { c: l.colour, n: l.name }, geometry: { type: 'MultiLineString', coordinates: l.coords } })) } });
+        map.addSource('mst', { type: 'geojson', data: { type: 'FeatureCollection', features: METRO.stations.map((s, i) => ({ type: 'Feature', id: i, properties: { n: s.name, l: JSON.stringify(s.lines), c: col[s.lines[0]] || '#1B1A18', x: s.lines.length > 1 ? 1 : 0 }, geometry: { type: 'Point', coordinates: [s.lon, s.lat] } })) } });
+        const before = map.getLayer('offers') ? 'offers' : undefined;
+        map.addLayer({ id: 'mline-case', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#F1EEE9', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2.5, 15, 7], 'line-opacity': 0.7 } }, before);
+        map.addLayer({ id: 'mline', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': ['get', 'c'], 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.4, 15, 4] } }, before);
+        map.addLayer({ id: 'mst', type: 'circle', source: 'mst', paint: { 'circle-color': '#FFFFFF', 'circle-stroke-color': ['case', ['==', ['get', 'x'], 1], '#1B1A18', ['get', 'c']], 'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 10, 1.4, 15, 2.6],
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 2.4], 15, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 5.5]], 'circle-radius-transition': { duration: 150 } } }, before);
+        map.addLayer({ id: 'mst-name', type: 'symbol', source: 'mst', minzoom: 13.5, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-offset': [0, 1.2], 'text-anchor': 'top' }, paint: { 'text-color': '#6B675F', 'text-halo-color': '#F1EEE9', 'text-halo-width': 1.2 } }, before);
+        ['metro', 'metro-name'].forEach((id) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', 'none'));
+        const mb = $('[data-ctx="metro"]', root); if (mb && mb.getAttribute('aria-pressed') === 'false') ['mline-case', 'mline', 'mst', 'mst-name'].forEach((id) => map.setLayoutProperty(id, 'visibility', 'none'));
+      }
+      let pop = null;
+      function stationCard(f) {
+        const lines = JSON.parse(f.properties.l || '[]').map((ref) => METRO.lines.find((l) => l.ref === ref)).filter(Boolean);
+        const en = lang === 'en', c = lines[0] ? lines[0].colour : '#1B1A18';
+        const html = `<div class="mst-card"><span class="mst-ico" style="--c:${c}" aria-hidden="true">M</span><div><span class="q">${en ? 'Metro station' : 'Estación de Metro'}</span><b>${esc(f.properties.n)}</b><div class="mst-lines">${lines.map((l) => `<span><i style="background:${l.colour}"></i>${en ? l.name.replace('Línea', 'Line') : l.name}</span>`).join('')}</div></div></div>`;
+        if (pop) pop.remove();
+        pop = new maplibregl.Popup({ closeButton: true, className: 'mst-pop', offset: 12, maxWidth: '280px' }).setLngLat(f.geometry.coordinates).setHTML(html).addTo(map);
+      }
       const place = (e) => { const W = root.clientWidth, H = root.clientHeight; let x = e.point.x + 16, y = e.point.y - tip.offsetHeight / 2; if (x + tip.offsetWidth > W - 8) x = e.point.x - tip.offsetWidth - 16; tip.style.left = x + 'px'; tip.style.top = Math.max(8, Math.min(H - tip.offsetHeight - 8, y)) + 'px'; };
       map.on('mousemove', (e) => {
         if (!ready) return;
         const o = map.queryRenderedFeatures(e.point, { layers: ['offers'] })[0];
+        const st = map.getLayer('mst') ? map.queryRenderedFeatures(e.point, { layers: ['mst'] })[0] : null;
+        hovO = hoverDot('offers', o ? o.id : null, hovO); hovS = map.getSource('mst') ? hoverDot('mst', st ? st.id : null, hovS) : null;
         const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0];
-        setHover(z); map.getCanvas().style.cursor = z || o ? 'pointer' : '';
+        setHover(z); map.getCanvas().style.cursor = z || o || st ? 'pointer' : '';
+        if (st && !o) { tip.hidden = true; return; }
         if (o) tip.innerHTML = `<span class="q">Propiedad en Cauce · ejemplo</span><b>${esc(o.properties.t)}</b><div class="row"><span>${N0(o.properties.a)} m²</span><span>${FMT.usd(o.properties.p)}</span></div>`;
-        else if (z) tip.innerHTML = `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (PREVIEW && typeof z.properties.v === 'number' ? `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>` : '');
+        else if (z) tip.innerHTML = `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>` : '');
         tip.hidden = !(o || z); if (!tip.hidden) { applyLang(); place(e); }
       });
-      map.on('mouseout', () => { setHover(null); tip.hidden = true; });
+      map.on('mouseout', () => { setHover(null); hovO = hoverDot('offers', null, hovO); if (map.getSource('mst')) hovS = hoverDot('mst', null, hovS); tip.hidden = true; });
       map.on('click', (e) => {
-        if (!ready) return; const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0]; if (!z) return;
+        if (!ready) return;
+        const st = map.getLayer('mst') && map.queryRenderedFeatures(e.point, { layers: ['mst'] })[0];
+        if (st) { stationCard(st); return; }
+        const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0]; if (!z) return;
         const f = ZN[scale][z.id]; const b = bboxOf(f.c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: full ? 60 : 30, maxZoom: 16, duration: reduce ? 0 : 900 }); resetB.hidden = false; if (full) { select(z.id); document.dispatchEvent(new CustomEvent('cauce-zone', { detail: { n: f.n, s: scale } })); }
       });
       let selId = null; const select = (id) => { if (selId !== null) map.setFeatureState({ source: 'zp', id: selId }, { sel: false }); selId = id; if (id !== null && scale === 'p') map.setFeatureState({ source: 'zp', id }, { sel: true }); };
@@ -3856,7 +3903,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       if (map && map._labsSwap) map._labsSwap();
       tip.hidden = true;
     }));
-    const CTX = { metro: ['metro', 'metro-name'], streets: ['road-name', 'roads-minor'], buildings: ['building', 'building-line'] };
+    const CTX = { metro: ['metro', 'metro-name', 'mline-case', 'mline', 'mst', 'mst-name'], streets: ['road-name', 'roads-minor'], buildings: ['building', 'building-line'] };
     $$('[data-ctx]', root).forEach((b) => b.addEventListener('click', () => { if (!map || !ready) return; const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', String(on)); CTX[b.dataset.ctx].forEach((id) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none')); }));
     $$('[data-v3]', root).forEach((b) => b.addEventListener('click', () => {
       if (!map || !ready) return; const on = b.dataset.v3 === '1'; $$('[data-v3]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
@@ -3864,10 +3911,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       map.easeTo({ pitch: on ? 55 : 0, bearing: on ? -17 : 0, zoom: on ? Math.max(map.getZoom(), 15) : map.getZoom(), duration: reduce ? 0 : 900 });
     }));
     $$('[data-layer]', root).forEach((b) => b.addEventListener('click', () => {
-      if (b.dataset.layer === 'v' && !PREVIEW && !document.body.classList.contains('member')) { lock.hidden = false; return; }
       $$('[data-layer]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); if (!map || !ready) return;
-      const price = ['case', ['==', ['typeof', ['get', 'v']], 'number'], ['interpolate', ['linear'], ['get', 'v'], 400, '#3A3128', 1200, '#F5C443', 3000, '#F2734F'], '#555'];
-      ['p', 'm'].forEach((k) => map.setPaintProperty('fill-' + k, 'fill-color', b.dataset.layer === 'v' ? price : ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]]));
+      paintLayer(b.dataset.layer);
     }));
     if (lock) $('button.x', lock).addEventListener('click', () => { lock.hidden = true; });
     if (window.ResizeObserver) new ResizeObserver(() => { if (!map) start(); else map.resize(); }).observe(root);
