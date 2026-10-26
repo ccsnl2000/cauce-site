@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · Cauce</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%231B1A18'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial' font-weight='800' font-size='18' text-anchor='middle' fill='%23F1EEE9'%3Ec%3C/text%3E%3C/svg%3E">
+<style>
+@font-face { font-family: "HND"; src: url("/fonts/hnd-400.woff2") format("woff2"); font-weight: 400 500; font-display: swap; }
+@font-face { font-family: "HND"; src: url("/fonts/hnd-700.woff2") format("woff2"); font-weight: 600 700; font-display: swap; }
+@font-face { font-family: "HND"; src: url("/fonts/hnd-800.woff2") format("woff2"); font-weight: 800 900; font-display: swap; }
+:root { --bg: #F1EEE9; --sheet: #FAF8F5; --ink: #1B1A18; --soft: #6B675F; --line: #DCD6CC; --fill: #E7E2DA; color-scheme: light; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1A1B19; --sheet: #1F201E; --ink: #ECEBE6; --soft: #A3A49E; --line: #2F302D; --fill: #252623; color-scheme: dark; } }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 "HND", "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 99; background: url("/grain.png") repeat; background-size: 160px; opacity: .4; }
+a { color: inherit; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 24px 16px 80px; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 28px; }
+.logo { font-weight: 800; font-size: 24px; letter-spacing: -0.045em; text-decoration: none; }
+.logo small { font-weight: 400; font-size: 14px; letter-spacing: 0; color: var(--soft); margin-left: 8px; }
+.lab { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); }
+.sm { font-size: 13px; color: var(--soft); }
+h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.045em; line-height: 1.04; margin: 0 0 6px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: inherit; font-weight: 500; font-size: 14px; padding: 9px 16px; border-radius: 999px; background: var(--ink); color: var(--bg); border: 1px solid var(--ink); cursor: pointer; text-decoration: none; }
+.btn.o { background: transparent; color: var(--ink); border-color: var(--line); }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 22px 0 26px; }
+.kpi { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 4px; }
+.kpi b { font-size: 34px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.tabs button { flex: none; background: none; border: 0; padding: 0 0 12px; font-family: inherit; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; color: var(--soft); border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; }
+.tabs button[aria-pressed=true] { color: var(--ink); border-color: var(--ink); }
+.tabs .n { font-family: inherit; font-weight: 400; font-size: 12px; color: var(--soft); margin-left: 4px; }
+.panel { margin-top: 18px; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.tools input, .tools select { height: 38px; border: 1px solid var(--line); border-radius: 10px; background: transparent; color: var(--ink); font: inherit; padding: 0 12px; }
+.tools input[type=search] { min-width: 240px; }
+.tbl { width: 100%; border-collapse: collapse; background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; font-size: 14px; }
+.tbl th { text-align: left; font-weight: 400; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.tbl td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl tbody tr:hover { background: var(--fill); }
+.scroll { overflow-x: auto; border-radius: 14px; }
+.pill { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px; background: var(--fill); white-space: nowrap; }
+.pill.ink { background: var(--ink); color: var(--bg); }
+.chats { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 14px; }
+.list { background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; overflow: auto; max-height: 70vh; }
+.list button { display: grid; gap: 2px; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 12px 14px; font: inherit; color: inherit; cursor: pointer; }
+.list button[aria-pressed=true] { background: var(--fill); }
+.thread { background: var(--sheet); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 10px; align-content: start; max-height: 70vh; overflow: auto; }
+.bub { max-width: 78%; padding: 10px 14px; border-radius: 14px; background: var(--fill); white-space: pre-wrap; }
+.bub.me { justify-self: end; background: var(--ink); color: var(--bg); }
+.card { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; padding: 22px; display: grid; gap: 10px; max-width: 760px; }
+.card ol, .card ul { margin: 0; padding-left: 20px; } .card li { margin: 4px 0; }
+.empty { padding: 28px; text-align: center; color: var(--soft); }
+.gate { max-width: 460px; margin: 12vh auto; text-align: center; display: grid; gap: 14px; justify-items: center; }
+.steps { display: flex; gap: 8px; flex-wrap: wrap; }
+.steps span { font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); }
+@media (max-width: 760px) { .chats { grid-template-columns: 1fr; } .tools input[type=search] { min-width: 0; flex: 1; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">cauce<small>Panel</small></a><span class="sm" id="who"></span></header>
+
+<section id="gate" class="gate" hidden>
+  <h1>Panel de Cauce</h1>
+  <p class="sm" id="gate-msg">Inicia sesión en cauce.blog con una cuenta de administrador.</p>
+  <a class="btn" href="/#entrar">Iniciar sesión</a>
+</section>
+
+<main id="app" hidden>
+  <h1 id="hello">Hoy en Cauce</h1>
+  <p class="sm"><span id="stamp"></span> · <a href="#" id="refresh">Actualizar</a> · se actualiza solo cada minuto</p>
+  <div class="kpis" id="kpis"></div>
+  <nav class="tabs" id="tabs">
+    <button type="button" data-t="personas" aria-pressed="true">Personas<span class="n" id="n-personas"></span></button>
+    <button type="button" data-t="llamadas" aria-pressed="false">Llamadas<span class="n" id="n-llamadas"></span></button>
+    <button type="button" data-t="chats" aria-pressed="false">Conversaciones<span class="n" id="n-chats"></span></button>
+    <button type="button" data-t="boletin" aria-pressed="false">Boletín<span class="n" id="n-boletin"></span></button>
+    <button type="button" data-t="visitas" aria-pressed="false">Visitas</button>
+    <button type="button" data-t="articulos" aria-pressed="false">Artículos</button>
+    <button type="button" data-t="whatsapp" aria-pressed="false">WhatsApp</button>
+  </nav>
+
+  <section class="panel" data-p="personas">
+    <div class="tools"><input type="search" id="q" placeholder="Buscar nombre, correo, empresa o zona"><select id="f-perfil"><option value="">Todos los perfiles</option></select><select id="f-plan"><option value="">Todos los planes</option><option value="inteligencia">Inteligencia</option><option value="boletin">Boletín</option></select><label class="sm"><input type="checkbox" id="f-ok"> Aceptan contacto</label><button class="btn o" id="csv">Descargar CSV</button></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Perfil</th><th>País</th><th>Zonas</th><th>Presupuesto · plazo</th><th>Para</th><th>Plan</th><th>Contacto</th><th>Alta</th></tr></thead><tbody id="t-personas"></tbody></table></div>
+  </section>
+  <section class="panel" data-p="llamadas" hidden>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Fecha</th><th>Nombre</th><th>Correo</th><th>Estado</th><th>Pago</th><th>Desde</th><th>Qué quiere revisar</th></tr></thead><tbody id="t-llamadas"></tbody></table></div>
+  </section>
+  <section class="panel" data-p="chats" hidden>
+    <div class="chats"><div class="list" id="chat-list"></div><div class="thread" id="chat-thread"><p class="empty">Elige una conversación.</p></div></div>
+  </section>
+  <section class="panel" data-p="boletin" hidden>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Origen</th><th>Perfil</th><th>Bienvenida</th><th>Alta</th></tr></thead><tbody id="t-boletin"></tbody></table></div>
+  </section>
+  <section class="panel" data-p="visitas" hidden>
+    <div class="card"><span class="lab">Visitas</span><b>Se conectan con Cloudflare Web Analytics</b>
+      <p>Para ver aquí visitas, páginas y países en vivo, necesitamos un token de solo lectura de Cloudflare. Mientras tanto, las cifras están en el panel de Cloudflare.</p>
+      <ol><li>Cloudflare → My Profile → API Tokens → Create Token → plantilla "Read analytics and logs".</li><li>Pega el token en Supabase → Edge Functions → Secrets con el nombre <code>CF_API_TOKEN</code>.</li><li>Avísanos y activamos la pestaña.</li></ol>
+      <p><a class="btn o" href="https://dash.cloudflare.com/?to=/:account/web-analytics" target="_blank" rel="noopener">Abrir Cloudflare Web Analytics</a></p></div>
+  </section>
+  <section class="panel" data-p="articulos" hidden>
+    <div class="card"><span class="lab">Artículos</span><b>Flujo de aprobación (próximo paso)</b>
+      <div class="steps"><span>Borrador</span><span>→ En revisión</span><span>→ Revisión legal</span><span>→ Aprobado</span><span>→ Publicado</span></div>
+      <p>Hoy los artículos viven en el código del sitio. Para aprobarlos desde aquí, los pasamos a una tabla con estado, autor, revisor, fecha de publicación y comentarios. El sitio solo mostrará los que estén en "Publicado".</p></div>
+  </section>
+  <section class="panel" data-p="whatsapp" hidden>
+    <div class="card"><span class="lab">WhatsApp</span><b>Mensajes en vivo con WhatsApp Business</b>
+      <p>Para ver y responder chats de WhatsApp aquí, hace falta WhatsApp Business Platform (Meta) con un número dedicado de Cauce. Requiere verificar el negocio en Meta, así que conviene hacerlo cuando Cauce esté registrada.</p>
+      <p>Mientras tanto, el asistente del sitio guarda cada conversación en la pestaña Conversaciones, y el botón "Seguir por WhatsApp" abre un chat directo con el número que indiques.</p></div>
+  </section>
+</main>
+</div>
+
+<script src="/vendor/supabase.js"></script>
+<script>
+(function () {
+  'use strict';
+  const $ = (q, r = document) => r.querySelector(q), $$ = (q, r = document) => [...r.querySelectorAll(q)];
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const sb = window.supabase.createClient('https://gdgmcnqczrbbzwuzkvcv.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkZ21jbnFjenJiYnp3dXprdmN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI5NjY0NjksImV4cCI6MjEwODU0MjQ2OX0.B_aPpSNKMkWZS-BLDVRbcjPJps-Eqiuu7_s85VJs80A');
+  const PERFIL = { particular: 'Particular', agente: 'Agente inmobiliario', inmobiliaria: 'Inmobiliaria', 'inv-local': 'Inversionista local', 'inv-int': 'Inversionista internacional', desarrollador: 'Desarrollador · Analista', otro: 'Otro' };
+  const BUD = { '<50k': '< $50k', '50-100k': '$50–100k', '100-250k': '$100–250k', '250-500k': '$250–500k', '500k+': '> $500k', nose: 'No sabe' };
+  const WHEN = { '0-3': '0–3 meses', '3-6': '3–6 meses', '6-12': '6–12 meses', '12+': '+1 año', explorando: 'Explorando' };
+  const country = (c) => { try { return c ? new Intl.DisplayNames(['es'], { type: 'region' }).of(c) : ''; } catch (e) { return c || ''; } };
+  const day = (d) => (d ? new Date(d).toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' }) : '');
+  const when = (d) => (d ? new Date(d).toLocaleString('es-VE', { weekday: 'short', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : '');
+  let D = { people: [], subs: [], calls: [], chats: [] };
+
+  Object.entries(PERFIL).forEach(([v, t]) => $('#f-perfil').insertAdjacentHTML('beforeend', `<option value="${v}">${t}</option>`));
+  $$('#tabs button').forEach((b) => b.addEventListener('click', () => { $$('#tabs button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); $$('.panel').forEach((p) => { p.hidden = p.dataset.p !== b.dataset.t; }); }));
+  ['#q', '#f-perfil', '#f-plan', '#f-ok'].forEach((q) => $(q).addEventListener('input', people));
+
+  function filtered() {
+    const q = $('#q').value.trim().toLowerCase(), pf = $('#f-perfil').value, pl = $('#f-plan').value, ok = $('#f-ok').checked;
+    return D.people.filter((r) => (!pf || r.perfil === pf) && (!pl || r.plan === pl) && (!ok || r.acepta_contacto) &&
+      (!q || [r.nombre, r.apellido, r.email, r.empresa, (r.zonas || []).join(' ')].join(' ').toLowerCase().includes(q)));
+  }
+  function people() {
+    const rows = filtered();
+    $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr><td><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b><br><span class="sm">${esc(r.email)}</span></td>
+      <td>${esc(PERFIL[r.perfil] || '—')}${r.empresa ? `<br><span class="sm">${esc(r.empresa)}${r.asesores ? ' · ' + esc(r.asesores) : ''}</span>` : ''}</td>
+      <td>${esc(country(r.pais))}</td><td class="sm">${esc((r.zonas || []).join(', '))}</td>
+      <td>${esc([BUD[r.presupuesto], WHEN[r.plazo]].filter(Boolean).join(' · '))}</td><td class="sm">${esc((r.objetivos || []).join(', '))}</td>
+      <td>${r.plan === 'inteligencia' ? `<span class="pill ink">Inteligencia</span>` : '<span class="pill">Boletín</span>'}${r.cancel_at_period_end ? '<br><span class="sm">cancelado</span>' : ''}</td>
+      <td>${r.acepta_contacto ? `<span class="pill">sí</span> ` : ''}${r.contacto === 'whatsapp' && r.whatsapp ? `<a href="https://wa.me/${esc(r.whatsapp.replace(/\D/g, ''))}" target="_blank" rel="noopener">WhatsApp</a>` : `<a href="mailto:${esc(r.email)}">Correo</a>`}</td>
+      <td class="sm">${day(r.created_at)}</td></tr>`).join('') : '<tr><td colspan="9" class="empty">Sin resultados.</td></tr>';
+  }
+  function calls() {
+    const rows = [...D.calls].sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
+    $('#t-llamadas').innerHTML = rows.length ? rows.map((b) => { const a = b.answers || {}, desde = a.desde?.value || a['desde-donde-compras']?.value || '', note = a.notes?.value || a['que-quieres-revisar']?.value || '';
+      return `<tr><td>${esc(when(b.start_time))}</td><td>${esc(b.name || '')}</td><td><a href="mailto:${esc(b.email)}">${esc(b.email || '')}</a></td><td><span class="pill${b.status === 'reservada' ? ' ink' : ''}">${esc(b.status)}</span></td><td>${b.paid ? 'Pagado' : '—'}</td><td class="sm">${esc(desde)}</td><td class="sm">${esc(note)}</td></tr>`; }).join('')
+      : '<tr><td colspan="7" class="empty">Todavía no hay llamadas. Aparecen aquí al conectar el aviso de Cal.com.</td></tr>';
+  }
+  function subs() {
+    $('#t-boletin').innerHTML = D.subs.length ? D.subs.map((s) => `<tr><td>${esc(s.email)}</td><td>${esc(s.source || '')}</td><td>${esc(PERFIL[s.perfil] || '')}</td><td>${s.welcomed_at ? 'Enviada' : '—'}</td><td class="sm">${day(s.created_at)}</td></tr>`).join('') : '<tr><td colspan="5" class="empty">Sin suscriptores aún.</td></tr>';
+  }
+  function chats() {
+    const L = $('#chat-list');
+    L.innerHTML = D.chats.length ? D.chats.map((c, i) => { const last = (c.messages || []).filter((m) => m.role === 'user').slice(-1)[0];
+      return `<button type="button" data-i="${i}" aria-pressed="false"><b>${esc(c.email || 'Visitante')}</b><span class="sm">${esc((last && last.content || '').slice(0, 80))}</span><span class="sm">${esc(when(c.updated_at))} · ${(c.messages || []).length} mensajes</span></button>`; }).join('') : '<p class="empty">Sin conversaciones aún.</p>';
+    $$('button', L).forEach((b) => b.addEventListener('click', () => { $$('button', L).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); const c = D.chats[+b.dataset.i];
+      $('#chat-thread').innerHTML = (c.messages || []).map((m) => `<div class="bub${m.role === 'user' ? ' me' : ''}">${esc(m.content)}</div>`).join('') + (c.email ? `<p><a class="btn o" href="mailto:${esc(c.email)}?subject=${encodeURIComponent('Tu consulta en Cauce')}">Responder por correo</a></p>` : ''); }));
+  }
+  function kpis() {
+    const wk = Date.now() - 7 * 864e5, now = Date.now();
+    const K = [['Cuentas', D.people.length, D.people.filter((r) => new Date(r.created_at) > wk).length + ' esta semana'],
+      ['Inteligencia', D.people.filter((r) => r.plan === 'inteligencia').length, 'suscripciones activas'],
+      ['Boletín', D.subs.length, D.subs.filter((s) => new Date(s.created_at) > wk).length + ' esta semana'],
+      ['Llamadas', D.calls.filter((b) => b.status === 'reservada' && new Date(b.start_time) > now).length, 'próximas'],
+      ['Conversaciones', D.chats.length, D.chats.filter((c) => new Date(c.updated_at) > wk).length + ' esta semana'],
+      ['Aceptan contacto', D.people.filter((r) => r.acepta_contacto).length, 'agentes e inmobiliarias']];
+    $('#kpis').innerHTML = K.map(([l, n, s]) => `<div class="kpi"><span class="lab">${l}</span><b>${n}</b><span class="sm">${s}</span></div>`).join('');
+    $('#n-personas').textContent = D.people.length; $('#n-llamadas').textContent = D.calls.length; $('#n-chats').textContent = D.chats.length; $('#n-boletin').textContent = D.subs.length;
+  }
+  $('#csv').addEventListener('click', () => {
+    const cols = ['nombre', 'apellido', 'email', 'perfil', 'empresa', 'asesores', 'pais', 'zonas', 'presupuesto', 'plazo', 'objetivos', 'plan', 'contacto', 'whatsapp', 'acepta_contacto', 'created_at'];
+    const q = (v) => '"' + String(Array.isArray(v) ? v.join('; ') : v ?? '').replace(/"/g, '""') + '"';
+    const csv = [cols.join(','), ...filtered().map((r) => cols.map((c) => q(r[c])).join(','))].join('\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = 'cauce-personas-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();
+  });
+
+  async function load() {
+    const [p, s, b, c] = await Promise.all([
+      sb.from('profiles').select('*').order('created_at', { ascending: false }),
+      sb.from('subscribers').select('*').order('created_at', { ascending: false }),
+      sb.from('bookings').select('*').order('start_time', { ascending: false }),
+      sb.from('chats').select('*').order('updated_at', { ascending: false }).limit(200)]);
+    D = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [] };
+    kpis(); people(); calls(); subs(); chats();
+    $('#stamp').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit' });
+  }
+  $('#refresh').addEventListener('click', (e) => { e.preventDefault(); load(); });
+
+  (async () => {
+    const { data } = await sb.auth.getSession(); const u = data.session && data.session.user;
+    if (!u) { $('#gate').hidden = false; return; }
+    const r = await sb.rpc('is_admin');
+    if (!r.data) { $('#gate').hidden = false; $('#gate-msg').textContent = 'Tu cuenta (' + u.email + ') no tiene acceso al panel.'; return; }
+    $('#who').textContent = u.email; $('#app').hidden = false;
+    await load(); setInterval(load, 60000);
+  })();
+})();
+</script>
+</body>
+</html>
