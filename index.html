@@ -439,9 +439,12 @@ body.auth header.top, body.auth footer { display: none; }
 .acct-perfil summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
 .acct-perfil summary::-webkit-details-marker { display: none; }
 .acct-hd { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 20px; align-items: center; }
-.acct-who { display: grid; gap: 4px; min-width: 0; }
-.acct-who .acct-h { overflow-wrap: anywhere; }
+.acct-who { display: grid; gap: 4px; min-width: 0; } .acct-who > * { min-width: 0; }
+.acct-who .acct-h { overflow-wrap: anywhere; font-size: var(--t-h2); line-height: 1.02; letter-spacing: var(--tr-h2); }
+.acct-side { display: grid; justify-items: end; gap: 4px; text-align: right; align-self: start; }
+.acct-side #ac-edit { margin-bottom: 10px; }
 .acct-role { font-size: var(--t-sm); color: var(--ink); }
+.acct-where { font-size: var(--t-sm); color: var(--soft); }
 .acct-perfil > summary { display: none; }
 .acct-perfil { border-top: 1px solid var(--line); padding-top: 18px; }
 .acct-perfil:not([open]) { display: none; }
@@ -450,7 +453,7 @@ body.auth header.top, body.auth footer { display: none; }
 #ac-edit[aria-expanded=true] svg { transform: rotate(180deg); }
 .idc { width: 136px; flex: none; }
 .idc svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 10px 24px rgba(27,26,24,.12)); }
-@media (max-width: 560px) { .acct-hd { grid-template-columns: auto minmax(0, 1fr); } #ac-edit { grid-column: 1 / -1; justify-self: start; } .idc { width: 104px; } }
+@media (max-width: 560px) { .acct-hd { grid-template-columns: auto minmax(0, 1fr); } .acct-side { grid-column: 1 / -1; justify-items: start; text-align: left; } .idc { width: 92px; } .acct-hd { gap: 14px; } }
 .pf-tog { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; color: var(--ink); white-space: nowrap; }
 .pf-tog svg { transition: transform .2s var(--ease); } .acct-perfil[open] .pf-tog svg { transform: rotate(180deg); }
 .pf-tog .cl, .acct-perfil[open] .pf-tog .ed { display: none; } .acct-perfil[open] .pf-tog .cl { display: inline; }
@@ -599,7 +602,9 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 /* map themes follow the site: dark map on a dark site, light map on a light one, from the same tones */
 .cmap { --m-lab: #ffffff; --m-bg: #1A1B19; --m-ink: #F1EEE9; --m-soft: #a6a49f; --m-ctl: rgba(26,27,25,.88); --m-line: #33342f; --m-on: #F1EEE9; --m-on-ink: #1B1A18; background: var(--m-bg); color: var(--m-ink); transition: background .35s var(--ease); }
 .cmap.lt { --m-lab: #ffffff; --m-bg: #E7E2DA; --m-ink: #1B1A18; --m-soft: #77736C; --m-ctl: rgba(241,238,233,.94); --m-line: #DCD6CC; --m-on: #1B1A18; --m-on-ink: #F1EEE9; }
-.cmap .mhead .lab { color: var(--m-ink); opacity: .78; } .cmap .mhead h2 { color: var(--m-ink); } .cmap .mhead p { color: var(--m-soft); }
+.cmap .mhead .lab { color: #fff; opacity: .85; } .cmap .mhead h2 { color: #fff; } .cmap .mhead p { color: rgba(255,255,255,.8); }
+.cmap .mhead { max-width: none; } .cmap .mhead h2 { white-space: nowrap; }
+@media (max-width: 600px) { .cmap .mhead h2 { white-space: normal; } }
 .cmap.lt .mhead { text-shadow: 0 1px 12px rgba(241,238,233,.75), 0 0 2px rgba(241,238,233,.5); }
 .cmap .mpay { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; padding: 20px; background: color-mix(in srgb, var(--m-bg) 35%, transparent); }
 .cmap .mpay > div { background: var(--sheet); color: var(--ink); border-radius: 18px; padding: 26px 28px; max-width: 360px; display: grid; gap: 10px; justify-items: start; box-shadow: 0 30px 80px rgba(0,0,0,.25); animation: gdIn .5s var(--ease) both; } .cmap .mpay b { font-size: 22px; letter-spacing: -.02em; } .cmap .mpay a.sm { text-decoration: underline; text-underline-offset: 3px; }
@@ -723,7 +728,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   <div class="duo">
     <div><span class="lab">Boletín de los jueves</span><h2>Una cifra, una historia y un terreno. Cada semana.</h2>
       <form class="pillfield nl"><label for="nl1" hidden>Correo</label><input id="nl1" type="email" required placeholder="tu@correo.com"><button class="btn">Unirme</button></form>
-      <p class="sm nlmsg" style="margin-top:10px">Gratis. Al unirte, recibes un estudio completo de regalo.</p><div class="perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div></div>
+      <p class="sm nlmsg" style="margin-top:10px">Gratis. Al unirte, recibes un estudio completo de regalo.</p><div class="perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div></div>
     <div><span class="lab">Llamada de diagnóstico</span><h2>¿Tienes un inmueble, un terreno o una duda? Revisémoslo juntos.</h2><a class="btn o" href="#planes" data-plan="consulta">Agendar una llamada</a></div>
   </div>
 </section>
@@ -744,7 +749,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
         <p class="sm gd-msg" id="gd-msg" aria-live="polite"></p>
       </form>
       <div class="gd-done" id="gd-done" hidden>
-        <p class="gd-ok"><span>Listo.</span> <span>La guía va en camino a</span> <b id="gd-to"></b></p><div class="perfil" id="gd-perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div>
+        <p class="gd-ok"><span>Listo.</span> <span>La guía va en camino a</span> <b id="gd-to"></b></p><div class="perfil" id="gd-perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div>
         <div class="gd-acc" id="gd-acc">
           <p class="gd-q">¿Guardamos la guía en una cuenta?</p>
           <ul><li>La guía siempre a mano en la web, sin buscar el correo</li><li>Guarda artículos, estudios y propiedades para volver a ellos</li><li>Avisos cuando cambie el precio en las zonas que sigues</li></ul>
@@ -916,16 +921,16 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     </form>
     <form id="f-perfil" hidden>
       <p class="auth-q">Cuéntanos un poco de tu búsqueda. Así te mostramos primero lo que te sirve. Puedes cambiarlo cuando quieras.</p>
-      <div class="chips" role="group" aria-label="¿Qué te trae a Cauce?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div>
+      <div class="chips" role="group" aria-label="¿Qué te trae a Cauce?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div>
       <div class="pf" id="a-pf"></div>
       <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
     </form>
     <div class="acct" id="a-acct" hidden>
-      <div class="acct-hd"><div class="idc" id="ac-idc" aria-hidden="true"></div><div class="acct-who"><p class="acct-h" id="ac-name">Tu cuenta</p><p class="acct-role" id="ac-role"></p><p class="sm" id="ac-email"></p></div><button type="button" class="pf-tog" id="ac-edit" aria-expanded="false" aria-controls="ac-perfil"><span class="ed">Editar</span><span class="cl">Cerrar</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></div>
+      <div class="acct-hd"><div class="idc" id="ac-idc" aria-hidden="true"></div><div class="acct-who"><p class="acct-h" id="ac-name">Tu cuenta</p><p class="sm" id="ac-email"></p></div><div class="acct-side"><button type="button" class="pf-tog" id="ac-edit" aria-expanded="false" aria-controls="ac-perfil"><span class="ed">Editar</span><span class="cl">Cerrar</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><p class="acct-role" id="ac-role"></p><p class="acct-where" id="ac-where"></p></div></div>
       <details class="acct-perfil" id="ac-perfil">
         <summary hidden><span id="ac-perfil-sum"></span></summary>
         <p class="sm" style="margin:14px 0 10px">Nos ayuda a elegir qué datos y estudios mostrarte primero.</p>
-        <div class="chips" role="group" aria-label="Qué te trae a Cauce"><button type="button" class="chip" aria-pressed="false" data-ap="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-ap="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-ap="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-ap="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-ap="otro">Otro</button></div>
+        <div class="chips" role="group" aria-label="Qué te trae a Cauce"><button type="button" class="chip" aria-pressed="false" data-ap="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-ap="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-ap="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-ap="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-ap="otro">Otro</button></div>
         <div class="acct-fields"><label><span class="lab">Nombre *</span><input id="ac-nombre" type="text" autocomplete="given-name" required></label><label><span class="lab">Apellido *</span><input id="ac-apellido" type="text" autocomplete="family-name" required></label></div><div class="pf" id="ac-pf"></div>
         <div class="acct-row" style="margin-top:14px"><span class="sm" id="ac-saved" aria-live="polite"></span><button type="button" class="btn o" id="ac-save">Guardar</button></div>
       </details>
@@ -2603,10 +2608,12 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     const fm = FMT[c.f] || N0, line = c.k === 'line', small = W < 260;
     const g = geo(c, W, H, [small ? 40 : 48, line ? (small ? 46 : 56) : 4, line ? 10 : 22, 22]);
     let ax = '';
-    for (let y = g.lo; y <= g.hi + 1e-9; y += g.step) ax += `<line class="gl" x1="${g.L}" x2="${W - g.R}" y1="${g.Y(y).toFixed(1)}" y2="${g.Y(y).toFixed(1)}"/><text class="ax" x="${g.L - 8}" y="${(g.Y(y) + 4).toFixed(1)}" text-anchor="end">${esc(fm(y).replace('/m²', ''))}</text>`;
+    const sp = Math.abs(g.Y(g.lo) - g.Y(g.lo + g.step)), every = sp < 18 ? Math.ceil(18 / sp) : 1; let tk = 0;
+    for (let y = g.lo; y <= g.hi + 1e-9; y += g.step) if (tk++ % every === 0) ax += `<line class="gl" x1="${g.L}" x2="${W - g.R}" y1="${g.Y(y).toFixed(1)}" y2="${g.Y(y).toFixed(1)}"/><text class="ax" x="${g.L - 8}" y="${(g.Y(y) + 4).toFixed(1)}" text-anchor="end">${esc(fm(y).replace('/m²', ''))}</text>`;
     const ticks = line ? [0, Math.round((g.n - 1) / 2), g.n - 1] : [...Array(g.n).keys()];
     if (line || W / g.n > 64) ticks.forEach((i) => { ax += `<text class="ax" x="${g.X(i).toFixed(1)}" y="${H - 4}" text-anchor="${line ? (i === 0 ? 'start' : i === g.n - 1 ? 'end' : 'middle') : 'middle'}">${esc(String(c.x[i]).replace(' meses', 'm'))}</text>`; });
-    el.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${ax}${marks(c, g, 2)}</svg>`;
+    const lv = H >= 120 && (line ? W >= 200 : W / g.n >= 60) ? 2 : 1;
+    el.innerHTML = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">${ax}${marks(c, g, lv)}</svg>`;
   }
   function drawMinis() { $$('.mini[data-mini]').forEach((el) => { if (miniRO && !el.dataset.ro) { el.dataset.ro = '1'; miniRO.observe(el); } drawMini(el); }); }
 
@@ -2833,6 +2840,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Desarrollador · Analista": "Developer · Analyst",
     "Tu cuenta": "Your account",
     "Hola de nuevo.": "Welcome back.",
     "Seleccionar todas": "Select all",
@@ -3633,8 +3641,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     const full = [r.nombre, r.apellido].filter(Boolean).join(' ');
     $('#ac-name').textContent = full || (en ? 'Your account' : 'Tu cuenta');
     const abroad = r.pais && r.pais !== 'VE';
-    const role = [r.perfil && tr1(PERFIL_ES[r.perfil] || ''), r.empresa, r.pais && (abroad ? (en ? 'based in ' : 'desde ') + country(r.pais) : country(r.pais))].filter(Boolean).join(' · ');
-    $('#ac-role').textContent = role; $('#ac-perfil-sum').textContent = role;
+    const role = [r.perfil && tr1(PERFIL_ES[r.perfil] || ''), r.empresa].filter(Boolean).join(' · ');
+    $('#ac-role').textContent = role; $('#ac-where').textContent = r.pais ? country(r.pais) : ''; $('#ac-perfil-sum').textContent = [role, r.pais && country(r.pais)].filter(Boolean).join(' · ');
     // member card
     const zones = Array.isArray(r.zonas) ? r.zonas : [], par = new Set(zones.map((z) => URB[z] || z));
     const extra = zones.filter((z) => !URB[z] && !GEO.p.some((f) => f.n === z));
@@ -3691,7 +3699,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     applyLang();
   }
   $$('#a-acct [data-ap]').forEach((c) => c.addEventListener('click', () => { $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); pfMode($('#ac-pf'), c.dataset.ap); }));
-  $('#ac-edit').addEventListener('click', () => { const d = $('#ac-perfil'), o = !d.open; d.open = o; $('#ac-edit').setAttribute('aria-expanded', String(o)); if (o) d.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
+  $('#ac-edit').addEventListener('click', () => { const d = $('#ac-perfil'), o = !d.open; d.open = o; $('#ac-edit').setAttribute('aria-expanded', String(o)); });
   $('#ac-save').addEventListener('click', async () => {
     const pressed = $('#a-acct [data-ap][aria-pressed=true]');
     const row = { perfil: pressed ? pressed.dataset.ap : null, nombre: $('#ac-nombre').value.trim(), apellido: $('#ac-apellido').value.trim(), ...pfGet($('#ac-pf')) };
@@ -3979,7 +3987,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
         ['p', 'm'].forEach(buildLabels);
         map.addSource('offers', { type: 'geojson', data: offersFC() });
         map.addLayer({ id: 'offers', type: 'circle', source: 'offers', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.8, 1], 3], 15, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.8, 1], 5]], 'circle-radius-transition': { duration: 150 }, 'circle-color': '#ffffff', 'circle-stroke-color': '#151515', 'circle-stroke-width': 1.4 } });
-        ready = true; root._map = map; paintBase(map, tone); paintLayer('v'); addMetro();
+        ready = true; root._map = map; root._paint = paintLayer; paintBase(map, tone); paintLayer('v'); addMetro();
         let srcLevel = 0;
         const applyZones = (p, m, level, label) => {
           if (level <= srcLevel) return; srcLevel = level;
@@ -4079,7 +4087,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     }));
     $$('[data-layer]', root).forEach((b) => b.addEventListener('click', () => {
       $$('[data-layer]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); if (!map || !ready) return;
-      paintLayer(b.dataset.layer);
+      if (root._paint) root._paint(b.dataset.layer);
     }));
     if (lock) $('button.x', lock).addEventListener('click', () => { lock.hidden = true; });
     if (window.ResizeObserver) new ResizeObserver(() => { if (!map) start(); else map.resize(); }).observe(root);
