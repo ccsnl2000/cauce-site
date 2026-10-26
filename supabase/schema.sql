@@ -61,3 +61,7 @@ alter table public.profiles add column if not exists renews_at timestamptz, add 
 -- Added 25 Oct 2026: first name for the account greeting.
 alter table public.profiles add column if not exists nombre text;
 grant update (nombre) on public.profiles to authenticated;
+
+-- Added 25 Oct 2026: email language for account emails.
+alter table public.profiles add column if not exists lang text not null default 'es';
+grant update (lang) on public.profiles to authenticated;

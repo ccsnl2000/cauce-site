@@ -687,7 +687,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
       <p class="lab" style="margin-top:28px">Estudio de factibilidad · Porlamar</p>
       <h1>2.363 m² en Porlamar por $500.000. ¿Es rentable construir y vender?</h1>
       <p class="dek">Un terreno con proyecto de uso mixto. En Porlamar, los inmuebles usados se piden a $1.003 por m².</p>
-      <div class="by"><div class="avatar">c</div><span>Equipo Cauce</span><span>20 oct 2026</span><span>8 min</span></div>
+      <div class="by"><span>Equipo Cauce</span><span>20 oct 2026</span><span>8 min</span></div>
       <div class="ph fig" data-c="1"><div class="figbox" data-fig="lote"></div><span>Ilustración: el terreno, la calle, el vecindario</span></div>
       <div class="blk"><span class="lab">La noticia</span><p>Vertical Real Estate ofrece 2.363 m² en Porlamar por $500.000, con un proyecto de uso mixto. Suponemos 1,5 m² construibles por cada m² de terreno. De esa área, el 80% sería vendible.</p></div>
       <div class="blk"><span class="lab">Lo que sabemos</span><p>Con un costo de obra de $800 por m², el proyecto cuesta unos $4 millones. El terreno es solo el 12% de ese total. El resultado depende del costo de obra y del precio de venta.</p>
@@ -2631,7 +2631,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (!a) { art.innerHTML = PORLAMAR + readsHTML(); wireCharts(art); mountFigs(); return; }
     const fi = FID.indexOf(id), f = fi >= 0 ? FEED[fi] : [a.sec, a.t, a.mins, a.pro, null];
     const study = !f[4], top = study ? (CH[id] ? `<div class="chart" data-chart="${id}"></div>` : '') : media(f[4], fi);
-    art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><div class="avatar">c</div><span>Equipo Cauce</span><span>${esc(a.date || '20 oct 2026')}</span><span>${esc(f[2])}</span></div>${top}
+    art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><span>Equipo Cauce</span><span>${esc(a.date || '20 oct 2026')}</span><span>${esc(f[2])}</span></div>${top}
       ${a.body ? a.body.map((x) => `<div class="blk"><span class="lab">${esc(x.h)}</span>${(x.p || []).map((t) => `<p>${esc(t)}</p>`).join('')}${x.list ? `<ul class="blist">${x.list.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}${x.chart ? `<div class="chart" data-chart="${x.chart}"></div>` : ''}${x.table ? `<figure class="xt"><div class="xtw"><table><thead><tr>${x.table.head.map((t) => `<th>${esc(t)}</th>`).join('')}</tr></thead><tbody>${x.table.rows.map((r) => `<tr>${r.map((t, k) => k ? `<td>${esc(t)}</td>` : `<th scope="row">${esc(t)}</th>`).join('')}</tr>`).join('')}</tbody></table></div><figcaption>${esc(x.table.src)}</figcaption></figure>` : ''}</div>`).join('') : `<div class="blk"><span class="lab">${esc(a.b[0])}</span><p>${esc(a.b[1])}</p>${study ? '' : `<div class="chart" data-chart="${id}"></div>`}</div>`}
       ${a.list ? `<div class="blk"><span class="lab">${esc(a.list[0])}</span><ol class="chap">${a.list[1].map((x) => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
       <div class="blk"><span class="lab">La lectura de Cauce</span><p>${esc(a.c)}</p></div>${a.refs ? `<div class="blk"><span class="lab">Fuentes</span><ol class="srcs">${a.refs.map((r) => `<li><a href="${r[4]}" target="_blank" rel="noopener">${esc(r[3])}</a><span class="sm">${[r[0], r[1], r[2]].filter(Boolean).map(esc).join(' · ')}</span></li>`).join('')}</ol></div>` : ''}${a.cta ? '<div class="wall"><span class="lab">Gratis</span><p class="serif" style="font-size:var(--t-h3);line-height:1.1">Recibe la guía completa en tu correo.</p><a class="btn" href="#guia">Recibir la guía</a></div>' : ''}${f[3] ? '<div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:var(--t-h3);line-height:1.1">El análisis completo, con datos descargables.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>' : ''}`;
@@ -3221,7 +3221,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     $$('.tog button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     applying = false;
   }
-  $$('.tog button').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); }));
+  $$('.tog button').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); if (typeof user !== 'undefined' && user) syncPerfil(); }));
   new MutationObserver(() => { if (!applying) requestAnimationFrame(applyLang); }).observe(document.body, { childList: true, subtree: true });
 
   /* theme: follows the device until the reader picks one */
@@ -3344,8 +3344,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (paid) { $$('.cmap.paywall').forEach((m) => m.classList.remove('paywall')); $$('.mpay').forEach((m) => { m.hidden = true; }); try { sessionStorage.removeItem('cauce-maplock'); } catch (e) {} }
   }
   async function syncPerfil() {
-    const p = getPerfil(), row = {}; ['perfil', 'pais', 'zonas', 'nombre'].forEach((k) => { if (p[k]) row[k] = p[k]; });
-    if (!Object.keys(row).length) return;
+    const p = getPerfil(), row = { lang }; ['perfil', 'pais', 'zonas', 'nombre'].forEach((k) => { if (p[k]) row[k] = p[k]; });
     try { const c = await sb(); await c.from('profiles').update(row).eq('id', user.id); } catch (e) {}
   }
   const fmtDate = (d) => new Date(d).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-VE', { day: 'numeric', month: 'long', year: 'numeric' });
