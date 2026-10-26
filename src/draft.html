@@ -155,6 +155,7 @@ body.auth .stick-chat { display: none; }
 .hero .lead { position: relative; display: grid; gap: 14px; }
 .hero .lead .ph { aspect-ratio: 16/10; }
 .cmap.hero-map { aspect-ratio: 16 / 10; max-width: 100%; }
+@media (min-width: 901px) { .hero { align-items: stretch; } .hero .lead { grid-template-rows: minmax(0, 1fr); } .cmap.hero-map { aspect-ratio: auto; height: 100%; min-height: 440px; } }
 .feat { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 28px; align-items: center; margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
 .feat .ftext { display: grid; gap: 14px; align-content: start; }
 .feat h1 { font-family: var(--serif); font-size: var(--t-h1); line-height: 1; letter-spacing: -0.045em; }
@@ -418,7 +419,9 @@ body.auth header.top, body.auth footer { display: none; }
 .acct-go a:hover svg { transform: translateX(4px); }
 .acct-perfil summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
 .acct-perfil summary::-webkit-details-marker { display: none; }
-.acct-hd { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 20px; align-items: center; }
+.acct-hd { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: start; }
+.acct-side .acct-h { font-size: var(--t-h2); line-height: 1.02; letter-spacing: var(--tr-h2); overflow-wrap: anywhere; margin-top: 4px; }
+.acct-side > * { min-width: 0; max-width: 100%; }
 .acct-who { display: grid; gap: 4px; min-width: 0; } .acct-who > * { min-width: 0; }
 .acct-who .acct-h { overflow-wrap: anywhere; font-size: var(--t-h2); line-height: 1.02; letter-spacing: var(--tr-h2); }
 .acct-side { display: grid; justify-items: end; gap: 4px; text-align: right; align-self: start; }
@@ -433,7 +436,7 @@ body.auth header.top, body.auth footer { display: none; }
 #ac-edit[aria-expanded=true] svg { transform: rotate(180deg); }
 .idc { width: 136px; flex: none; }
 .idc svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 10px 24px rgba(27,26,24,.12)); }
-@media (max-width: 560px) { .acct-hd { grid-template-columns: auto minmax(0, 1fr); } .acct-side { grid-column: 1 / -1; justify-items: start; text-align: left; } .idc { width: 92px; } .acct-hd { gap: 14px; } }
+@media (max-width: 560px) { .idc { width: 92px; } .acct-hd { gap: 14px; } }
 .pf-tog { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; color: var(--ink); white-space: nowrap; }
 .pf-tog svg { transition: transform .2s var(--ease); } .acct-perfil[open] .pf-tog svg { transform: rotate(180deg); }
 .pf-tog .cl, .acct-perfil[open] .pf-tog .ed { display: none; } .acct-perfil[open] .pf-tog .cl { display: inline; }
@@ -903,7 +906,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
       <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
     </form>
     <div class="acct" id="a-acct" hidden>
-      <div class="acct-hd"><div class="idc" id="ac-idc" aria-hidden="true"></div><div class="acct-who"><p class="acct-h" id="ac-name">Tu cuenta</p><p class="sm" id="ac-email"></p></div><div class="acct-side"><button type="button" class="pf-tog" id="ac-edit" aria-expanded="false" aria-controls="ac-perfil"><span class="ed">Editar</span><span class="cl">Cerrar</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><p class="acct-role" id="ac-role"></p><p class="acct-where" id="ac-where"></p></div></div>
+      <div class="acct-hd"><div class="idc" id="ac-idc" aria-hidden="true"></div><p class="sm" id="ac-email" hidden></p><div class="acct-side"><button type="button" class="pf-tog" id="ac-edit" aria-expanded="false" aria-controls="ac-perfil"><span class="ed">Editar</span><span class="cl">Cerrar</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button><p class="acct-h" id="ac-name">Tu cuenta</p><p class="acct-role" id="ac-role"></p><p class="acct-where" id="ac-where"></p></div></div>
       <details class="acct-perfil" id="ac-perfil">
         <summary hidden><span id="ac-perfil-sum"></span></summary>
         <p class="sm" style="margin:14px 0 10px">Nos ayuda a elegir qué datos y estudios mostrarte primero.</p>
@@ -3654,7 +3657,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     $('#ac-renew').textContent = !paid ? 'Gratis. El boletín llega cada jueves.'
       : late ? 'No pudimos cobrar tu tarjeta. Actualízala para no perder el acceso.'
       : r.renews_at ? (lang === 'en' ? (ending ? 'Access until ' : 'Renews on ') + fmtDate(r.renews_at) + (ending ? '.' : ' · $10/mo') : (ending ? 'Tienes acceso hasta el ' : 'Se renueva el ') + fmtDate(r.renews_at) + (ending ? '.' : ' · $10/mes'))
-      : '$10/mes';
+      : (lang === 'en' ? '$10/mo' : '$10/mes');
     $('#ac-perks-lab').textContent = paid ? 'Incluido en tu plan' : 'Con Inteligencia también tienes';
     const cta = $('#ac-cta');
     if (paid) { cta.textContent = late ? 'Actualizar tarjeta' : ending ? 'Reactivar suscripción' : 'Gestionar suscripción'; cta.href = PORTAL + '?prefilled_email=' + encodeURIComponent(user.email); cta.className = late || ending ? 'btn' : 'btn o'; }
@@ -4067,7 +4070,11 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       if (root._paint) root._paint(b.dataset.layer);
     }));
     if (lock) $('button.x', lock).addEventListener('click', () => { lock.hidden = true; });
-    if (window.ResizeObserver) new ResizeObserver(() => { if (!map) start(); else map.resize(); }).observe(root);
+    // keep Caracas framed when the window changes shape (unless the reader has moved the map)
+    let rz = 0;
+    const refit = () => { if (!map || !home || !resetB.hidden) return; const all = bboxOf(GEO.p.flatMap((f) => f.c)), cam = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 16 }); if (!cam) return;
+      home = { center: cam.center, zoom: cam.zoom }; map.setMinZoom(Math.min(map.getMinZoom(), home.zoom - 0.3)); map.jumpTo(home); resetB.hidden = true; };
+    if (window.ResizeObserver) new ResizeObserver(() => { if (!map) start(); else { map.resize(); clearTimeout(rz); rz = setTimeout(refit, 120); } }).observe(root);
     return { kick: () => { if (!map) start(); else map.resize(); } };
   }
   const MAPS = $$('.cmap').map(mountMap);
@@ -4265,7 +4272,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
   }
   window.addEventListener('hashchange', show);
-  const heroFit = () => { const ph = $('.hero .lead .cmap'), side = $('.hero .side'); if (!ph || !side) return; side.style.minHeight = matchMedia('(max-width: 900px)').matches ? '' : Math.round(ph.getBoundingClientRect().bottom - side.getBoundingClientRect().top) + 'px'; };
+  const heroFit = () => {};  // the map now stretches to the side column in CSS
   if (window.ResizeObserver) new ResizeObserver(heroFit).observe($('.hero .lead .cmap'));
   window.addEventListener('resize', heroFit);
   feed('all'); grid('todos'); mountFigs(); show(); heroFit();
