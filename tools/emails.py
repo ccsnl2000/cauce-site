@@ -80,7 +80,7 @@ def page(lang, preheader, body, foot):
 # ---------------- copy ----------------
 C = {
  "es": dict(team="Equipo Cauce", tag="Datos inmobiliarios con fuente", legal="Cauce publica información, no asesoría de inversión.",
-   guide_t="Comprar en Venezuela siendo extranjero", guide_s="Si puedes ser dueño, qué visa y RIF necesitas, cuánto cuesta cerrar y qué se hace a distancia. Siete capítulos, unos 40 minutos.", guide_b="Leer la guía",
+   guide_t="Comprar en Venezuela siendo extranjero", guide_s="Si puedes ser dueño, qué visa y RIF necesitas, cuánto cuesta cerrar y qué se hace a distancia. Dos páginas, con fuentes y una lista para el cierre.", guide_b="Descargar la guía (PDF, en inglés)",
    intel=("Inteligencia", "Precios y oferta por zona · $10/mes"), call=("Llamada de diagnóstico", "45 minutos con el equipo · $199"),
    perks=["Estudios completos y calculadora", "151 zonas, con datos semanales", "Análisis de propiedades ilimitados", "Descarga de datos en CSV"],
    # welcome
@@ -102,7 +102,7 @@ C = {
    x_note="Gracias por haber sido parte de Inteligencia.", x_subject="Cancelaste Inteligencia",
    p_foot="Recibes este correo por un cambio en tu suscripción en cauce.blog."),
  "en": dict(team="The Cauce team", tag="Real estate data, sourced", legal="Cauce publishes information, not investment advice.",
-   guide_t="Buying property in Venezuela as a foreigner", guide_s="Whether you can own property, which visa and tax ID you need, what closing costs, and what can be done remotely. Seven chapters, about 40 minutes.", guide_b="Read the guide",
+   guide_t="Buying property in Venezuela as a foreigner", guide_s="Whether you can own property, which visa and tax ID you need, what closing costs, and what can be done remotely. Two pages, with sources and a closing checklist.", guide_b="Download the guide (PDF)",
    intel=("Inteligencia", "Prices and supply by area · $10/mo"), call=("Discovery call", "45 minutes with the team · $199"),
    perks=["Full studies and calculator", "151 areas, updated weekly", "Unlimited property checks", "CSV downloads"],
    w_lab="Welcome", w_sub="You're in. Start here.", w_pre="Your free guide is ready. And every Thursday, the market in five minutes.",
@@ -124,7 +124,7 @@ C = {
 
 def build(l):
     t = C[l]
-    G, CAL, DATOS, ACCT = SITE + "/#articulo/guia", "https://cal.com/cauceblog/discovery", SITE + "/#datos", SITE + "/#entrar"
+    G, CAL, DATOS, ACCT = SITE + "/guia/cauce-guia-comprador-extranjero-en.pdf", "https://cal.com/cauceblog/discovery", SITE + "/#datos", SITE + "/#entrar"
     intel, call = (*t["intel"], DATOS), (*t["call"], CAL)
     thursday = rows([(a, b, SITE) for a, b in t["w_rows"]], t["w_thu"])
     def welcome(boletin):
