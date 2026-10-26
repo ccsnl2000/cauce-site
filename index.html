@@ -411,7 +411,7 @@ body.preview .lock > .blur, body.member .lock > .blur { filter: none; opacity: 1
 .plan li::before { content: "— "; color: var(--soft); }
 .pcol { display: flex; flex-direction: column; gap: 16px; min-width: 0; } .pcol > .plan { flex: 1; } .pcol > .btn { align-self: center; }
 .plan > ul, .plan > ol { margin-bottom: 10px; }
-.plan .sticker { top: -16px; right: 14px; width: 66px; height: 66px; transform: rotate(10deg); }
+.plan .sticker { top: -26px; right: -18px; width: 66px; height: 66px; transform: rotate(10deg); }
 
 /* JOIN (extra large, centered) */
 .view.ghost { position: fixed; inset: 0; z-index: 0; overflow: hidden; padding-top: 40px; filter: blur(26px) saturate(.85); transform: scale(1.06); opacity: .9; pointer-events: none; user-select: none; }
@@ -913,7 +913,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="pcol"><div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado.</p><ul><li><b>1 estudio de regalo</b></li><li>Cifras de la semana, cada jueves</li><li>Ficha de cada zona</li></ul></div><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
     <div class="pcol"><div class="plan" data-plan="inteligencia"><div class="sticker" data-grain="round" data-hex="#BDB8AF,#77736C,#F1EEE9" aria-hidden="true">Popular</div><span class="lab">Inteligencia Básico</span><div class="price">$10<small> /mes</small></div><p class="sm">Para evaluar tu primera compra.</p><ul><li><b>2 estudios por semana</b></li><li>Todo lo del Boletín</li></ul><p class="pps">$1,15 por estudio</p></div><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
     <div class="pcol"><div class="plan" data-plan="pro"><span class="lab">Inteligencia Pro</span><div class="price">$50<small> /mes</small></div><p class="sm">Para comparar antes de decidir.</p><ul><li><b>12 estudios por semana</b></li><li>Comparar zonas lado a lado</li><li>Ranking completo y tendencias de 24 meses</li><li>Datos en CSV</li></ul><p class="pps">$0,96 por estudio</p></div><a class="btn" href="#entrar" data-pick="pro">Suscribirme</a></div>
-    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price quote">Cotización<small> según tus necesidades</small></div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>1 panel personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
+    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price quote">Cotización<small> según tus necesidades</small></div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>1 panel web personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Un estudio es el análisis completo de un inmueble o terreno: precio frente a su zona, rendimiento y riesgos. Precios de prueba, en US$. Cancela cuando quieras.</p>
   </div>
@@ -3197,7 +3197,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Sí': 'Yes',
     "Cotización": "Quote", "según tus necesidades": "based on your needs", "Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:": "For agents, developers and owners. We build an offer around what you need. For example:", "25 estudios por semana": "25 studies a week", "1 inmueble patrocinado": "1 sponsored listing", "1 estudio de rendimiento para tu obra nueva o remodelación": "1 yield study for your new build or renovation", "Atención uno a uno": "One-on-one support", "Precio por estudio según volumen": "Price per study based on volume", "Pedir cotización": "Get a quote", "Los que necesites": "As many as you need", "Según volumen": "Based on volume", "Inmuebles patrocinados en Cauce": "Sponsored listings on Cauce", "Estudio de rendimiento para tu proyecto": "Yield study for your project", "Uno a uno": "One-on-one", "Cuenta creada. Cuéntanos qué necesitas.": "Account created. Tell us what you need.", "Cuántos estudios, qué inmuebles o qué proyecto. Te enviamos una cotización en dos días hábiles.": "How many studies, which properties or what project. We send you a quote within two business days.",
     'Panel personalizado': 'Personalized dashboard', 'Prioritario': 'Priority',
-    '1 panel personalizado': '1 personalized dashboard',
+    '1 panel web personalizado': '1 personalized web dashboard',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -3500,7 +3500,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     p.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === p) { e.preventDefault(); selectPlan(p.dataset.plan); planIntent = p.dataset.plan; } }); });
   $$('#abroad .plan').forEach((p) => { p.setAttribute('role', 'button'); p.setAttribute('tabindex', '0');
     const pick = () => $$('#abroad .plan').forEach((x) => { x.classList.toggle('sel', x === p); x.setAttribute('aria-pressed', String(x === p)); });
-    p.addEventListener('click', pick); p.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === p) { e.preventDefault(); pick(); } }); });
+    p.addEventListener('click', pick); p.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === p) { e.preventDefault(); pick(); } });
+    if (p.dataset.plan === 'consulta') pick(); });   // the discovery call is the default first step
   /* plans: highlight by where the reader came from */
   let lastArea = 'publicacion', planIntent = null;
   function highlightPlans() {
