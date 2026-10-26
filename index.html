@@ -4607,9 +4607,10 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   document.addEventListener('change', (ev) => { const t = ev.target; if (t.id === 'dz-a') track('zona', t.value); else if (t.id === 'dz-b') track('comparar', t.value); }, true);
   document.addEventListener('submit', (ev) => { const f = ev.target; track('formulario', f.id || f.className || 'form'); }, true);
   /* articles: the dashboard decides what is published. Built-in articles stay unless unpublished; new ones are added. */
+  const mdIn = (t) => esc(t).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');   // **bold** and [text](url)
   const mdHTML = (md) => String(md || '').split(/\n(?=## )/).map((blk) => {
     const m = blk.match(/^## (.*)\n?([\s\S]*)$/), h = m ? m[1] : '', rest = (m ? m[2] : blk).trim();
-    const parts = rest.split(/\n{2,}/).map((x) => /^- /m.test(x) ? `<ul class="blist">${x.split('\n').filter((l) => l.startsWith('- ')).map((l) => `<li>${esc(l.slice(2))}</li>`).join('')}</ul>` : `<p>${esc(x.replace(/\n/g, ' '))}</p>`).join('');
+    const parts = rest.split(/\n{2,}/).map((x) => /^- /m.test(x) ? `<ul class="blist">${x.split('\n').filter((l) => l.startsWith('- ')).map((l) => `<li>${mdIn(l.slice(2))}</li>`).join('')}</ul>` : `<p>${mdIn(x.replace(/\n/g, ' '))}</p>`).join('');
     return `<div class="blk">${h ? `<span class="lab">${esc(h)}</span>` : ''}${parts}</div>`; }).join('');
   async function loadArticles() {
     let list; try { const r = await fetch(SB_URL + '/rest/v1/articles?select=id,seccion,titulo,titulo_en,entradilla,entradilla_en,cuerpo,cuerpo_en,lectura,lectura_en,minutos,pro,builtin,publicado_at&estado=eq.publicado&order=publicado_at.desc', { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } }); if (!r.ok) return; list = await r.json(); } catch (e) { return; }
