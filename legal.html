@@ -24,13 +24,14 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 nav.toc { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 24px 0 8px; font-size: 14px; }
 a { color: inherit; text-underline-offset: 3px; }
 h1, h2 { font-weight: 800; letter-spacing: -0.045em; line-height: 1.1; text-wrap: balance; }
-h1 { font-size: clamp(36px, 7vw, 56px); margin: 0; }
-h2 { font-size: 28px; margin: 56px 0 12px; scroll-margin-top: 24px; }
-h3 { font-size: 17px; margin: 28px 0 6px; }
+h1 { font-size: clamp(34px, 3.8vw, 52px); line-height: 1.04; letter-spacing: -0.045em; margin: 0; }
+h2 { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; letter-spacing: -0.04em; margin: 56px 0 12px; scroll-margin-top: 24px; }
+h3 { font-size: clamp(20px, 1.8vw, 24px); line-height: 1.2; letter-spacing: -0.03em; margin: 32px 0 6px; }
 p, li { color: var(--ink); } ul { padding-left: 20px; }
 .soft { color: var(--soft); font-size: 14px; }
 .note { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; font-size: 14px; color: var(--soft); }
 .hd { display: flex; gap: 18px; align-items: center; } .lg { font-size: 14px; color: var(--soft); } .lg button { background: none; border: 0; padding: 0; font: inherit; color: var(--soft); cursor: pointer; } .lg button[aria-pressed=true] { color: var(--ink); }
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 99; background: url("/grain.png") repeat; background-size: 160px; opacity: .45; }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
 </style>
 </head>
