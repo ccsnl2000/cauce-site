@@ -81,8 +81,10 @@ def page(lang, preheader, body, foot):
 C = {
  "es": dict(team="Equipo Cauce", tag="Datos inmobiliarios con fuente", legal="Cauce publica información, no asesoría de inversión.",
    guide_t="Comprar en Venezuela siendo extranjero", guide_s="Si puedes ser dueño, qué visa y RIF necesitas, cuánto cuesta cerrar y qué se hace a distancia. Dos páginas, con fuentes y una lista para el cierre.", guide_b="Descargar la guía (PDF, en inglés)",
-   intel=("Inteligencia", "Precios y oferta por zona · $10/mes"), call=("Llamada de diagnóstico", "45 minutos con el equipo · $199"),
-   perks=["Estudios completos y calculadora", "151 zonas, con datos semanales", "Análisis de propiedades ilimitados", "Descarga de datos en CSV"],
+   intel=("Inteligencia Básico", "2 estudios por semana y la ficha de cada zona · $10/mes"), call=("Llamada de diagnóstico", "45 minutos con el equipo, tras un cuestionario corto · $199"),
+   pro=("Inteligencia Pro", "12 estudios por semana, comparar zonas, tendencias y CSV · $50/mes"), routes=("Comprar con nosotros", "Ruta A, título a través de la empresa ($997) · Ruta B, título a tu nombre ($2.997)"),
+   custom=("A medida", "Para agentes, desarrolladores y dueños · cotización"), intro="Cauce es una publicación y una herramienta de datos sobre el mercado inmobiliario de Venezuela: noticias con fuente, precios por zona y acompañamiento para comprar, desde el exterior o aquí.", offer="Lo que puedes hacer con Cauce",
+   perks=["2 estudios por semana", "Ficha de cada zona", "Cifras de la semana, cada jueves"],
    # welcome
    w_lab="Bienvenida", w_sub="Ya estás en Cauce. Empieza por aquí.", w_pre="Tu guía gratis está lista. Y cada jueves, el mercado en cinco minutos.",
    w_g="Tu guía gratis", w_thu="Cada jueves en tu correo",
@@ -103,8 +105,10 @@ C = {
    p_foot="Recibes este correo por un cambio en tu suscripción en cauce.blog."),
  "en": dict(team="The Cauce team", tag="Real estate data, sourced", legal="Cauce publishes information, not investment advice.",
    guide_t="Buying property in Venezuela as a foreigner", guide_s="Whether you can own property, which visa and tax ID you need, what closing costs, and what can be done remotely. Two pages, with sources and a closing checklist.", guide_b="Download the guide (PDF)",
-   intel=("Inteligencia", "Prices and supply by area · $10/mo"), call=("Discovery call", "45 minutes with the team · $199"),
-   perks=["Full studies and calculator", "151 areas, updated weekly", "Unlimited property checks", "CSV downloads"],
+   intel=("Inteligencia Basic", "2 studies a week and a profile of every area · $10/mo"), call=("Discovery call", "45 minutes with the team, after a short questionnaire · $199"),
+   pro=("Inteligencia Pro", "12 studies a week, area comparison, trends and CSV · $50/mo"), routes=("Buy with us", "Route A, held title ($997) · Route B, title in your name ($2,997)"),
+   custom=("Custom", "For agents, developers and owners · quote"), intro="Cauce is a publication and a data tool on Venezuelan real estate: sourced reporting, prices by area and help buying, from abroad or in the country.", offer="What you can do with Cauce",
+   perks=["2 studies a week", "Profile of every area", "This week in numbers, every Thursday"],
    w_lab="Welcome", w_sub="You're in. Start here.", w_pre="Your free guide is ready. And every Thursday, the market in five minutes.",
    w_g="Your free guide", w_thu="Every Thursday in your inbox",
    w_rows=[("The number", "One market figure and what it means"), ("The street", "A person, a building, a block"), ("Legal watch", "What changed, in plain words")],
@@ -125,24 +129,26 @@ C = {
 def build(l):
     t = C[l]
     G, CAL, DATOS, ACCT = SITE + "/guia/cauce-guia-comprador-extranjero-en.pdf", "https://cal.com/cauceblog/discovery", SITE + "/#datos", SITE + "/#entrar"
-    intel, call = (*t["intel"], DATOS), (*t["call"], CAL)
+    PLANES, CUEST = SITE + "/#planes", SITE + "/#cuestionario"
+    intel, call = (*t["intel"], PLANES), (*t["call"], CUEST)
     thursday = rows([(a, b, SITE) for a, b in t["w_rows"]], t["w_thu"])
     def welcome(boletin):
         return page(l, t["w_pre"],
             head(t["w_lab"]) + hello("{{saludo}}", t["w_sub"])
             + card(t["w_g"], t["guide_t"], t["guide_s"], btn=(t["guide_b"], G, True))
+            + para(t["intro"], SOFT)
+            + rows([intel, (*t["pro"], PLANES), call, (*t["routes"], PLANES), (*t["custom"], PLANES)], t["offer"])
             + (thursday if boletin else "")
-            + rows([intel, call], t["w_more"])
             + sign(t["w_note"], t["team"], t["tag"]),
             f'{t["w_foot_b"] if boletin else t["w_foot_g"]} {t["legal"]}')
     on = page(l, t["a_pre"],
         head(t["a_lab"]) + hello(t["a_t"], t["a_s"])
-        + card(t["a_plan"], "Inteligencia", t["a_renew"], items=t["perks"], btn=(t["a_btn"], DATOS, True), badge=t["a_badge"])
+        + card(t["a_plan"], t["intel"][0], t["a_renew"], items=t["perks"], btn=(t["a_btn"], DATOS, True), badge=t["a_badge"])
         + rows([(*t["a_manage"], ACCT), call], t["a_rows_l"])
         + sign(t["a_note"], t["team"], t["tag"]), f'{t["p_foot"]} {t["legal"]}')
     off = page(l, t["x_pre"],
         head(t["a_lab"]) + hello(t["x_t"], t["x_s"])
-        + card(t["a_plan"], "Inteligencia", t["x_body"], btn=(t["x_btn"], ACCT, False), badge=t["x_badge"], warn=True)
+        + card(t["a_plan"], t["intel"][0], t["x_body"], btn=(t["x_btn"], ACCT, False), badge=t["x_badge"], warn=True)
         + para(t["x_why"], SOFT)
         + rows([(t["guide_t"], t["x_guide_s"], G), call], t["x_keep"])
         + sign(t["x_note"], t["team"], t["tag"]), f'{t["p_foot"]} {t["legal"]}')

@@ -771,12 +771,12 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="gd-card" id="gd-card">
       <form id="gd-form" novalidate>
         <span class="lab">Recibe la guía en tu correo</span>
-        <div class="pillfield"><label for="gd-email" hidden>Correo</label><input id="gd-email" type="email" placeholder="tu@correo.com" autocomplete="email" required><button class="btn">Recibir la guía</button></div>
+        <div class="pillfield"><label for="gd-email" hidden>Correo</label><input id="gd-email" type="email" placeholder="tu@correo.com" autocomplete="email" required><button class="btn">Descargar la guía</button></div>
         <label class="gd-check"><input type="checkbox" id="gd-news"><span>Quiero el boletín gratis de Cauce: cifras de la semana, nuevos estudios y novedades, cada jueves.</span></label>
         <p class="sm gd-msg" id="gd-msg" aria-live="polite"></p>
       </form>
       <div class="gd-done" id="gd-done" hidden>
-        <p class="gd-ok"><span>Listo.</span> <span>La guía va en camino a</span> <b id="gd-to"></b></p><a class="btn o gd-dl" href="/guia/cauce-guia-comprador-extranjero-en.pdf" target="_blank" rel="noopener" download>Descargar ahora (PDF)</a><div class="perfil" id="gd-perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div>
+        <p class="gd-ok"><span>Listo.</span> <span>Tu guía se está descargando. También te la enviamos a</span> <b id="gd-to"></b></p><a class="btn o gd-dl" href="/guia/cauce-guia-comprador-extranjero-en.pdf" target="_blank" rel="noopener" download>¿No empezó? Descárgala aquí</a><div class="perfil" id="gd-perfil" hidden><p class="perfil-q"><b>¿Cuál te describe?</b> <span class="sm">Así te mandamos lo que te sirve.</span></p><div class="chips" role="group" aria-label="¿Cuál te describe?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div></div>
         <div class="gd-acc" id="gd-acc">
           <p class="gd-q">¿Guardamos la guía en una cuenta?</p>
           <ul><li>La guía siempre a mano en la web, sin buscar el correo</li><li>Guarda artículos, estudios y propiedades para volver a ellos</li><li>Avisos cuando cambie el precio en las zonas que sigues</li></ul>
@@ -3214,6 +3214,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Bloque A': 'Block A', 'Bloque B': 'Block B', 'Bloque C': 'Block C',
     'Descargar ahora (PDF)': 'Download now (PDF)',
     'Consulta': 'Consultation', 'Empieza': 'Start', 'aquí': 'here',
+    'Tu guía se está descargando. También te la enviamos a': 'Your guide is downloading. We also sent it to', '¿No empezó? Descárgala aquí': 'Didn’t start? Download it here',
+    'Descargar la guía': 'Download the guide',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4421,6 +4423,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     f.addEventListener('submit', (e) => {
       e.preventDefault(); const v = $('#gd-email').value.trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { $('#gd-msg').textContent = document.documentElement.lang === 'en' ? 'Check your email address.' : 'Revisa tu correo.'; $('#gd-email').focus(); return; }
+      { const d = document.createElement('a'); d.href = '/guia/cauce-guia-comprador-extranjero-en.pdf'; d.download = 'Cauce-guia-comprador-extranjero.pdf'; document.body.appendChild(d); d.click(); d.remove(); track('guia_pdf', 'formulario'); }
       $('#gd-to').textContent = v; f.hidden = true; $('#gd-done').hidden = false; savePerfil({ email: v, boletin: $('#gd-news').checked, guia: true }); nl({ email: v, source: 'guia', boletin: $('#gd-news').checked }); $('#gd-acc').hidden = true; askPerfil($('#gd-perfil'), () => { nl({ email: v, perfil: getPerfil().perfil }); $('#gd-acc').hidden = !!user; }); applyLang();
     });
     $('#gd-no').addEventListener('click', () => { $('#gd-acc').hidden = true; });
