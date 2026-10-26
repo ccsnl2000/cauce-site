@@ -527,7 +527,12 @@ body.auth header.top, body.auth footer { display: none; }
 .pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 64px; }
 .pillars div { border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 8px; align-content: start; }
 .pillars.p2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.routes { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; max-width: 860px; margin-inline: auto; }
+.routes { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 24px; }
+.plan ul li b { font-weight: 700; }
+.pwide { margin-top: 14px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 24px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) auto; gap: 18px 32px; align-items: center; cursor: pointer; transition: border-color .3s; } .pwide:hover { border-color: var(--ink); }
+.pwide h3 { font-size: var(--t-h3); letter-spacing: -0.02em; margin: 6px 0; } .pwide ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: var(--t-sm); } .pwide ul li::before { content: "— "; color: var(--soft); }
+.pwide-cta { display: grid; gap: 12px; justify-items: end; } .pwide .price { font: 800 var(--t-h3)/1 var(--sans); letter-spacing: -0.03em; white-space: nowrap; } .pwide .price small { display: block; font-size: var(--t-xs); font-weight: 400; color: var(--soft); letter-spacing: 0; margin-top: 4px; text-align: right; }
+@media (max-width: 900px) { .pwide { grid-template-columns: 1fr; } .pwide-cta { justify-items: start; } .pwide .price small { text-align: left; } .routes { grid-template-columns: 1fr; } }
 .routes .plan { cursor: default; }
 .routes ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: var(--t-sm); }
 .c-res { display: none; }
@@ -876,19 +881,24 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   <div class="mktw" id="mktw">
   <div class="plans-h"><span class="lab">Planes</span><h1>Elige cómo quieres leer el mercado.</h1><p class="sm" style="font-size:var(--t-body)">Empieza gratis. Paga cuando necesites decidir.</p></div>
   <div class="plans" id="plans">
-    <div class="pcol"><div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado cada jueves.</p><ul><li>Cifras de la semana</li><li>Historias de mercado y zonas</li><li>Un estudio completo de regalo</li></ul></div><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
-    <div class="pcol"><div class="plan" data-plan="inteligencia"><div class="sticker" data-grain="round" data-hex="#BDB8AF,#77736C,#F1EEE9" aria-hidden="true">La<br>fija</div><span class="lab">Inteligencia</span><div class="price">$10<small> /mes, pago anual</small></div><p class="sm">Para quien compra o ya tiene inmuebles.</p><ul><li>Estudios completos y calculadora</li><li>151 zonas, con datos semanales</li><li>Análisis de propiedades ilimitados</li><li>Descarga de datos en CSV</li></ul></div><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
-    <div class="pcol"><div class="plan" data-plan="consulta"><span class="lab">Llamada de diagnóstico</span><div class="price">$149<small style="margin-left:6px">pago único</small></div><p class="sm">Antes de comprar, revisamos tu caso contigo.</p><ul><li>45 minutos por video sobre tu inmueble, presupuesto y plazos</li><li>Informe escrito en 24 horas con tus pasos y documentos</li><li>Desde el exterior: visa, apostilla y dónde tramitar</li><li>En Venezuela: precio frente a la zona y costos de cierre</li><li>Se descuenta si sigues con Compra a tu nombre</li></ul><p class="sm" style="margin-top:8px">Orientación revisada con nuestro abogado aliado.</p></div><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
-    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">Para dueños y agentes</span><div class="price">$450<small> por estudio</small></div><p class="sm">Muestra tu terreno a inversionistas.</p><ul><li>Estudio de factibilidad publicado</li><li>Solo destacado: $150 por 30 días</li><li>Contactos de lectores interesados</li></ul></div><a class="btn" href="#entrar" data-pick="duenos">Empezar</a></div>
+    <div class="pcol"><div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado.</p><ul><li>Cifras de la semana, cada jueves</li><li>Historias de mercado y zonas</li><li>1 estudio de regalo</li><li>La guía para comprar desde afuera</li></ul></div><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
+    <div class="pcol"><div class="plan" data-plan="inteligencia"><span class="lab">Inteligencia Básico</span><div class="price">$10<small> /mes</small></div><p class="sm">Para quien está mirando.</p><ul><li><b>2 estudios por semana</b></li><li>Inteligencia de 151 zonas</li><li>Comparador de zonas</li><li>Todo lo del Boletín</li></ul></div><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
+    <div class="pcol"><div class="plan" data-plan="pro"><div class="sticker" data-grain="round" data-hex="#BDB8AF,#77736C,#F1EEE9" aria-hidden="true">La<br>fija</div><span class="lab">Inteligencia Pro</span><div class="price">$50<small> /mes</small></div><p class="sm">Para quien va a comprar.</p><ul><li><b>12 estudios por semana</b></li><li>Ranking de las 32 parroquias</li><li>Tendencias de 24 meses y cierres</li><li>Descarga de datos en CSV</li><li>Todo lo de Básico</li></ul></div><a class="btn" href="#entrar" data-pick="pro">Suscribirme</a></div>
+    <div class="pcol"><div class="plan" data-plan="max"><span class="lab">Inteligencia Max</span><div class="price">$100<small> /mes</small></div><p class="sm">Para agentes, equipos y portafolios.</p><ul><li><b>20 estudios por semana</b></li><li>Estudios nuevos antes que nadie</li><li>Soporte prioritario</li><li>Todo lo de Pro</li></ul></div><a class="btn" href="#entrar" data-pick="max">Suscribirme</a></div>
   </div>
-  <p class="sm" style="text-align:center;margin-top:22px">Precios de prueba, en US$. No cobramos comisión por ventas. Cancela cuando quieras.</p>
+  <div class="pwide" data-plan="duenos"><div><span class="lab">Estudio a medida</span><h3>Para dueños, desarrolladores y agentes.</h3><p class="sm">Un estudio hecho para tu terreno, edificio o proyecto, con los números a la vista.</p></div>
+    <ul><li>Factibilidad: costo, precio de venta y margen</li><li>Publicación frente a inversionistas, si quieres</li><li>Espacio destacado: $150 por 30 días</li><li>Contactos de lectores interesados</li></ul>
+    <div class="pwide-cta"><span class="price">A medida<small> según el proyecto</small></span><a class="btn" href="#entrar" data-pick="duenos">Pedir propuesta</a></div>
+  </div>
+  <p class="sm" style="text-align:center;margin-top:22px">Un estudio es el análisis completo de un inmueble o terreno: precio frente a su zona, rendimiento y riesgos. Precios de prueba, en US$. Sin comisión por ventas. Cancela cuando quieras.</p>
   </div>
   <button class="peek" type="button" id="peek" aria-controls="abroad"><span>Cómo comprar, paso a paso</span><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M5 12l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
   <div class="abroad blurred" id="abroad">
   <div class="secthead"><h2>Cómo comprar, paso a paso</h2></div>
-  <p class="sm" style="font-size:var(--t-body);max-width:40em">De la primera pregunta a la firma. Empieza con la guía o con una llamada de diagnóstico; después eliges cómo quieres tener el inmueble.</p>
+  <p class="sm" style="font-size:var(--t-body);max-width:40em">De la primera pregunta a la firma: lee la guía, revisa tu caso con nosotros y compra a tu nombre.</p>
   <div class="plans routes" style="margin-top:24px">
     <div class="pcol"><div class="plan"><span class="lab">La guía</span><div class="price">$0<small> por correo</small></div><p class="sm">El proceso legal completo, en siete capítulos.</p><ol><li>¿Puede un extranjero ser dueño?</li><li>Los seis tipos de visa</li><li>La visa paso a paso</li><li>El RIF en el SENIAT</li><li>Registro SAREN y revisión del inmueble</li><li>El cierre: documentos y costos</li><li>Zonas de seguridad y Margarita</li></ol></div><a class="btn" href="#guia">Leer la guía</a></div>
+    <div class="pcol"><div class="plan" data-plan="consulta"><span class="lab">Llamada de diagnóstico</span><div class="price">$149<small> pago único</small></div><p class="sm">Antes de comprar, revisamos tu caso contigo.</p><ul><li>45 minutos por video sobre tu inmueble, presupuesto y plazos</li><li>Informe escrito en 24 horas con tus pasos y documentos</li><li>Desde el exterior: visa, apostilla y dónde tramitar</li><li>En Venezuela: precio frente a la zona y costos de cierre</li><li>Se descuenta si sigues con Compra a tu nombre</li></ul><p class="sm">Orientación revisada con nuestro abogado aliado.</p></div><a class="btn" href="#entrar" data-pick="consulta">Agendar</a></div>
     <div class="pcol"><div class="plan"><span class="lab">Compra a tu nombre</span><div class="price">4–8<small> meses</small></div><p class="sm">Tú firmas y el título queda a tu nombre.</p><ul><li>Visa y RIF, coordinados a distancia o en persona</li><li>Registro SAREN de comprador extranjero</li><li>Negociación con precios comparables</li><li>Revisión de documentos y registro</li><li>Acompañamiento por WhatsApp hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una llamada</a></div>
     <div class="pcol" hidden data-legal-review><div class="plan"><span class="lab">Compra a través de una empresa local</span><div class="price">0–4<small> meses</small></div><p class="sm">Sin visa ni RIF de tu lado. Tu participación queda en un contrato con la empresa que tiene el título.</p><ul><li>Lectura del mercado y 3 a 5 oportunidades filtradas</li><li>La estructura, explicada en tu contrato</li><li>Abogado y agente aliados</li><li>Coordinación hasta el cierre</li></ul></div><a class="btn" href="#planes" data-plan="consulta">Empezar con una llamada</a></div>
   </div>
@@ -3143,6 +3153,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     '/mes, pago anual': '/mo, billed yearly', 'Para quien compra o ya tiene inmuebles.': 'For buyers and owners.', 'Estudios completos y calculadora': 'Full studies and calculator',
     '151 zonas, con datos semanales': '151 areas, updated weekly', 'Análisis de propiedades ilimitados': 'Unlimited property checks', 'Descarga de datos en CSV': 'CSV downloads', 'Suscribirme': 'Subscribe',
     'Consulta 1:1': '1:1 consult',  'Revisión de precio y zona': 'Price and area review',
+    "1 estudio de regalo": "1 free study", "12 estudios por semana": "12 studies a week", "2 estudios por semana": "2 studies a week", "20 estudios por semana": "20 studies a week", "Cifras de la semana, cada jueves": "This week in numbers, every Thursday", "Comparador de zonas": "Area comparison", "De la primera pregunta a la firma: lee la guía, revisa tu caso con nosotros y compra a tu nombre.": "From the first question to signing: read the guide, review your case with us and buy in your own name.", "Espacio destacado: $150 por 30 días": "Featured spot: $150 for 30 days", "Estudios nuevos antes que nadie": "New studies before anyone else", "Factibilidad: costo, precio de venta y margen": "Feasibility: cost, sale price and margin", "Inteligencia Básico": "Inteligencia Basic", "Inteligencia Pro": "Inteligencia Pro", "Inteligencia Max": "Inteligencia Max", "Inteligencia de 151 zonas": "Intelligence on 151 areas", "La guía para comprar desde afuera": "The guide to buying from abroad", "Para agentes, equipos y portafolios.": "For agents, teams and portfolios.", "Para dueños, desarrolladores y agentes.": "For owners, developers and agents.", "Para quien está mirando.": "For those looking around.", "Para quien va a comprar.": "For those ready to buy.", "Para seguir el mercado.": "To follow the market.", "Publicación frente a inversionistas, si quieres": "Published to investors, if you wish", "Ranking de las 32 parroquias": "Ranking of all 32 parishes", "Tendencias de 24 meses y cierres": "24-month trends and closings", "Todo lo de Básico": "Everything in Basic", "Todo lo de Pro": "Everything in Pro", "Todo lo del Boletín": "Everything in the Newsletter", "Un estudio es el análisis completo de un inmueble o terreno: precio frente a su zona, rendimiento y riesgos. Precios de prueba, en US$. Sin comisión por ventas. Cancela cuando quieras.": "A study is the full analysis of a property or lot: price against its area, yield and risks. Test prices, in US$. No commission on sales. Cancel anytime.", "Un estudio hecho para tu terreno, edificio o proyecto, con los números a la vista.": "A study made for your lot, building or project, with the numbers in plain sight.", "según el proyecto": "based on the project", "A medida": "Custom", "Estudio a medida": "Custom study", "Pedir propuesta": "Request a proposal", "Cuenta creada. Cuéntanos del proyecto.": "Account created. Tell us about the project.", "Ubicación, área, precio y zonificación. Te enviamos una propuesta en dos días hábiles.": "Location, area, price and zoning. We send you a proposal within two business days.", "Te llevamos al pago seguro con Stripe. Puedes cambiar o cancelar tu plan cuando quieras desde tu perfil.": "We take you to secure checkout with Stripe. You can change or cancel your plan anytime from your profile.", "Orientación revisada con nuestro abogado aliado.": "Guidance reviewed with our partner lawyer.",
+    'meses': 'months',
+    '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
     'Muestra tu terreno a inversionistas.': 'Show your lot to investors.', 'Estudio de factibilidad publicado': 'Published feasibility study',
     'Solo destacado: $150 por 30 días': 'Featured listing only: $150 for 30 days', 'Contactos de lectores interesados': 'Leads from interested readers', 'Empezar': 'Get started',
@@ -3459,15 +3472,17 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     if (login) setMode('login');
   });
   /* accounts: one account for everyone; plan and profile can change later */
-  const PLAN_NAME = { boletin: 'Boletín · gratis', inteligencia: 'Inteligencia · $10/mes', consulta: 'Llamada de diagnóstico · $149', duenos: 'Estudio para dueños · $450' };
+  const PLAN_NAME = { boletin: 'Boletín · gratis', inteligencia: 'Inteligencia Básico · $10/mes', pro: 'Inteligencia Pro · $50/mes', max: 'Inteligencia Max · $100/mes', consulta: 'Llamada de diagnóstico · $149', duenos: 'Estudio para dueños · $450' };
   const NEXT = {
     boletin: ['Listo. Ya eres parte de Cauce.', 'Tu primer boletín llega el jueves. Puedes pasar a Inteligencia cuando quieras desde Mi cuenta.', 'Ir a Mercado', '#mercado'],
     inteligencia: ['Cuenta creada. Falta el pago.', 'Te llevamos al pago seguro con Stripe. Puedes cambiar o cancelar tu plan cuando quieras desde Mi cuenta.', 'Ir al pago', '#entrar'],
+    pro: ['Cuenta creada. Falta el pago.', 'Te llevamos al pago seguro con Stripe. Puedes cambiar o cancelar tu plan cuando quieras desde tu perfil.', 'Ir al pago', '#entrar'],
+    max: ['Cuenta creada. Falta el pago.', 'Te llevamos al pago seguro con Stripe. Puedes cambiar o cancelar tu plan cuando quieras desde tu perfil.', 'Ir al pago', '#entrar'],
     consulta: ['Cuenta creada. Elige tu horario.', 'Escoge día y hora para tu llamada de 45 minutos. El pago se hace al reservar.', 'Elegir horario', '#entrar'],
-    duenos: ['Cuenta creada. Cuéntanos del inmueble.', 'Necesitamos ubicación, área, precio y zonificación. Te respondemos en dos días hábiles.', 'Enviar datos', '#entrar']
+    duenos: ['Cuenta creada. Cuéntanos del proyecto.', 'Ubicación, área, precio y zonificación. Te enviamos una propuesta en dos días hábiles.', 'Enviar datos', '#entrar']
   };
   const auth = { mode: 'login', plan: 'boletin' };
-  function setPick(p) { auth.plan = p; setMode('join'); }
+  function setPick(p) { auth.plan = p; try { if (['inteligencia', 'pro', 'max'].includes(p)) sessionStorage.setItem('cauce-want', p); } catch (e) {} setMode('join'); }
   function setMode(m) {
     if (user) { account(); return; }
     auth.mode = m; $('#d-out').hidden = true; $('.auth-tabs').hidden = false; $('#a-acct').hidden = true; $('#v-entrar .auth-note').hidden = false; $('#v-entrar .auth-hello').textContent = 'Bienvenido a Cauce';
@@ -3615,7 +3630,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   }, true);
   // Stripe (test mode). Swap both for the live links when payments go live.
   const PAY_LINK = 'https://buy.stripe.com/test_9B65kDdNm9p3bmLgG7gjC01', PORTAL = 'https://billing.stripe.com/p/login/test_eVq9AT5gQ44J1MbgG7gjC00';
-  const payUrl = () => PAY_LINK + '?client_reference_id=' + user.id + '&prefilled_email=' + encodeURIComponent(user.email);
+  const TIER = { inteligencia: ['Básico', 10, PAY_LINK], pro: ['Pro', 50, ''], max: ['Max', 100, ''] };   // add the Stripe links for Pro and Max here
+  const payUrl = (link = PAY_LINK) => link + '?client_reference_id=' + user.id + '&prefilled_email=' + encodeURIComponent(user.email);
   function sb() {
     if (!sbP) sbP = new Promise((ok, no) => { const t = document.createElement('script'); t.src = '/vendor/supabase.js'; t.onload = () => ok(window.supabase.createClient(SB_URL, SB_KEY)); t.onerror = no; document.head.appendChild(t); });
     return sbP;
@@ -3726,7 +3742,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     $('#ac-perks-lab').textContent = paid ? 'Incluido en tu plan' : 'Con Inteligencia también tienes';
     const cta = $('#ac-cta');
     if (paid) { cta.textContent = late ? 'Actualizar tarjeta' : ending ? 'Reactivar suscripción' : 'Gestionar suscripción'; cta.href = PORTAL + '?prefilled_email=' + encodeURIComponent(user.email); cta.className = late || ending ? 'btn' : 'btn o'; }
-    else { cta.textContent = 'Pasar a Inteligencia · $10/mes'; cta.href = PAY_LINK ? payUrl() : '#planes'; cta.className = 'btn'; }
+    else { let w = 'inteligencia'; try { w = sessionStorage.getItem('cauce-want') || w; } catch (e) {} const t = TIER[w] || TIER.inteligencia;
+      cta.textContent = (lang === 'en' ? 'Get Inteligencia ' : 'Pasar a Inteligencia ') + t[0] + ' · $' + t[1] + (lang === 'en' ? '/mo' : '/mes');
+      cta.href = t[2] ? payUrl(t[2]) : 'mailto:hola@cauce.blog?subject=' + encodeURIComponent('Inteligencia ' + t[0]); cta.className = 'btn'; }
     // profile
     $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.ap === r.perfil)));
     $('#ac-nombre').value = r.nombre || ''; $('#ac-apellido').value = r.apellido || ''; pfSet($('#ac-pf'), r);
