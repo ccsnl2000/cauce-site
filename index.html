@@ -3953,7 +3953,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (document.startViewTransition && !reduce) document.startViewTransition(() => render(h)); else render(h);
   }
   window.addEventListener('hashchange', show);
-  const heroFit = () => { const ph = $('.hero .lead .cmap'), side = $('.hero .side'); if (!ph || !side) return; side.style.height = matchMedia('(max-width: 900px)').matches ? '' : Math.round(ph.getBoundingClientRect().bottom - side.getBoundingClientRect().top) + 'px'; };
+  const heroFit = () => { const ph = $('.hero .lead .cmap'), side = $('.hero .side'); if (!ph || !side) return; side.style.minHeight = matchMedia('(max-width: 900px)').matches ? '' : Math.round(ph.getBoundingClientRect().bottom - side.getBoundingClientRect().top) + 'px'; };
   if (window.ResizeObserver) new ResizeObserver(heroFit).observe($('.hero .lead .cmap'));
   window.addEventListener('resize', heroFit);
   feed('all'); grid('todos'); mountFigs(); show(); heroFit();
