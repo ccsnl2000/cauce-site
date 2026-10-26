@@ -548,7 +548,7 @@ body.auth header.top, body.auth footer { display: none; }
 .pillars div { border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 8px; align-content: start; }
 .pillars.p2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .routes { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 24px; }
-.plan ul li b { font-weight: 700; }
+.plan ul li b { font-weight: 700; } .plan .price.quote { font-size: var(--t-h3); line-height: 1.6; }
 .plan .pps { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line); font: 600 var(--t-xs) var(--sans); color: var(--soft); }
 .pcmp { margin-top: 40px; } .pcmp h3 { font-size: var(--t-h3); letter-spacing: -0.02em; margin-bottom: 14px; } .pcmp-w { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
 .pcmp table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 680px; } .pcmp th, .pcmp td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: center; } .pcmp tr:last-child th, .pcmp tr:last-child td { border-bottom: 0; }
@@ -913,7 +913,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
     <div class="pcol"><div class="plan" data-plan="boletin"><span class="lab">Boletín</span><div class="price">$0<small> siempre</small></div><p class="sm">Para seguir el mercado.</p><ul><li><b>1 estudio de regalo</b></li><li>Cifras de la semana, cada jueves</li><li>Ficha de cada zona</li></ul></div><a class="btn" href="#entrar" data-pick="boletin">Unirme gratis</a></div>
     <div class="pcol"><div class="plan" data-plan="inteligencia"><div class="sticker" data-grain="round" data-hex="#BDB8AF,#77736C,#F1EEE9" aria-hidden="true">Popular</div><span class="lab">Inteligencia Básico</span><div class="price">$10<small> /mes</small></div><p class="sm">Para evaluar tu primera compra.</p><ul><li><b>2 estudios por semana</b></li><li>Todo lo del Boletín</li></ul><p class="pps">$1,15 por estudio</p></div><a class="btn" href="#entrar" data-pick="inteligencia">Suscribirme</a></div>
     <div class="pcol"><div class="plan" data-plan="pro"><span class="lab">Inteligencia Pro</span><div class="price">$50<small> /mes</small></div><p class="sm">Para comparar antes de decidir.</p><ul><li><b>12 estudios por semana</b></li><li>Comparar zonas lado a lado</li><li>Ranking completo y tendencias de 24 meses</li><li>Datos en CSV</li></ul><p class="pps">$0,96 por estudio</p></div><a class="btn" href="#entrar" data-pick="pro">Suscribirme</a></div>
-    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price">$xxx<small> según tus necesidades</small></div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>Panel personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
+    <div class="pcol"><div class="plan" data-plan="duenos"><span class="lab">A medida</span><div class="price quote">Cotización<small> según tus necesidades</small></div><p class="sm">Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:</p><ul><li><b>25 estudios por semana</b></li><li>1 inmueble patrocinado</li><li>1 estudio de rendimiento para tu obra nueva o remodelación</li><li>1 panel personalizado</li></ul><p class="pps">Precio por estudio según volumen</p></div><a class="btn" href="#entrar" data-pick="duenos">Pedir cotización</a></div>
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Un estudio es el análisis completo de un inmueble o terreno: precio frente a su zona, rendimiento y riesgos. Precios de prueba, en US$. Cancela cuando quieras.</p>
   </div>
@@ -929,7 +929,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   </div>
   <p class="sm" style="text-align:center;margin-top:22px">Precio según el alcance de cada caso. También: traducción de documentos, poderes para comprar a distancia y administración después de la compra.</p>
   </div>
-  <div class="pcmp" style="margin-top:56px"><h3>Compara los planes</h3><div class="pcmp-w"><table><thead><tr><th></th><th>Boletín<small>$0</small></th><th class="hi">Básico<small>$10/mes</small></th><th>Pro<small>$50/mes</small></th><th>A medida<small>$xxx</small></th></tr></thead><tbody>
+  <div class="pcmp" style="margin-top:56px"><h3>Compara los planes</h3><div class="pcmp-w"><table><thead><tr><th></th><th>Boletín<small>$0</small></th><th class="hi">Básico<small>$10/mes</small></th><th>Pro<small>$50/mes</small></th><th>A medida<small>Cotización</small></th></tr></thead><tbody>
     <tr><th scope="row">Estudios completos</th><td>1 de regalo</td><td class="hi">2 por semana</td><td>12 por semana</td><td>Los que necesites</td></tr>
     <tr><th scope="row">Costo por estudio</th><td><span class="no" aria-label="No">—</span></td><td class="hi">$1,15</td><td>$0,96</td><td>Según volumen</td></tr>
     <tr><th scope="row">Cifras de la semana, cada jueves</th><td><span class="y" aria-label="Sí">✓</span></td><td class="hi"><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td><td><span class="y" aria-label="Sí">✓</span></td></tr>
@@ -3197,6 +3197,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Sí': 'Yes',
     "Cotización": "Quote", "según tus necesidades": "based on your needs", "Para agentes, desarrolladores y dueños. Armamos una oferta para lo que necesitas. Por ejemplo:": "For agents, developers and owners. We build an offer around what you need. For example:", "25 estudios por semana": "25 studies a week", "1 inmueble patrocinado": "1 sponsored listing", "1 estudio de rendimiento para tu obra nueva o remodelación": "1 yield study for your new build or renovation", "Atención uno a uno": "One-on-one support", "Precio por estudio según volumen": "Price per study based on volume", "Pedir cotización": "Get a quote", "Los que necesites": "As many as you need", "Según volumen": "Based on volume", "Inmuebles patrocinados en Cauce": "Sponsored listings on Cauce", "Estudio de rendimiento para tu proyecto": "Yield study for your project", "Uno a uno": "One-on-one", "Cuenta creada. Cuéntanos qué necesitas.": "Account created. Tell us what you need.", "Cuántos estudios, qué inmuebles o qué proyecto. Te enviamos una cotización en dos días hábiles.": "How many studies, which properties or what project. We send you a quote within two business days.",
     'Panel personalizado': 'Personalized dashboard', 'Prioritario': 'Priority',
+    '1 panel personalizado': '1 personalized dashboard',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4427,9 +4428,30 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     let sid = ''; try { sid = sessionStorage.getItem('cauce-s') || ''; if (!sid) { sid = Math.random().toString(36).slice(2, 14); sessionStorage.setItem('cauce-s', sid); } } catch (e) {}
     let ref = ''; try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; if (ref === 'cauce.blog') ref = ''; } catch (e) {}
     const q = new URLSearchParams(location.search).get('utm_source'); if (q) ref = q.slice(0, 40);
-    const row = { path: path.slice(0, 100), ref: ref.slice(0, 100), lang, device: matchMedia('(max-width: 760px)').matches ? 'mobile' : 'desktop', tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || '').slice(0, 50), session: sid };
+    sendHit({ path: path.slice(0, 100), ref: ref.slice(0, 100), kind: 'view' });
+  }
+  function sendHit(o) {
+    if (location.hostname !== 'cauce.blog') return;
+    let sid = ''; try { sid = sessionStorage.getItem('cauce-s') || ''; } catch (e) {}
+    let uid = null; try { uid = user && user.id ? user.id : null; } catch (e) {}
+    const row = Object.assign({ lang, device: matchMedia('(max-width: 760px)').matches ? 'mobile' : 'desktop', tz: (Intl.DateTimeFormat().resolvedOptions().timeZone || '').slice(0, 50), session: sid, user_id: uid }, o);
     fetch(SB_URL + '/rest/v1/visits', { method: 'POST', keepalive: true, headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify(row) }).catch(() => {});
   }
+  /* interactions: what people touch, by kind (no text they type is sent) */
+  let lastEv = '', lastEvAt = 0;
+  function track(action, label) {
+    const k = action + '|' + (label || ''); if (k === lastEv && Date.now() - lastEvAt < 2000) return; lastEv = k; lastEvAt = Date.now();
+    sendHit({ kind: 'event', path: (location.hash.slice(1) || 'mercado').slice(0, 100), action: action.slice(0, 38), label: label ? String(label).slice(0, 78) : null });
+  }
+  const TRACK = [
+    ['[data-pick]', 'plan', (e) => e.dataset.pick], ['a[data-plan]', 'plan', (e) => e.dataset.plan], ['[data-layer]', 'mapa_capa', (e) => e.dataset.layer],
+    ['[data-pri]', 'prioridad', (e) => e.dataset.pri], ['[data-sort]', 'ordenar', (e) => e.dataset.sort], ['tr[data-z]', 'zona', (e) => e.dataset.z],
+    ['[data-lang]', 'idioma', (e) => e.dataset.lang], ['.wa-link', 'whatsapp'], ['#peek', 'como_comprar'], ['#v-mercado .chips .chip', 'filtro', (e) => e.dataset.f],
+    ['#v-propiedades .ptabs button', 'filtro_propiedades', (e) => e.dataset.k], ['#grid a.card-link', 'propiedad', (e) => ($('b', e) || e).textContent.trim()],
+    ['.chart[data-chart], .plot', 'grafico'], ['[data-all]', 'ver_todas']];
+  document.addEventListener('click', (ev) => { for (const [q, a, f] of TRACK) { const el = ev.target.closest(q); if (el) { track(a, f ? f(el) : null); return; } } }, true);
+  document.addEventListener('change', (ev) => { const t = ev.target; if (t.id === 'dz-a') track('zona', t.value); else if (t.id === 'dz-b') track('comparar', t.value); }, true);
+  document.addEventListener('submit', (ev) => { const f = ev.target; track('formulario', f.id || f.className || 'form'); }, true);
   /* articles: the dashboard decides what is published. Built-in articles stay unless unpublished; new ones are added. */
   const mdHTML = (md) => String(md || '').split(/\n(?=## )/).map((blk) => {
     const m = blk.match(/^## (.*)\n?([\s\S]*)$/), h = m ? m[1] : '', rest = (m ? m[2] : blk).trim();

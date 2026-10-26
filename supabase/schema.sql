@@ -85,3 +85,6 @@ alter table public.profiles add column if not exists empresa text, add column if
 -- Added 25 Oct 2026: articles.estado gains 'rechazado' (not approved). New table public.properties
 -- (listings managed from the panel: estado borrador/publicado/pausado/vendido/archivado, destacada, patrocinada, patrocinio_hasta, orden).
 -- Anyone reads estado='publicado'; admins read/write all. delete_test_data() also removes is_test properties.
+
+-- Added 26 Oct 2026: visits also stores interactions (kind 'view' | 'event', action, label) and user_id when signed in.
+-- The panel's Resumen reads it like an analytics home; Personas shows each signed-in user's pages and interactions.

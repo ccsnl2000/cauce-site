@@ -87,6 +87,17 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 .state.rechazado { border-style: dashed; color: var(--soft); } .state.pausado, .state.borrador { background: var(--fill); } .state.vendido { border-color: var(--ink); }
 .kpi .d { font-size: 12px; color: var(--soft); } .kpis { margin-top: 18px; }
 .head { display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; } .head h1 { margin: 0; }
+.ga { background: var(--sheet); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 12px; }
+.mets { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-bottom: 1px solid var(--line); }
+.mets button { font: inherit; color: var(--ink); text-align: left; background: none; border: 0; border-right: 1px solid var(--line); padding: 14px 16px 12px; cursor: pointer; display: grid; gap: 2px; position: relative; } .mets button:last-child { border-right: 0; }
+.mets button[aria-pressed=true]::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--ink); } .mets button:not([aria-pressed=true]) { color: var(--soft); }
+.mets b { font-size: 26px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; color: var(--ink); } .mets .ch { font-size: 12px; } .mets .up { color: var(--ink); } .mets .dn { color: var(--soft); }
+.gmain { padding: 16px 18px 12px; } .gmain svg { width: 100%; height: auto; display: block; overflow: visible; } .gmain .gl { stroke: var(--line); } .gmain .ax { fill: var(--soft); font-size: 11px; font-family: inherit; } .gmain .bar { fill: var(--ink); } .gmain .hit { fill: transparent; } .gmain g:hover .bar { opacity: .7; }
+.live { font-size: 13px; display: inline-flex; gap: 8px; align-items: center; } .live i { width: 8px; height: 8px; border-radius: 50%; background: #3E8E5A; display: inline-block; animation: pulse 2s infinite; } @keyframes pulse { 50% { opacity: .35; } }
+.sech { font-size: 20px; font-weight: 800; letter-spacing: -0.03em; margin: 30px 0 0; }
+.mini { width: 100%; border-collapse: collapse; font-size: 13px; } .mini th { text-align: right; font-weight: 400; color: var(--soft); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 0 8px; } .mini th:first-child, .mini td:first-child { text-align: left; } .mini td { text-align: right; padding: 7px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; } .mini td:first-child { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 10px; } .mini td + td { padding-left: 12px; }
+.mini .sub { display: block; font-size: 11px; color: var(--soft); overflow: hidden; text-overflow: ellipsis; }
+.tl { display: grid; gap: 0; font-size: 13px; } .tl div { display: grid; grid-template-columns: 150px 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); } .tl .ev { color: var(--soft); }
 @media (max-width: 760px) { .ed { grid-template-columns: 1fr; } .fn { grid-template-columns: 100px 1fr 70px; } }
 @media (max-width: 760px) { .chats { grid-template-columns: 1fr; } .tools input[type=search] { min-width: 0; flex: 1; } }
 </style>
@@ -112,11 +123,14 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     <button type="button" data-t="llamadas" aria-pressed="false">Llamadas<span class="n" id="n-llamadas"></span></button>
     <button type="button" data-t="chats" aria-pressed="false">Chats<span class="n" id="n-chats"></span></button>
     <button type="button" data-t="boletin" aria-pressed="false">Boletín<span class="n" id="n-boletin"></span></button>
-    <button type="button" data-t="visitas" aria-pressed="false">Visitas</button>
     <button type="button" data-t="whatsapp" aria-pressed="false">WhatsApp</button>
   </nav>
 
   <section class="panel" data-p="resumen">
+    <div class="tools" style="margin-top:14px"><div class="chips" id="range"></div><span style="flex:1"></span><span class="live" id="live"></span></div>
+    <div class="ga"><div class="mets" id="mets"></div><div id="c-main" class="gmain"></div></div>
+    <div class="charts" id="traffic"></div>
+    <h2 class="sech">Tus usuarios</h2>
     <div class="kpis" id="kpis"></div>
     <div class="charts" id="charts"></div>
   </section>
@@ -130,7 +144,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   </section>
   <section class="panel" data-p="personas" hidden>
     <div class="tools"><input type="search" id="q" placeholder="Buscar"><select id="f-perfil"><option value="">Perfil</option></select><select id="f-plan"><option value="">Plan</option><option value="inteligencia">Inteligencia</option><option value="boletin">Boletín</option></select><label class="sm"><input type="checkbox" id="f-ok"> Aceptan contacto</label><button class="btn o" id="csv">CSV</button></div>
-    <div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Perfil</th><th>País</th><th>Busca</th><th>Plan</th><th>Contacto</th><th>Alta</th></tr></thead><tbody id="t-personas"></tbody></table></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Perfil</th><th>País</th><th>Busca</th><th>Plan</th><th>Actividad</th><th>Contacto</th><th>Alta</th></tr></thead><tbody id="t-personas"></tbody></table></div>
   </section>
   <section class="panel" data-p="llamadas" hidden>
     <div class="scroll"><table class="tbl"><thead><tr><th>Fecha</th><th>Persona</th><th>Estado</th><th>Qué quiere revisar</th></tr></thead><tbody id="t-llamadas"></tbody></table></div>
@@ -140,10 +154,6 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   </section>
   <section class="panel" data-p="boletin" hidden>
     <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Origen</th><th>Bienvenida</th><th>Alta</th></tr></thead><tbody id="t-boletin"></tbody></table></div>
-  </section>
-  <section class="panel" data-p="visitas" hidden>
-    <div class="charts" id="v-charts"></div>
-    <p class="sm">Sin cookies ni IP. País estimado por zona horaria.</p>
   </section>
   <section class="panel" data-p="whatsapp" hidden>
     <div class="card"><b>WhatsApp en vivo</b>
@@ -208,48 +218,62 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   const card = (id, title, sub, wide) => `<div class="chart${wide ? ' wide' : ''}"><h3>${title}</h3>${sub ? `<p class="sub">${sub}</p>` : ''}<div id="${id}"></div></div>`;
   const key = (d) => new Date(d).toLocaleDateString('en-CA');
   const days = (n) => { const out = [], d0 = new Date(); d0.setHours(0, 0, 0, 0); for (let i = n - 1; i >= 0; i--) { const d = new Date(d0); d.setDate(d.getDate() - i); out.push(d); } return out; };
-  function sessionsByDay(n) {
-    const by = new Map(); D.visits.forEach((v) => { const k = key(v.at); if (!by.has(k)) by.set(k, { s: new Set(), p: 0 }); const o = by.get(k); o.s.add(v.session); o.p++; });
-    return days(n).map((d) => { const o = by.get(key(d)) || { s: new Set(), p: 0 }, lab = d.toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', ''); return { label: lab, v: o.s.size, tip: `${lab}: ${nf(o.s.size)} visitantes · ${nf(o.p)} páginas` }; });
-  }
   const mkey = (d) => { const x = new Date(d); return x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0'); };
-  function months(n) { const out = [], d = new Date(); d.setDate(1); for (let i = n - 1; i >= 0; i--) { const x = new Date(d.getFullYear(), d.getMonth() - i, 1); out.push(x); } return out; }
+  function months(n) { const out = [], d = new Date(); for (let i = n - 1; i >= 0; i--) out.push(new Date(d.getFullYear(), d.getMonth() - i, 1)); return out; }
+  const PAGE = { mercado: 'Inicio', datos: 'Inteligencia', propiedades: 'Propiedades', propiedad: 'Ficha de propiedad', guia: 'Guía', planes: 'Planes', entrar: 'Entrar / Perfil', sobre: 'Sobre Cauce', analizar: 'Analizar', contacto: 'Chat', legal: 'Legal' };
+  const pageName = (p) => (p || '').startsWith('articulo/') ? 'Artículo · ' + p.slice(9) : PAGE[p] || p || 'Inicio';
+  const ACT = { zona: 'Abrió una zona', comparar: 'Comparó dos zonas', prioridad: 'Cambió prioridades', ordenar: 'Ordenó el ranking', mapa_capa: 'Cambió la capa del mapa', plan: 'Tocó un plan', idioma: 'Cambió de idioma', whatsapp: 'Abrió WhatsApp', como_comprar: 'Abrió Cómo comprar', filtro: 'Filtró artículos', filtro_propiedades: 'Filtró propiedades', propiedad: 'Abrió una propiedad', grafico: 'Miró un gráfico', ver_todas: 'Pidió ver todas las zonas', formulario: 'Envió un formulario', articulo: 'Abrió un artículo', chat: 'Escribió al chat', boletin: 'Se suscribió al boletín', analizar: 'Analizó un inmueble', csv: 'Descargó CSV' };
+  let RANGE = 28, MET = 'vis';
+  const views = (arr) => arr.filter((v) => (v.kind || 'view') === 'view'), evs = (arr) => arr.filter((v) => v.kind === 'event');
+  const inRange = (arr, from, to) => arr.filter((v) => { const t = new Date(v.at).getTime(); return t >= from && t < to; });
+  const uniq = (arr, f) => new Set(arr.map(f).filter(Boolean)).size;
+  function metrics(arr) { const V = views(arr), E = evs(arr), ses = uniq(arr, (v) => v.session); return { vis: ses, pv: V.length, pps: ses ? V.length / ses : 0, ev: E.length, users: uniq(arr, (v) => v.user_id) }; }
+  const METS = [['vis', 'Visitantes', nf], ['pv', 'Páginas vistas', nf], ['pps', 'Páginas por visita', (n) => n.toLocaleString('es-VE', { maximumFractionDigits: 1 })], ['ev', 'Interacciones', nf], ['users', 'Con cuenta', nf]];
   function overview() {
     if ($('[data-p="resumen"]').hidden) return;
-    const P = D.people, M = months(12), byM = new Map(); P.forEach((r) => { const k = mkey(r.created_at); byM.set(k, (byM.get(k) || 0) + 1); });
-    let run = P.filter((r) => new Date(r.created_at) < M[0]).length;
-    const grow = M.map((m, i) => { const k = mkey(m), v = byM.get(k) || 0, prev = i ? byM.get(mkey(M[i - 1])) || 0 : null; run += v; const lab = m.toLocaleDateString('es-VE', { month: 'short' }).replace('.', '') + (m.getMonth() === 0 || i === 0 ? ' ' + String(m.getFullYear()).slice(2) : '');
+    chips($('#range'), [[7, 'Últimos 7 días'], [28, 'Últimos 28 días'], [90, 'Últimos 90 días']].map(([k, l]) => [String(k), l]), String(RANGE), (k) => { RANGE = +k; overview(); });
+    const now = Date.now(), d0 = new Date(); d0.setHours(0, 0, 0, 0); const end = d0.getTime() + 864e5, from = end - RANGE * 864e5, pfrom = from - RANGE * 864e5;
+    const cur = inRange(D.visits, from, end), prev = inRange(D.visits, pfrom, from), M = metrics(cur), P = metrics(prev);
+    $('#live').innerHTML = `<i></i>${nf(uniq(D.visits.filter((v) => now - new Date(v.at) < 30 * 6e4), (v) => v.session))} en el sitio ahora`;
+    $('#mets').innerHTML = METS.map(([k, l, f]) => { const c = P[k] ? (M[k] / P[k] - 1) * 100 : null; return `<button type="button" data-m="${k}" aria-pressed="${k === MET}"><span class="lab">${l}</span><b>${f(M[k])}</b><span class="ch ${c === null ? '' : c >= 0 ? 'up' : 'dn'}">${c === null ? 'sin periodo anterior' : (c >= 0 ? '↑ ' : '↓ ') + Math.abs(Math.round(c)) + '% vs. periodo anterior'}</span></button>`; }).join('');
+    $$('#mets button').forEach((b) => b.addEventListener('click', () => { MET = b.dataset.m; overview(); }));
+    const daysA = []; for (let t = from; t < end; t += 864e5) daysA.push(t);
+    const byDay = new Map(); cur.forEach((v) => { const k = key(v.at); if (!byDay.has(k)) byDay.set(k, []); byDay.get(k).push(v); });
+    const lab = METS.find((m) => m[0] === MET)[1];
+    bars($('#c-main'), daysA.map((t) => { const d = new Date(t), m = metrics(byDay.get(key(d)) || []), l = d.toLocaleDateString('es-VE', { day: 'numeric', month: 'short' }).replace('.', ''); return { label: l, v: m[MET], tip: `${l}: ${METS.find((x) => x[0] === MET)[2](m[MET])} · ${lab.toLowerCase()}` }; }), { h: 220, ticks: RANGE > 30 ? 9 : 10, aria: lab });
+    // pages and interactions
+    const V = views(cur), E = evs(cur), pg = new Map();
+    V.forEach((v) => { const k = pageName(v.path); if (!pg.has(k)) pg.set(k, { n: 0, s: new Set(), e: 0 }); const o = pg.get(k); o.n++; o.s.add(v.session); });
+    E.forEach((v) => { const k = pageName(v.path); if (pg.has(k)) pg.get(k).e++; });
+    const ac = new Map(); E.forEach((v) => { const k = ACT[v.action] || v.action; if (!ac.has(k)) ac.set(k, { n: 0, s: new Set(), l: new Map() }); const o = ac.get(k); o.n++; o.s.add(v.session); if (v.label) o.l.set(v.label, (o.l.get(v.label) || 0) + 1); });
+    const S = new Map(); cur.forEach((v) => { if (!S.has(v.session)) S.set(v.session, v); }); const SS = [...S.values()];
+    $('#traffic').innerHTML = `<div class="chart"><h3>Páginas</h3><table class="mini"><thead><tr><th>Página</th><th>Vistas</th><th>Visitantes</th><th>Interacc.</th></tr></thead><tbody>${[...pg.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 10).map(([k, o]) => `<tr><td title="${esc(k)}">${esc(k)}</td><td>${nf(o.n)}</td><td>${nf(o.s.size)}</td><td>${nf(o.e)}</td></tr>`).join('') || '<tr><td colspan="4" class="sm">Sin datos aún.</td></tr>'}</tbody></table></div>
+      <div class="chart"><h3>Interacciones</h3><table class="mini"><thead><tr><th>Qué hicieron</th><th>Veces</th><th>Visitantes</th></tr></thead><tbody>${[...ac.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 10).map(([k, o]) => { const top = [...o.l.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map((x) => x[0]).join(', '); return `<tr><td title="${esc(top)}">${esc(k)}${top ? `<span class="sub">${esc(top)}</span>` : ''}</td><td>${nf(o.n)}</td><td>${nf(o.s.size)}</td></tr>`; }).join('') || '<tr><td colspan="3" class="sm">Sin datos aún.</td></tr>'}</tbody></table></div>
+      ${card('t-ref', 'Llegan desde')}${card('t-ctry', 'Países', 'Por zona horaria')}${card('t-dev', 'Dispositivo e idioma')}`;
+    hbars($('#t-ref'), count(SS, (v) => v.ref || 'Directo'));
+    hbars($('#t-ctry'), count(SS, (v) => country(TZC[v.tz]) || v.tz || 'Desconocido'));
+    hbars($('#t-dev'), [...count(SS, (v) => v.device === 'mobile' ? 'Teléfono' : 'Computadora'), ...count(SS, (v) => v.lang === 'en' ? 'Inglés' : 'Español')]);
+    users();
+  }
+  function users() {
+    const P = D.people, Mo = months(12), byM = new Map(); P.forEach((r) => { const k = mkey(r.created_at); byM.set(k, (byM.get(k) || 0) + 1); });
+    let run = P.filter((r) => new Date(r.created_at) < Mo[0]).length;
+    const grow = Mo.map((m, i) => { const k = mkey(m), v = byM.get(k) || 0, prev = i ? byM.get(mkey(Mo[i - 1])) || 0 : null; run += v; const lab = m.toLocaleDateString('es-VE', { month: 'short' }).replace('.', '') + (m.getMonth() === 0 || i === 0 ? ' ' + String(m.getFullYear()).slice(2) : '');
       return { label: lab, v, tip: `${lab}: ${v} nuevos · ${run} en total${prev ? ' · ' + (v >= prev ? '+' : '') + Math.round((v / prev - 1) * 100) + '% vs. mes anterior' : ''}` }; });
-    const now = grow[11].v, prev = grow[10].v, mom = prev ? Math.round((now / prev - 1) * 100) : null;
-    const wk = Date.now() - 7 * 864e5, ses7 = new Set(D.visits.filter((v) => new Date(v.at) > wk).map((v) => v.session)).size;
+    const now = grow[11].v, prv = grow[10].v, mom = prv ? Math.round((now / prv - 1) * 100) : null;
     const pend = RAW.arts.filter((a) => ['revision', 'legal', 'aprobado'].includes(a.estado)).length;
-    const K = [['Usuarios', P.length, `${P.filter((r) => r.plan === 'inteligencia').length} con Inteligencia`], ['Nuevos este mes', now, mom === null ? 'primer mes' : (mom >= 0 ? '+' : '') + mom + '% vs. mes anterior'],
-      ['Visitantes', ses7, 'últimos 7 días'], ['Boletín', D.subs.length, 'suscriptores'], ['Por aprobar', pend, 'artículos'], ['Llamadas', D.calls.filter((b) => b.status === 'reservada' && new Date(b.start_time) > Date.now()).length, 'próximas']];
+    const K = [['Usuarios', P.length, `${P.filter((r) => r.plan === 'inteligencia').length} pagan`], ['Nuevos este mes', now, mom === null ? 'primer mes' : (mom >= 0 ? '+' : '') + mom + '% vs. mes anterior'], ['Boletín', D.subs.length, 'suscriptores'], ['Por aprobar', pend, 'artículos'], ['Llamadas', D.calls.filter((b) => b.status === 'reservada' && new Date(b.start_time) > Date.now()).length, 'próximas']];
     $('#kpis').innerHTML = K.map(([l, n, s]) => `<div class="kpi"><span class="lab">${l}</span><b>${nf(n)}</b><span class="d">${s}</span></div>`).join('');
-    $('#charts').innerHTML = card('c-grow', 'Usuarios nuevos por mes', 'Pasa el cursor para ver el total y el cambio', true) + card('c-perf', 'Qué hacen') + card('c-pais', 'Dónde viven') + card('c-obj', 'Para qué compran') + card('c-bud', 'Presupuesto') + card('c-plazo', 'Cuándo') + card('c-zon', 'Zonas que buscan') + card('c-fun', 'Del visitante al cliente', '30 días', true);
-    bars($('#c-grow'), grow, { aria: 'Usuarios nuevos por mes', ticks: 12 });
+    $('#charts').innerHTML = card('c-grow', 'Usuarios nuevos por mes', '', true) + card('c-perf', 'Qué hacen') + card('c-pais', 'Dónde viven') + card('c-obj', 'Para qué compran') + card('c-bud', 'Presupuesto') + card('c-plazo', 'Cuándo') + card('c-zon', 'Zonas que buscan');
+    bars($('#c-grow'), grow, { aria: 'Usuarios nuevos por mes', ticks: 12, h: 180 });
     hbars($('#c-perf'), count(P, (r) => PERFIL[r.perfil] || 'Sin dato'));
     hbars($('#c-pais'), count(P, (r) => country(r.pais) || 'Sin dato'));
     hbars($('#c-obj'), count(P, (r) => (r.objetivos || []).map((o) => OBJ[o] || o)));
     hbars($('#c-bud'), Object.keys(BUD).map((k) => [BUD[k], P.filter((r) => r.presupuesto === k).length]).filter((r) => r[1]));
     hbars($('#c-plazo'), Object.keys(WHEN).map((k) => [WHEN[k], P.filter((r) => r.plazo === k).length]).filter((r) => r[1]));
     hbars($('#c-zon'), count(P, (r) => r.zonas));
-    const d30 = Date.now() - 30 * 864e5, acc30 = P.filter((r) => new Date(r.created_at) > d30);
-    const steps = [['Visitantes', new Set(D.visits.filter((v) => new Date(v.at) > d30).map((v) => v.session)).size], ['Cuentas', acc30.length], ['Inteligencia', acc30.filter((r) => r.plan === 'inteligencia').length], ['Llamadas', D.calls.filter((b) => new Date(b.created_at) > d30 && b.status !== 'cancelada').length]];
-    $('#c-fun').innerHTML = `<div class="funnel">${steps.map(([l, v], i) => `<div class="fn"><span>${l}</span><span class="track"><span class="fillb" style="display:block;width:${Math.max(.4, v / Math.max(1, steps[0][1]) * 100).toFixed(2)}%"></span></span><span class="v">${nf(v)}${i && steps[i - 1][1] ? `<small>${(v / steps[i - 1][1] * 100).toLocaleString('es-VE', { maximumFractionDigits: 1 })}%</small>` : ''}</span></div>`).join('')}</div>`;
   }
-  function visitsTab() {
-    if ($('[data-p="visitas"]').hidden) return;
-    const v30 = D.visits.filter((v) => new Date(v.at) > Date.now() - 30 * 864e5), ses = new Map(); v30.forEach((v) => { if (!ses.has(v.session)) ses.set(v.session, v); });
-    const S = [...ses.values()], PAGE = { mercado: 'Inicio', datos: 'Inteligencia', propiedades: 'Propiedades', guia: 'Guía', planes: 'Planes', entrar: 'Entrar / Perfil', sobre: 'Sobre Cauce', analizar: 'Analizar', contacto: 'Contacto' };
-    $('#v-charts').innerHTML = card('v-day', 'Visitantes por día', `${nf(S.length)} visitantes · ${nf(v30.length)} páginas · 30 días`, true) + card('v-pages', 'Páginas') + card('v-ref', 'Llegan desde') + card('v-ctry', 'Países') + card('v-dev', 'Dispositivo e idioma');
-    bars($('#v-day'), sessionsByDay(30), { aria: 'Visitantes por día', ticks: 10 });
-    hbars($('#v-pages'), count(v30, (v) => (v.path || '').startsWith('articulo/') ? 'Artículo · ' + v.path.slice(9) : PAGE[v.path] || v.path), 8);
-    hbars($('#v-ref'), count(S, (v) => v.ref || 'Directo'));
-    hbars($('#v-ctry'), count(S, (v) => country(TZC[v.tz]) || v.tz || 'Desconocido'));
-    hbars($('#v-dev'), [...count(S, (v) => v.device === 'mobile' ? 'Teléfono' : 'Computadora'), ...count(S, (v) => v.lang === 'en' ? 'Inglés' : 'Español')]);
-  }
-
+  function visitsTab() {}
   /* ---------- people, calls, newsletter, chats ---------- */
   function filtered() {
     const q = $('#q').value.trim().toLowerCase(), pf = $('#f-perfil').value, pl = $('#f-plan').value, ok = $('#f-ok').checked;
@@ -257,12 +281,26 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   }
   function people() {
     const rows = filtered();
-    $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr><td class="t"><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b>${testTag(r)}<span class="sub">${esc(r.email)}</span></td>
+    $('#t-personas').innerHTML = rows.length ? rows.map((r) => `<tr data-id="${esc(r.id)}"><td class="t"><b>${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || '—')}</b>${testTag(r)}<span class="sub">${esc(r.email)}</span></td>
       <td>${esc(PERFIL[r.perfil] || '—')}${r.empresa ? `<span class="sub">${esc(r.empresa)}</span>` : ''}</td><td>${esc(country(r.pais))}</td>
       <td class="t">${more([(r.zonas || []).join(', '), [BUD[r.presupuesto], WHEN[r.plazo]].filter(Boolean).join(' · '), (r.objetivos || []).map((o) => OBJ[o] || o).join(', ')].filter(Boolean).join(' · '))}</td>
       <td>${r.plan === 'inteligencia' ? '<span class="pill ink">Inteligencia</span>' : '<span class="pill">Boletín</span>'}</td>
+      <td class="sm">${(() => { const a = ACTV.get(r.id); return a ? `${nf(a.pv)} páginas · ${nf(a.ev)} interacc.<span class="sub">visto ${day(a.last)}</span>` : '—'; })()}</td>
       <td>${r.contacto === 'whatsapp' && r.whatsapp ? `<a href="https://wa.me/${esc(r.whatsapp.replace(/\D/g, ''))}" target="_blank" rel="noopener">WhatsApp</a>` : `<a href="mailto:${esc(r.email)}">Correo</a>`}${r.acepta_contacto ? ' <span class="pill">acepta</span>' : ''}</td>
-      <td class="sm">${day(r.created_at)}</td></tr>`).join('') : '<tr><td colspan="7" class="empty">Sin resultados.</td></tr>';
+      <td class="sm">${day(r.created_at)}</td></tr>`).join('') : '<tr><td colspan="8" class="empty">Sin resultados.</td></tr>';
+    $$('#t-personas tr[data-id]').forEach((tr) => tr.addEventListener('click', (e) => { if (e.target.closest('a, .more')) return; person(D.people.find((x) => x.id === tr.dataset.id)); }));
+  }
+  let ACTV = new Map();
+  function person(r) {
+    const hits = D.visits.filter((v) => v.user_id === r.id).sort((a, b) => new Date(b.at) - new Date(a.at));
+    const pages = count(views(hits), (v) => pageName(v.path)).sort((a, b) => b[1] - a[1]), acts = count(evs(hits), (v) => ACT[v.action] || v.action).sort((a, b) => b[1] - a[1]);
+    drawer.innerHTML = `<div style="display:flex;justify-content:space-between;gap:10px;align-items:start"><div><span class="lab">${esc(PERFIL[r.perfil] || 'Persona')}</span><h2 style="margin:4px 0 0;font-size:24px;letter-spacing:-0.03em">${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || r.email)}</h2><p class="sm">${esc(r.email)} · ${esc(country(r.pais))} · desde ${day(r.created_at)}</p></div><button class="btn o" type="button" data-close>Cerrar</button></div>
+      <div class="kpis" style="margin:0"><div class="kpi"><span class="lab">Visitas</span><b>${nf(uniq(hits, (v) => v.session))}</b></div><div class="kpi"><span class="lab">Páginas</span><b>${nf(views(hits).length)}</b></div><div class="kpi"><span class="lab">Interacciones</span><b>${nf(evs(hits).length)}</b></div></div>
+      <div class="chart"><h3>Lo que más mira</h3><table class="mini"><tbody>${pages.slice(0, 6).map(([k, n]) => `<tr><td>${esc(k)}</td><td>${nf(n)}</td></tr>`).join('') || '<tr><td class="sm">Sin visitas con sesión iniciada.</td></tr>'}</tbody></table></div>
+      <div class="chart"><h3>Lo que hace</h3><table class="mini"><tbody>${acts.slice(0, 6).map(([k, n]) => `<tr><td>${esc(k)}</td><td>${nf(n)}</td></tr>`).join('') || '<tr><td class="sm">Sin interacciones aún.</td></tr>'}</tbody></table></div>
+      <div class="chart"><h3>Actividad reciente</h3><div class="tl">${hits.slice(0, 40).map((v) => `<div><span class="sm">${esc(when(v.at))}</span><span class="${v.kind === 'event' ? 'ev' : ''}">${v.kind === 'event' ? esc((ACT[v.action] || v.action) + (v.label ? ' · ' + v.label : '')) : 'Vio ' + esc(pageName(v.path))}</span></div>`).join('') || '<p class="sm">Nada todavía.</p>'}</div></div>
+      <p class="sm">Solo se registra actividad mientras la persona tiene la sesión iniciada. Sin cookies ni IP.</p>`;
+    drawer.hidden = false; scrim.hidden = false; $('[data-close]', drawer).addEventListener('click', close);
   }
   $('#csv').addEventListener('click', () => {
     const cols = ['nombre', 'apellido', 'email', 'perfil', 'empresa', 'pais', 'zonas', 'presupuesto', 'plazo', 'objetivos', 'plan', 'acepta_contacto', 'contacto', 'whatsapp', 'created_at'];
@@ -385,6 +423,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   /* ---------- load ---------- */
   function apply() {
     const show = $('#show-test').checked, keep = (r) => show || !r.is_test;
+    ACTV = new Map(); RAW.visits.forEach((v) => { if (!v.user_id || (!show && v.is_test)) return; const a = ACTV.get(v.user_id) || { pv: 0, ev: 0, last: v.at }; if (v.kind === 'event') a.ev++; else a.pv++; if (v.at > a.last) a.last = v.at; ACTV.set(v.user_id, a); });
     D = { people: RAW.people.filter(keep), subs: RAW.subs.filter(keep), calls: RAW.calls.filter(keep), chats: RAW.chats.filter(keep), visits: RAW.visits.filter(keep) };
     const nt = (k) => RAW[k].filter((r) => r.is_test).length;
     $('#testbar').hidden = !(nt('people') + nt('subs') + nt('calls') + nt('chats') + nt('visits') + nt('props'));
@@ -397,8 +436,8 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     const r = await sb.rpc('delete_test_data'); if (r.error) { alert('No se pudo: ' + r.error.message); return; } load();
   });
   async function allVisits() {
-    const since = new Date(Date.now() - 31 * 864e5).toISOString(); let out = [], from = 0;
-    for (;;) { const r = await sb.from('visits').select('at,path,ref,lang,device,tz,session,is_test').gte('at', since).order('at').range(from, from + 999); if (r.error || !r.data.length) break; out = out.concat(r.data); if (r.data.length < 1000) break; from += 1000; }
+    const since = new Date(Date.now() - 181 * 864e5).toISOString(); let out = [], from = 0;
+    for (;;) { const r = await sb.from('visits').select('at,path,ref,lang,device,tz,session,is_test,kind,action,label,user_id').gte('at', since).order('at').range(from, from + 999); if (r.error || !r.data.length) break; out = out.concat(r.data); if (r.data.length < 1000) break; from += 1000; }
     return out;
   }
   async function load() {
