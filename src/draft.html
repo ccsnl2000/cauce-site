@@ -310,7 +310,8 @@ form.f select option { background: var(--card); }
 .lock { position: relative; }
 .lock > .blur { filter: blur(6px); opacity: .5; pointer-events: none; user-select: none; }
 .lock > a { position: absolute; inset: 0; display: grid; place-items: center; }
-body.preview .lock > .blur { filter: none; opacity: 1; pointer-events: auto; user-select: auto; } body.preview .lock > a { display: none; }
+body.preview .lock > .blur, body.member .lock > .blur { filter: none; opacity: 1; pointer-events: auto; user-select: auto; } body.preview .lock > a, body.member .lock > a { display: none; }
+.wall-m { display: none; } body.member .wall > :not(.wall-m) { display: none; } body.member .wall > .wall-m { display: block; }
 .pvbar { position: fixed; left: max(12px, env(safe-area-inset-left, 0px)); bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: var(--ink); color: var(--bg); border-radius: 999px; padding: 7px 14px; font-size: 12px; display: flex; gap: 10px; align-items: center; }
 .pvbar a { color: inherit; text-decoration: underline; }
 .lock > a span { background: var(--ink); color: var(--bg); padding: 11px 18px; border-radius: 999px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
@@ -670,7 +671,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
         <div class="bars" aria-label="Punto de equilibrio frente al mercado"><div><span>Para no perder</span><i style="width:100%"></i><span>$1.501</span></div><div><span>Porlamar hoy</span><i class="g" style="width:67%"></i><span>$1.003</span></div></div><div class="chart" data-chart="porlamar"></div></div>
       <div class="blk"><span class="lab">La lectura de Cauce</span><p>A los precios de hoy, los números no dan. El proyecto funciona si la obra cuesta menos de $650 por m² y el precio de venta en la costa sube a unos $1.400 por m².</p></div>
       <div class="blk"><span class="lab">La otra mirada</span><p>El vendedor podría decir que en la costa los inmuebles nuevos se piden más caros que los usados. Es probable, pero no hay suficientes anuncios para medirlo.</p></div>
-      <div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El modelo completo: costos, escenarios y calculadora.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>
+      <div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:26px;line-height:1.1">El modelo completo: costos, escenarios y calculadora.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a><p class="wall-m sm" style="font-size:15px">Ya eres suscriptor. El modelo completo y la calculadora de este estudio llegan a tu cuenta muy pronto.</p></div>
     </article>
     <aside class="rail">
       <div class="panel pz"><span class="lab">Datos de la zona</span><b class="num" style="font-size:26px;font-weight:500">$1.003<span class="sm"> /m²</span></b><span class="sm">Porlamar · n=18 · ago 2026</span><a class="sm" href="#datos" style="text-decoration:underline">Ver en Inteligencia</a></div>
@@ -2720,6 +2721,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Ya eres suscriptor. El modelo completo y la calculadora de este estudio llegan a tu cuenta muy pronto.": "You're a subscriber. The full model and calculator for this study are coming to your account very soon.",
     "Hola.": "Hi.",
     "Tu plan": "Your plan",
     "Activo": "Active",
@@ -3252,9 +3254,17 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     user = u || null;
     $$('a.in').forEach((l) => { l.textContent = user ? 'Mi cuenta' : 'Iniciar sesión'; if (user) l.removeAttribute('data-mode'); else l.dataset.mode = 'login'; });
     if (user) syncPerfil();
+    checkPlan();
     if (user && current === 'entrar') account();
     if (!user && current === 'entrar' && !$('#a-acct').hidden) setMode('login');
     applyLang();
+  }
+  // members: unlock everything the owner preview unlocks (studies, comparisons, map layers, no map timer)
+  async function checkPlan() {
+    let paid = false;
+    if (user) { try { const c = await sb(), r = await c.from('profiles').select('plan').eq('id', user.id).single(); paid = !!(r.data && r.data.plan === 'inteligencia'); } catch (e) {} }
+    document.body.classList.toggle('member', paid);
+    if (paid) { $$('.cmap.paywall').forEach((m) => m.classList.remove('paywall')); $$('.mpay').forEach((m) => { m.hidden = true; }); try { sessionStorage.removeItem('cauce-maplock'); } catch (e) {} }
   }
   async function syncPerfil() {
     const p = getPerfil(), row = {}; ['perfil', 'pais', 'zonas'].forEach((k) => { if (p[k]) row[k] = p[k]; });
@@ -3611,7 +3621,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     // a minute of free exploring on the full map, then a soft paywall (owners in preview are never locked)
     if (full) {
       const pay = $('.mpay', root); let t0 = null;
-      const lock = () => { if (document.body.classList.contains('preview')) return; root.classList.add('paywall'); pay.hidden = false; try { sessionStorage.setItem('cauce-maplock', '1'); } catch (e) {} };
+      const lock = () => { if (document.body.classList.contains('preview') || document.body.classList.contains('member')) return; root.classList.add('paywall'); pay.hidden = false; try { sessionStorage.setItem('cauce-maplock', '1'); } catch (e) {} };
       try { if (sessionStorage.getItem('cauce-maplock') === '1') lock(); } catch (e) {}
       const startClock = () => { if (t0 || root.classList.contains('paywall')) return; t0 = setTimeout(lock, window.CAUCE_PAY_MS || 60000); };
       ['pointerdown', 'wheel', 'touchstart'].forEach((ev) => root.addEventListener(ev, startClock, { passive: true, capture: true }));
@@ -3630,7 +3640,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       map.easeTo({ pitch: on ? 55 : 0, bearing: on ? -17 : 0, zoom: on ? Math.max(map.getZoom(), 15) : map.getZoom(), duration: reduce ? 0 : 900 });
     }));
     $$('[data-layer]', root).forEach((b) => b.addEventListener('click', () => {
-      if (b.dataset.layer === 'v' && !PREVIEW) { lock.hidden = false; return; }
+      if (b.dataset.layer === 'v' && !PREVIEW && !document.body.classList.contains('member')) { lock.hidden = false; return; }
       $$('[data-layer]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b))); if (!map || !ready) return;
       const price = ['case', ['==', ['typeof', ['get', 'v']], 'number'], ['interpolate', ['linear'], ['get', 'v'], 400, '#3A3128', 1200, '#F5C443', 3000, '#F2734F'], '#555'];
       ['p', 'm'].forEach((k) => map.setPaintProperty('fill-' + k, 'fill-color', b.dataset.layer === 'v' ? price : ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]]));
