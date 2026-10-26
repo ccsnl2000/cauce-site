@@ -36,3 +36,11 @@ open(ROOT / "index.html", "w", encoding="utf-8").write(s)
 # Warn about visible Spanish text without an English line.
 import subprocess, sys
 subprocess.run([sys.executable, str(ROOT / "tools" / "check_en.py")])
+
+# Stop on JavaScript syntax errors: a broken script leaves the site on the splash screen.
+import re, tempfile, shutil
+if shutil.which("node"):
+    for n, js in enumerate(re.findall(r"<script>(.*?)</script>", s, re.S)):
+        with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as f: f.write(js)
+        r = subprocess.run(["node", "--check", f.name], capture_output=True, text=True)
+        if r.returncode: print("JS SYNTAX ERROR in inline script", n, "\n" + r.stderr); sys.exit(1)
