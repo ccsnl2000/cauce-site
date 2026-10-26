@@ -81,7 +81,7 @@ def page(lang, preheader, body, foot):
 C = {
  "es": dict(team="Equipo Cauce", tag="Datos inmobiliarios con fuente", legal="Cauce publica información, no asesoría de inversión.",
    guide_t="Comprar en Venezuela siendo extranjero", guide_s="Si puedes ser dueño, qué visa y RIF necesitas, cuánto cuesta cerrar y qué se hace a distancia. Siete capítulos, unos 40 minutos.", guide_b="Leer la guía",
-   intel=("Inteligencia", "Precios y oferta por zona · $10/mes"), call=("Llamada de diagnóstico", "45 minutos con el equipo · $149"),
+   intel=("Inteligencia", "Precios y oferta por zona · $10/mes"), call=("Llamada de diagnóstico", "45 minutos con el equipo · $199"),
    perks=["Estudios completos y calculadora", "151 zonas, con datos semanales", "Análisis de propiedades ilimitados", "Descarga de datos en CSV"],
    # welcome
    w_lab="Bienvenida", w_sub="Ya estás en Cauce. Empieza por aquí.", w_pre="Tu guía gratis está lista. Y cada jueves, el mercado en cinco minutos.",
@@ -103,7 +103,7 @@ C = {
    p_foot="Recibes este correo por un cambio en tu suscripción en cauce.blog."),
  "en": dict(team="The Cauce team", tag="Real estate data, sourced", legal="Cauce publishes information, not investment advice.",
    guide_t="Buying property in Venezuela as a foreigner", guide_s="Whether you can own property, which visa and tax ID you need, what closing costs, and what can be done remotely. Seven chapters, about 40 minutes.", guide_b="Read the guide",
-   intel=("Inteligencia", "Prices and supply by area · $10/mo"), call=("Discovery call", "45 minutes with the team · $149"),
+   intel=("Inteligencia", "Prices and supply by area · $10/mo"), call=("Discovery call", "45 minutes with the team · $199"),
    perks=["Full studies and calculator", "151 areas, updated weekly", "Unlimited property checks", "CSV downloads"],
    w_lab="Welcome", w_sub="You're in. Start here.", w_pre="Your free guide is ready. And every Thursday, the market in five minutes.",
    w_g="Your free guide", w_thu="Every Thursday in your inbox",

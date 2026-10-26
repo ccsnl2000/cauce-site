@@ -88,3 +88,6 @@ alter table public.profiles add column if not exists empresa text, add column if
 
 -- Added 26 Oct 2026: visits also stores interactions (kind 'view' | 'event', action, label) and user_id when signed in.
 -- The panel's Resumen reads it like an analytics home; Personas shows each signed-in user's pages and interactions.
+
+-- Added 26 Oct 2026: public.intakes (questionnaire before a discovery call: interes text[], answers jsonb, user_id, email).
+-- Anyone inserts (saved by the site when a signed-in reader books); admins read. Shown in the panel's Llamadas and person drawer.

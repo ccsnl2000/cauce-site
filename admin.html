@@ -77,6 +77,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
 .ed textarea { min-height: 120px; resize: vertical; line-height: 1.5; } .ed .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .state { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; } .state.publicado { background: var(--ink); color: var(--bg); border-color: var(--ink); } .state.aprobado { border-color: var(--ink); } .state.legal, .state.revision { background: var(--fill); }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; } .chips button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; } .chips button[aria-pressed=true] { background: var(--ink); color: var(--bg); border-color: var(--ink); } .chips .n { opacity: .6; margin-left: 4px; }
+.ikb { font: inherit; font-size: 13px; background: none; border: 0; padding: 0; color: var(--ink); text-decoration: underline; cursor: pointer; text-align: left; }
 .more { font: inherit; font-size: 12px; background: none; border: 0; padding: 0 0 0 4px; color: var(--ink); text-decoration: underline; cursor: pointer; } .clip { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } .clip.open { display: block; -webkit-line-clamp: unset; }
 .tbl td.t { max-width: 280px; } .tbl .sub { display: block; font-size: 12px; color: var(--soft); }
 .tbl tr[data-id] { cursor: pointer; }
@@ -147,7 +148,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     <div class="scroll"><table class="tbl"><thead><tr><th>Nombre</th><th>Perfil</th><th>País</th><th>Busca</th><th>Plan</th><th>Actividad</th><th>Contacto</th><th>Alta</th></tr></thead><tbody id="t-personas"></tbody></table></div>
   </section>
   <section class="panel" data-p="llamadas" hidden>
-    <div class="scroll"><table class="tbl"><thead><tr><th>Fecha</th><th>Persona</th><th>Estado</th><th>Qué quiere revisar</th></tr></thead><tbody id="t-llamadas"></tbody></table></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Fecha</th><th>Persona</th><th>Estado</th><th>Cuestionario</th><th>Qué quiere revisar</th></tr></thead><tbody id="t-llamadas"></tbody></table></div>
   </section>
   <section class="panel" data-p="chats" hidden>
     <div class="chats"><div class="list" id="chat-list"></div><div class="thread" id="chat-thread"><p class="empty">Elige una conversación.</p></div></div>
@@ -186,7 +187,14 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   const usd = (n) => (n || n === 0 ? '$' + nf(n) : '—');
   const more = (t) => (t ? `<span class="clip">${esc(t)}</span>${t.length > 70 ? '<button type="button" class="more">más</button>' : ''}` : '');   // read-more
   document.addEventListener('click', (e) => { const m = e.target.closest('.more'); if (!m) return; e.stopPropagation(); const c = m.previousElementSibling; c.classList.toggle('open'); m.textContent = c.classList.contains('open') ? 'menos' : 'más'; }, true);
-  let RAW = { people: [], subs: [], calls: [], chats: [], visits: [], arts: [], props: [] }, D = RAW;
+  let RAW = { people: [], subs: [], calls: [], chats: [], visits: [], arts: [], props: [], intakes: [] }, D = RAW;
+  const QL = { pais: ['País', { us: 'EE. UU.', eu: 'Unión Europea', latam: 'Latinoamérica', otro: 'Otro' }], estatus: ['Estatus en Venezuela', { ninguno: 'Ninguno', turista: 'Turista en Venezuela', transeunte: 'Visa transeúnte', residente: 'Residente' }],
+    antecedentes: ['Antecedentes', { si: 'Limpios', no: 'No o no sabe' }], situacion: ['Situación', { capital: 'Capital personal', 'empresa-ext': 'Empresa extranjera', 'empresa-ve': 'Empresa en Venezuela', empleado: 'Empleado en Venezuela', pension: 'Pensión o pasivos', familia: 'Familia venezolana' }],
+    presupuesto: ['Presupuesto', { '<50k': '< $50k', '50-150k': '$50–150k', '150-500k': '$150–500k', '500k+': '> $500k' }], inmueble: ['Inmueble', { caracas: 'Caracas o ciudad', margarita: 'Margarita', frontera: 'Estado fronterizo', mirando: 'Solo mirando', ayuda: 'Necesita ayuda' }],
+    cuando: ['Cuándo', { ya: '1–4 semanas', '3m': '3 meses', '3-12m': '3–12 meses', explorando: 'Explorando' }], abogado: ['Abogado', { si: 'Tiene', no: 'No tiene', nose: 'No sabe si sirve' }], objetivo: ['Objetivo', { renta: 'Renta', mudanza: 'Mudarse', patrimonio: 'Patrimonio', negocio: 'Negocio' }] };
+  const INT = { consulta: 'Llamada', a: 'Ruta A', b: 'Ruta B' };
+  const intakeOf = (uid) => RAW.intakes.find((x) => x.user_id === uid);
+  const intakeHTML = (k) => k ? `<div class="chart"><h3>Cuestionario</h3><p class="sub">${esc((k.interes || []).map((x) => INT[x] || x).join(' · '))} · ${esc(day(k.created_at))}</p><table class="mini"><tbody>${Object.entries(QL).map(([q, [lab, o]]) => `<tr><td>${lab}</td><td>${esc(o[k.answers[q]] || k.answers[q] || '—')}</td></tr>`).join('')}</tbody></table></div>` : '';
   const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; document.body.appendChild(tip);
 
   Object.entries(PERFIL).forEach(([v, t]) => $('#f-perfil').insertAdjacentHTML('beforeend', `<option value="${v}">${t}</option>`));
@@ -296,7 +304,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     const pages = count(views(hits), (v) => pageName(v.path)).sort((a, b) => b[1] - a[1]), acts = count(evs(hits), (v) => ACT[v.action] || v.action).sort((a, b) => b[1] - a[1]);
     drawer.innerHTML = `<div style="display:flex;justify-content:space-between;gap:10px;align-items:start"><div><span class="lab">${esc(PERFIL[r.perfil] || 'Persona')}</span><h2 style="margin:4px 0 0;font-size:24px;letter-spacing:-0.03em">${esc([r.nombre, r.apellido].filter(Boolean).join(' ') || r.email)}</h2><p class="sm">${esc(r.email)} · ${esc(country(r.pais))} · desde ${day(r.created_at)}</p></div><button class="btn o" type="button" data-close>Cerrar</button></div>
       <div class="kpis" style="margin:0"><div class="kpi"><span class="lab">Visitas</span><b>${nf(uniq(hits, (v) => v.session))}</b></div><div class="kpi"><span class="lab">Páginas</span><b>${nf(views(hits).length)}</b></div><div class="kpi"><span class="lab">Interacciones</span><b>${nf(evs(hits).length)}</b></div></div>
-      <div class="chart"><h3>Lo que más mira</h3><table class="mini"><tbody>${pages.slice(0, 6).map(([k, n]) => `<tr><td>${esc(k)}</td><td>${nf(n)}</td></tr>`).join('') || '<tr><td class="sm">Sin visitas con sesión iniciada.</td></tr>'}</tbody></table></div>
+      ${intakeHTML(intakeOf(r.id))}<div class="chart"><h3>Lo que más mira</h3><table class="mini"><tbody>${pages.slice(0, 6).map(([k, n]) => `<tr><td>${esc(k)}</td><td>${nf(n)}</td></tr>`).join('') || '<tr><td class="sm">Sin visitas con sesión iniciada.</td></tr>'}</tbody></table></div>
       <div class="chart"><h3>Lo que hace</h3><table class="mini"><tbody>${acts.slice(0, 6).map(([k, n]) => `<tr><td>${esc(k)}</td><td>${nf(n)}</td></tr>`).join('') || '<tr><td class="sm">Sin interacciones aún.</td></tr>'}</tbody></table></div>
       <div class="chart"><h3>Actividad reciente</h3><div class="tl">${hits.slice(0, 40).map((v) => `<div><span class="sm">${esc(when(v.at))}</span><span class="${v.kind === 'event' ? 'ev' : ''}">${v.kind === 'event' ? esc((ACT[v.action] || v.action) + (v.label ? ' · ' + v.label : '')) : 'Vio ' + esc(pageName(v.path))}</span></div>`).join('') || '<p class="sm">Nada todavía.</p>'}</div></div>
       <p class="sm">Solo se registra actividad mientras la persona tiene la sesión iniciada. Sin cookies ni IP.</p>`;
@@ -310,8 +318,9 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   function calls() {
     const rows = [...D.calls].sort((a, b) => new Date(b.start_time) - new Date(a.start_time));
     $('#t-llamadas').innerHTML = rows.length ? rows.map((b) => { const a = b.answers || {};
-      return `<tr><td>${esc(when(b.start_time))}</td><td class="t"><b>${esc(b.name || '')}</b>${testTag(b)}<span class="sub"><a href="mailto:${esc(b.email)}">${esc(b.email || '')}</a>${a.desde?.value ? ' · ' + esc(a.desde.value) : ''}</span></td><td><span class="pill${b.status === 'reservada' ? ' ink' : ''}">${esc(b.status)}</span>${b.paid ? ' <span class="pill">pagado</span>' : ''}</td><td class="t">${more(a.notes?.value || '')}</td></tr>`; }).join('')
-      : '<tr><td colspan="4" class="empty">Todavía no hay llamadas.</td></tr>';
+      return `<tr><td>${esc(when(b.start_time))}</td><td class="t"><b>${esc(b.name || '')}</b>${testTag(b)}<span class="sub"><a href="mailto:${esc(b.email)}">${esc(b.email || '')}</a>${a.desde?.value ? ' · ' + esc(a.desde.value) : ''}</span></td><td><span class="pill${b.status === 'reservada' ? ' ink' : ''}">${esc(b.status)}</span>${b.paid ? ' <span class="pill">pagado</span>' : ''}</td><td>${(() => { const k = intakeOf(b.user_id); return k ? `<button type="button" class="ikb" data-ik="${esc(b.user_id)}" style="padding:0">${esc([QL.situacion[1][k.answers.situacion], QL.presupuesto[1][k.answers.presupuesto]].filter(Boolean).join(' · ') || 'Ver')}</button>` : '<span class="sm">—</span>'; })()}</td><td class="t">${more(a.notes?.value || '')}</td></tr>`; }).join('')
+      : '<tr><td colspan="5" class="empty">Todavía no hay llamadas.</td></tr>';
+    $$('#t-llamadas [data-ik]').forEach((x) => x.addEventListener('click', (e) => { e.stopPropagation(); const r = D.people.find((p) => p.id === x.dataset.ik); if (r) person(r); else { drawer.innerHTML = intakeHTML(intakeOf(x.dataset.ik)) + '<button class="btn o" type="button" data-close>Cerrar</button>'; drawer.hidden = false; scrim.hidden = false; $('[data-close]', drawer).addEventListener('click', close); } }));
   }
   function subs() { $('#t-boletin').innerHTML = D.subs.length ? D.subs.map((s) => `<tr><td>${esc(s.email)}${testTag(s)}</td><td>${esc(s.source || '')}</td><td>${s.welcomed_at ? 'Enviada' : '—'}</td><td class="sm">${day(s.created_at)}</td></tr>`).join('') : '<tr><td colspan="4" class="empty">Sin suscriptores aún.</td></tr>'; }
   function chats() {
@@ -441,14 +450,14 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     return out;
   }
   async function load() {
-    const [p, s, b, c, v, a, pr] = await Promise.all([
+    const [p, s, b, c, v, a, pr, ik] = await Promise.all([
       sb.from('profiles').select('*').order('created_at', { ascending: false }),
       sb.from('subscribers').select('*').order('created_at', { ascending: false }),
       sb.from('bookings').select('*').order('start_time', { ascending: false }),
       sb.from('chats').select('*').order('updated_at', { ascending: false }).limit(200), allVisits(),
       sb.from('articles').select('*').order('updated_at', { ascending: false }),
-      sb.from('properties').select('*').order('orden')]);
-    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [], props: pr.data || [] };
+      sb.from('properties').select('*').order('orden'), sb.from('intakes').select('*').order('created_at', { ascending: false })]);
+    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [], props: pr.data || [], intakes: ik.data || [] };
     apply();
     $('#stamp').textContent = new Date().toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit' });
   }
