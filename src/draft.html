@@ -3844,8 +3844,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     $('#ac-perks-lab').textContent = paid ? 'Incluido en tu plan' : 'Con Inteligencia Básico también tienes';
     const cta = $('#ac-cta');
     if (paid) { cta.textContent = late ? 'Actualizar tarjeta' : ending ? 'Reactivar suscripción' : 'Gestionar suscripción'; cta.href = PORTAL + '?prefilled_email=' + encodeURIComponent(user.email); cta.dataset.portal = '1'; cta.className = late || ending ? 'btn' : 'btn o'; }
-    else delete cta.dataset.portal;
-    else { let w = 'inteligencia'; try { w = sessionStorage.getItem('cauce-want') || w; } catch (e) {} const t = TIER[w] || TIER.inteligencia;
+    else { delete cta.dataset.portal; let w = 'inteligencia'; try { w = sessionStorage.getItem('cauce-want') || w; } catch (e) {} const t = TIER[w] || TIER.inteligencia;
       cta.textContent = (lang === 'en' ? 'Get Inteligencia ' : 'Pasar a Inteligencia ') + t[0] + ' · $' + t[1] + (lang === 'en' ? '/mo' : '/mes');
       cta.href = t[2] ? payUrl(t[2]) : 'mailto:hola@cauce.blog?subject=' + encodeURIComponent('Inteligencia ' + t[0]); cta.className = 'btn'; }
     // profile
