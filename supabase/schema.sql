@@ -65,3 +65,7 @@ grant update (nombre) on public.profiles to authenticated;
 -- Added 25 Oct 2026: email language for account emails.
 alter table public.profiles add column if not exists lang text not null default 'es';
 grant update (lang) on public.profiles to authenticated;
+
+-- Added 25 Oct 2026: richer profile (ISO country code, multi-select zones, budget, timeline, goals).
+alter table public.profiles add column if not exists apellido text, add column if not exists presupuesto text, add column if not exists plazo text, add column if not exists objetivos text[];
+-- zonas is text[] (converted from comma text); handle_new_user copies nombre/apellido from signup metadata.
