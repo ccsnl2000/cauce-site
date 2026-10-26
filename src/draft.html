@@ -98,7 +98,7 @@ header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; 
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
 .bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 76px; }
 .brand { display: flex; align-items: baseline; gap: 0; }
-.wm { font-weight: 800; font-size: var(--t-h3); letter-spacing: -0.06em; line-height: 1; }
+.wm { font-weight: 800; font-size: var(--t-h3); letter-spacing: -0.06em; line-height: 1; position: relative; } .wm .ed { position: absolute; top: -0.05em; left: 100%; margin-left: 3px; font-size: 8px; font-weight: 700; letter-spacing: .06em; line-height: 1; padding: 2px 4px 1.5px; border: 1px solid currentColor; border-radius: 4px; }
 .brand .about { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; font-size: var(--t-sm); color: var(--soft); transition: max-width .5s var(--ease), opacity .35s var(--ease), margin .5s var(--ease); }
 .brand:hover .about, .brand:focus-within .about { max-width: 160px; opacity: 1; margin-left: 14px; }
 .brand .about:hover { color: var(--ink); }
@@ -727,7 +727,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
 <div class="uc" role="status"><span>Beta</span> <span>Algunas cifras son de demostración mientras conectamos las fuentes.</span></div>
 <header class="top"><div class="wrap">
   <div class="bar">
-    <div class="brand"><a class="wm" href="#mercado" aria-label="Cauce, inicio">cauce</a><a class="about" href="#sobre">Sobre Cauce →</a></div>
+    <div class="brand"><a class="wm" href="#mercado" aria-label="Cauce Venezuela, inicio">cauce<sup class="ed" aria-hidden="true">VE</sup></a><a class="about" href="#sobre">Sobre Cauce →</a></div>
     <nav class="main" aria-label="Principal"><a href="#mercado" data-n="mercado">Mercado</a><a href="#propiedades" data-n="propiedades">Propiedades</a><a href="#datos" data-n="inteligencia">Inteligencia</a></nav>
     <div class="r">
       <a class="btn sub" href="#planes">Suscríbete</a>
