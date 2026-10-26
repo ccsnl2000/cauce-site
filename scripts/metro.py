@@ -5,7 +5,7 @@ import json, math, re, unicodedata, urllib.parse, urllib.request, pathlib
 BBOX = "10.36,-67.10,10.56,-66.72"
 Q = f"""[out:json][timeout:120];
 (relation["route"="subway"]({BBOX}););out body;>;out skel qt;
-(node["railway"="station"]({BBOX});node["public_transport"="station"]({BBOX});node["railway"="stop"]["subway"="yes"]({BBOX}););out body;"""
+(node["railway"="station"]({BBOX});node["public_transport"="station"]["subway"="yes"]({BBOX});node["station"="subway"]({BBOX}););out body;"""
 OFFICIAL = {
   "1": ("Línea 1", "#E2231A", "Propatria, Pérez Bonalde, Plaza Sucre, Gato Negro, Agua Salud, Caño Amarillo, Capitolio, La Hoyada, Parque Carabobo, Bellas Artes, Colegio de Ingenieros, Plaza Venezuela, Sabana Grande, Chacaíto, Chacao, Altamira, Miranda, Los Dos Caminos, Los Cortijos, La California, Petare, Palo Verde"),
   "2": ("Línea 2", "#00A04A", "El Silencio, Capuchinos, Maternidad, Artigas, La Paz, La Yaguara, Carapita, Antímano, Mamera, Caricuao, Zoológico, Ruiz Pineda, Las Adjuntas"),
@@ -17,10 +17,10 @@ ALIAS = {"parque del este": "miranda", "hugo chavez": "miranda", "el silencio": 
 norm = lambda s: re.sub(r"[^a-z0-9 ]", "", unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()).replace("estacion ", "").strip()
 
 def get():
-    for host in ("https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"):
+    for host in ("https://overpass-api.de/api/interpreter", "https://overpass.private.coffee/api/interpreter", "https://overpass.kumi.systems/api/interpreter"):
         try:
             req = urllib.request.Request(host, data=urllib.parse.urlencode({"data": Q}).encode(), headers={"User-Agent": "cauce.blog metro map"})
-            return json.load(urllib.request.urlopen(req, timeout=180))
+            return json.load(urllib.request.urlopen(req, timeout=240))
         except Exception as e:
             print(f"::warning::overpass failed at {host}: {type(e).__name__}: {e}")
     print("::error::Could not download Metro data from Overpass")

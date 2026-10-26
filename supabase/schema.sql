@@ -69,3 +69,6 @@ grant update (lang) on public.profiles to authenticated;
 -- Added 25 Oct 2026: richer profile (ISO country code, multi-select zones, budget, timeline, goals).
 alter table public.profiles add column if not exists apellido text, add column if not exists presupuesto text, add column if not exists plazo text, add column if not exists objetivos text[];
 -- zonas is text[] (converted from comma text); handle_new_user copies nombre/apellido from signup metadata.
+
+-- Added 25 Oct 2026: agent/agency fields.
+alter table public.profiles add column if not exists empresa text, add column if not exists asesores text, add column if not exists contacto text, add column if not exists whatsapp text, add column if not exists acepta_contacto boolean not null default false;

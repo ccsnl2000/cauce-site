@@ -438,16 +438,24 @@ body.auth header.top, body.auth footer { display: none; }
 .acct-go a:hover svg { transform: translateX(4px); }
 .acct-perfil summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; cursor: pointer; }
 .acct-perfil summary::-webkit-details-marker { display: none; }
-.acct-perfil[open] summary > .sm { visibility: hidden; }
+.pf-tog { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; color: var(--ink); white-space: nowrap; }
+.pf-tog svg { transition: transform .2s var(--ease); } .acct-perfil[open] .pf-tog svg { transform: rotate(180deg); }
+.pf-tog .cl, .acct-perfil[open] .pf-tog .ed { display: none; } .acct-perfil[open] .pf-tog .cl { display: inline; }
+.acct-perfil summary:hover .pf-tog { border-color: var(--ink); }
 .acct .chips { justify-content: flex-start; }
 .acct-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
 .acct-fields label { display: grid; gap: 6px; }
-.auth .acct input[type=text] { height: 48px; border-radius: 12px; border-width: 1px; border-color: var(--line); font-size: var(--t-body); padding: 0 14px; }
+.auth .acct input[type=text] { text-align: left; height: 48px; border-radius: 12px; border-width: 1px; border-color: var(--line); font-size: var(--t-body); padding: 0 14px; }
 .acct-foot { font-size: var(--t-sm); color: var(--soft); padding-top: 4px; }
 .acct-foot button { background: none; border: 0; padding: 0; font: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .acct-foot a:hover { color: var(--ink); }
 @media (max-width: 560px) { .acct-fields { grid-template-columns: 1fr; } }
 .namerow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.auth { row-gap: 40px; }
+.pf-buy, .pf-pro { display: contents; }
+.auth .pf input[type=text], .auth .pf input[type=tel] { height: 48px; border: 1px solid var(--line); border-radius: 12px; font: 400 var(--t-body) var(--sans); padding: 0 14px; text-align: left; background: transparent; color: var(--ink); width: 100%; }
+.pf-check { display: flex !important; gap: 10px; align-items: flex-start; font-size: var(--t-sm); color: var(--ink); cursor: pointer; padding-top: 4px; }
+.pf-check input { accent-color: var(--ink); width: 18px; height: 18px; margin-top: 1px; flex: none; }
 .pf { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; margin-top: 14px; text-align: left; align-items: start; }
 .pf > label, .pf > .pff { display: grid; gap: 6px; min-width: 0; }
 .pf .wide { grid-column: 1 / -1; }
@@ -898,7 +906,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
       <div class="auth-row"><button type="button" class="alt" id="p-skip">Omitir</button><button type="submit" class="go"><span>Continuar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
     </form>
     <div class="acct" id="a-acct" hidden>
-      <div class="acct-hi"><div class="acct-row"><p class="acct-h" id="ac-hi">Hola.</p><span class="lab">Mi cuenta</span></div><p class="sm" id="ac-email"></p></div>
+      <div class="acct-hi"><p class="acct-h">Tu cuenta</p><p class="sm" id="ac-email"></p></div>
       <div class="acct-plan" id="ac-card">
         <div class="acct-row"><span class="lab">Tu plan</span><span class="acct-badge" id="ac-status"></span></div>
         <p class="acct-name" id="ac-plan"></p>
@@ -913,7 +921,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
         <a href="#planes" data-plan="consulta"><b>Llamada de diagnóstico</b><span class="sm">45 minutos con el equipo · $149</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
       </nav>
       <details class="acct-perfil">
-        <summary><span><b>Tu perfil</b> <span class="sm" id="ac-perfil-sum"></span></span><span class="sm">Editar</span></summary>
+        <summary><span><b>Tu perfil</b> <span class="sm" id="ac-perfil-sum"></span></span><span class="sm pf-tog"><span class="ed">Editar</span><span class="cl">Cerrar</span><svg width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span></summary>
         <p class="sm" style="margin:14px 0 10px">Nos ayuda a elegir qué datos y estudios mostrarte primero.</p>
         <div class="chips" role="group" aria-label="Qué te trae a Cauce"><button type="button" class="chip" aria-pressed="false" data-ap="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-ap="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-ap="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-ap="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-ap="desarrollador">Desarrollador o constructor</button><button type="button" class="chip" aria-pressed="false" data-ap="otro">Otro</button></div>
         <div class="acct-fields"><label><span class="lab">Nombre *</span><input id="ac-nombre" type="text" autocomplete="given-name" required></label><label><span class="lab">Apellido *</span><input id="ac-apellido" type="text" autocomplete="family-name" required></label></div><div class="pf" id="ac-pf"></div>
@@ -2809,6 +2817,30 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Tu cuenta": "Your account",
+    "Hola de nuevo.": "Welcome back.",
+    "Seleccionar todas": "Select all",
+    "Zonas donde trabajas": "Areas where you work",
+    "Inmobiliaria donde trabajas": "Agency you work with",
+    "Elige una": "Choose one",
+    "Independiente / freelance": "Independent / freelance",
+    "Otra": "Other",
+    "¿Cuál?": "Which one?",
+    "Nombre de la inmobiliaria": "Agency name",
+    "Nombre de tu inmobiliaria": "Your agency’s name",
+    "Tamaño del equipo": "Team size",
+    "Elige uno": "Choose one",
+    "Solo yo": "Just me",
+    "2 a 5 asesores": "2 to 5 agents",
+    "6 a 20 asesores": "6 to 20 agents",
+    "Más de 20 asesores": "More than 20 agents",
+    "¿Cómo prefieres que te contactemos?": "How should we contact you?",
+    "Por correo": "By email",
+    "Por WhatsApp": "By WhatsApp",
+    "Acepto que Cauce me contacte con oportunidades de negocio, clientes interesados y alianzas.": "I agree that Cauce may contact me about business opportunities, interested clients and partnerships.",
+    "Escribe tu número de WhatsApp.": "Please enter your WhatsApp number.",
+    "Cerrar": "Close",
+    "Todas las zonas": "All areas",
     "Tu propiedad aquí": "Your property here",
     "$150 por 30 días": "$150 for 30 days",
     "Nombre": "First name",
@@ -3334,7 +3366,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     $$('.tog button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
     applying = false;
   }
-  $$('.tog button').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); if (typeof user !== 'undefined' && user) syncPerfil(); }));
+  $$('.tog button').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); if (typeof user !== 'undefined' && user) { syncPerfil(); if (acctRow && acctRow._hi && current === 'entrar') acctRow._hi(); } }));
   new MutationObserver(() => { if (!applying) requestAnimationFrame(applyLang); }).observe(document.body, { childList: true, subtree: true });
 
   /* theme: follows the device until the reader picks one */
@@ -3417,46 +3449,84 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const pfOpts = (list, ph) => `<option value="">${ph}</option>` + list.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
   const countryOpts = () => `<option value="">Elige un país</option>` + ISO_TOP.map((c) => `<option value="${c}">${country(c)}</option>`).join('') + '<option disabled>──────────</option>' +
     ISO.filter((c) => !ISO_TOP.includes(c)).map((c) => [c, country(c)]).sort((a, b) => a[1].localeCompare(b[1], lang)).map(([c, n]) => `<option value="${c}">${n}</option>`).join('');
+  const AGENCIES = ['Rent-A-House', 'Century 21', 'RE/MAX'];
+  const TEAM = [['1', 'Solo yo'], ['2-5', '2 a 5 asesores'], ['6-20', '6 a 20 asesores'], ['21+', 'Más de 20 asesores']];
+  const PRO = ['agente', 'inmobiliaria'];
+  const msHTML = (ph) => `<div class="ms" data-f="zonas"><button type="button" class="ms-btn" aria-expanded="false"><span class="ph">${ph}</span></button>
+    <div class="ms-pop" hidden><input type="search" placeholder="Buscar zona" aria-label="Buscar zona"><div class="ms-list">${PF_ZONES().map(([g, l]) => `<p class="lab">${g}</p>` + l.map((z) => `<label class="ms-opt"><input type="checkbox" value="${z}"><span>${z}</span></label>`).join('')).join('')}</div>
+    <div class="ms-foot"><span><button type="button" data-all>Seleccionar todas</button> · <button type="button" data-clear>Borrar</button></span><button type="button" class="btn" data-ok>Listo</button></div></div></div><div class="ms-chips"></div>`;
   function pfRender(box) {
-    const id = box.id;
     box.innerHTML = `<label><span class="lab">País donde vives</span><select class="fsel" data-f="pais" autocomplete="country">${countryOpts()}</select></label>
-      <div class="pff"><span class="lab">Zonas que te interesan</span><div class="ms" data-f="zonas"><button type="button" class="ms-btn" aria-expanded="false"><span class="ph">Elige una o varias</span></button>
-        <div class="ms-pop" hidden><input type="search" placeholder="Buscar zona" aria-label="Buscar zona"><div class="ms-list">${PF_ZONES().map(([g, l]) => `<p class="lab">${g}</p>` + l.map((z) => `<label class="ms-opt"><input type="checkbox" value="${z}"><span>${z}</span></label>`).join('')).join('')}</div>
-        <div class="ms-foot"><button type="button" data-clear>Borrar</button><button type="button" class="btn" data-ok>Listo</button></div></div></div><div class="ms-chips"></div></div>
-      <label><span class="lab">Presupuesto</span><select class="fsel" data-f="presupuesto">${pfOpts(BUDGET, 'Elige un rango')}</select></label>
-      <label><span class="lab">¿Cuándo piensas comprar?</span><select class="fsel" data-f="plazo">${pfOpts(WHEN, 'Elige un plazo')}</select></label>
-      <div class="pff wide"><span class="lab">Para qué es el inmueble</span><div class="chips" data-f="objetivos">${GOALS.map(([v, t]) => `<button type="button" class="chip" aria-pressed="false" data-v="${v}">${t}</button>`).join('')}</div></div>`;
+      <div class="pff"><span class="lab" data-zl>Zonas que te interesan</span>${msHTML('Elige una o varias')}</div>
+      <div class="pf-buy">
+        <label><span class="lab">Presupuesto</span><select class="fsel" data-f="presupuesto">${pfOpts(BUDGET, 'Elige un rango')}</select></label>
+        <label><span class="lab">¿Cuándo piensas comprar?</span><select class="fsel" data-f="plazo">${pfOpts(WHEN, 'Elige un plazo')}</select></label>
+        <div class="pff wide"><span class="lab">Para qué es el inmueble</span><div class="chips" data-f="objetivos">${GOALS.map(([v, t]) => `<button type="button" class="chip" aria-pressed="false" data-v="${v}">${t}</button>`).join('')}</div></div>
+      </div>
+      <div class="pf-pro" hidden>
+        <label class="pro-agente"><span class="lab">Inmobiliaria donde trabajas</span><select class="fsel" data-f="empresa_sel"><option value="">Elige una</option>${AGENCIES.map((x) => `<option value="${x}">${x}</option>`).join('')}<option value="independiente">Independiente / freelance</option><option value="otra">Otra</option></select></label>
+        <label class="pro-agente pro-otra" hidden><span class="lab">¿Cuál?</span><input type="text" data-f="empresa_otra" placeholder="Nombre de la inmobiliaria"></label>
+        <label class="pro-inmo"><span class="lab">Nombre de tu inmobiliaria</span><input type="text" data-f="empresa_inmo" autocomplete="organization"></label>
+        <label class="pro-inmo"><span class="lab">Tamaño del equipo</span><select class="fsel" data-f="asesores">${pfOpts(TEAM, 'Elige uno')}</select></label>
+        <label><span class="lab">¿Cómo prefieres que te contactemos?</span><select class="fsel" data-f="contacto"><option value="correo">Por correo</option><option value="whatsapp">Por WhatsApp</option></select></label>
+        <label class="pro-wa" hidden><span class="lab">WhatsApp</span><input type="tel" data-f="whatsapp" placeholder="+58 412 000 0000" autocomplete="tel"></label>
+        <label class="pff wide pf-check"><input type="checkbox" data-f="acepta_contacto"><span>Acepto que Cauce me contacte con oportunidades de negocio, clientes interesados y alianzas.</span></label>
+      </div>`;
     const ms = $('.ms', box), pop = $('.ms-pop', ms), btn = $('.ms-btn', ms), q = $('input[type=search]', ms);
     const sync = () => {
-      const v = $$('.ms-list input:checked', ms).map((i) => i.value);
-      btn.innerHTML = v.length ? esc(v.length > 2 ? v.slice(0, 2).join(', ') + ' +' + (v.length - 2) : v.join(', ')) : '<span class="ph">Elige una o varias</span>';
-      $('.ms-chips', box).innerHTML = v.map((z) => `<button type="button" data-rm="${esc(z)}" aria-label="Quitar ${esc(z)}">${esc(z)} ×</button>`).join('');
+      const v = $$('.ms-list input:checked', ms).map((i) => i.value), all = $$('.ms-list input', ms).length;
+      btn.innerHTML = v.length ? esc(v.length === all ? (lang === 'en' ? 'All areas' : 'Todas las zonas') : v.length > 2 ? v.slice(0, 2).join(', ') + ' +' + (v.length - 2) : v.join(', ')) : `<span class="ph">${lang === 'en' ? 'Choose one or more' : 'Elige una o varias'}</span>`;
+      $('.ms-chips', box).innerHTML = v.length === all ? '' : v.map((z) => `<button type="button" data-rm="${esc(z)}" aria-label="Quitar ${esc(z)}">${esc(z)} ×</button>`).join('');
       applyLang();
     };
-    const open = (o) => { pop.hidden = !o; btn.setAttribute('aria-expanded', String(o)); if (o) { q.value = ''; filter(); q.focus(); } };
     const filter = () => { const t = q.value.trim().toLowerCase(); $$('.ms-opt', ms).forEach((o) => { o.hidden = t && !o.textContent.toLowerCase().includes(t); }); };
+    const open = (o) => { pop.hidden = !o; btn.setAttribute('aria-expanded', String(o)); if (o) { q.value = ''; filter(); q.focus(); } };
     btn.addEventListener('click', () => open(pop.hidden));
     q.addEventListener('input', filter);
     ms.addEventListener('change', sync);
     $('[data-ok]', ms).addEventListener('click', () => open(false));
     $('[data-clear]', ms).addEventListener('click', () => { $$('.ms-list input', ms).forEach((i) => { i.checked = false; }); sync(); });
+    $('[data-all]', ms).addEventListener('click', () => { $$('.ms-list input', ms).forEach((i) => { i.checked = true; }); sync(); });
     $('.ms-chips', box).addEventListener('click', (e) => { const b = e.target.closest('[data-rm]'); if (!b) return; const i = $$('.ms-list input', ms).find((x) => x.value === b.dataset.rm); if (i) i.checked = false; sync(); });
     document.addEventListener('click', (e) => { if (!pop.hidden && !ms.contains(e.target)) open(false); });
     ms.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); btn.focus(); } });
     $$('[data-f=objetivos] .chip', box).forEach((c) => c.addEventListener('click', () => c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'))));
     $$('.fsel', box).forEach((sel) => { const mark = () => sel.classList.toggle('empty', !sel.value); sel.addEventListener('change', mark); mark(); });
+    $('[data-f=empresa_sel]', box).addEventListener('change', (e) => { $('.pro-otra', box).hidden = e.target.value !== 'otra'; });
+    $('[data-f=contacto]', box).addEventListener('change', (e) => { $('.pro-wa', box).hidden = e.target.value !== 'whatsapp'; });
     box._sync = sync;
   }
+  // the questions follow the profile: buyers get budget/timeline/goal, agents and agencies get business fields
+  function pfMode(box, perfil) {
+    if (!box) return; const pro = PRO.includes(perfil);
+    box.dataset.mode = perfil || '';
+    $('.pf-buy', box).hidden = pro; $('.pf-pro', box).hidden = !pro;
+    $$('.pro-agente', box).forEach((e) => { e.hidden = perfil !== 'agente' || (e.classList.contains('pro-otra') && $('[data-f=empresa_sel]', box).value !== 'otra'); });
+    $$('.pro-inmo', box).forEach((e) => { e.hidden = perfil !== 'inmobiliaria'; });
+    $('[data-zl]', box).textContent = pro ? 'Zonas donde trabajas' : 'Zonas que te interesan';
+    applyLang();
+  }
   function pfGet(box) {
-    const v = (f) => ($(`[data-f=${f}]`, box) || {}).value || null;
-    return { pais: v('pais'), presupuesto: v('presupuesto'), plazo: v('plazo'),
-      zonas: $$('.ms-list input:checked', box).map((i) => i.value), objetivos: $$('[data-f=objetivos] [aria-pressed=true]', box).map((c) => c.dataset.v) };
+    const v = (f) => { const el = $(`[data-f=${f}]`, box); return el && el.value ? el.value.trim() : null; };
+    const mode = box.dataset.mode, sel = v('empresa_sel');
+    const empresa = mode === 'inmobiliaria' ? v('empresa_inmo') : mode === 'agente' ? (sel === 'otra' ? v('empresa_otra') : sel === 'independiente' ? 'Independiente' : sel) : null;
+    const pro = PRO.includes(mode);
+    return { pais: v('pais'), zonas: $$('.ms-list input:checked', box).map((i) => i.value),
+      presupuesto: pro ? null : v('presupuesto'), plazo: pro ? null : v('plazo'), objetivos: pro ? [] : $$('[data-f=objetivos] [aria-pressed=true]', box).map((c) => c.dataset.v),
+      empresa, asesores: mode === 'inmobiliaria' ? v('asesores') : null, contacto: pro ? v('contacto') : null, whatsapp: pro && v('contacto') === 'whatsapp' ? v('whatsapp') : null,
+      acepta_contacto: pro ? !!($('[data-f=acepta_contacto]', box) || {}).checked : false };
   }
   function pfSet(box, r) {
-    ['pais', 'presupuesto', 'plazo'].forEach((f) => { const el = $(`[data-f=${f}]`, box); if (el) { el.value = r[f] || ''; el.dispatchEvent(new Event('change')); } });
+    const set = (f, val) => { const el = $(`[data-f=${f}]`, box); if (!el) return; if (el.type === 'checkbox') el.checked = !!val; else el.value = val || ''; el.dispatchEvent(new Event('change')); };
+    ['pais', 'presupuesto', 'plazo', 'asesores', 'whatsapp'].forEach((f) => set(f, r[f]));
+    set('contacto', r.contacto || 'correo'); set('acepta_contacto', r.acepta_contacto);
+    const e = r.empresa || '';
+    set('empresa_inmo', e);
+    set('empresa_sel', !e ? '' : AGENCIES.includes(e) ? e : e === 'Independiente' ? 'independiente' : 'otra'); set('empresa_otra', AGENCIES.includes(e) || e === 'Independiente' ? '' : e);
     const z = Array.isArray(r.zonas) ? r.zonas : (r.zonas ? String(r.zonas).split(/,\s*/) : []);
     $$('.ms-list input', box).forEach((i) => { i.checked = z.includes(i.value); });
     const o = r.objetivos || []; $$('[data-f=objetivos] .chip', box).forEach((c) => c.setAttribute('aria-pressed', String(o.includes(c.dataset.v))));
+    pfMode(box, r.perfil);
     if (box._sync) box._sync();
   }
   const PF = ['#a-pf', '#ac-pf'];
@@ -3520,7 +3590,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     if (paid) { $$('.cmap.paywall').forEach((m) => m.classList.remove('paywall')); $$('.mpay').forEach((m) => { m.hidden = true; }); try { sessionStorage.removeItem('cauce-maplock'); } catch (e) {} }
   }
   async function syncPerfil() {
-    const p = getPerfil(), row = { lang }; ['perfil', 'pais', 'zonas', 'nombre', 'apellido', 'presupuesto', 'plazo', 'objetivos'].forEach((k) => { if (p[k] && (!Array.isArray(p[k]) || p[k].length)) row[k] = p[k]; });
+    const p = getPerfil(), row = { lang }; ['perfil', 'pais', 'zonas', 'nombre', 'apellido', 'presupuesto', 'plazo', 'objetivos', 'empresa', 'asesores', 'contacto', 'whatsapp', 'acepta_contacto'].forEach((k) => { if (p[k] && (!Array.isArray(p[k]) || p[k].length)) row[k] = p[k]; });
     try { const c = await sb(); await c.from('profiles').update(row).eq('id', user.id); } catch (e) {}
   }
   const fmtDate = (d) => new Date(d).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-VE', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -3528,9 +3598,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   let acctRow = {};
   async function account() {
     ['#f-auth', '#f-perfil', '#a-done', '#v-entrar .auth-tabs', '#v-entrar .auth-note'].forEach((q) => { $(q).hidden = true; });
-    $('#a-acct').hidden = false; $('#v-entrar .auth-hello').textContent = 'Bienvenido de vuelta';
+    $('#a-acct').hidden = false; $('#v-entrar .auth-hello').textContent = 'Hola de nuevo.';
     $('#ac-email').textContent = user.email;
-    try { const c = await sb(), r = await c.from('profiles').select('plan, plan_status, renews_at, cancel_at_period_end, perfil, pais, zonas, nombre, apellido, presupuesto, plazo, objetivos').eq('id', user.id).single(); acctRow = r.data || {}; } catch (e) { acctRow = {}; }
+    try { const c = await sb(), r = await c.from('profiles').select('plan, plan_status, renews_at, cancel_at_period_end, perfil, pais, zonas, nombre, apellido, presupuesto, plazo, objetivos, empresa, asesores, contacto, whatsapp, acepta_contacto').eq('id', user.id).single(); acctRow = r.data || {}; } catch (e) { acctRow = {}; }
     const r = acctRow, paid = r.plan === 'inteligencia', late = r.plan_status === 'past_due', ending = paid && r.cancel_at_period_end;
     $('#ac-plan').textContent = paid ? 'Inteligencia' : 'Boletín';
     const st = $('#ac-status'); st.className = 'acct-badge' + (late || ending ? ' warn' : '');
@@ -3546,19 +3616,20 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     // profile
     $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.ap === r.perfil)));
     $('#ac-nombre').value = r.nombre || ''; $('#ac-apellido').value = r.apellido || ''; pfSet($('#ac-pf'), r);
-    const hi = () => { const n = (acctRow.nombre || '').split(' ')[0]; $('#ac-hi').textContent = (lang === 'en' ? 'Hi' : 'Hola') + (n ? ', ' + n : '') + '.'; }; hi(); acctRow._hi = hi;
-    $('#ac-perfil-sum').textContent = [PERFIL_ES[r.perfil], r.pais && country(r.pais)].filter(Boolean).join(' · ');
+    const hi = () => { const n = (acctRow.nombre || '').split(' ')[0]; $('#v-entrar .auth-hello').textContent = (lang === 'en' ? 'Welcome back' : 'Hola de nuevo') + (n ? ', ' + n : '') + '.'; }; hi(); acctRow._hi = hi;
+    $('#ac-perfil-sum').textContent = [PERFIL_ES[r.perfil], r.empresa, r.pais && country(r.pais)].filter(Boolean).join(' · ');
     if (!r.nombre || !r.apellido) $('.acct-perfil').open = true;
     $('#ac-saved').textContent = '';
     applyLang();
   }
-  $$('#a-acct [data-ap]').forEach((c) => c.addEventListener('click', () => { $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); }));
+  $$('#a-acct [data-ap]').forEach((c) => c.addEventListener('click', () => { $$('#a-acct [data-ap]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); pfMode($('#ac-pf'), c.dataset.ap); }));
   $('#ac-save').addEventListener('click', async () => {
     const pressed = $('#a-acct [data-ap][aria-pressed=true]');
     const row = { perfil: pressed ? pressed.dataset.ap : null, nombre: $('#ac-nombre').value.trim(), apellido: $('#ac-apellido').value.trim(), ...pfGet($('#ac-pf')) };
+    if (row.contacto === 'whatsapp' && !row.whatsapp) { $('#ac-saved').textContent = 'Escribe tu número de WhatsApp.'; $('#ac-pf [data-f=whatsapp]').focus(); applyLang(); return; }
     if (!row.nombre || !row.apellido) { $('#ac-saved').textContent = 'Escribe tu nombre y apellido.'; (!row.nombre ? $('#ac-nombre') : $('#ac-apellido')).focus(); applyLang(); return; }
     $('#ac-saved').textContent = 'Guardando…';
-    try { const c = await sb(), r = await c.from('profiles').update(row).eq('id', user.id); if (r.error) throw r.error; savePerfil(row); acctRow.nombre = row.nombre; if (acctRow._hi) acctRow._hi(); $('#ac-saved').textContent = 'Guardado.'; $('#ac-perfil-sum').textContent = [PERFIL_ES[row.perfil], row.pais && country(row.pais)].filter(Boolean).join(' · '); }
+    try { const c = await sb(), r = await c.from('profiles').update(row).eq('id', user.id); if (r.error) throw r.error; savePerfil(row); acctRow.nombre = row.nombre; if (acctRow._hi) acctRow._hi(); $('#ac-saved').textContent = 'Guardado.'; $('#ac-perfil-sum').textContent = [PERFIL_ES[row.perfil], row.empresa, row.pais && country(row.pais)].filter(Boolean).join(' · '); }
     catch (e) { $('#ac-saved').textContent = 'No se pudo guardar. Inténtalo de nuevo.'; }
     applyLang();
   });
@@ -3595,8 +3666,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       $('#f-auth').hidden = true; $('#f-perfil').hidden = false;
     } catch (err) { fail(err); }
   });
-  $$('#f-perfil [data-perfil]').forEach((c) => c.addEventListener('click', () => { $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); savePerfil({ perfil: c.dataset.perfil }); }));
-  new MutationObserver(() => { if (!$('#f-perfil').hidden) { const cur = getPerfil().perfil; $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.perfil === cur))); } }).observe($('#f-perfil'), { attributes: true, attributeFilter: ['hidden'] });
+  $$('#f-perfil [data-perfil]').forEach((c) => c.addEventListener('click', () => { $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x === c))); savePerfil({ perfil: c.dataset.perfil }); pfMode($('#a-pf'), c.dataset.perfil); }));
+  new MutationObserver(() => { if (!$('#f-perfil').hidden) { const cur = getPerfil().perfil; $$('#f-perfil [data-perfil]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.perfil === cur))); pfMode($('#a-pf'), cur); } }).observe($('#f-perfil'), { attributes: true, attributeFilter: ['hidden'] });
   function done() {
     savePerfil(pfGet($('#a-pf')));
     if (user) syncPerfil();
@@ -3866,13 +3937,17 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
       let METRO = null;
       async function addMetro() {
         try { const r = await fetch('/data/metro.json', { cache: 'no-cache' }); if (!r.ok) return; METRO = await r.json(); } catch (e) { return; }
+        // official line colours (shown only in the station card); the map itself stays quiet
+        const OFFICIAL = { 1: '#E2231A', 2: '#00A04A', 3: '#0077C8', 4: '#F2C200', 5: '#7B3F98' };
+        METRO.lines.forEach((l) => { l.colour = OFFICIAL[l.ref] || l.colour; });
+        if (!METRO.lines.some((l) => l.ref === '5') && METRO.stations.some((s) => s.lines.includes('5'))) METRO.lines.push({ ref: '5', name: 'Línea 5', colour: OFFICIAL[5], coords: [] });
         const col = {}; METRO.lines.forEach((l) => { col[l.ref] = l.colour; });
         map.addSource('mline', { type: 'geojson', data: { type: 'FeatureCollection', features: METRO.lines.map((l) => ({ type: 'Feature', properties: { c: l.colour, n: l.name }, geometry: { type: 'MultiLineString', coordinates: l.coords } })) } });
         map.addSource('mst', { type: 'geojson', data: { type: 'FeatureCollection', features: METRO.stations.map((s, i) => ({ type: 'Feature', id: i, properties: { n: s.name, l: JSON.stringify(s.lines), c: col[s.lines[0]] || '#1B1A18', x: s.lines.length > 1 ? 1 : 0 }, geometry: { type: 'Point', coordinates: [s.lon, s.lat] } })) } });
         const before = map.getLayer('offers') ? 'offers' : undefined;
-        map.addLayer({ id: 'mline-case', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#F1EEE9', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 2.5, 15, 7], 'line-opacity': 0.7 } }, before);
-        map.addLayer({ id: 'mline', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': ['get', 'c'], 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.4, 15, 4] } }, before);
-        map.addLayer({ id: 'mst', type: 'circle', source: 'mst', paint: { 'circle-color': '#FFFFFF', 'circle-stroke-color': ['case', ['==', ['get', 'x'], 1], '#1B1A18', ['get', 'c']], 'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 10, 1.4, 15, 2.6],
+        map.addLayer({ id: 'mline-case', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#F1EEE9', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 1.6, 15, 4], 'line-opacity': 0.35 } }, before);
+        map.addLayer({ id: 'mline', type: 'line', source: 'mline', layout: { 'line-cap': 'round', 'line-join': 'round' }, paint: { 'line-color': '#1A1B19', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.8, 15, 2], 'line-opacity': 0.55 } }, before);
+        map.addLayer({ id: 'mst', type: 'circle', source: 'mst', paint: { 'circle-color': '#1A1B19', 'circle-stroke-color': '#F1EEE9', 'circle-stroke-width': ['interpolate', ['linear'], ['zoom'], 10, 1, 15, 1.6],
           'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 2.4], 15, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.9, 1], 5.5]], 'circle-radius-transition': { duration: 150 } } }, before);
         map.addLayer({ id: 'mst-name', type: 'symbol', source: 'mst', minzoom: 13.5, layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-offset': [0, 1.2], 'text-anchor': 'top' }, paint: { 'text-color': '#6B675F', 'text-halo-color': '#F1EEE9', 'text-halo-width': 1.2 } }, before);
         ['metro', 'metro-name'].forEach((id) => map.getLayer(id) && map.setLayoutProperty(id, 'visibility', 'none'));
