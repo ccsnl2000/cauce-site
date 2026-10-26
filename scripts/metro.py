@@ -22,10 +22,17 @@ def get():
             req = urllib.request.Request(host, data=urllib.parse.urlencode({"data": Q}).encode(), headers={"User-Agent": "cauce.blog metro map"})
             return json.load(urllib.request.urlopen(req, timeout=180))
         except Exception as e:
-            print("overpass failed:", host, e)
+            print(f"::warning::overpass failed at {host}: {type(e).__name__}: {e}")
+    print("::error::Could not download Metro data from Overpass")
     raise SystemExit(1)
 
+import traceback, sys
+def fail(t, v, tb):
+    print("::error::" + " | ".join(traceback.format_exception(t, v, tb)[-3:]).replace("\n", " "))
+    sys.__excepthook__(t, v, tb)
+sys.excepthook = fail
 d = get()["elements"]
+print(f"::notice::Overpass returned {len(d)} elements")
 nodes = {e["id"]: (e["lon"], e["lat"]) for e in d if e["type"] == "node" and "lon" in e}
 ways = {e["id"]: e["nodes"] for e in d if e["type"] == "way"}
 lines = {}
