@@ -347,7 +347,7 @@ form.f select option { background: var(--card); }
 .dm { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; gap: 10px 9px; align-items: center; font-size: var(--t-sm); padding: 14px 0; border-bottom: 1px solid var(--line); } .dm:nth-last-child(-n+2) { border-bottom: 0; padding-bottom: 2px; }
 .dm svg { width: 16px; height: 16px; color: var(--ink); fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: square; stroke-linejoin: miter; overflow: visible; } .dm svg .f { fill: currentColor; stroke: none; }
 .dm > span:last-of-type { font-family: var(--mono); font-size: var(--t-xs); color: var(--soft); white-space: nowrap; }
-.dm .seg { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; } .dm .seg u { display: block; height: 7px; border-radius: 2px; background: color-mix(in srgb, var(--ink) 13%, transparent); overflow: hidden; } .dm .seg u b { display: block; height: 100%; background: var(--ink); }
+.dm .seg { grid-column: 1 / -1; position: relative; display: block; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--ink) 13%, transparent); overflow: hidden; } .dm .seg b { display: block; height: 100%; border-radius: 4px; background: var(--ink); }
 .dm svg .ic-w path, .dm svg .ic-w circle { stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .ic-lg { transform-origin: 7.3px 9.8px; animation: ic-sw .9s ease-in-out infinite alternate; } .ic-lg.b { animation-direction: alternate-reverse; }
 .ic-ar { transform-origin: 8.1px 6.1px; animation: ic-sw .9s ease-in-out infinite alternate-reverse; } .ic-ar.b { animation-direction: alternate; }
@@ -4308,7 +4308,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       metro: '<rect x="3.5" y="1.5" width="9" height="10" rx="2"/><path d="M3.5 6.5h9"/><rect class="f" x="5.3" y="8.3" width="1.4" height="1.4"/><rect class="f" x="9.3" y="8.3" width="1.4" height="1.4"/><path class="ic-rail" d="M0.5 14.5h15"/>',
       net: '<rect class="f" x="1.5" y="10.5" width="2.4" height="3.5"/><rect class="f" x="5.3" y="8" width="2.4" height="6"/><rect class="f" x="9.1" y="5.2" width="2.4" height="8.8"/><rect class="f" x="12.9" y="2" width="2.4" height="12"/>'
     };
-    const meter = (ic, lab, v, txt) => { const x = Math.max(0, Math.min(100, v)) / 10; return `<div class="dm"><svg viewBox="0 0 16 16" aria-hidden="true">${IC[ic]}</svg><span>${lab}</span><span>${txt}</span><span class="seg" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<u><b style="width:${Math.round(Math.max(0, Math.min(1, x - i)) * 100)}%"></b></u>`).join('')}</span></div>`; };
+    const meter = (ic, lab, v, txt) => { const x = Math.max(0, Math.min(100, v)) / 10; return `<div class="dm"><svg viewBox="0 0 16 16" aria-hidden="true">${IC[ic]}</svg><span>${lab}</span><span>${txt}</span><span class="seg" aria-hidden="true"><b style="width:${Math.max(2, x * 10)}%"></b></span></div>`; };
     const opts = (sel) => Z.slice().sort((a, b) => a.n.localeCompare(b.n, 'es')).map((z) => `<option value="${esc(z.n)}"${z.n === sel ? ' selected' : ''}>${esc(z.n)}${z.m && z.m !== z.n ? ' · ' + esc(z.m) : ''}</option>`).join('');
     const reading = (z) => {
       const p = [];
