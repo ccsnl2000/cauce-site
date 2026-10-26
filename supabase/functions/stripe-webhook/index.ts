@@ -25,7 +25,7 @@ const SUBJECT: Record<string, string> = {
   "bienvenida-es": "Tu guía gratis de Cauce", "bienvenida-guia-es": "Tu guía gratis de Cauce",
   "bienvenida-en": "Your free Cauce guide", "bienvenida-guia-en": "Your free Cauce guide",
   "plan-activo-es": "Ya tienes Inteligencia", "plan-activo-en": "Inteligencia is on",
-  "plan-cancelado-es": "Cancelaste Inteligencia", "plan-cancelado-en": "You cancelled Inteligencia",
+  "plan-cancelado-es": "Cancelaste Inteligencia", "plan-cancelado-en": "You canceled Inteligencia",
 };
 async function sendTpl(key: string, to: string, vars: Record<string, string>) {
   const KEY = Deno.env.get("RESEND_API_KEY") || "";

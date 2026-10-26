@@ -115,10 +115,10 @@ C = {
    a_plan="Your plan", a_badge="Active", a_renew="$10/mo · renews on {{fecha}}", a_btn="Go to Inteligencia",
    a_rows_l="Your account", a_manage=("Manage subscription", "Card, invoices, change or cancel"),
    a_note="Stripe sends your invoice separately. If anything looks off, reply to this email.", a_subject="Inteligencia is on",
-   x_t="You cancelled Inteligencia.", x_s="You won't be charged again. You keep everything until the end of the period you paid for.", x_pre="Your Inteligencia access continues until {{fecha}}.",
-   x_badge="Cancelled", x_body="Access until {{fecha}}. After that you move to the free newsletter and keep getting Cauce every Thursday.", x_btn="Reactivate subscription",
+   x_t="You canceled Inteligencia.", x_s="You won't be charged again. You keep everything until the end of the period you paid for.", x_pre="Your Inteligencia access continues until {{fecha}}.",
+   x_badge="Canceled", x_body="Access until {{fecha}}. After that you move to the free newsletter and keep getting Cauce every Thursday.", x_btn="Reactivate subscription",
    x_why="Why are you leaving? Reply with one line. We read every answer.", x_keep="What you keep", x_guide_s="Still yours, free",
-   x_note="Thanks for being part of Inteligencia.", x_subject="You cancelled Inteligencia",
+   x_note="Thanks for being part of Inteligencia.", x_subject="You canceled Inteligencia",
    p_foot="You're getting this email because of a change to your subscription at cauce.blog."),
 }
 
