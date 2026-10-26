@@ -117,7 +117,9 @@ nav.main a[aria-current]::after { transform: scaleX(1); }
 .sub { display: flex; justify-content: center; gap: 4px; padding-bottom: 12px; }
 .sub a { font-size: 13px; padding: 7px 16px; border-radius: 999px; color: var(--soft); border: 1px solid var(--line); }
 .sub a[aria-current] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.ptabs { display: flex; gap: 28px; margin-top: 28px; border-bottom: 1px solid var(--line); }
+.ptabs { display: flex; gap: 28px; margin-top: 28px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; } .ptabs::-webkit-scrollbar { display: none; } .ptabs button { flex: none; }
+/* nothing may widen the page on phones (decorative stickers sit on the edge) */
+html, body { overflow-x: clip; }
 .ptabs button { background: none; border: 0; padding: 0 0 12px; font: 800 20px var(--sans); letter-spacing: -0.04em; color: var(--soft); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
 .ptabs button[aria-pressed=true] { color: var(--ink); border-color: var(--ink); }
 .rank { position: absolute; top: 12px; left: 12px; z-index: 2; background: var(--bg); color: var(--ink); border-radius: 999px; font-size: 12px; padding: 4px 10px; font-weight: 700; }
@@ -310,7 +312,7 @@ form.f select option { background: var(--card); }
 .dk { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 18px; } .dk div { display: grid; gap: 4px; border-top: 1px solid var(--line); padding-top: 10px; } .dk b { font: 700 24px/1.1 var(--mono); letter-spacing: -0.03em; }
 .dms { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px 22px; }
 .dm { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; font-size: 13px; } .dm i { grid-column: 1 / -1; grid-row: 2; height: 6px; border-radius: 9px; background: var(--fill); overflow: hidden; } .dm i b { display: block; height: 100%; border-radius: 9px; background: var(--ink); } .dm span:last-child { font-family: var(--mono); color: var(--soft); }
-.dlock { display: grid; } .dlock > .blur { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; } .dsec { display: grid; gap: 14px; }
+.dlock { display: grid; } .dlock > .blur { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; } .dsec { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; } .dsec > *, .drh > * { min-width: 0; }
 .dcharts { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; } .dcharts .chart { margin: 0; }
 .drh h3 { font-size: 22px; margin: 4px 0; }
 .dpri { display: flex; flex-wrap: wrap; gap: 8px; } .dpri button { font: 600 13px var(--sans); color: var(--ink); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; } .dpri button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
@@ -644,10 +646,10 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 <section class="view" id="v-guia" hidden>
   <div class="gd">
     <a class="sm" href="#mercado">← Mercado</a>
-    <p class="lab" style="margin-top:28px">Guía gratis</p>
-    <h1>Comprar en Venezuela: el proceso completo, en siete capítulos</h1>
-    <p class="dek">Tipos de visa, RIF, registro y los documentos de cada paso, explicados en orden. Para entender el proceso antes de pagarle a nadie.</p>
-    <ul class="gd-inc"><li>Seis tipos de visa</li><li>RIF en el SENIAT</li><li>Registro SAREN</li><li>Documentos del cierre</li><li>Zonas de seguridad</li></ul>
+    <p class="lab" style="margin-top:28px">Guía gratis para inversionistas extranjeros</p>
+    <h1>Comprar en Venezuela siendo extranjero: pasos, costos y riesgos</h1>
+    <p class="dek">Para quien no es venezolano: si puedes ser dueño, qué visa y RIF necesitas, cuánto cuesta cerrar y qué se puede hacer a distancia. En siete capítulos, antes de pagarle a nadie.</p>
+    <ul class="gd-inc"><li>Seis tipos de visa</li><li>RIF en el SENIAT</li><li>Registro SAREN</li><li>Costos del cierre</li><li>Qué se hace a distancia</li><li>Zonas de seguridad</li></ul>
     <div class="gd-card" id="gd-card">
       <form id="gd-form" novalidate>
         <span class="lab">Recibe la guía en tu correo</span>
@@ -845,7 +847,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
       </div>
       <nav class="acct-go" aria-label="Atajos">
         <a href="#datos"><b>Inteligencia</b><span class="sm">Precios y oferta por zona</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
-        <a href="#guia"><b>Guía para comprar</b><span class="sm">Siete capítulos, paso a paso</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+        <a href="#guia"><b>Guía para inversionistas extranjeros</b><span class="sm">Siete capítulos, paso a paso</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
         <a href="#planes" data-plan="consulta"><b>Llamada de diagnóstico</b><span class="sm">45 minutos con el equipo · $149</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
       </nav>
       <details class="acct-perfil">
@@ -2425,7 +2427,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
     ['Zonas', 'Bello Monte y Colinas: zonas vecinas, $243 de diferencia por m²', '4 min', 0, 'i:colinas'],
     ['Estudio', 'La Boyera, 18.000 m²: townhouses con margen, si se venden', '9 min', 1, null],
     ['Análisis', 'Airbnb a $63 la noche: ¿conviene más que alquilar por año?', '5 min', 0, 'i:noches'],
-    ['Guía', 'Comprar en Venezuela: pasos, costos y riesgos', '10 min', 0, 'i:pasos'],
+    ['Guía', 'Comprar en Venezuela siendo extranjero: pasos, costos y riesgos', '10 min', 0, 'i:pasos'],
     ['Estudio', '¿Convertir un local de 5.380 m² en vivienda?', '7 min', 1, null],
     ['Análisis', 'Rendimiento bruto de 12%: cuánto queda después de gastos', '7 min', 1, 'i:gastos'],
     ['Zonas', 'Desde $15.000: qué se compra en la costa con cada presupuesto', '5 min', 0, 'i:costa'],
@@ -2744,6 +2746,12 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
 
   /* ---------- language (ES default, EN) and theme ---------- */
   const EN = {
+    "Guía gratis para inversionistas extranjeros": "Free guide for foreign investors",
+    "Comprar en Venezuela siendo extranjero: pasos, costos y riesgos": "Buying property in Venezuela as a foreigner: steps, costs and risks",
+    "Para quien no es venezolano: si puedes ser dueño, qué visa y RIF necesitas, cuánto cuesta cerrar y qué se puede hacer a distancia. En siete capítulos, antes de pagarle a nadie.": "For non-Venezuelans: whether you can own property, which visa and tax ID you need, what closing costs, and what can be done remotely. Seven chapters, before you pay anyone.",
+    "Costos del cierre": "Closing costs",
+    "Qué se hace a distancia": "What you can do remotely",
+    "Guía para inversionistas extranjeros": "Guide for foreign investors",
     "Abrir en página": "Open as a page",
     "Ej. Las Mercedes, Margarita": "E.g. Las Mercedes, Margarita",
     "Qué te trae a Cauce": "What brings you to Cauce",
@@ -3179,7 +3187,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbours, the Ávila beh
   const ATTRS = ['placeholder', 'aria-label', 'title'];
   const orig = new WeakMap();
   let lang = 'es';
-  try { lang = localStorage.getItem('cauce-lang') || 'es'; } catch (e) {}
+  try { lang = localStorage.getItem('cauce-lang') || ((navigator.languages || [navigator.language || 'es']).some((l) => /^es/i.test(l)) ? 'es' : 'en'); } catch (e) {}
   function tr(es) {
     if (lang === 'es') return es;
     const k = es.trim();
