@@ -94,3 +94,4 @@ alter table public.profiles add column if not exists empresa text, add column if
 
 -- Added 26 Oct 2026: public.admin_invites (email). is_admin() is true for public.admins OR a confirmed account whose email is invited.
 -- Michelle Bocanegra (a00959936@gmail.com) invited as admin for QA on design, flows and funnels.
+-- 27 Oct 2026: Dorka (dmedina@rotatorsurvey.com) invited as admin, same access as Michelle.
