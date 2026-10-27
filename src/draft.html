@@ -257,7 +257,8 @@ body.auth .stick-chat { display: none; }
 .art .ph { aspect-ratio: 16/10; }
 .blk { margin-top: 32px; }
 .ph.art-ill { padding: 0; align-items: center; justify-content: center; } .ph.art-ill img { width: 100%; height: 100%; object-fit: contain; padding: 2% 4%; box-sizing: border-box; }
-.aembed { margin: 22px 0 6px; display: flex; justify-content: center; } .aembed .instagram-media { margin: 0 !important; min-width: 0 !important; max-width: 540px !important; width: 100% !important; }
+.aembed { margin: 22px 0 6px; display: flex; justify-content: center; } .aembed .instagram-media { margin: 0 !important; min-width: 0 !important; max-width: 540px !important; width: 100% !important; border-radius: 16px !important; overflow: hidden !important; border: 1px solid var(--line) !important; box-shadow: none !important; }
+.aembed iframe.instagram-media { clip-path: inset(0 round 16px); }
 .afig { margin: 22px 0 6px; } .afig img { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--fill); } .afig figcaption { margin-top: 8px; font-size: var(--t-xs); color: var(--soft); line-height: 1.45; } .afig figcaption a { color: inherit; } .afig.nofig img { display: none; }
 .blk .lab { color: var(--ink); display: flex; gap: 8px; align-items: center; }
 .blk .lab::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sage-ink); }
