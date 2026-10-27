@@ -257,7 +257,7 @@ body.auth .stick-chat { display: none; }
 .art .ph { aspect-ratio: 16/10; }
 .blk { margin-top: 32px; }
 .ph.art-ill { padding: 0; align-items: center; justify-content: center; } .ph.art-ill img { width: 100%; height: 100%; object-fit: contain; padding: 2% 4%; box-sizing: border-box; }
-.afig { margin: 22px 0 6px; } .afig img { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--fill); } .afig figcaption { margin-top: 8px; font-size: var(--t-xs); color: var(--soft); line-height: 1.45; } .afig figcaption a { color: inherit; }
+.afig { margin: 22px 0 6px; } .afig img { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--fill); } .afig figcaption { margin-top: 8px; font-size: var(--t-xs); color: var(--soft); line-height: 1.45; } .afig figcaption a { color: inherit; } .afig.nofig img { display: none; }
 .blk .lab { color: var(--ink); display: flex; gap: 8px; align-items: center; }
 .blk .lab::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sage-ink); }
 .chap { margin: 12px 0 0; padding-left: 22px; display: grid; gap: 8px; font-size: var(--t-body); line-height: 1.5; }
@@ -4617,7 +4617,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   const mdIn = (t) => esc(t).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');   // **bold** and [text](url)
   const mdHTML = (md) => String(md || '').split(/\n(?=## )/).map((blk) => {
     const m = blk.match(/^## (.*)\n?([\s\S]*)$/), h = m ? m[1] : '', rest = (m ? m[2] : blk).trim();
-    const parts = rest.split(/\n{2,}/).map((x) => /^!\[/.test(x.trim()) ? (() => { const m2 = x.trim().match(/^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)$/); return m2 ? `<figure class="afig"><img src="${esc(m2[2])}" alt="${esc(m2[1])}" loading="lazy" referrerpolicy="no-referrer">${m2[3] ? `<figcaption>${mdIn(m2[3])}</figcaption>` : ''}</figure>` : `<p>${mdIn(x)}</p>`; })() : /^- /m.test(x) ? `<ul class="blist">${x.split('\n').filter((l) => l.startsWith('- ')).map((l) => `<li>${mdIn(l.slice(2))}</li>`).join('')}</ul>` : `<p>${mdIn(x.replace(/\n/g, ' '))}</p>`).join('');
+    const parts = rest.split(/\n{2,}/).map((x) => /^!\[/.test(x.trim()) ? (() => { const m2 = x.trim().match(/^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)$/); return m2 ? `<figure class="afig"><img src="${esc(m2[2])}" alt="${esc(m2[1])}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('figure').classList.add('nofig')">${m2[3] ? `<figcaption>${mdIn(m2[3])}</figcaption>` : ''}</figure>` : `<p>${mdIn(x)}</p>`; })() : /^- /m.test(x) ? `<ul class="blist">${x.split('\n').filter((l) => l.startsWith('- ')).map((l) => `<li>${mdIn(l.slice(2))}</li>`).join('')}</ul>` : `<p>${mdIn(x.replace(/\n/g, ' '))}</p>`).join('');
     return `<div class="blk">${h ? `<span class="lab">${esc(h)}</span>` : ''}${parts}</div>`; }).join('');
   async function loadArticles() {
     let list; try { const r = await fetch(SB_URL + '/rest/v1/articles?select=id,seccion,titulo,titulo_en,entradilla,entradilla_en,cuerpo,cuerpo_en,lectura,lectura_en,minutos,pro,builtin,publicado_at,imagen&estado=eq.publicado&order=publicado_at.desc', { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } }); if (!r.ok) return; list = await r.json(); } catch (e) { return; }
