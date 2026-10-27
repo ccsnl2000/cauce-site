@@ -2824,7 +2824,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     if (!a) { art.innerHTML = PORLAMAR + readsHTML(); wireCharts(art); mountFigs(); return; }
     const fi = FID.indexOf(id), f = fi >= 0 ? FEED[fi] : [a.sec, a.t, a.mins, a.pro, null];
     const study = !f[4], top = study ? (CH[id] ? `<div class="chart" data-chart="${id}"></div>` : '') : media(f[4], fi);
-    art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><span>Equipo Cauce</span><span>${esc(a.date || '20 oct 2026')}</span><span>${esc(f[2])}</span></div>${top}
+    art.innerHTML = `<a class="sm" href="#mercado">← Mercado</a><p class="lab" style="margin-top:28px">${esc(f[0])}</p><h1>${esc(f[1])}</h1><p class="dek">${esc(a.dek)}</p><div class="by"><span>Equipo Cauce</span><span>${esc(pubLabel(id, true) || a.date || '20 oct 2026')}</span><span>${esc(f[2])}</span></div>${top}
       ${a.body ? a.body.map((x) => `<div class="blk"><span class="lab">${esc(x.h)}</span>${(x.p || []).map((t) => `<p>${esc(t)}</p>`).join('')}${x.list ? `<ul class="blist">${x.list.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}${x.chart ? `<div class="chart" data-chart="${x.chart}"></div>` : ''}${x.table ? `<figure class="xt"><div class="xtw"><table><thead><tr>${x.table.head.map((t) => `<th>${esc(t)}</th>`).join('')}</tr></thead><tbody>${x.table.rows.map((r) => `<tr>${r.map((t, k) => k ? `<td>${esc(t)}</td>` : `<th scope="row">${esc(t)}</th>`).join('')}</tr>`).join('')}</tbody></table></div><figcaption>${esc(x.table.src)}</figcaption></figure>` : ''}</div>`).join('') : a.b ? `<div class="blk"><span class="lab">${esc(a.b[0])}</span><p>${esc(a.b[1])}</p>${study ? '' : `<div class="chart" data-chart="${id}"></div>`}</div>` : ''}
       ${a.md ? mdHTML(lang === 'en' && a.md_en ? a.md_en : a.md) : ''}
       ${a.list ? `<div class="blk"><span class="lab">${esc(a.list[0])}</span><ol class="chap">${a.list[1].map((x) => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
@@ -2861,6 +2861,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     });
   }
   const photo = (file, cap) => `<div class="ph"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=1000" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"><span class="credit">${cap || 'Imagen de referencia'} · Wikimedia Commons</span></div>`;
+  // publication time from the database (Caracas time); built-in articles keep their written date if the database has none
+  const PUB = {};
+  const pubLabel = (id, withTime, short) => {
+    const t = PUB[id]; if (!t) return short ? '' : (ARTS[id] && ARTS[id].date) || '';
+    const d = new Date(t), loc = lang === 'en' ? 'en-US' : 'es-VE';
+    const dateOnly = d.getUTCHours() === 0 && d.getUTCMinutes() === 0, o = { timeZone: dateOnly ? 'UTC' : 'America/Caracas' };
+    const day = d.toLocaleDateString(loc, short ? { ...o, day: 'numeric', month: 'short' } : { ...o, day: 'numeric', month: 'short', year: 'numeric' }).replace('.', '');
+    return withTime && !dateOnly ? day + ' · ' + d.toLocaleTimeString(loc, { ...o, hour: 'numeric', minute: '2-digit' }) : day;
+  };
   const media = (m, i) => !m ? ph(i, 'Foto') : m.startsWith('i:') ? ill(m.slice(2)) : m.startsWith('u:') ? `<div class="ph art-ill"><img src="${esc(m.slice(2))}" alt="" loading="lazy"></div>` : photo(m.slice(2));
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -2869,7 +2878,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     $('#feed').innerHTML = FEED.filter((x) => f === 'all' || x[0] === f).map((x, i) => {
       const id = FID[FEED.indexOf(x)];
       const img = x[0] === 'Estudio' ? cover(id, i + 1, x[1].split(':')[0]) : media(x[4], i);
-      return `<a class="card-link" href="#articulo/${id}">${img}<span class="lab">${esc(x[0])} · ${esc(x[2])}${x[3] ? '<span class="pro">PRO</span>' : ''}</span><h3>${esc(x[1])}</h3></a>`;
+      return `<a class="card-link" href="#articulo/${id}">${img}<span class="lab">${esc(x[0])} · ${esc(x[2])}${pubLabel(id, false, true) ? `<span class="cdate"> · ${esc(pubLabel(id, false, true))}</span>` : ''}${x[3] ? '<span class="pro">PRO</span>' : ''}</span><h3>${esc(x[1])}</h3></a>`;
     }).join('');
     applyLang(); mountFigs();
   }
@@ -4625,7 +4634,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   async function loadArticles() {
     let list; try { const r = await fetch(SB_URL + '/rest/v1/articles?select=id,seccion,titulo,titulo_en,entradilla,entradilla_en,cuerpo,cuerpo_en,lectura,lectura_en,minutos,pro,builtin,publicado_at,imagen&estado=eq.publicado&order=publicado_at.desc', { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } }); if (!r.ok) return; list = await r.json(); } catch (e) { return; }
     if (!Array.isArray(list) || !list.length) return;
-    const pub = new Set(list.map((a) => a.id));
+    const pub = new Set(list.map((a) => a.id)); list.forEach((a) => { if (a.publicado_at) PUB[a.id] = a.publicado_at; });
     for (let i = FID.length - 1; i >= 0; i--) if (!pub.has(FID[i])) { FID.splice(i, 1); FEED.splice(i, 1); }
     list.filter((a) => !a.builtin && !FID.includes(a.id)).reverse().forEach((a) => {
       const d = a.publicado_at ? new Date(a.publicado_at).toLocaleDateString('es-VE', { day: 'numeric', month: 'short', year: 'numeric' }).replace('.', '') : '';

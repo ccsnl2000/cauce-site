@@ -137,7 +137,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   </section>
   <section class="panel" data-p="articulos" hidden>
     <div class="tools"><div class="chips" id="art-chips"></div><span style="flex:1"></span><button class="btn" id="new-art" type="button">Nuevo artículo</button></div>
-    <div class="scroll"><table class="tbl"><thead><tr><th>Artículo</th><th>Estado</th><th>Notas</th><th>Actualizado</th></tr></thead><tbody id="t-art"></tbody></table></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Artículo</th><th>Estado</th><th>Notas</th><th>Publicado</th></tr></thead><tbody id="t-art"></tbody></table></div>
   </section>
   <section class="panel" data-p="propiedades" hidden>
     <div class="tools"><div class="chips" id="prop-chips"></div><span style="flex:1"></span><button class="btn" id="new-prop" type="button">Nueva propiedad</button></div>
@@ -356,8 +356,8 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     const all = RAW.arts.filter((a) => $('#show-test').checked || !a.id.startsWith('prueba-')), n = (k) => all.filter((a) => ASTATES[k].includes(a.estado)).length;
     if (!n('pend') && artF === 'pend' && !arts.picked) artF = 'live';
     chips($('#art-chips'), [['pend', 'Por aprobar', n('pend')], ['live', 'Publicados', n('live')], ['no', 'No aprobados', n('no')], ['draft', 'Borradores', n('draft')], ['arch', 'Archivados', n('arch')], ['all', 'Todos', all.length]], artF, (k) => { artF = k; arts.picked = 1; arts(); });
-    const rows = all.filter((a) => artF === 'all' || ASTATES[artF].includes(a.estado)).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-    $('#t-art').innerHTML = rows.map((a) => `<tr data-id="${esc(a.id)}"><td class="t"><b>${esc(a.titulo)}</b>${testTag(a)}<span class="sub">${esc(a.seccion)}${a.minutos ? ' · ' + a.minutos + ' min' : ''}${a.autor ? ' · ' + esc(a.autor) : ''}</span></td><td><span class="state ${a.estado}">${ESTADO[a.estado]}</span></td><td class="t sm">${more(a.notas || '')}</td><td class="sm">${day(a.updated_at)}</td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nada aquí.</td></tr>';
+    const rows = all.filter((a) => artF === 'all' || ASTATES[artF].includes(a.estado)).sort((a, b) => new Date(b.publicado_at || b.updated_at) - new Date(a.publicado_at || a.updated_at));
+    $('#t-art').innerHTML = rows.map((a) => `<tr data-id="${esc(a.id)}"><td class="t"><b>${esc(a.titulo)}</b>${testTag(a)}<span class="sub">${esc(a.seccion)}${a.minutos ? ' · ' + a.minutos + ' min' : ''}${a.autor ? ' · ' + esc(a.autor) : ''}</span></td><td><span class="state ${a.estado}">${ESTADO[a.estado]}</span></td><td class="t sm">${more(a.notas || '')}</td><td class="sm">${a.publicado_at ? esc(new Date(a.publicado_at).toLocaleString('es-VE', { timeZone: 'America/Caracas', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })) : '—'}<span class="sub">editado ${day(a.updated_at)}</span></td></tr>`).join('') || '<tr><td colspan="4" class="empty">Nada aquí.</td></tr>';
     $$('#t-art tr[data-id]').forEach((tr) => tr.addEventListener('click', () => artEditor(RAW.arts.find((a) => a.id === tr.dataset.id))));
     $('#n-art').textContent = n('pend') || '';
   }
