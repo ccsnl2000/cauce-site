@@ -277,6 +277,7 @@ body.auth .stick-chat { display: none; }
 .art .ph { aspect-ratio: 16/10; }
 .blk { margin-top: 32px; }
 .ph.art-ill { padding: 0; align-items: center; justify-content: center; } .ph.art-ill img { width: 100%; height: 100%; object-fit: contain; padding: 2% 4%; box-sizing: border-box; }
+.aembed { margin: 22px 0 6px; display: flex; justify-content: center; } .aembed .instagram-media { margin: 0 !important; min-width: 0 !important; max-width: 540px !important; width: 100% !important; }
 .afig { margin: 22px 0 6px; } .afig img { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--fill); } .afig figcaption { margin-top: 8px; font-size: var(--t-xs); color: var(--soft); line-height: 1.45; } .afig figcaption a { color: inherit; } .afig.nofig img { display: none; }
 .blk .lab { color: var(--ink); display: flex; gap: 8px; align-items: center; }
 .blk .lab::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sage-ink); }
@@ -2852,6 +2853,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       ${a.list ? `<div class="blk"><span class="lab">${esc(a.list[0])}</span><ol class="chap">${a.list[1].map((x) => `<li>${esc(x)}</li>`).join('')}</ol></div>` : ''}
       <div class="blk"><span class="lab">La lectura de Cauce</span><p>${esc(a.c)}</p></div>${a.refs ? `<div class="blk"><span class="lab">Fuentes</span><ol class="srcs">${a.refs.map((r) => `<li><a href="${r[4]}" target="_blank" rel="noopener">${esc(r[3])}</a><span class="sm">${[r[0], r[1], r[2]].filter(Boolean).map(esc).join(' · ')}</span></li>`).join('')}</ol></div>` : ''}${a.cta ? '<div class="wall"><span class="lab">Gratis</span><p class="serif" style="font-size:var(--t-h3);line-height:1.1">Recibe la guía completa en tu correo.</p><a class="btn" href="#guia">Recibir la guía</a></div>' : ''}${f[3] ? '<div class="wall"><span class="lab">Para suscriptores</span><p class="serif" style="font-size:var(--t-h3);line-height:1.1">El análisis completo, con datos descargables.</p><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a></div>' : ''}`;
     if (!a.refs) art.insertAdjacentHTML('beforeend', readsHTML()); wireCharts(art); mountFigs();
+    if ($('.instagram-media', art)) { if (window.instgrm) window.instgrm.Embeds.process(); else { const sc = document.createElement('script'); sc.async = true; sc.src = 'https://www.instagram.com/embed.js'; document.body.appendChild(sc); } }
   }
   const OWN = [
     { t: 'Proyecto Cauce 01', s: 'En estructuración · memorando para inversionistas', tag: 'Propio', ok: 1 },
@@ -3271,6 +3273,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Cómo comprar para extranjeros, paso a paso': 'How to buy as a foreigner, step by step', 'Para extranjeros': 'For foreign buyers',
     'Lugares': 'Places',
     'Para agencias, desarrolladores y dueños': 'For agencies, developers and owners', 'Agendar 30 minutos': 'Book 30 minutes',
+    'Ver la publicación en Instagram': 'View the post on Instagram',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4640,7 +4643,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   const mdIn = (t) => esc(t).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');   // **bold** and [text](url)
   const mdHTML = (md) => String(md || '').split(/\n(?=## )/).map((blk) => {
     const m = blk.match(/^## (.*)\n?([\s\S]*)$/), h = m ? m[1] : '', rest = (m ? m[2] : blk).trim();
-    const parts = rest.split(/\n{2,}/).map((x) => /^!\[/.test(x.trim()) ? (() => { const m2 = x.trim().match(/^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)$/); return m2 ? `<figure class="afig"><img src="${esc(m2[2])}" alt="${esc(m2[1])}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('figure').classList.add('nofig')">${m2[3] ? `<figcaption>${mdIn(m2[3])}</figcaption>` : ''}</figure>` : `<p>${mdIn(x)}</p>`; })() : /^- /m.test(x) ? `<ul class="blist">${x.split('\n').filter((l) => l.startsWith('- ')).map((l) => `<li>${mdIn(l.slice(2))}</li>`).join('')}</ul>` : `<p>${mdIn(x.replace(/\n/g, ' '))}</p>`).join('');
+    const parts = rest.split(/\n{2,}/).map((x) => /^https:\/\/(www\.)?instagram\.com\/(p|reel)\/[\w-]+\/?\S*$/.test(x.trim()) ? `<figure class="aembed"><blockquote class="instagram-media" data-instgrm-permalink="${esc(x.trim().split('?')[0])}" data-instgrm-version="14"><a href="${esc(x.trim())}" target="_blank" rel="noopener">Ver la publicación en Instagram</a></blockquote></figure>` : /^!\[/.test(x.trim()) ? (() => { const m2 = x.trim().match(/^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)$/); return m2 ? `<figure class="afig"><img src="${esc(m2[2])}" alt="${esc(m2[1])}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('figure').classList.add('nofig')">${m2[3] ? `<figcaption>${mdIn(m2[3])}</figcaption>` : ''}</figure>` : `<p>${mdIn(x)}</p>`; })() : /^- /m.test(x) ? `<ul class="blist">${x.split('\n').filter((l) => l.startsWith('- ')).map((l) => `<li>${mdIn(l.slice(2))}</li>`).join('')}</ul>` : `<p>${mdIn(x.replace(/\n/g, ' '))}</p>`).join('');
     return `<div class="blk">${h ? `<span class="lab">${esc(h)}</span>` : ''}${parts}</div>`; }).join('');
   async function loadArticles() {
     let list; try { const r = await fetch(SB_URL + '/rest/v1/articles?select=id,seccion,titulo,titulo_en,entradilla,entradilla_en,cuerpo,cuerpo_en,lectura,lectura_en,minutos,pro,builtin,publicado_at,imagen&estado=eq.publicado&order=publicado_at.desc', { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } }); if (!r.ok) return; list = await r.json(); } catch (e) { return; }
