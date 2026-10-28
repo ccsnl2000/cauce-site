@@ -52,6 +52,7 @@
 [hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 var(--t-body)/1.5 var(--sans); transition: background .35s var(--ease), color .35s var(--ease); -webkit-font-smoothing: antialiased; }
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; } input, textarea, select, [contenteditable] { -webkit-user-select: text; user-select: text; }
 :root[data-theme="dark"] { --cover: #000000; --cover-ink: #ECEBE6; --sheet: #1F201E; --faint: #5E5F5A; --bg: #1A1B19; --card: #1A1B19; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; --g0: #2F302D; --g1: #353632; --g2: #3B3C38; --g3: #2A2B28; }
 body.intel-light { --bg: #F1EEE9; --card: #F1EEE9; --sheet: #FAF8F5; --faint: #BDB8AF; --ink: #1B1A18; --soft: #6B675F; --line: #DCD6CC; --fill: #E7E2DA; --sage: #E7E2DA; --sage-ink: #1B1A18; color-scheme: light; }
 body.intel { --bg: #1A1B19; --card: #1F201E; --sheet: #222321; --faint: #5E5F5A; --ink: #ECEBE6; --soft: #8F908A; --line: #2F302D; --fill: #252623; --sage: #2F302D; --sage-ink: #ECEBE6; color-scheme: dark; }
