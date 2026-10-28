@@ -655,16 +655,17 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .mplaces { position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 5; background: var(--m-ctl); color: var(--m-ink); backdrop-filter: blur(8px); border-radius: 14px; padding: 12px 14px; display: grid; gap: 6px; min-width: 230px; box-shadow: 0 18px 44px rgba(0,0,0,.25); }
 .mplaces .lab { color: var(--m-soft); margin-bottom: 2px; } .mplaces label { display: flex; align-items: center; gap: 9px; font-size: var(--t-xs); cursor: pointer; } .mplaces input { accent-color: var(--m-ink); margin: 0; }
 .mplaces label span { flex: 1; } .mplaces i { font-style: normal; color: var(--m-soft); font-family: var(--mono); } .mplaces .sm { color: var(--m-soft); font-size: 11px; margin-top: 4px; max-width: 26ch; }
-.mpill { position: relative; font: 700 11px/1 var(--sans); letter-spacing: -0.01em; color: #fff; background: #1B1A18; border: 1.5px solid rgba(255,255,255,.9); border-radius: 999px; padding: 5px 8px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.35); white-space: nowrap; margin-bottom: 6px; transition: transform .15s; }
-.mpill::after { content: ""; position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); border: 5px solid transparent; border-top-color: inherit; border-bottom: 0; }
-.mpill.venta { background: #1B1A18; border-top-color: #1B1A18; } .mpill.vendido { background: #F1EEE9; color: #1B1A18; border-color: rgba(27,26,24,.35); } .mpill.alquiler { background: #5B6E86; }
-.mpill { border-color: rgba(255,255,255,.9); } .mpill::after { border-top-color: currentColor; color: inherit; }
-.mpill.venta::after { border-top-color: #1B1A18; } .mpill.vendido::after { border-top-color: #F1EEE9; } .mpill.alquiler::after { border-top-color: #5B6E86; }
-.cmap.far .mpill { font-size: 0; padding: 0; width: 11px; height: 11px; margin-bottom: 0; border-width: 1.5px; box-shadow: 0 1px 4px rgba(0,0,0,.4); } .cmap.far .mpill::after { display: none; }
-.mpill:hover, .mpill:focus-visible { transform: scale(1.12); z-index: 5; outline: none; } .mpill[hidden] { display: none; }
+.mpill { position: relative; font: 700 11px/1 var(--sans); letter-spacing: -0.01em; border: 0; border-radius: 999px; padding: 6px 9px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.3); white-space: nowrap; margin-bottom: 6px; transition: transform .15s, opacity .2s; --pc: #1B1A18; background: var(--pc); color: #fff; }
+.mpill::after { content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%); border: 5px solid transparent; border-top-color: var(--pc); border-bottom: 0; }
+.mpill.venta { --pc: #111110; color: #fff; } .cmap.lt .mpill.venta { --pc: #ffffff; color: #111110; }
+.mpill.vendido { --pc: #8E8A83; color: #fff; } .mpill.alquiler { --pc: #E8B92F; color: #1B1A18; }
+.mpill:hover, .mpill:focus-visible { transform: scale(1.12); z-index: 5; outline: none; } .mpill[hidden], .mpill.off { display: none; }
 .mstat { position: absolute; top: 102px; left: 16px; z-index: 3; display: flex; gap: 6px; flex-wrap: wrap; }
-.mstat button { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--sans); color: #F1EEE9; background: rgba(20,20,20,.82); border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 7px 12px; cursor: pointer; backdrop-filter: blur(6px); }
-.mstat button[aria-pressed="true"] { background: #F1EEE9; color: #111; border-color: #F1EEE9; } .mstat i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; } .mstat i.venta { background: #1B1A18; box-shadow: 0 0 0 1px #fff; } .mstat i.vendido { background: #F1EEE9; box-shadow: 0 0 0 1px rgba(255,255,255,.5); } .mstat i.alquiler { background: #5B6E86; }
+.mstat button { display: inline-flex; align-items: center; gap: 6px; font: 600 12px/1 var(--sans); color: #F1EEE9; background: rgba(20,20,20,.82); border: 0; border-radius: 999px; padding: 8px 12px; cursor: pointer; backdrop-filter: blur(6px); }
+.mstat button[aria-pressed="true"] { background: #F1EEE9; color: #111; }
+.cmap.lt .mstat button { color: #1B1A18; background: rgba(250,248,245,.9); } .cmap.lt .mstat button[aria-pressed="true"] { background: #1B1A18; color: #F1EEE9; }
+.mstat i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; } .mstat i.venta { background: #111110; box-shadow: 0 0 0 1px rgba(255,255,255,.7); } .cmap.lt .mstat i.venta { background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.35); }
+.mstat i.vendido { background: #8E8A83; } .mstat i.alquiler { background: #E8B92F; }
 @media (max-width: 760px) { .mstat { top: 150px; left: 10px; right: 10px; } .mstat button { padding: 6px 10px; font-size: 11px; } }
 .cmap .seg { display: inline-flex; background: rgba(20,20,20,.85); border-radius: 999px; padding: 3px; }
 .cmap .seg button { background: none; border: 0; font: inherit; font-size: 13px; color: #a6a49f; padding: 6px 12px; border-radius: 999px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
@@ -4308,7 +4309,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         if (!Array.isArray(on)) on = ['cultura', 'hitos', 'educacion', 'diplomatico', 'parques'];
         map.addSource('lug', { type: 'geojson', data: { type: 'FeatureCollection', features: D.places.map((p, i) => ({ type: 'Feature', id: i, properties: { n: p.n, c: p.c }, geometry: { type: 'Point', coordinates: [p.x, p.y] } })) } });
         const before = map.getLayer('mst') ? 'mst' : undefined, flt = () => ['in', ['get', 'c'], ['literal', on]];
-        map.addLayer({ id: 'lug', type: 'circle', source: 'lug', minzoom: 11.5, filter: flt(), paint: { 'circle-color': '#F1EEE9', 'circle-stroke-color': '#1A1B19', 'circle-stroke-width': 1.4, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 12, 2.4, 16, 4.5] } }, before);
+        map.addLayer({ id: 'lug', type: 'circle', source: 'lug', minzoom: 13.5, filter: flt(), paint: { 'circle-color': '#F1EEE9', 'circle-stroke-color': '#1A1B19', 'circle-stroke-width': 1.4, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 12, 2.4, 16, 4.5] } }, before);
         map.addLayer({ id: 'lug-name', type: 'symbol', source: 'lug', minzoom: 14.5, filter: flt(), layout: { 'text-field': ['get', 'n'], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-offset': [0, 1], 'text-anchor': 'top', 'text-max-width': 9, 'text-optional': true }, paint: { 'text-color': tone === 'light' ? '#111110' : '#ffffff', 'text-halo-width': 0 } }, before);
         const pane = document.createElement('div'); pane.className = 'mplaces'; pane.hidden = true;
         const draw = () => { const en = lang === 'en'; pane.innerHTML = `<span class="lab">${en ? 'Places' : 'Lugares'}</span>` + cats.map((k) => `<label><input type="checkbox" value="${k}"${on.includes(k) ? ' checked' : ''}><span>${esc(en ? EN[k] || D.cats[k] : D.cats[k])}</span><i>${D.places.filter((p) => p.c === k).length}</i></label>`).join('') + `<p class="sm">${en ? 'Source: OpenStreetMap. Schools, supermarkets and pharmacies coming soon.' : 'Fuente: OpenStreetMap. Pronto: colegios, supermercados y farmacias.'}</p>`; };
@@ -4387,9 +4388,22 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         const bar = document.createElement('div'); bar.className = 'mstat'; bar.setAttribute('role', 'group');
         bar.innerHTML = [['all', 'Todas'], ['vendido', 'Vendidas'], ['venta', 'En venta'], ['alquiler', 'En alquiler']].map(([v, l]) => `<button type="button" data-st="${v}" aria-pressed="${v === 'all'}">${v === 'all' ? '' : `<i class="${v}"></i>`}${l}</button>`).join('');
         root.appendChild(bar); applyLang();
-        const far = () => root.classList.toggle('far', map.getZoom() < 12.6); far(); map.on('zoomend', far);
+        // the best listings show first; more appear as you zoom in (no overlaps)
+        const rank = pills.map((m, i) => ({ m, i, sc: feats[i].properties.p / Math.max(1, feats[i].properties.a) })).sort((a, b) => a.sc - b.sc);
+        let stF = 'all';
+        const layout = () => {
+          const z = map.getZoom(), cap = z < 11.5 ? 8 : z < 12.5 ? 14 : z < 13.5 ? 24 : 999, boxes = []; let n = 0;
+          rank.forEach(({ m }) => {
+            const el = m.getElement(); if (!(stF === 'all' || el.dataset.s === stF)) { el.classList.add('off'); return; }
+            const pt = map.project(m.getLngLat()), w = 54, h = 26, b = [pt.x - w / 2, pt.y - h - 6, pt.x + w / 2, pt.y];
+            const hit = boxes.some((o) => b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]);
+            const show = n < cap && !hit; el.classList.toggle('off', !show); if (show) { boxes.push(b); n++; }
+          });
+        };
+        layout(); map.on('moveend', layout);
+        bar.addEventListener('click', (e) => { const b = e.target.closest('[data-st]'); if (b) { stF = b.dataset.st; layout(); } });
         bar.addEventListener('click', (e) => { const b = e.target.closest('[data-st]'); if (!b) return; $$('[data-st]', bar).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-          pills.forEach((m) => { const el = m.getElement(); el.hidden = !(b.dataset.st === 'all' || el.dataset.s === b.dataset.st); }); track('filtro_mapa', b.dataset.st); });
+          track('filtro_mapa', b.dataset.st); });
       }
       let selId = null; const select = (id) => { if (selId !== null) map.setFeatureState({ source: 'zp', id: selId }, { sel: false }); selId = id; if (id !== null && scale === 'p') map.setFeatureState({ source: 'zp', id }, { sel: true }); };
       root._focus = (n) => { if (!ready) return; if (scale !== 'p') { const b = $('[data-scale="p"]', root); if (b) b.click(); } const id = ZN.p.findIndex((f) => f.n === n); if (id < 0) return; select(id); const b = bboxOf(ZN.p[id].c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 60, maxZoom: 15, duration: reduce ? 0 : 900 }); resetB.hidden = false; };
