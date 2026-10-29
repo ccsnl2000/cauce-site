@@ -1,0 +1,396 @@
+{
+"src": "Muestra de anuncios de venta en Rent-A-House (rentahouse.com.ve), revisada el 28 oct 2026. Precio pedido por m² construido; mediana por zona.",
+"fecha": "2026-10-28",
+"anuncios": [
+{
+"city": "lecheria",
+"m": "Diego Bautista Urbaneja",
+"p": "Lechería",
+"sector": "Complejo Turístico El Morro",
+"code": "VE 27-5251",
+"price": 260000,
+"m2": 72,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Diego Bautista Urbaneja",
+"p": "Lechería",
+"sector": "Complejo Turístico El Morro",
+"code": "VE 27-4638",
+"price": 160000,
+"m2": 41,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Diego Bautista Urbaneja",
+"p": "Lechería",
+"sector": "Av. Bolívar",
+"code": "VE 26-19478",
+"price": 290000,
+"m2": 220,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Diego Bautista Urbaneja",
+"p": "Lechería",
+"sector": "Av. Diego Bautista Urbaneja",
+"code": "VE 26-17698",
+"price": 145000,
+"m2": 60,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Diego Bautista Urbaneja",
+"p": "Lechería",
+"sector": "Cerro El Morro",
+"code": "VE 26-1272",
+"price": 350000,
+"m2": 140,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Diego Bautista Urbaneja",
+"p": "Lechería",
+"sector": "Casco Central",
+"code": "VE 23-11381",
+"price": 190000,
+"m2": 177,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Diego Bautista Urbaneja",
+"p": "Lechería",
+"sector": "Av. Diego Bautista Urbaneja",
+"code": "VE 27-2838",
+"price": 270000,
+"m2": 125,
+"tipo": "townhouse"
+},
+{
+"city": "lecheria",
+"m": "Juan Antonio Sotillo",
+"p": "Puerto La Cruz",
+"sector": "Pueblo Viejo",
+"code": "VE 24-22155",
+"price": 170000,
+"m2": 54,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Juan Antonio Sotillo",
+"p": "Puerto La Cruz",
+"sector": "Puerto La Cruz",
+"code": "VE 26-16168",
+"price": 150000,
+"m2": 336,
+"tipo": "apartamento"
+},
+{
+"city": "lecheria",
+"m": "Simón Bolívar",
+"p": null,
+"sector": "Colinas del Neveri, Barcelona",
+"code": "VE 27-4346",
+"price": 85000,
+"m2": 85,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": "Pampatar",
+"sector": "Res. Terraza del Mar",
+"code": "VE 27-3625",
+"price": 55000,
+"m2": 40,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": "Pampatar",
+"sector": "Playa El Ángel",
+"code": "VE 27-2799",
+"price": 150000,
+"m2": 105,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": "Pampatar",
+"sector": "C.R. Playa Dorada",
+"code": "VE 27-2144",
+"price": 155000,
+"m2": 195,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": "Pampatar",
+"sector": "Urb. El Paraíso",
+"code": "VE 27-20",
+"price": 85000,
+"m2": 127,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "San Lorenzo, Res. Ríomar",
+"code": "VE 26-19606",
+"price": 87000,
+"m2": 73,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": "Pampatar",
+"sector": "Res. Bahía Mar",
+"code": "VE 26-16379",
+"price": 89500,
+"m2": 170,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": "Pampatar",
+"sector": "Pampatar",
+"code": "VE 26-15331",
+"price": 245000,
+"m2": 125,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": "Pampatar",
+"sector": "Av. Aldonza Manrique",
+"code": "VE 24-2731",
+"price": 1200000,
+"m2": 680,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "Playa Moreno",
+"code": "VE 27-6680",
+"price": 130000,
+"m2": 75,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "Sector San Lorenzo",
+"code": "VE 27-6146",
+"price": 88000,
+"m2": 83,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "Los Robles",
+"code": "VE 27-5930",
+"price": 100000,
+"m2": 156,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "Sabanamar",
+"code": "VE 27-5573",
+"price": 90000,
+"m2": 80,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "Jorge Coll",
+"code": "VE 27-5514",
+"price": 75000,
+"m2": 93,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "Sabanamar",
+"code": "VE 27-5393",
+"price": 75000,
+"m2": 87,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Maneiro",
+"p": null,
+"sector": "Sabanamar",
+"code": "VE 27-5296",
+"price": 74000,
+"m2": 80,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Res. La Torre, Av. 4 de Mayo",
+"code": "VE 27-6159",
+"price": 49000,
+"m2": 120,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Edif. Ocean Blue",
+"code": "VE 27-5101",
+"price": 130000,
+"m2": 100,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Res. Ionio, Bella Vista",
+"code": "VE 27-4685",
+"price": 52000,
+"m2": 61,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Av. 4 de Mayo",
+"code": "VE 27-3653",
+"price": 45000,
+"m2": 55,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Res. Puerto Madero, Av. Terranova",
+"code": "VE 27-786",
+"price": 85000,
+"m2": 85,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Cerca de CC La Vela",
+"code": "VE 27-414",
+"price": 60000,
+"m2": 48,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Centro",
+"code": "VE 27-133",
+"price": 65000,
+"m2": 80,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Res. La Marina",
+"code": "VE 26-19508",
+"price": 85000,
+"m2": 68,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "C.R. La Marina",
+"code": "VE 26-17753",
+"price": 108000,
+"m2": 128,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Centro, Plaza Bolívar",
+"code": "VE 26-16089",
+"price": 20000,
+"m2": 40,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Centro, Plaza Bolívar",
+"code": "VE 26-16057",
+"price": 29000,
+"m2": 82,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Av. 4 de Mayo",
+"code": "VE 27-6367",
+"price": 45000,
+"m2": 100,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Mariño",
+"p": "Mariño",
+"sector": "Av. 4 de Mayo",
+"code": "VE 27-6047",
+"price": 28000,
+"m2": 52,
+"tipo": "apartamento"
+},
+{
+"city": "margarita",
+"m": "Antolín del Campo",
+"p": "Antolín del Campo",
+"sector": "Playa Parguito",
+"code": "VE 27-6554",
+"price": 150000,
+"m2": 61,
+"tipo": "apartamento"
+}
+]
+}
