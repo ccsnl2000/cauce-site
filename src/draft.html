@@ -4204,7 +4204,15 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     });
     return rings.sort((a, b) => ringArea(b) - ringArea(a));
   }
-  const linesFC = (list) => ({ type: 'FeatureCollection', features: list.map((f, i) => ({ type: 'Feature', id: i, properties: {}, geometry: { type: 'MultiLineString', coordinates: f.edges } })) });
+  // join outline segments into long continuous lines (thousands of loose 2-point pieces render faint and broken)
+  function paths(edges) {
+    const pk = (p) => p[0].toFixed(6) + ',' + p[1].toFixed(6), adj = new Map(), used = new Uint8Array(edges.length), out = [];
+    edges.forEach((e, i) => [0, 1].forEach((j) => { const k = pk(e[j]); if (!adj.has(k)) adj.set(k, []); adj.get(k).push(i); }));
+    const ext = (line, cur) => { for (let g = 0; g < 200000; g++) { const nx = (adj.get(pk(cur)) || []).find((j) => !used[j]); if (nx == null) return; used[nx] = 1; const f = edges[nx]; cur = pk(f[0]) === pk(cur) ? f[1] : f[0]; line.push(cur); } };
+    edges.forEach((e, i) => { if (used[i]) return; used[i] = 1; const fwd = [e[0], e[1]], back = [e[0]]; ext(fwd, e[1]); ext(back, e[0]); out.push(back.reverse().concat(fwd.slice(1))); });
+    return out;
+  }
+  const linesFC = (list) => ({ type: 'FeatureCollection', features: list.map((f, i) => ({ type: 'Feature', id: i, properties: {}, geometry: { type: 'MultiLineString', coordinates: f.lines || (f.lines = paths(f.edges)) } })) });
   const ZN = { p: colour(GEO.p.map((f) => ({ n: f.n, m: f.m, c: f.c, l: f.l, v: f.v }))) };
   ZN.m = colour(muniFrom(ZN.p));
   // venezuela360 parroquias, if the server lets the browser read them
