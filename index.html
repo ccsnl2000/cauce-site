@@ -4185,6 +4185,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       { id: 'roads-major', type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['in', ['get', 'class'], ['literal', ['primary', 'secondary', 'trunk', 'motorway']]], paint: { 'line-color': '#3a3a3a', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.6, 15, 3] } }
     ] };
   // zone fill opacity by zoom (hovered zone a bit stronger); f scales it: Zonas runs 10% lighter than Precio m²
+  const lineW = (f) => { const h = (a, b) => ['case', ['boolean', ['feature-state', 'h'], false], +(a * f).toFixed(3), +(b * f).toFixed(3)]; return ['interpolate', ['linear'], ['zoom'], 10, h(1.1, 0.45), 13, h(1.4, 0.7), 15, h(1.9, 1.1), 18, h(2.8, 1.9)]; };
   const fillOpX = (f) => { const h = (a, b) => ['case', ['boolean', ['feature-state', 'h'], false], +(a * f).toFixed(3), +(b * f).toFixed(3)]; return ['interpolate', ['linear'], ['zoom'], 11, h(0.88, 0.75), 14, h(0.62, 0.5), 16, h(0.32, 0.2), 18, h(0.2, 0.1)]; };
   const norm = (x) => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
   const ringArea = (r) => { let a = 0; for (let i = 0, j = r.length - 1; i < r.length; j = i++) a += (r[j][0] + r[i][0]) * (r[j][1] - r[i][1]); return Math.abs(a / 2); };
@@ -4207,9 +4208,10 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const by = {}; list.forEach((f) => { (by[f.m] = by[f.m] || []).push(f); });
     return Object.keys(by).map((m) => {
       const parts = by[m], c = parts.flatMap((f) => f.c), seen = new Map();
-      c.forEach((ring) => { for (let i = 1; i < ring.length; i++) { const k = segKey(ring[i - 1], ring[i]); seen.set(k, seen.has(k) ? null : [ring[i - 1], ring[i]]); } });
+      parts.forEach((f, pi) => f.c.forEach((ring) => { for (let i = 1; i < ring.length; i++) { const k = segKey(ring[i - 1], ring[i]), e = seen.get(k);
+        if (e === undefined) seen.set(k, { pi, s: [ring[i - 1], ring[i]] }); else if (e && e.pi !== pi) seen.set(k, null); } }));
       const lab = (GEO.m.find((x) => norm(x.n) === norm(m)) || {}).l;
-      const edges = [...seen.values()].filter(Boolean), rings = chain(edges);
+      const edges = [...seen.values()].filter(Boolean).map((e) => e.s), rings = chain(edges);
       const vs = parts.map((f) => f.v).filter((x) => typeof x === 'number');
       return { n: m, c: rings.length ? rings : c, l: lab, edges, v: vs.length ? Math.round(vs.reduce((a, b) => a + b, 0) / vs.length) : null };
     });
@@ -4278,11 +4280,13 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
           map.addSource('l' + k, { type: 'geojson', data: labelsFC(ZM[k]) });
           const vis = k === scale ? 'visible' : 'none';
           map.addLayer({ id: 'fill-' + k, type: 'fill', source: 'z' + k, layout: { visibility: vis }, paint: { 'fill-color': ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]], 'fill-opacity': fillOpX(0.9) } });
-          map.addLayer({ id: 'line-' + k, type: 'line', source: k === 'm' ? 'zml' : 'z' + k, layout: { visibility: vis, 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': ['interpolate', ['linear'], ['zoom'], 10, ['case', ['boolean', ['feature-state', 'h'], false], 1.1, 0.45], 13, ['case', ['boolean', ['feature-state', 'h'], false], 1.4, 0.7], 15, ['case', ['boolean', ['feature-state', 'h'], false], 1.9, 1.1], 18, ['case', ['boolean', ['feature-state', 'h'], false], 2.8, 1.9]] } });
+          map.addLayer({ id: 'line-' + k, type: 'line', source: k === 'm' ? 'zml' : 'z' + k, layout: { visibility: vis, 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': lineW(1) } });
         });
         const L = (o) => map.addLayer(o);
         L({ id: 'building-3d', type: 'fill-extrusion', source: 'omt', 'source-layer': 'building', minzoom: 14, layout: { visibility: 'none' }, paint: { 'fill-extrusion-color': '#2E2F2B', 'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 9], 'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0], 'fill-extrusion-opacity': 0.92 } });
         ['line-p', 'line-m'].forEach((id) => map.moveLayer(id, 'building-3d'));   // borders sit above every fill
+        map._lines = () => ['p', 'm'].forEach((k) => { const on = k === scale; map.setLayoutProperty('line-' + k, 'visibility', 'visible'); map.setPaintProperty('line-' + k, 'line-width', lineW(on ? 1 : 0.55)); map.setPaintProperty('line-' + k, 'line-dasharray', on ? null : ['literal', [2, 2.4]]); map.setPaintProperty('line-' + k, 'line-opacity', on ? 1 : 0.75); if (on) map.moveLayer('line-' + k, 'building-3d'); });
+        map._lines();
         L({ id: 'water-name', type: 'symbol', source: 'omt', 'source-layer': 'waterway', minzoom: 13, layout: { 'symbol-placement': 'line', 'text-field': ['coalesce', ['get', 'name:es'], ['get', 'name']], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-letter-spacing': 0.1 }, paint: { 'text-color': '#9A9893' } });
         L({ id: 'park-name', type: 'symbol', source: 'omt', 'source-layer': 'park', minzoom: 11, filter: ['!', ['any', ['in', 'area verde', ['downcase', ['coalesce', ['get', 'name:es'], ['get', 'name'], '']]], ['in', 'área verde', ['downcase', ['coalesce', ['get', 'name:es'], ['get', 'name'], '']]]]], layout: { 'text-field': ['coalesce', ['get', 'name:es'], ['get', 'name']], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-max-width': 9 }, paint: { 'text-color': '#9A9893' } });
         L({ id: 'peaks', type: 'symbol', source: 'omt', 'source-layer': 'mountain_peak', minzoom: 12, layout: { 'text-field': ['format', ['coalesce', ['get', 'name:es'], ['get', 'name']], {}, '\n', {}, ['concat', ['to-string', ['get', 'ele']], ' m'], { 'font-scale': 0.85 }], 'text-font': ['Noto Sans Regular'], 'text-size': 9.5 }, paint: { 'text-color': '#9A9893' } });
@@ -4502,7 +4506,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     }
     $$('[data-scale]', root).forEach((b) => b.addEventListener('click', () => {
       scale = b.dataset.scale; $$('[data-scale]', root).forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      if (map && ready) { hov = null; ['p', 'm'].forEach((k) => ['fill-', 'line-'].forEach((l) => map.setLayoutProperty(l + k, 'visibility', k === scale ? 'visible' : 'none'))); }
+      if (map && ready) { if (hov !== null) { try { map.setFeatureState({ source: 'z' + (scale === 'p' ? 'm' : 'p'), id: hov }, { h: false }); } catch (e) {} } hov = null; ['p', 'm'].forEach((k) => map.setLayoutProperty('fill-' + k, 'visibility', k === scale ? 'visible' : 'none')); if (map._lines) map._lines(); }
       if (map && map._labsSwap) map._labsSwap();
       tip.classList.remove('pin', 'drag'); tip.hidden = true;
     }));
