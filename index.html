@@ -4469,9 +4469,12 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         if (alt && root._layer === 'v') { paintLayer('o'); $$('[data-layer]', root).forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.layer === 'o'))); }
         const all = bboxOf(ZM.p.flatMap((f) => f.c)), fb = alt ? (CITY[key].f || all) : [HOME[0][0], HOME[0][1], HOME[1][0], HOME[1][1]];
         map.setMaxBounds(null); map.setMinZoom(0);
-        const cam = map.cameraForBounds([[fb[0], fb[1]], [fb[2], fb[3]]], { padding: alt ? { top: 110, bottom: 80, left: 30, right: 30 } : 0 }), cAll = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 20 });
+        const cam = map.cameraForBounds([[fb[0], fb[1]], [fb[2], fb[3]]], { padding: alt ? { top: 95, bottom: 100, left: 30, right: 30 } : 0 }), cAll = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 20 });
         home = { center: cam.center, zoom: cam.zoom - (alt ? 0 : 0.4) }; map.jumpTo(home);
-        map.setMinZoom(Math.min(home.zoom, (cAll ? cAll.zoom : home.zoom) - 0.3)); map.setMaxBounds([[all[0] - 0.12, all[1] - 0.08], [all[2] + 0.12, all[3] + 0.08]]);
+        map.setMinZoom(Math.min(home.zoom, (cAll ? cAll.zoom : home.zoom) - 0.3));
+        // room to pan around the whole city, never tighter than the opening view (a tight box would force a zoom-in)
+        const vb = map.getBounds(), dx = (vb.getEast() - vb.getWest()) * 0.25, dy = (vb.getNorth() - vb.getSouth()) * 0.25;
+        map.setMaxBounds([[Math.min(all[0] - 0.12, vb.getWest() - dx), Math.min(all[1] - 0.08, vb.getSouth() - dy)], [Math.max(all[2] + 0.12, vb.getEast() + dx), Math.max(all[3] + 0.08, vb.getNorth() + dy)]]); map.jumpTo(home);
         const nm = CITY[key].n; $('.mhead .lab', root).textContent = 'Mapa · ' + nm; resetB.textContent = '← ' + nm; resetB.hidden = true;
         $('.cbtn b', root).textContent = nm; $$('[data-city]', root).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.city === key)));
         track('ciudad_mapa', key);
