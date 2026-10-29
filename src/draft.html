@@ -661,7 +661,7 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap .seg.lines button[aria-pressed="true"] { border-color: var(--m-ink); box-shadow: inset 0 0 0 1px var(--m-ink); font-weight: 700; color: var(--m-ink) !important; } .cmap .seg.lines button:disabled { border-style: dashed; }
 .cmap .go { position: absolute; right: 60px; bottom: 34px; z-index: 2; background: #f2f0ec; color: #111; border-radius: 999px; padding: 9px 15px; font-size: 13px; font-weight: 700; }
 .cmap .reset { position: absolute; right: 16px; top: 16px; z-index: 2; background: rgba(20,20,20,.85); color: #f2f0ec; border: 1px solid #333; border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; }
-.hero-map .reset { top: auto; bottom: 34px; right: auto; left: 16px; }
+.hero-map .reset { top: auto; bottom: 34px; right: auto; left: 168px; }
 .hero-map .maplibregl-ctrl-bottom-right { bottom: 26px; right: 6px; }
 .cmap.full .reset { top: 96px; right: 10px; }
 .cmap .maplibregl-ctrl-bottom-left { left: 8px; bottom: 6px; } .cmap .maplibregl-ctrl-bottom-left .maplibregl-ctrl { margin: 0; }
@@ -771,6 +771,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
       <div class="cmap hero-map" id="map-home" data-view="-67.01,10.418,-66.77,10.53">
         <div class="mgl" aria-label="Mapa de parroquias de Caracas"></div>
         <div class="mhead"><span class="lab">El mapa de Cauce</span><h2>Caracas, parroquia por parroquia.</h2></div>
+        <div class="mctl"><div class="mcity"><button type="button" class="cbtn" aria-haspopup="true" aria-expanded="false"><span class="k">Ciudad</span> <b>Caracas</b><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="mplaces cpop" hidden><span class="lab">Ciudad</span><button type="button" data-city="caracas" aria-pressed="true">Caracas</button><button type="button" data-city="margarita" aria-pressed="false">Margarita</button><button type="button" data-city="lecheria" aria-pressed="false">Lechería</button></div></div></div>
         <button class="reset" type="button" hidden>← Caracas</button>
         <a class="go" href="#datos">Explorar el mapa completo →</a>
         <div class="mtip" hidden></div>
@@ -3302,6 +3303,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Pie firme en Venezuela.': 'Firm footing in Venezuela.',
     'Desde aquí nos proyectamos al mundo hispanohablante, conectando la inversión extranjera con el mercado local. Queremos que ese capital encuentre su cauce, con información clara y comparable, y que ayude a reconstruir el país, una ciudad a la vez.': 'From here we reach out to the Spanish-speaking world, connecting foreign investment with the local market. We want that capital to find its course, with clear and comparable information, and to help rebuild the country, one city at a time.',
     'Ciudad': 'City', 'Mapa · Margarita': 'Map · Margarita', 'Mapa · Lechería': 'Map · Lechería', 'Lechería': 'Lechería', 'Margarita': 'Margarita', '← Margarita': '← Margarita', '← Lechería': '← Lechería',
+    'Margarita, parroquia por parroquia.': 'Margarita, parish by parish.', 'Lechería, parroquia por parroquia.': 'Lechería, parish by parish.',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4269,7 +4271,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         ['p', 'm'].forEach(buildLabels);
         map.addSource('offers', { type: 'geojson', data: offersFC() });
         map.addLayer({ id: 'offers', type: 'circle', source: 'offers', paint: { 'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.8, 1], 3], 15, ['*', ['case', ['boolean', ['feature-state', 'hv'], false], 1.8, 1], 5]], 'circle-radius-transition': { duration: 150 }, 'circle-color': '#ffffff', 'circle-stroke-color': '#151515', 'circle-stroke-width': 1.4 } });
-        ready = true; root._map = map; root._paint = paintLayer; paintBase(map, tone); paintLayer(root._layer || 'o'); addMetro(); addPlaces(); addPills();
+        ready = true; root._map = map; root._paint = paintLayer; if (root.dataset.want) setTimeout(() => setCity(root.dataset.want), 0); paintBase(map, tone); paintLayer(root._layer || 'o'); addMetro(); addPlaces(); addPills();
         let srcLevel = 0;
         const applyZones = (p, m, level, label) => {
           if (level <= srcLevel) return; srcLevel = level;
@@ -4446,19 +4448,20 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         if (alt && root._layer === 'v') { paintLayer('o'); $$('[data-layer]', root).forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.layer === 'o'))); }
         const all = bboxOf(ZM.p.flatMap((f) => f.c)), fb = alt ? (CITY[key].f || all) : [HOME[0][0], HOME[0][1], HOME[1][0], HOME[1][1]];
         map.setMaxBounds(null); map.setMinZoom(0);
-        const cam = map.cameraForBounds([[fb[0], fb[1]], [fb[2], fb[3]]], { padding: alt ? { top: 95, bottom: 100, left: 30, right: 30 } : 0 }), cAll = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 20 });
+        const cam = map.cameraForBounds([[fb[0], fb[1]], [fb[2], fb[3]]], { padding: alt ? (full ? { top: 95, bottom: 100, left: 30, right: 30 } : { top: 80, bottom: 70, left: 20, right: 20 }) : 0 }), cAll = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 20 });
         home = { center: cam.center, zoom: cam.zoom - (alt ? 0 : 0.4) }; map.jumpTo(home);
         map.setMinZoom(Math.min(home.zoom, (cAll ? cAll.zoom : home.zoom) - 0.3));
         // room to pan around the whole city, never tighter than the opening view (a tight box would force a zoom-in)
         const vb = map.getBounds(), dx = (vb.getEast() - vb.getWest()) * 0.25, dy = (vb.getNorth() - vb.getSouth()) * 0.25;
         map.setMaxBounds([[Math.min(all[0] - 0.12, vb.getWest() - dx), Math.min(all[1] - 0.08, vb.getSouth() - dy)], [Math.max(all[2] + 0.12, vb.getEast() + dx), Math.max(all[3] + 0.08, vb.getNorth() + dy)]]); map.jumpTo(home);
-        const nm = CITY[key].n; $('.mhead .lab', root).textContent = 'Mapa · ' + nm; resetB.textContent = '← ' + nm; resetB.hidden = true;
+        const nm = CITY[key].n; if (full) $('.mhead .lab', root).textContent = 'Mapa · ' + nm; else $('.mhead h2', root).textContent = nm + ', parroquia por parroquia.'; resetB.textContent = '← ' + nm; resetB.hidden = true;
         $('.cbtn b', root).textContent = nm; $$('[data-city]', root).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.city === key)));
         track('ciudad_mapa', key);
       }
       root._city = setCity; root._frame = () => (city === 'caracas' ? null : (CITY[city].f || bboxOf(ZM.p.flatMap((f) => f.c))));
       map.on('moveend', () => { if (!inited || !home) return; const c = map.getCenter(); resetB.hidden = Math.abs(map.getZoom() - home.zoom) < 0.05 && Math.abs(c.lng - home.center.lng) < 0.002 && Math.abs(c.lat - home.center.lat) < 0.002; });
     }
+    const goFull = $('a.go', root); if (goFull) goFull.addEventListener('click', () => { const f = $('#map-full'), c = $('.cbtn', root) && $$('[data-city][aria-pressed="true"]', root)[0]; if (!f || !c) return; f.dataset.want = c.dataset.city; if (f._city) f._city(c.dataset.city); });
     const cbtn = $('.cbtn', root), cpop = $('.cpop', root);
     if (cbtn) { const open = (o) => { cpop.hidden = !o; cbtn.setAttribute('aria-expanded', String(o)); };
       cbtn.addEventListener('click', (e) => { e.stopPropagation(); open(cpop.hidden); });
