@@ -739,7 +739,7 @@ footer { border-top: 1px solid var(--line); margin-top: 40px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } #intro { display: none; } }
 /* Grain: a fine film texture over the whole page. Default set by GRAIN in the script; ?grano=0 / ?grano=1 switches it on this device. */
-body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; background: url("grain.png") repeat; background-size: 160px; opacity: var(--grain, .45); }
+body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; background: url("grain.png") repeat; background-size: 160px; opacity: var(--grain, .45); transform: translateZ(0); will-change: transform; }
 </style>
 
 <div id="intro" aria-hidden="true"><div><div class="ww"><div class="w">cauce</div><sup class="ed">VE</sup></div><p>Datos con fuente, desde Caracas.</p></div></div>
@@ -3524,10 +3524,11 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   }
   let applying = false, REV = null, REVn = 0;
   const rev = () => { const k = Object.keys(EN); if (!REV || k.length !== REVn) { REV = {}; k.forEach((es) => { REV[EN[es]] = es; }); REVn = k.length; } return REV; };
-  function applyLang() {
+  function applyLang(scope) {
     if (applying) return; applying = true;
+    const top = scope instanceof Element ? scope : document.body;
     document.documentElement.lang = lang;
-    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
+    const w = document.createTreeWalker(top, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement && /^(SCRIPT|STYLE)$/.test(n.parentElement.tagName)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
     let n;
     while ((n = w.nextNode())) {
       if (!/[A-Za-zÁÉÍÓÚáéíóúñ]/.test(n.nodeValue)) continue;
@@ -3541,7 +3542,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       const want = lang === 'es' ? orig.get(n) : tr(orig.get(n));
       if (n.nodeValue !== want) n.nodeValue = want;
     }
-    $$('[placeholder],[aria-label],[title]').forEach((el) => ATTRS.forEach((a) => {
+    $$('[placeholder],[aria-label],[title]', top).concat(top !== document.body && top.matches('[placeholder],[aria-label],[title]') ? [top] : []).forEach((el) => ATTRS.forEach((a) => {
       if (!el.hasAttribute(a)) return;
       const key = 'data-es-' + a;
       if (!el.hasAttribute(key)) el.setAttribute(key, el.getAttribute(a));
@@ -3553,7 +3554,11 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     applying = false;
   }
   $$('.tog button[data-lang]').forEach((b) => b.addEventListener('click', () => { lang = b.dataset.lang; try { localStorage.setItem('cauce-lang', lang); } catch (e) {} applyLang(); if (typeof user !== 'undefined' && user) { syncPerfil(); if (acctRow && acctRow._hi && current === 'entrar') acctRow._hi(); } }));
-  new MutationObserver(() => { if (!applying) requestAnimationFrame(applyLang); }).observe(document.body, { childList: true, subtree: true });
+  { const dirty = new Set(); let q = 0;
+    new MutationObserver((ms) => { if (applying) return; ms.forEach((m) => { if (m.target.nodeType === 1) dirty.add(m.target); });
+      if (!q) q = requestAnimationFrame(() => { q = 0; const list = [...dirty].filter((el) => el.isConnected); dirty.clear();
+        if (list.length > 40) applyLang(); else list.filter((el) => !list.some((o) => o !== el && o.contains(el))).forEach((el) => applyLang(el)); }); })
+      .observe(document.body, { childList: true, subtree: true }); }
   $$('.lang').forEach((m) => { const b = $('.lang-cur', m), pop = $('.lang-pop', m), open = (o) => { pop.hidden = !o; b.setAttribute('aria-expanded', String(o)); };
     b.addEventListener('click', (e) => { e.stopPropagation(); open(pop.hidden); }); $$('[data-lang]', pop).forEach((x) => x.addEventListener('click', () => open(false)));
     document.addEventListener('click', (e) => { if (!m.contains(e.target)) open(false); }); m.addEventListener('keydown', (e) => { if (e.key === 'Escape') { open(false); b.focus(); } });
@@ -4314,7 +4319,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         if (pop) pop.remove();
         pop = new maplibregl.Popup({ closeButton: true, className: 'mst-pop', offset: 12, maxWidth: '280px' }).setLngLat(f.geometry.coordinates).setHTML(html).addTo(map);
       }
-      const place = (e) => { const W = root.clientWidth, H = root.clientHeight; let x = e.point.x + 16, y = e.point.y - tip.offsetHeight / 2; if (x + tip.offsetWidth > W - 8) x = e.point.x - tip.offsetWidth - 16; tip.style.left = x + 'px'; tip.style.top = Math.max(8, Math.min(H - tip.offsetHeight - 8, y)) + 'px'; };
+      let RW = 0, RH = 0; new ResizeObserver(() => { RW = root.clientWidth; RH = root.clientHeight; }).observe(root);
+      const place = (e) => { const W = RW || root.clientWidth, H = RH || root.clientHeight; let x = e.point.x + 16, y = e.point.y - tip.offsetHeight / 2; if (x + tip.offsetWidth > W - 8) x = e.point.x - tip.offsetWidth - 16; tip.style.left = x + 'px'; tip.style.top = Math.max(8, Math.min(H - tip.offsetHeight - 8, y)) + 'px'; };
       let mmE = null, mmQ = 0;
       map.on('mousemove', (e) => { mmE = e; if (!mmQ) mmQ = requestAnimationFrame(() => { mmQ = 0; hoverAt(mmE); }); });
       function hoverAt(e) {
@@ -4325,11 +4331,14 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0];
         setHover(z); map.getCanvas().style.cursor = z || o || st ? 'pointer' : '';
         if (tip.classList.contains('pin')) return;
-        if (st && !o) { tip.hidden = true; return; }
+        if (st && !o) { tip.hidden = true; tipKey = ''; return; }
+        const key = o ? 'o' + o.id : z ? scale + z.id + lang : '';
+        if (key && key === tipKey && !tip.hidden) { place(e); return; } tipKey = key;
         if (o) tip.innerHTML = `<span class="q">Propiedad en Cauce · ejemplo</span><b>${esc(o.properties.t)}</b><div class="row"><span>${N0(o.properties.a)} m²</span><span>${FMT.usd(o.properties.p)}</span></div>`;
         else if (z) tip.innerHTML = `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>` : '');
-        tip.hidden = !(o || z); if (!tip.hidden) { applyLang(); place(e); }
+        tip.hidden = !(o || z); if (!tip.hidden) { applyLang(tip); place(e); }
       }
+      let tipKey = '';
       map.on('mouseout', () => { setHover(null); hovO = hoverDot('offers', null, hovO); if (map.getSource('mst')) hovS = hoverDot('mst', null, hovS); if (!tip.classList.contains('pin')) tip.hidden = true; });
       map.on('click', (e) => {
         if (!ready) return;
@@ -4460,10 +4469,12 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   let gid = 0;
   function grain(el) {
     const id = 'g' + ++gid, cs = el.dataset.hex ? el.dataset.hex.split(',') : (el.dataset.c || '0,2,3').split(',').map((i) => MPAL[+i % MPAL.length]), d = shapePath(el.dataset.grain);
-    el.insertAdjacentHTML('afterbegin', `<svg class="gr" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><defs><clipPath id="${id}c"><path d="${d}"/></clipPath>
+    // drawn as an image so the blur and grain are rasterized once, not on every frame
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><clipPath id="${id}c"><path d="${d}"/></clipPath>
       <filter id="${id}b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13"/></filter>
       <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="${gid * 7}" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 0.42"/></feComponentTransfer></filter></defs>
-      <g clip-path="url(#${id}c)"><rect width="100" height="100" fill="${cs[0]}"/><g filter="url(#${id}b)"><circle cx="78" cy="18" r="38" fill="${cs[1]}"/><circle cx="16" cy="86" r="36" fill="${cs[2]}"/><circle cx="58" cy="62" r="18" fill="#F1EEE9" opacity=".55"/></g><rect width="100" height="100" filter="url(#${id}n)" style="mix-blend-mode:overlay"/></g></svg>`);
+      <g clip-path="url(#${id}c)"><rect width="100" height="100" fill="${cs[0]}"/><g filter="url(#${id}b)"><circle cx="78" cy="18" r="38" fill="${cs[1]}"/><circle cx="16" cy="86" r="36" fill="${cs[2]}"/><circle cx="58" cy="62" r="18" fill="#F1EEE9" opacity=".55"/></g><rect width="100" height="100" filter="url(#${id}n)" style="mix-blend-mode:overlay"/></g></svg>`;
+    el.insertAdjacentHTML('afterbegin', `<img class="gr" alt="" aria-hidden="true" decoding="async" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}">`);
   }
   $$('[data-grain]').forEach(grain);
 
