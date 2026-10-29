@@ -4790,6 +4790,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     let sid = ''; try { sid = sessionStorage.getItem('cauce-s') || ''; if (!sid) { sid = Math.random().toString(36).slice(2, 14); sessionStorage.setItem('cauce-s', sid); } } catch (e) {}
     let ref = ''; try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; if (ref === 'cauce.blog') ref = ''; } catch (e) {}
     const q = new URLSearchParams(location.search).get('utm_source'); if (q) ref = q.slice(0, 40);
+    // keep the address bar clean once the source is noted
+    if (/[?&]utm_/.test(location.search)) { try { const u = new URL(location.href); [...u.searchParams.keys()].filter((k) => k.startsWith('utm_')).forEach((k) => u.searchParams.delete(k)); history.replaceState(history.state, '', u.pathname + (u.search === '?' ? '' : u.search) + u.hash); } catch (e) {} }
     // Instagram/Facebook open links in their own browser and often hide the referrer: group their variants under one name
     const ua = navigator.userAgent || '';
     if (!ref && /Instagram/i.test(ua)) ref = 'instagram';
