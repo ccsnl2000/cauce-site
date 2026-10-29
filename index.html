@@ -3347,6 +3347,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'No se pudo guardar. Inténtalo de nuevo.': 'Couldn’t save it. Please try again.',
     'La contraseña necesita 8 caracteres o más.': 'Your password needs 8 characters or more.',
     'Precio pedido · muestra': 'Asking price · sample', 'Anuncios en la muestra': 'Listings in sample', 'Precio pedido': 'Asking price', 'Sin datos aún': 'No data yet', '¿Cuánto cuesta el m² en Margarita?': 'What does a m² cost in Margarita?', '¿Cuánto cuesta el m² en Lechería?': 'What does a m² cost in Lechería?',
+    'Precio estimado · media de la ciudad': 'Estimated price · city median',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4237,7 +4238,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     list.forEach((f, i) => { const used = new Set(); list.slice(0, i).forEach((g, j) => { const A = bb[i], B = bb[j]; if (A[0] > B[2] + 0.002 || B[0] > A[2] + 0.002 || A[1] > B[3] + 0.002 || B[1] > A[3] + 0.002) return; const near = f.c.flat().some((v, k) => k % 3 === 0 && g.c.flat().some((w) => Math.abs(v[0] - w[0]) < 0.0012 && Math.abs(v[1] - w[1]) < 0.0012)); if (near) used.add(g.k); }); let k = (i * 5) % MPAL.length, t = 0; while (used.has(k) && t++ < MPAL.length) k = (k + 1) % MPAL.length; f.k = k; });
     return list;
   }
-  function asFC(list, scale) { return { type: 'FeatureCollection', features: list.map((f, i) => ({ type: 'Feature', id: i, properties: { n: f.n, m: f.m || '', k: f.k, v: f.v == null ? null : f.v, ns: f.ns || 0, o: GEO.x.filter((x) => f.c.some((r) => inRing(x, r))).length, s: scale }, geometry: { type: 'MultiPolygon', coordinates: f.c.map((r) => [r]) } })) }; }
+  function asFC(list, scale) { return { type: 'FeatureCollection', features: list.map((f, i) => ({ type: 'Feature', id: i, properties: { n: f.n, m: f.m || '', k: f.k, v: f.v == null ? null : f.v, ns: f.ns || 0, est: !!f.est, o: GEO.x.filter((x) => f.c.some((r) => inRing(x, r))).length, s: scale }, geometry: { type: 'MultiPolygon', coordinates: f.c.map((r) => [r]) } })) }; }
   const labelsFC = (list) => ({ type: 'FeatureCollection', features: list.map((f) => ({ type: 'Feature', properties: { n: f.n.toUpperCase() }, geometry: { type: 'Point', coordinates: f.l || centre(f.c) } })) });
   const ST = ['venta', 'vendido', 'alquiler'];   // demo status until real listings are connected
   const offersFC = () => ({ type: 'FeatureCollection', features: GEO.x.map((o, i) => ({ type: 'Feature', id: i, properties: { t: o[2], p: o[3], a: o[4], s: ST[(i * 7) % 3], r: Math.round(o[3] * 0.0075 / 10) * 10 }, geometry: { type: 'Point', coordinates: [o[0], o[1]] } })) });
@@ -4351,7 +4352,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         // hovered or selected zone: solid outline drawn over every other border
         ['p', 'm'].forEach((k) => map.addLayer({ id: 'hl-' + k, type: 'line', source: 'z' + k, layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': lineW(1), 'line-opacity': ['case', ['any', ['boolean', ['feature-state', 'h'], false], ['boolean', ['feature-state', 'sel'], false]], 1, 0] } }, 'building-3d'));
         map._lines = () => { const bare = root._layer === 'none';
-          ['p', 'm'].forEach((k) => { const on = k === scale, dashed = bare || !on; map.setLayoutProperty('line-' + k, 'visibility', bare && !on ? 'none' : 'visible'); map.setPaintProperty('line-' + k, 'line-width', lineW(dashed ? 0.55 : 1)); map.setPaintProperty('line-' + k, 'line-dasharray', dashed ? DASH : null); map.setPaintProperty('line-' + k, 'line-opacity', dashed ? 0.75 : 1); if (on) map.moveLayer('line-' + k, 'building-3d'); });
+          ['p', 'm'].forEach((k) => { const on = k === scale, dashed = bare; map.setLayoutProperty('line-' + k, 'visibility', on ? 'visible' : 'none'); map.setPaintProperty('line-' + k, 'line-width', lineW(dashed ? 0.55 : 1)); map.setPaintProperty('line-' + k, 'line-dasharray', dashed ? DASH : null); map.setPaintProperty('line-' + k, 'line-opacity', dashed ? 0.75 : 1); if (on) map.moveLayer('line-' + k, 'building-3d'); });
           map.setLayoutProperty('line-out', 'visibility', bare ? 'visible' : 'none'); map.moveLayer('line-out', 'building-3d');
           ['p', 'm'].forEach((k) => { map.setLayoutProperty('hl-' + k, 'visibility', k === scale ? 'visible' : 'none'); map.moveLayer('hl-' + k, 'building-3d'); }); };
         map._lines();
@@ -4460,7 +4461,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         const key = o ? 'o' + o.id : z ? scale + z.id + lang : '';
         if (key && key === tipKey && !tip.hidden) { place(e); return; } tipKey = key;
         if (o) tip.innerHTML = `<span class="q">Propiedad en Cauce · ejemplo</span><b>${esc(o.properties.t)}</b><div class="row"><span>${N0(o.properties.a)} m²</span><span>${FMT.usd(o.properties.p)}</span></div>`;
-        else if (z) tip.innerHTML = `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? (z.properties.ns ? `<div class="row"><span>Precio pedido · muestra</span><span>${FMT.m2p(z.properties.v)}</span></div><div class="row"><span>Anuncios en la muestra</span><span>${z.properties.ns}</span></div>` : `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>`) : (z.properties.ns === 0 && city !== 'caracas' ? `<div class="row"><span>Precio pedido</span><span>Sin datos aún</span></div>` : ''));
+        else if (z) tip.innerHTML = `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? (z.properties.est ? `<div class="row"><span>Precio estimado · media de la ciudad</span><span>${FMT.m2p(z.properties.v)}</span></div>` : z.properties.ns ? `<div class="row"><span>Precio pedido · muestra</span><span>${FMT.m2p(z.properties.v)}</span></div><div class="row"><span>Anuncios en la muestra</span><span>${z.properties.ns}</span></div>` : `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>`) : (z.properties.ns === 0 && city !== 'caracas' ? `<div class="row"><span>Precio pedido</span><span>Sin datos aún</span></div>` : ''));
         tip.hidden = !(o || z); if (!tip.hidden) { applyLang(tip); place(e); }
       }
       let tipKey = '';
@@ -4476,7 +4477,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       });
       // clicked bubble: stays open, closes with ×, Esc or a click on empty map; drag it by its top bar
       function tipHTML(o, z) { const SL = { venta: 'En venta', vendido: 'Vendido', alquiler: 'En alquiler' }; return o ? `<span class="q"><span>${SL[o.properties.s] || 'Propiedad'}</span> · <span>ejemplo</span></span><b>${esc(o.properties.t)}</b><div class="row"><span>${N0(o.properties.a)} m²</span><span>${o.properties.s === 'alquiler' ? FMT.usd(o.properties.r) + (lang === 'en' ? '/mo' : '/mes') : FMT.usd(o.properties.p)}</span></div>`
-        : `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? (z.properties.ns ? `<div class="row"><span>Precio pedido · muestra</span><span>${FMT.m2p(z.properties.v)}</span></div><div class="row"><span>Anuncios en la muestra</span><span>${z.properties.ns}</span></div>` : `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>`) : (z.properties.ns === 0 && city !== 'caracas' ? `<div class="row"><span>Precio pedido</span><span>Sin datos aún</span></div>` : '')); }
+        : `<span class="q">${scale === 'p' ? '<span>Parroquia</span> · ' + esc(z.properties.m) : '<span>Municipio</span>'}</span><b>${esc(z.properties.n)}</b><div class="row"><span>Propiedades en Cauce</span><span>${z.properties.o}</span></div>` + (typeof z.properties.v === 'number' ? (z.properties.est ? `<div class="row"><span>Precio estimado · media de la ciudad</span><span>${FMT.m2p(z.properties.v)}</span></div>` : z.properties.ns ? `<div class="row"><span>Precio pedido · muestra</span><span>${FMT.m2p(z.properties.v)}</span></div><div class="row"><span>Anuncios en la muestra</span><span>${z.properties.ns}</span></div>` : `<div class="row"><span>Precio pedido · ejemplo</span><span>${FMT.m2p(z.properties.v)}</span></div>`) : (z.properties.ns === 0 && city !== 'caracas' ? `<div class="row"><span>Precio pedido</span><span>Sin datos aún</span></div>` : '')); }
       function pin(e, o, z) {
         tip.innerHTML = `<div class="tbar"><button type="button" aria-label="${lang === 'en' ? 'Close' : 'Cerrar'}">×</button></div>` + tipHTML(o, z);
         tip.classList.add('pin'); tip.hidden = false; applyLang(); place(e);
@@ -4537,7 +4538,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
             const ads = rs && rs.ok ? ((await rs.json()).anuncios || []).filter((a) => a.city === key && a.m2 > 0) : [];
             const med = (xs) => { const v = xs.map((a) => a.price / a.m2).sort((x, y) => x - y), h = v.length >> 1; return v.length ? Math.round(v.length % 2 ? v[h] : (v[h - 1] + v[h]) / 2) : null; };
             const p = colour(j.p.map((f) => { const xs = ads.filter((a) => a.p && norm(a.p) === norm(f.n) && norm(a.m) === norm(f.m)); return { n: f.n, m: f.m, c: f.c, v: med(xs), ns: xs.length }; }));
-            const m = colour(muniFrom(p)).map((f) => { const xs = ads.filter((a) => norm(a.m) === norm(f.n)); return { ...f, v: med(xs), ns: xs.length }; });
+            const pv = p.map((f) => f.v).filter((x) => typeof x === 'number').sort((x, y) => x - y), cityMed = pv.length ? pv[pv.length >> 1] : null;
+            const m = colour(muniFrom(p)).map((f) => { const xs = ads.filter((a) => norm(a.m) === norm(f.n)); return xs.length ? { ...f, v: med(xs), ns: xs.length } : { ...f, v: cityMed, ns: 0, est: cityMed != null }; });
             cityCache[key] = { p, m, prices: ads.length > 0 };
           } catch (e) { return; } }
           Z = cityCache[key];
