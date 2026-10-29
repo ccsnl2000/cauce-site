@@ -20,4 +20,4 @@ jobs:
           PY
       - run: |
           git config user.name cauce-bot; git config user.email bot@cauce.blog
-          mkdir -p tmp && mv check.txt tmp/v360-check.txt && git add tmp && git commit -m "tmp v360 check" && git pull --rebase origin main && git push
+          mkdir -p tmp && mv check.txt tmp/v360-check.txt && cp v.json tmp/v360.json && git add tmp && git commit -m "tmp v360 check" && git pull --rebase origin main && git push
