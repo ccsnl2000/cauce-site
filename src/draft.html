@@ -4767,6 +4767,11 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     let sid = ''; try { sid = sessionStorage.getItem('cauce-s') || ''; if (!sid) { sid = Math.random().toString(36).slice(2, 14); sessionStorage.setItem('cauce-s', sid); } } catch (e) {}
     let ref = ''; try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; if (ref === 'cauce.blog') ref = ''; } catch (e) {}
     const q = new URLSearchParams(location.search).get('utm_source'); if (q) ref = q.slice(0, 40);
+    // Instagram/Facebook open links in their own browser and often hide the referrer: group their variants under one name
+    const ua = navigator.userAgent || '';
+    if (!ref && /Instagram/i.test(ua)) ref = 'instagram';
+    else if (!ref && /FBAN|FBAV|FB_IAB/i.test(ua)) ref = 'facebook';
+    if (/(^|\.)instagram\.com$|^instagram$/i.test(ref)) ref = 'Instagram'; else if (/(^|\.)facebook\.com$|^fb$|^facebook$/i.test(ref)) ref = 'Facebook';
     sendHit({ path: path.slice(0, 100), ref: ref.slice(0, 100), kind: 'view' });
   }
   function sendHit(o) {
