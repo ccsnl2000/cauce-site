@@ -4325,11 +4325,12 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         root._border('caracas');
         // borders: with colours on, the chosen scale is solid and the other dashed and thinner.
         // With the bare map, the outer edge stays solid and only the chosen scale shows, dashed.
-        const DASH = ['step', ['zoom'], ['literal', [9, 7]], 11.5, ['literal', [9.75, 8.25]], 13, ['literal', [6.75, 5.7]], 15, ['literal', [4.5, 3.9]], 17, ['literal', [3, 2.7]]];
+        // dash length scales with the city (Caracas ×2, the smaller-scale cities ×3); line weight stays the same
+        const DASH = (f) => ['step', ['zoom'], ['literal', [9 * f, 7 * f]], 11.5, ['literal', [9.75 * f, 8.25 * f]], 13, ['literal', [6.75 * f, 5.7 * f]], 15, ['literal', [4.5 * f, 3.9 * f]], 17, ['literal', [3 * f, 2.7 * f]]];
         // hovered or selected zone: solid outline drawn over every other border
         ['p', 'm'].forEach((k) => map.addLayer({ id: 'hl-' + k, type: 'line', source: 'z' + k, layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': lineW(1), 'line-opacity': ['case', ['any', ['boolean', ['feature-state', 'h'], false], ['boolean', ['feature-state', 'sel'], false]], 1, 0] } }, 'building-3d'));
         map._lines = () => { const bare = root._layer === 'none';
-          ['p', 'm'].forEach((k) => { const on = k === scale, dashed = bare; map.setLayoutProperty('line-' + k, 'visibility', on ? 'visible' : 'none'); map.setPaintProperty('line-' + k, 'line-width', lineW(dashed ? 0.55 : 1)); map.setPaintProperty('line-' + k, 'line-dasharray', dashed ? DASH : null); map.setPaintProperty('line-' + k, 'line-opacity', dashed ? 0.75 : 1); if (on) map.moveLayer('line-' + k, 'building-3d'); });
+          ['p', 'm'].forEach((k) => { const on = k === scale, dashed = bare; map.setLayoutProperty('line-' + k, 'visibility', on ? 'visible' : 'none'); map.setPaintProperty('line-' + k, 'line-width', lineW(dashed ? 0.55 : 1)); map.setPaintProperty('line-' + k, 'line-dasharray', dashed ? DASH(city === 'caracas' ? 2 : 3) : null); map.setPaintProperty('line-' + k, 'line-opacity', dashed ? 0.75 : 1); if (on) map.moveLayer('line-' + k, 'building-3d'); });
           map.setLayoutProperty('line-out', 'visibility', bare ? 'visible' : 'none'); map.moveLayer('line-out', 'building-3d');
           ['p', 'm'].forEach((k) => { map.setLayoutProperty('hl-' + k, 'visibility', k === scale ? 'visible' : 'none'); map.moveLayer('hl-' + k, 'building-3d'); }); };
         map._lines();
@@ -4524,7 +4525,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         setHover(null); select(null); unpin(); tip.hidden = true; tipKey = '';
         city = key; ZM = Z; const alt = key !== 'caracas'; root.classList.toggle('alt', alt);
         map.getSource('zp').setData(asFC(ZM.p, 'p')); map.getSource('lp').setData(labelsFC(ZM.p)); map.getSource('zm').setData(asFC(ZM.m, 'm')); map.getSource('lm').setData(labelsFC(ZM.m)); map.getSource('zml').setData(linesFC(ZM.m));
-        buildLabels('p'); buildLabels('m'); if (root._border) root._border(key);
+        buildLabels('p'); buildLabels('m'); if (root._border) root._border(key); if (map._lines) map._lines();
         const noPrice = alt && !Z.prices; cityPrices = !noPrice;
         $$('[data-ctx="metro"], [data-places]', root).forEach((b) => { b.disabled = alt; b.setAttribute('aria-disabled', String(alt)); });
         $$('[data-layer="v"]', root).forEach((b) => { b.disabled = noPrice; b.setAttribute('aria-disabled', String(noPrice)); });
