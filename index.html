@@ -4168,7 +4168,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   function paintBase(map, t) {
     const T = MTONE[t], set = (id, k, v) => { if (map.getLayer(id)) map.setPaintProperty(id, k, v); };
     set('bg', 'background-color', T.bg); set('landcover', 'fill-color', T.landcover); set('park', 'fill-color', T.park); set('water', 'fill-color', T.water);
-    set('waterway', 'line-color', T.waterway); set('building', 'fill-color', T.building); set('roads-minor', 'line-color', T.minor); set('roads-major', 'line-color', T.major); set('osm-places', 'text-color', T.text); set('line-p', 'line-color', T.line); set('line-m', 'line-color', T.line);
+    set('waterway', 'line-color', T.waterway); set('building', 'fill-color', T.building); set('roads-minor', 'line-color', T.minor); set('roads-major', 'line-color', T.major); set('osm-places', 'text-color', T.text); set('line-p', 'line-color', T.line); set('line-m', 'line-color', T.line); ['line-out', 'hl-p', 'hl-m'].forEach((id) => set(id, 'line-color', T.line));
     set('building-line', 'line-color', T.bline); set('building-3d', 'fill-extrusion-color', T.ext); ['water-name', 'park-name', 'peaks', 'road-name', 'poi-major', 'metro-name'].forEach((id) => set(id, 'text-color', T.label)); set('metro', 'circle-stroke-color', T.metro); set('metro', 'circle-color', T.bg);
   }
   const BASE = { version: 8, glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
@@ -4302,10 +4302,13 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         root._border('caracas');
         // borders: with colours on, the chosen scale is solid and the other dashed and thinner.
         // With the bare map, the outer edge stays solid and only the chosen scale shows, dashed.
-        const DASH = ['step', ['zoom'], ['literal', [6, 5]], 11.5, ['literal', [4.5, 4]], 13, ['literal', [3, 2.6]], 15, ['literal', [2, 1.8]], 17, ['literal', [1.4, 1.3]]];
+        const DASH = ['step', ['zoom'], ['literal', [9, 7]], 11.5, ['literal', [6.5, 5.5]], 13, ['literal', [4.5, 3.8]], 15, ['literal', [3, 2.6]], 17, ['literal', [2, 1.8]]];
+        // hovered or selected zone: solid outline drawn over every other border
+        ['p', 'm'].forEach((k) => map.addLayer({ id: 'hl-' + k, type: 'line', source: 'z' + k, layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': lineW(1), 'line-opacity': ['case', ['any', ['boolean', ['feature-state', 'h'], false], ['boolean', ['feature-state', 'sel'], false]], 1, 0] } }, 'building-3d'));
         map._lines = () => { const bare = root._layer === 'none';
           ['p', 'm'].forEach((k) => { const on = k === scale, dashed = bare || !on; map.setLayoutProperty('line-' + k, 'visibility', bare && !on ? 'none' : 'visible'); map.setPaintProperty('line-' + k, 'line-width', lineW(dashed ? 0.55 : 1)); map.setPaintProperty('line-' + k, 'line-dasharray', dashed ? DASH : null); map.setPaintProperty('line-' + k, 'line-opacity', dashed ? 0.75 : 1); if (on) map.moveLayer('line-' + k, 'building-3d'); });
-          map.setLayoutProperty('line-out', 'visibility', bare ? 'visible' : 'none'); map.moveLayer('line-out', 'building-3d'); };
+          map.setLayoutProperty('line-out', 'visibility', bare ? 'visible' : 'none'); map.moveLayer('line-out', 'building-3d');
+          ['p', 'm'].forEach((k) => { map.setLayoutProperty('hl-' + k, 'visibility', k === scale ? 'visible' : 'none'); map.moveLayer('hl-' + k, 'building-3d'); }); };
         map._lines();
         L({ id: 'water-name', type: 'symbol', source: 'omt', 'source-layer': 'waterway', minzoom: 13, layout: { 'symbol-placement': 'line', 'text-field': ['coalesce', ['get', 'name:es'], ['get', 'name']], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-letter-spacing': 0.1 }, paint: { 'text-color': '#9A9893' } });
         L({ id: 'park-name', type: 'symbol', source: 'omt', 'source-layer': 'park', minzoom: 11, filter: ['!', ['any', ['in', 'area verde', ['downcase', ['coalesce', ['get', 'name:es'], ['get', 'name'], '']]], ['in', 'área verde', ['downcase', ['coalesce', ['get', 'name:es'], ['get', 'name'], '']]]]], layout: { 'text-field': ['coalesce', ['get', 'name:es'], ['get', 'name']], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-max-width': 9 }, paint: { 'text-color': '#9A9893' } });
