@@ -4285,7 +4285,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         root._border('caracas');
         // borders: with colours on, the chosen scale is solid and the other dashed and thinner.
         // With the bare map, the outer edge stays solid and only the chosen scale shows, dashed.
-        const DASH = ['step', ['zoom'], ['literal', [13.5, 10.5]], 11.5, ['literal', [9.75, 8.25]], 13, ['literal', [6.75, 5.7]], 15, ['literal', [4.5, 3.9]], 17, ['literal', [3, 2.7]]];
+        const DASH = ['step', ['zoom'], ['literal', [9, 7]], 11.5, ['literal', [9.75, 8.25]], 13, ['literal', [6.75, 5.7]], 15, ['literal', [4.5, 3.9]], 17, ['literal', [3, 2.7]]];
         // hovered or selected zone: solid outline drawn over every other border
         ['p', 'm'].forEach((k) => map.addLayer({ id: 'hl-' + k, type: 'line', source: 'z' + k, layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': lineW(1), 'line-opacity': ['case', ['any', ['boolean', ['feature-state', 'h'], false], ['boolean', ['feature-state', 'sel'], false]], 1, 0] } }, 'building-3d'));
         map._lines = () => { const bare = root._layer === 'none';
