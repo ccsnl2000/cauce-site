@@ -1060,6 +1060,11 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
       <p class="auth-msg" id="a-msg" aria-live="polite"></p>
       <div class="auth-row"><button type="button" class="alt" id="a-alt">Enviar enlace mágico</button><button type="submit" class="go"><span id="a-go">Entrar</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
     </form>
+    <form id="f-newpass" hidden novalidate>
+      <label for="a-newpass" hidden>Contraseña nueva</label><input id="a-newpass" type="password" placeholder="Contraseña nueva (8 caracteres o más)" minlength="8" autocomplete="new-password">
+      <p class="auth-msg" id="a-msg2" aria-live="polite"></p>
+      <div class="auth-row"><span></span><button type="submit" class="go"><span>Guardar contraseña</span><svg viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h25M17 1l9 9-9 9" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
+    </form>
     <form id="f-perfil" hidden>
       <p class="auth-q">Cuéntanos un poco de tu búsqueda. Así te mostramos primero lo que te sirve. Puedes cambiarlo cuando quieras.</p>
       <div class="chips" role="group" aria-label="¿Qué te trae a Cauce?"><button type="button" class="chip" aria-pressed="false" data-perfil="particular">Particular</button><button type="button" class="chip" aria-pressed="false" data-perfil="agente">Agente inmobiliario</button><button type="button" class="chip" aria-pressed="false" data-perfil="inmobiliaria">Inmobiliaria</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-local">Inversionista local</button><button type="button" class="chip" aria-pressed="false" data-perfil="inv-int">Inversionista internacional</button><button type="button" class="chip" aria-pressed="false" data-perfil="desarrollador">Desarrollador · Analista</button><button type="button" class="chip" aria-pressed="false" data-perfil="otro">Otro</button></div>
@@ -3328,6 +3333,19 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Ciudad': 'City', 'Mapa · Margarita': 'Map · Margarita', 'Mapa · Lechería': 'Map · Lechería', 'Lechería': 'Lechería', 'Margarita': 'Margarita', '← Margarita': '← Margarita', '← Lechería': '← Lechería',
     'Margarita, parroquia por parroquia.': 'Margarita, parish by parish.', 'Lechería, parroquia por parroquia.': 'Lechería, parish by parish.',
     '¿Cuánto cuesta el m² en Caracas?': 'What does a m² cost in Caracas?',
+    'No hay una cuenta con ese correo. Revisa que esté bien escrito o regístrate.': 'There’s no account with that email. Check the spelling or sign up.',
+    'Escribe tu correo y te enviamos un enlace para crear una contraseña nueva.': 'Enter your email and we’ll send you a link to create a new password.',
+    'Listo. Revisa tu correo y abre el enlace para crear tu contraseña nueva.': 'Done. Check your email and open the link to create your new password.',
+    'Crea tu contraseña nueva': 'Create your new password',
+    'Contraseña nueva': 'New password',
+    'Contraseña nueva (8 caracteres o más)': 'New password (8 characters or more)',
+    'Guardar contraseña': 'Save password',
+    'Guardando…': 'Saving…',
+    'Usa una contraseña distinta a la anterior.': 'Use a password different from your old one.',
+    'No se pudo guardar. Pide un enlace nuevo e inténtalo otra vez.': 'Couldn’t save it. Request a new link and try again.',
+    'Listo. Tu contraseña quedó guardada.': 'Done. Your password is saved.',
+    'No se pudo guardar. Inténtalo de nuevo.': 'Couldn’t save it. Please try again.',
+    'La contraseña necesita 8 caracteres o más.': 'Your password needs 8 characters or more.',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -3669,7 +3687,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     if (user) { account(); return; }
     auth.mode = m; $('#d-out').hidden = true; $('.auth-tabs').hidden = false; $('#a-acct').hidden = true; $('#v-entrar .auth-note').hidden = false; $('#v-entrar .auth-hello').textContent = 'Bienvenido a Cauce';
     $$('.auth-tabs button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.m === m)));
-    $('#f-auth').hidden = false; $('#f-perfil').hidden = true; $('#a-done').hidden = true;
+    $('#f-auth').hidden = false; $('#f-perfil').hidden = true; $('#a-done').hidden = true; $('#f-newpass').hidden = true;
     $('#a-plan').hidden = m !== 'join'; $('#a-names').hidden = m !== 'join';
     $('#a-plan-name').textContent = PLAN_NAME[auth.plan];
     $('#a-alt').textContent = m === 'join' ? 'Ya tengo cuenta' : 'Enviar enlace mágico';
@@ -3865,7 +3883,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   }
   // newsletter list + welcome email (Supabase function → Resend); safe to call more than once
   const nl = (body) => sb().then((c) => c.functions.invoke('newsletter', { body: { ...body, lang } })).catch(() => {});
-  const ERR = { 'Invalid login credentials': 'Correo o contraseña incorrectos.', 'Email not confirmed': 'Confirma tu correo primero: revisa tu bandeja de entrada.', 'User already registered': 'Ya existe una cuenta con ese correo. Inicia sesión.' };
+  let recovering = /type=recovery/.test(location.hash);   // arrived from a "new password" email
+  const ERR = { 'Signups not allowed for otp': 'No hay una cuenta con ese correo. Revisa que esté bien escrito o regístrate.', 'Invalid login credentials': 'Correo o contraseña incorrectos.', 'Email not confirmed': 'Confirma tu correo primero: revisa tu bandeja de entrada.', 'User already registered': 'Ya existe una cuenta con ese correo. Inicia sesión.' };
   const aSay = (t) => { $('#a-msg').textContent = t; applyLang(); };
   const fail = (e) => aSay(ERR[e && e.message] || (/rate limit|security purposes/i.test(e && e.message || '') ? 'Demasiados intentos. Espera unos minutos.' : 'Algo falló. Inténtalo de nuevo o escríbenos a hola@cauce.blog.'));
   const back = () => location.origin + '/#entrar';
@@ -3955,7 +3974,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       <defs><pattern id="hatch" width="2" height="2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2" stroke="#1B1A18" stroke-width=".6"/></pattern></defs></svg>`;
   }
   async function account() {
-    ['#f-auth', '#f-perfil', '#a-done', '#v-entrar .auth-tabs', '#v-entrar .auth-note'].forEach((q) => { $(q).hidden = true; });
+    ['#f-auth', '#f-perfil', '#a-done', '#f-newpass', '#v-entrar .auth-tabs', '#v-entrar .auth-note'].forEach((q) => { $(q).hidden = true; });
     $('#a-acct').hidden = false; $('#v-entrar .auth-hello').textContent = 'Hola de nuevo.';
     $('#ac-email').textContent = user.email;
     try { const c = await sb(), r = await c.from('profiles').select('plan, plan_status, renews_at, cancel_at_period_end, perfil, pais, zonas, nombre, apellido, presupuesto, plazo, objetivos, empresa, asesores, contacto, whatsapp, acepta_contacto, created_at').eq('id', user.id).single(); acctRow = r.data || {}; } catch (e) { acctRow = {}; }
@@ -4007,16 +4026,34 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   sb().then((c) => {
     c.auth.onAuthStateChange((ev, ses) => { setTimeout(() => {
       setUser(ses && ses.user);
+      if ((ev === 'PASSWORD_RECOVERY' || recovering) && ses) { history.replaceState(null, '', '/#entrar'); show(); setTimeout(newPass, 50); return; }
       if (ev === 'SIGNED_IN' && /access_token|code=|type=/.test(location.href)) { history.replaceState(null, '', '/#entrar'); show(); }
     }, 0); });
   }).catch(() => {});
   async function magic() {
     if (!validEmail()) { aSay('Escribe tu correo y te enviamos un enlace para entrar sin contraseña.'); $('#a-email').focus(); return; }
     aSay('Enviando…');
-    try { const c = await sb(), r = await c.auth.signInWithOtp({ email: $('#a-email').value.trim(), options: { emailRedirectTo: back() } }); if (r.error) return fail(r.error); aSay('Listo. Revisa tu correo y abre el enlace para entrar.'); } catch (e) { fail(e); }
+    try { const c = await sb(), r = await c.auth.signInWithOtp({ email: $('#a-email').value.trim(), options: { emailRedirectTo: back(), shouldCreateUser: false } }); if (r.error) return fail(r.error); aSay('Listo. Revisa tu correo y abre el enlace para entrar.'); } catch (e) { fail(e); }
   }
+  // forgot password: email a link that opens a "new password" form here
+  async function recover() {
+    if (!validEmail()) { aSay('Escribe tu correo y te enviamos un enlace para crear una contraseña nueva.'); $('#a-email').focus(); return; }
+    aSay('Enviando…');
+    try { const c = await sb(), r = await c.auth.resetPasswordForEmail($('#a-email').value.trim(), { redirectTo: back() }); if (r.error) return fail(r.error); aSay('Listo. Revisa tu correo y abre el enlace para crear tu contraseña nueva.'); } catch (e) { fail(e); }
+  }
+  function newPass() {
+    ['#f-auth', '#f-perfil', '#a-done', '#a-acct', '#v-entrar .auth-tabs', '#v-entrar .auth-note'].forEach((q) => { $(q).hidden = true; });
+    $('#f-newpass').hidden = false; $('#v-entrar .auth-hello').textContent = 'Crea tu contraseña nueva'; $('#a-msg2').textContent = ''; applyLang(); $('#a-newpass').focus();
+  }
+  $('#f-newpass').addEventListener('submit', async (e) => {
+    e.preventDefault(); const say = (t) => { $('#a-msg2').textContent = t; applyLang(); }, pw = $('#a-newpass').value;
+    if (pw.length < 8) { say('La contraseña necesita 8 caracteres o más.'); return; }
+    say('Guardando…');
+    try { const c = await sb(), r = await c.auth.updateUser({ password: pw }); if (r.error) { say(/different from the old/i.test(r.error.message) ? 'Usa una contraseña distinta a la anterior.' : 'No se pudo guardar. Pide un enlace nuevo e inténtalo otra vez.'); return; }
+      recovering = false; $('#a-newpass').value = ''; say('Listo. Tu contraseña quedó guardada.'); setTimeout(() => { if (user) account(); }, 900); } catch (err) { say('No se pudo guardar. Inténtalo de nuevo.'); }
+  });
   $('#a-alt').addEventListener('click', () => (auth.mode === 'join' ? setMode('login') : magic()));
-  $('#a-help').addEventListener('click', magic);
+  $('#a-help').addEventListener('click', recover);
   $('#f-auth').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validEmail()) { aSay('Revisa tu correo.'); return; }
