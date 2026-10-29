@@ -652,7 +652,7 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap .mhead { text-shadow: 0 1px 12px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4); }
 .cmap .mhead p { font-size: 13px; color: #a6a49f; }
 .cmap .mctl { position: absolute; left: 16px; bottom: 34px; z-index: 2; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.cmap .mcity { position: relative; } .cmap .cbtn { display: inline-flex; align-items: center; gap: 6px; border: 0; font: inherit; font-size: 13px; padding: 9px 14px; border-radius: 999px; background: var(--m-ctl); color: var(--m-ink); cursor: pointer; } .cmap .cbtn .k { color: var(--m-soft); } .cmap .cbtn b { font-weight: 700; } .cmap .cbtn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.cmap .mcity { position: relative; } .cmap .cbtn { display: inline-flex; align-items: center; gap: 6px; border: 0; font: inherit; font-size: 13px; padding: 9px 14px; border-radius: 999px; background: var(--m-ctl); color: var(--m-ink); cursor: pointer; } .cmap .cbtn .k { opacity: .6; } .cmap .cbtn { background: #F2F0EC; color: #111110; } .cmap.lt .cbtn { background: #111110; color: #F2F0EC; } .cmap .cbtn b { font-weight: 700; } .cmap .cbtn[aria-expanded="true"] svg { transform: rotate(180deg); }
 .cpop { min-width: 180px; } .cpop button { background: none; border: 0; font: inherit; font-size: var(--t-xs); color: var(--m-ink); text-align: left; padding: 7px 8px; border-radius: 8px; cursor: pointer; } .cpop button:hover { background: rgba(127,127,127,.16); } .cpop button[aria-pressed="true"] { font-weight: 700; }
 .cmap.alt .mpill, .cmap.alt .mstat { display: none; }
 .cmap .mctl .lines { position: relative; } .cmap [data-places][aria-expanded="true"] { outline: 1px solid var(--m-ink); }
@@ -4182,6 +4182,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       { id: 'roads-minor', type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['in', ['get', 'class'], ['literal', ['minor', 'service', 'street', 'tertiary', 'track', 'path']]], paint: { 'line-color': '#2b2b2b', 'line-width': ['interpolate', ['linear'], ['zoom'], 11, 0.3, 15, 1.6] } },
       { id: 'roads-major', type: 'line', source: 'omt', 'source-layer': 'transportation', filter: ['in', ['get', 'class'], ['literal', ['primary', 'secondary', 'trunk', 'motorway']]], paint: { 'line-color': '#3a3a3a', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.6, 15, 3] } }
     ] };
+  // zone fill opacity by zoom (hovered zone a bit stronger); f scales it: Zonas runs 10% lighter than Precio m²
+  const fillOpX = (f) => { const h = (a, b) => ['case', ['boolean', ['feature-state', 'h'], false], +(a * f).toFixed(3), +(b * f).toFixed(3)]; return ['interpolate', ['linear'], ['zoom'], 11, h(0.88, 0.75), 14, h(0.62, 0.5), 16, h(0.32, 0.2), 18, h(0.2, 0.1)]; };
   const norm = (x) => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase();
   const ringArea = (r) => { let a = 0; for (let i = 0, j = r.length - 1; i < r.length; j = i++) a += (r[j][0] + r[i][0]) * (r[j][1] - r[i][1]); return Math.abs(a / 2); };
   const inRing = (pt, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) { const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > pt[1]) !== (yj > pt[1]) && pt[0] < (xj - xi) * (pt[1] - yi) / (yj - yi) + xi) c = !c; } return c; };
@@ -4273,7 +4275,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
           if (k === 'm') map.addSource('zml', { type: 'geojson', data: linesFC(ZN.m) });
           map.addSource('l' + k, { type: 'geojson', data: labelsFC(ZM[k]) });
           const vis = k === scale ? 'visible' : 'none';
-          map.addLayer({ id: 'fill-' + k, type: 'fill', source: 'z' + k, layout: { visibility: vis }, paint: { 'fill-color': ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]], 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 11, ['case', ['boolean', ['feature-state', 'h'], false], 0.88, 0.75], 14, ['case', ['boolean', ['feature-state', 'h'], false], 0.62, 0.5], 16, ['case', ['boolean', ['feature-state', 'h'], false], 0.32, 0.2], 18, ['case', ['boolean', ['feature-state', 'h'], false], 0.2, 0.1]] } });
+          map.addLayer({ id: 'fill-' + k, type: 'fill', source: 'z' + k, layout: { visibility: vis }, paint: { 'fill-color': ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]], 'fill-opacity': fillOpX(0.9) } });
           map.addLayer({ id: 'line-' + k, type: 'line', source: k === 'm' ? 'zml' : 'z' + k, layout: { visibility: vis, 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': ['interpolate', ['linear'], ['zoom'], 10, ['case', ['boolean', ['feature-state', 'h'], false], 1.1, 0.45], 13, ['case', ['boolean', ['feature-state', 'h'], false], 1.4, 0.7], 15, ['case', ['boolean', ['feature-state', 'h'], false], 1.9, 1.1], 18, ['case', ['boolean', ['feature-state', 'h'], false], 2.8, 1.9]] } });
         });
         const L = (o) => map.addLayer(o);
@@ -4309,11 +4311,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       const hoverDot = (src, id, cur) => { if (cur !== null) map.setFeatureState({ source: src, id: cur }, { hv: false }); if (id !== null && id !== undefined) map.setFeatureState({ source: src, id }, { hv: true }); return id ?? null; };
       const setHover = (f) => { const st = (id, v) => { map.setFeatureState({ source: 'z' + scale, id }, { h: v }); if (scale === 'm') map.setFeatureState({ source: 'zml', id }, { h: v }); }; if (hov !== null) st(hov, false); hov = f ? f.id : null; if (hov !== null) st(hov, true); };
       // map colours: price per m² (default, open to everyone) or zones
-      let fillOp = null;
       function paintLayer(k) {
         root._layer = k; root.classList.toggle('bare', k === 'none');
-        if (!fillOp && map.getLayer('fill-p')) fillOp = map.getPaintProperty('fill-p', 'fill-opacity');
-        ['p', 'm'].forEach((x) => map.getLayer('fill-' + x) && map.setPaintProperty('fill-' + x, 'fill-opacity', k === 'none' ? 0 : fillOp));
+        ['p', 'm'].forEach((x) => map.getLayer('fill-' + x) && map.setPaintProperty('fill-' + x, 'fill-opacity', k === 'none' ? 0 : fillOpX(k === 'o' ? 0.9 : 1)));
         if (k === 'none') return;
         const price = ['case', ['==', ['typeof', ['get', 'v']], 'number'], ['interpolate', ['linear'], ['get', 'v'], 400, '#3A3128', 1200, '#F5C443', 3000, '#F2734F'], '#555'];
         ['p', 'm'].forEach((x) => map.getLayer('fill-' + x) && map.setPaintProperty('fill-' + x, 'fill-color', k === 'v' ? price : ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]]));
