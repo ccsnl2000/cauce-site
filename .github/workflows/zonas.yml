@@ -13,11 +13,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: pip install shapely
       - run: python scripts/zonas.py
       - name: Commit the boundaries
         if: always()
         run: |
           git config user.name "cauce-bot"
           git config user.email "bot@cauce.blog"
-          git add data/zonas-*.json || true
+          git add data/zonas-*.json data/borde-*.json || true
           git diff --cached --quiet || (git commit -m "Límites de Margarita y Lechería" && git pull --rebase origin main && git push)

@@ -6,6 +6,9 @@ import json, sys, time, unicodedata, urllib.parse, urllib.request, pathlib
 V360 = "https://venezuela360.org/server/rest/services/Hosted/Parroquias/FeatureServer/0/query"
 GB = "https://www.geoboundaries.org/api/current/gbOpen/VEN/ADM2/"
 CITIES = {
+    # Caracas: only its outer border is written (the map reads Caracas parishes live from venezuela360)
+    "caracas": {"bbox": [-67.2, 10.3, -66.6, 10.6], "estado": ["distrito capital", "miranda"],
+                "municipios": ["libertador", "chacao", "baruta", "sucre", "el hatillo"], "only_border": True},
     # Margarita: the whole state of Nueva Esparta (11 municipalities, includes Coche and Cubagua)
     "margarita": {"bbox": [-64.45, 10.68, -63.75, 11.20], "estado": "nueva esparta", "municipios": None},
     # Lechería and its conurbation: Urbaneja (Lechería, El Morro), Sotillo (Puerto La Cruz), Guanta, Simón Bolívar (Barcelona)
@@ -54,8 +57,9 @@ def from_v360(cfg):
     out = []
     for f in j.get("features", []):
         p = f.get("properties") or {}
-        if cfg["estado"] not in norm(p.get("estado")): continue
-        if cfg["municipios"] and not any(m in norm(p.get("municipio")) for m in cfg["municipios"]): continue
+        est = cfg["estado"] if isinstance(cfg["estado"], list) else [cfg["estado"]]
+        if not any(e in norm(p.get("estado")) for e in est): continue
+        if cfg["municipios"] and not any(m == norm(p.get("municipio")) or m in norm(p.get("municipio")).split(" ")[-1:] or (len(m) > 6 and m in norm(p.get("municipio"))) for m in cfg["municipios"]): continue
         if not f.get("geometry"): continue
         out.append({"n": clean(tc(p.get("parroquia"))), "m": clean(tc(p.get("municipio"))), "c": rings(f["geometry"])})
     return out
@@ -71,6 +75,15 @@ def from_gb(cfg):
             n = tc(f["properties"].get("shapeName")); out.append({"n": n, "m": n, "c": rs})
     return out
 
+def border(p):
+    # the city's outer edge: all zones merged (small gaps between neighbours closed), simplified a little
+    from shapely.geometry import Polygon
+    from shapely.ops import unary_union
+    polys = [Polygon(r).buffer(0) for z in p for r in z["c"] if len(r) > 3]
+    u = unary_union([g.buffer(0.0004, join_style=2) for g in polys]).buffer(-0.0004, join_style=2).simplify(0.00003)
+    parts = list(u.geoms) if u.geom_type == "MultiPolygon" else [u]
+    return [[[round(x, 6), round(y, 6)] for x, y in g.exterior.coords] for g in parts if g.area > 1e-6]
+
 def main():
     root = pathlib.Path(__file__).resolve().parent.parent / "data"
     failed = False
@@ -84,6 +97,9 @@ def main():
         if len(p) < 2:
             failed = True; print(key, "no boundaries; keeping the previous file", file=sys.stderr); continue
         p.sort(key=lambda z: (z["m"], z["n"]))
+        try: (root / f"borde-{key}.json").write_text(json.dumps({"b": border(p)}, separators=(",", ":")), encoding="utf-8")
+        except Exception as e: print(key, "border failed:", e, file=sys.stderr)
+        if cfg.get("only_border"): print(key, "border from", len(p), "zones"); continue
         (root / f"zonas-{key}.json").write_text(json.dumps({"src": src, "bbox": cfg["bbox"], "p": p}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         print(key, len(p), "zones,", len({z["m"] for z in p}), "municipalities:", sorted({z["m"] for z in p}))
     if failed: sys.exit(1)
