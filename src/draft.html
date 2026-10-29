@@ -3304,6 +3304,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Desde aquí nos proyectamos al mundo hispanohablante, conectando la inversión extranjera con el mercado local. Queremos que ese capital encuentre su cauce, con información clara y comparable, y que ayude a reconstruir el país, una ciudad a la vez.': 'From here we reach out to the Spanish-speaking world, connecting foreign investment with the local market. We want that capital to find its course, with clear and comparable information, and to help rebuild the country, one city at a time.',
     'Ciudad': 'City', 'Mapa · Margarita': 'Map · Margarita', 'Mapa · Lechería': 'Map · Lechería', 'Lechería': 'Lechería', 'Margarita': 'Margarita', '← Margarita': '← Margarita', '← Lechería': '← Lechería',
     'Margarita, parroquia por parroquia.': 'Margarita, parish by parish.', 'Lechería, parroquia por parroquia.': 'Lechería, parish by parish.',
+    '¿Cuánto cuesta el m² en Caracas?': 'What does a m² cost in Caracas?',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4234,6 +4235,11 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const V = root.dataset.view.split(',').map(Number), HOME = [[V[0], V[1]], [V[2], V[3]]];
     let city = 'caracas', ZM = ZN; const cityCache = {};
     const CITY = { caracas: { n: 'Caracas' }, margarita: { n: 'Margarita' }, lecheria: { n: 'Lechería', f: [-64.75, 10.11, -64.57, 10.26] } };
+    const HMODES = { o: (c) => c + ', parroquia por parroquia.', v: (c) => '¿Cuánto cuesta el m² en ' + c + '?' };   // add more views here
+    let homeMode = 'o';
+    if (!full) { const ks = Object.keys(HMODES); homeMode = root._layer = ks[Math.floor(Math.random() * ks.length)]; }
+    const headTitle = () => { const k = city !== 'caracas' && homeMode === 'v' ? 'o' : homeMode; return HMODES[k](CITY[city].n); };
+    if (!full && $('.mhead h2', root)) $('.mhead h2', root).textContent = headTitle();
     let map = null, scale = 'p', hov = null, ready = false, pulse = null, pt = 0, home = null, tone = '';
     const lum = (c) => { const m = c.trim().match(/^#([0-9a-f]{6})$/i); if (!m) return 0; const n = parseInt(m[1], 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; };
     function theme() { const t = lum(getComputedStyle(root).getPropertyValue('--bg')) > 0.5 ? 'light' : 'dark'; if (t === tone) return; tone = t; root.classList.toggle('lt', t === 'light'); if (map && ready) { paintBase(map, t); if (map.getLayer('lug-name')) map.setPaintProperty('lug-name', 'text-color', t === 'light' ? '#111110' : '#ffffff'); } }
@@ -4279,7 +4285,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         root._border('caracas');
         // borders: with colours on, the chosen scale is solid and the other dashed and thinner.
         // With the bare map, the outer edge stays solid and only the chosen scale shows, dashed.
-        const DASH = ['step', ['zoom'], ['literal', [9, 7]], 11.5, ['literal', [6.5, 5.5]], 13, ['literal', [4.5, 3.8]], 15, ['literal', [3, 2.6]], 17, ['literal', [2, 1.8]]];
+        const DASH = ['step', ['zoom'], ['literal', [13.5, 10.5]], 11.5, ['literal', [9.75, 8.25]], 13, ['literal', [6.75, 5.7]], 15, ['literal', [4.5, 3.9]], 17, ['literal', [3, 2.7]]];
         // hovered or selected zone: solid outline drawn over every other border
         ['p', 'm'].forEach((k) => map.addLayer({ id: 'hl-' + k, type: 'line', source: 'z' + k, layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': lineW(1), 'line-opacity': ['case', ['any', ['boolean', ['feature-state', 'h'], false], ['boolean', ['feature-state', 'sel'], false]], 1, 0] } }, 'building-3d'));
         map._lines = () => { const bare = root._layer === 'none';
@@ -4482,7 +4488,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         // room to pan around the whole city, never tighter than the opening view (a tight box would force a zoom-in)
         const vb = map.getBounds(), dx = (vb.getEast() - vb.getWest()) * 0.25, dy = (vb.getNorth() - vb.getSouth()) * 0.25;
         map.setMaxBounds([[Math.min(all[0] - 0.12, vb.getWest() - dx), Math.min(all[1] - 0.08, vb.getSouth() - dy)], [Math.max(all[2] + 0.12, vb.getEast() + dx), Math.max(all[3] + 0.08, vb.getNorth() + dy)]]); map.jumpTo(home);
-        const nm = CITY[key].n; if (full) $('.mhead .lab', root).textContent = 'Mapa · ' + nm; else $('.mhead h2', root).textContent = nm + ', parroquia por parroquia.'; resetB.textContent = '← ' + nm; resetB.hidden = true;
+        const nm = CITY[key].n; if (full) $('.mhead .lab', root).textContent = 'Mapa · ' + nm; else { $('.mhead h2', root).textContent = headTitle(); if (!alt && homeMode !== 'o') paintLayer(homeMode); } resetB.textContent = '← ' + nm; resetB.hidden = true;
         $('.cbtn b', root).textContent = nm; $$('[data-city]', root).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.city === key)));
         track('ciudad_mapa', key);
       }
