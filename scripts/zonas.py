@@ -13,6 +13,15 @@ CITIES = {
                  "municipios": ["urbaneja", "sotillo", "guanta", "bolivar"]},
 }
 
+# readable names: source spelling fixed, and "Capital X" parishes shown by the town that is the municipal seat
+FIX = {"Garcia": "García", "Antolin del Campo": "Antolín del Campo", "Chorreron": "Chorrerón", "Adrian": "Adrián",
+       "Turístico Diego B. Urbaneja": "Diego Bautista Urbaneja"}
+SEAT = {"Capital Marcano": "Juan Griego", "Capital Gómez": "Santa Ana", "Capital Díaz": "San Juan Bautista", "Capital Maneiro": "Pampatar",
+        "Capital Garcia": "El Valle del Espíritu Santo", "Capital Tubores": "Punta de Piedras", "Capital Península de Macanao": "Boca de Río",
+        "Capital Villalba": "San Pedro de Coche", "Capital Diego Bautista Urbaneja": "Lechería", "Capital Puerto la Cruz": "Puerto La Cruz",
+        "Capital Guanta": "Guanta"}
+def clean(n): return SEAT.get(n) or FIX.get(n, n)
+
 def norm(s):
     return "".join(c for c in unicodedata.normalize("NFKD", str(s or "").lower()) if not unicodedata.combining(c)).strip()
 
@@ -48,7 +57,7 @@ def from_v360(cfg):
         if cfg["estado"] not in norm(p.get("estado")): continue
         if cfg["municipios"] and not any(m in norm(p.get("municipio")) for m in cfg["municipios"]): continue
         if not f.get("geometry"): continue
-        out.append({"n": tc(p.get("parroquia")), "m": tc(p.get("municipio")), "c": rings(f["geometry"])})
+        out.append({"n": clean(tc(p.get("parroquia"))), "m": clean(tc(p.get("municipio"))), "c": rings(f["geometry"])})
     return out
 
 def from_gb(cfg):

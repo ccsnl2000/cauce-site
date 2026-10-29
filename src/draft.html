@@ -632,6 +632,9 @@ body.auth .cdock, body.auth .cpill { display: none !important; }
 .cmap .mhead { text-shadow: 0 1px 12px rgba(0,0,0,.55), 0 0 2px rgba(0,0,0,.4); }
 .cmap .mhead p { font-size: 13px; color: #a6a49f; }
 .cmap .mctl { position: absolute; left: 16px; bottom: 34px; z-index: 2; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.cmap .mcity { position: relative; } .cmap .cbtn { display: inline-flex; align-items: center; gap: 6px; border: 0; font: inherit; font-size: 13px; padding: 9px 14px; border-radius: 999px; background: var(--m-ctl); color: var(--m-ink); cursor: pointer; } .cmap .cbtn .k { color: var(--m-soft); } .cmap .cbtn b { font-weight: 700; } .cmap .cbtn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.cpop { min-width: 180px; } .cpop button { background: none; border: 0; font: inherit; font-size: var(--t-xs); color: var(--m-ink); text-align: left; padding: 7px 8px; border-radius: 8px; cursor: pointer; } .cpop button:hover { background: rgba(127,127,127,.16); } .cpop button[aria-pressed="true"] { font-weight: 700; }
+.cmap.alt .mpill, .cmap.alt .mstat { display: none; }
 .cmap .mctl .lines { position: relative; } .cmap [data-places][aria-expanded="true"] { outline: 1px solid var(--m-ink); }
 .mplaces { position: absolute; left: 0; bottom: calc(100% + 8px); z-index: 5; background: var(--m-ctl); color: var(--m-ink); backdrop-filter: blur(8px); border-radius: 14px; padding: 12px 14px; display: grid; gap: 6px; min-width: 230px; box-shadow: 0 18px 44px rgba(0,0,0,.25); }
 .mplaces .lab { color: var(--m-soft); margin-bottom: 2px; } .mplaces label { display: flex; align-items: center; gap: 9px; font-size: var(--t-xs); cursor: pointer; } .mplaces input { accent-color: var(--m-ink); margin: 0; }
@@ -926,7 +929,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   <div class="cmap full" id="map-full" data-view="-67.075,10.372,-66.72,10.548" data-full="1">
     <div class="mgl" aria-label="Mapa de Caracas por parroquia o municipio"></div>
     <div class="mhead"><span class="lab">Mapa · Caracas</span><h2>Precio y oferta por zona</h2><p>Límites oficiales. Una escala a la vez.</p></div>
-    <div class="mctl"><div class="seg" role="group" aria-label="Escala"><button type="button" data-scale="m" aria-pressed="false">Municipios</button><button type="button" data-scale="p" aria-pressed="true">Parroquias</button></div><div class="seg" role="group" aria-label="Dato"><button type="button" data-layer="v" aria-pressed="false"><span>Precio m²</span></button><button type="button" data-layer="o" aria-pressed="true">Zonas</button></div><div class="seg" role="group" aria-label="Vista"><button type="button" data-v3="0" aria-pressed="true">2D</button><button type="button" data-v3="1" aria-pressed="false">3D</button></div><div class="seg lines" role="group" aria-label="Contexto"><button type="button" data-ctx="metro" aria-pressed="true">Metro</button><button type="button" data-ctx="streets" aria-pressed="true">Calles</button><button type="button" data-ctx="buildings" aria-pressed="true">Edificios</button><button type="button" data-places aria-expanded="false" aria-haspopup="true">Lugares</button><button type="button" disabled aria-disabled="true">Ocupación · pronto</button></div></div>
+    <div class="mctl"><div class="mcity"><button type="button" class="cbtn" aria-haspopup="true" aria-expanded="false"><span class="k">Ciudad</span> <b>Caracas</b><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="mplaces cpop" hidden><span class="lab">Ciudad</span><button type="button" data-city="caracas" aria-pressed="true">Caracas</button><button type="button" data-city="margarita" aria-pressed="false">Margarita</button><button type="button" data-city="lecheria" aria-pressed="false">Lechería</button></div></div><div class="seg" role="group" aria-label="Escala"><button type="button" data-scale="m" aria-pressed="false">Municipios</button><button type="button" data-scale="p" aria-pressed="true">Parroquias</button></div><div class="seg" role="group" aria-label="Dato"><button type="button" data-layer="v" aria-pressed="false"><span>Precio m²</span></button><button type="button" data-layer="o" aria-pressed="true">Zonas</button></div><div class="seg" role="group" aria-label="Vista"><button type="button" data-v3="0" aria-pressed="true">2D</button><button type="button" data-v3="1" aria-pressed="false">3D</button></div><div class="seg lines" role="group" aria-label="Contexto"><button type="button" data-ctx="metro" aria-pressed="true">Metro</button><button type="button" data-ctx="streets" aria-pressed="true">Calles</button><button type="button" data-ctx="buildings" aria-pressed="true">Edificios</button><button type="button" data-places aria-expanded="false" aria-haspopup="true">Lugares</button><button type="button" disabled aria-disabled="true">Ocupación · pronto</button></div></div>
     <button class="reset" type="button" hidden>← Caracas</button>
     <div class="mtip" hidden></div>
     <div class="mpay" hidden><div><span class="lab">Inteligencia</span><b>Sigue explorando el mapa</b><p class="sm">Precios por zona, capas y comparaciones sin límite de tiempo.</p><a class="btn" href="#planes" data-plan="inteligencia">Suscríbete por $10 al mes</a><a class="sm" href="#entrar">Ya tengo cuenta</a></div></div><div class="mlock" hidden><div><b style="font-size:var(--t-lead)">El precio por m² de cada zona</b><span class="sm" style="color:#555">Con Inteligencia ves la mediana por parroquia y municipio, su serie semanal y las propiedades bajo la media.</span><a class="btn" href="#planes" data-plan="inteligencia">Ver planes</a><button type="button" class="x">Seguir explorando</button></div></div>
@@ -3298,6 +3301,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Los datos fluyen, Cauce les da curso.': 'Data flows, Cauce gives it course.',
     'Pie firme en Venezuela.': 'Firm footing in Venezuela.',
     'Desde aquí nos proyectamos al mundo hispanohablante, conectando la inversión extranjera con el mercado local. Queremos que ese capital encuentre su cauce, con información clara y comparable, y que ayude a reconstruir el país, una ciudad a la vez.': 'From here we reach out to the Spanish-speaking world, connecting foreign investment with the local market. We want that capital to find its course, with clear and comparable information, and to help rebuild the country, one city at a time.',
+    'Ciudad': 'City', 'Mapa · Margarita': 'Map · Margarita', 'Mapa · Lechería': 'Map · Lechería', 'Lechería': 'Lechería', 'Margarita': 'Margarita', '← Margarita': '← Margarita', '← Lechería': '← Lechería',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4212,6 +4216,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   function mountMap(root) {
     const full = !!root.dataset.full, tip = $('.mtip', root), lock = $('.mlock', root), resetB = $('.reset', root);
     const V = root.dataset.view.split(',').map(Number), HOME = [[V[0], V[1]], [V[2], V[3]]];
+    let city = 'caracas', ZM = ZN; const cityCache = {};
+    const CITY = { caracas: { n: 'Caracas' }, margarita: { n: 'Margarita' }, lecheria: { n: 'Lechería', f: [-64.75, 10.11, -64.57, 10.26] } };
     let map = null, scale = 'p', hov = null, ready = false, pulse = null, pt = 0, home = null, tone = '';
     const lum = (c) => { const m = c.trim().match(/^#([0-9a-f]{6})$/i); if (!m) return 0; const n = parseInt(m[1], 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; };
     function theme() { const t = lum(getComputedStyle(root).getPropertyValue('--bg')) > 0.5 ? 'light' : 'dark'; if (t === tone) return; tone = t; root.classList.toggle('lt', t === 'light'); if (map && ready) { paintBase(map, t); if (map.getLayer('lug-name')) map.setPaintProperty('lug-name', 'text-color', t === 'light' ? '#111110' : '#ffffff'); } }
@@ -4227,7 +4233,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       const labs = { p: [], m: [] };
       function buildLabels(k) {
         labs[k].forEach((m) => m.remove());
-        labs[k] = ZN[k].map((f) => { const el = document.createElement('span'); el.className = 'mlab'; el.setAttribute('aria-hidden', 'true'); el.textContent = f.n; const b = bboxOf(f.c); const m = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat(f.l || centre(f.c)); m.area = (b[2] - b[0]) * (b[3] - b[1]); if (k === scale) m.addTo(map); return m; }).sort((a, b) => b.area - a.area);
+        labs[k] = ZM[k].map((f) => { const el = document.createElement('span'); el.className = 'mlab'; el.setAttribute('aria-hidden', 'true'); el.textContent = f.n; const b = bboxOf(f.c); const m = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat(f.l || centre(f.c)); m.area = (b[2] - b[0]) * (b[3] - b[1]); if (k === scale) m.addTo(map); return m; }).sort((a, b) => b.area - a.area);
         declutter();
       }
       let dq = 0;
@@ -4240,9 +4246,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         home = { center: map.getCenter(), zoom: map.getZoom() - 0.4 }; map.jumpTo(home);
         map.setMinZoom(Math.min(home.zoom, (cam ? cam.zoom : home.zoom) - 0.3)); map.setMaxBounds([[all[0] - 0.12, all[1] - 0.08], [all[2] + 0.12, all[3] + 0.08]]);
         ['p', 'm'].forEach((k) => {
-          map.addSource('z' + k, { type: 'geojson', data: asFC(ZN[k], k) });
+          map.addSource('z' + k, { type: 'geojson', data: asFC(ZM[k], k) });
           if (k === 'm') map.addSource('zml', { type: 'geojson', data: linesFC(ZN.m) });
-          map.addSource('l' + k, { type: 'geojson', data: labelsFC(ZN[k]) });
+          map.addSource('l' + k, { type: 'geojson', data: labelsFC(ZM[k]) });
           const vis = k === scale ? 'visible' : 'none';
           map.addLayer({ id: 'fill-' + k, type: 'fill', source: 'z' + k, layout: { visibility: vis }, paint: { 'fill-color': ['to-color', ['at', ['get', 'k'], ['literal', MPAL]]], 'fill-opacity': ['interpolate', ['linear'], ['zoom'], 11, ['case', ['boolean', ['feature-state', 'h'], false], 0.88, 0.75], 14, ['case', ['boolean', ['feature-state', 'h'], false], 0.62, 0.5], 16, ['case', ['boolean', ['feature-state', 'h'], false], 0.32, 0.2], 18, ['case', ['boolean', ['feature-state', 'h'], false], 0.2, 0.1]] } });
           map.addLayer({ id: 'line-' + k, type: 'line', source: k === 'm' ? 'zml' : 'z' + k, layout: { visibility: vis, 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': MOFF, 'line-width': ['interpolate', ['linear'], ['zoom'], 10, ['case', ['boolean', ['feature-state', 'h'], false], 1.1, 0.45], 13, ['case', ['boolean', ['feature-state', 'h'], false], 1.4, 0.7], 15, ['case', ['boolean', ['feature-state', 'h'], false], 1.9, 1.1], 18, ['case', ['boolean', ['feature-state', 'h'], false], 2.8, 1.9]] } });
@@ -4268,8 +4274,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
           const keep = (list, prev) => list.map((f, i) => { const o = prev.find((x) => norm(x.n) === norm(f.n)); return { ...f, l: f.l || (o && o.l), v: f.v != null ? f.v : o && o.v, k: o ? o.k : (i * 5) % MPAL.length }; });
           ZN.p = keep(p, ZN.p);
           ZN.m = keep(m ? m.map((f) => ({ ...f, edges: f.c.flatMap((ring) => ring.slice(1).map((pt, i) => [ring[i], pt])) })) : muniFrom(ZN.p), ZN.m);
-          map.getSource('zp').setData(asFC(ZN.p, 'p')); map.getSource('lp').setData(labelsFC(ZN.p)); map.getSource('zm').setData(asFC(ZN.m, 'm')); map.getSource('lm').setData(labelsFC(ZN.m)); map.getSource('zml').setData(linesFC(ZN.m));
-          buildLabels('p'); buildLabels('m'); $$('[data-src]').forEach((e) => { e.textContent = label; }); applyLang();
+          if (city === 'caracas') { map.getSource('zp').setData(asFC(ZN.p, 'p')); map.getSource('lp').setData(labelsFC(ZN.p)); map.getSource('zm').setData(asFC(ZN.m, 'm')); map.getSource('lm').setData(labelsFC(ZN.m)); map.getSource('zml').setData(linesFC(ZN.m));
+          buildLabels('p'); buildLabels('m'); } $$('[data-src]').forEach((e) => { e.textContent = label; }); applyLang();
         };
         if (location.protocol.startsWith('http')) fetch('/data/caracas-parroquias.json').then((r) => r.ok ? r.json() : null).then((j) => { if (j && j.p) applyZones(j.p, j.m, 1, 'Límites: parroquias de Venezuela (Tapiquén, 2015), detalle completo.'); }).catch(() => {});
         v360.then((list) => { if (list) applyZones(list, null, 2, 'Límites: parroquias, venezuela360.'); });
@@ -4368,7 +4374,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         const o = map.queryRenderedFeatures(e.point, { layers: ['offers'] })[0];
         const z = map.queryRenderedFeatures(e.point, { layers: ['fill-' + scale] })[0]; if (!z) { unpin(); return; }
         pin(e, o, z);
-        const f = ZN[scale][z.id]; const b = bboxOf(f.c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: full ? 60 : 30, maxZoom: 16, duration: reduce ? 0 : 900 }); resetB.hidden = false; if (full) { select(z.id); document.dispatchEvent(new CustomEvent('cauce-zone', { detail: { n: f.n, s: scale } })); }
+        const f = ZM[scale][z.id]; const b = bboxOf(f.c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: full ? 60 : 30, maxZoom: 16, duration: reduce ? 0 : 900 }); resetB.hidden = false; if (full) { select(z.id); if (city === 'caracas') document.dispatchEvent(new CustomEvent('cauce-zone', { detail: { n: f.n, s: scale } })); }
       });
       // clicked bubble: stays open, closes with ×, Esc or a click on empty map; drag it by its top bar
       function tipHTML(o, z) { const SL = { venta: 'En venta', vendido: 'Vendido', alquiler: 'En alquiler' }; return o ? `<span class="q"><span>${SL[o.properties.s] || 'Propiedad'}</span> · <span>ejemplo</span></span><b>${esc(o.properties.t)}</b><div class="row"><span>${N0(o.properties.a)} m²</span><span>${o.properties.s === 'alquiler' ? FMT.usd(o.properties.r) + (lang === 'en' ? '/mo' : '/mes') : FMT.usd(o.properties.p)}</span></div>`
@@ -4422,9 +4428,40 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
           track('filtro_mapa', b.dataset.st); });
       }
       let selId = null; const select = (id) => { if (selId !== null) map.setFeatureState({ source: 'zp', id: selId }, { sel: false }); selId = id; if (id !== null && scale === 'p') map.setFeatureState({ source: 'zp', id }, { sel: true }); };
-      root._focus = (n) => { if (!ready) return; if (scale !== 'p') { const b = $('[data-scale="p"]', root); if (b) b.click(); } const id = ZN.p.findIndex((f) => f.n === n); if (id < 0) return; select(id); const b = bboxOf(ZN.p[id].c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 60, maxZoom: 15, duration: reduce ? 0 : 900 }); resetB.hidden = false; };
+      root._focus = (n) => { if (!ready) return; if (city !== 'caracas') { setCity('caracas').then(() => root._focus(n)); return; } if (scale !== 'p') { const b = $('[data-scale="p"]', root); if (b) b.click(); } const id = ZM.p.findIndex((f) => f.n === n); if (id < 0) return; select(id); const b = bboxOf(ZM.p[id].c); map.fitBounds([[b[0], b[1]], [b[2], b[3]]], { padding: 60, maxZoom: 15, duration: reduce ? 0 : 900 }); resetB.hidden = false; };
+      // other cities: same map, their own parish boundaries; controls without data there are greyed out
+      async function setCity(key) {
+        if (!ready || key === city || !CITY[key]) return;
+        let Z = ZN;
+        if (key !== 'caracas') {
+          if (!cityCache[key]) { try { const r = await fetch('/data/zonas-' + key + '.json'); if (!r.ok) return; const j = await r.json(); const p = colour(j.p.map((f) => ({ n: f.n, m: f.m, c: f.c, v: null }))); cityCache[key] = { p, m: colour(muniFrom(p)) }; } catch (e) { return; } }
+          Z = cityCache[key];
+        }
+        setHover(null); select(null); unpin(); tip.hidden = true; tipKey = '';
+        city = key; ZM = Z; const alt = key !== 'caracas'; root.classList.toggle('alt', alt);
+        map.getSource('zp').setData(asFC(ZM.p, 'p')); map.getSource('lp').setData(labelsFC(ZM.p)); map.getSource('zm').setData(asFC(ZM.m, 'm')); map.getSource('lm').setData(labelsFC(ZM.m)); map.getSource('zml').setData(linesFC(ZM.m));
+        buildLabels('p'); buildLabels('m');
+        $$('[data-layer="v"], [data-ctx="metro"], [data-places]', root).forEach((b) => { b.disabled = alt; b.setAttribute('aria-disabled', String(alt)); });
+        $$('.mplaces:not(.cpop)', root).forEach((x) => { x.hidden = true; });
+        if (alt && root._layer === 'v') { paintLayer('o'); $$('[data-layer]', root).forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.layer === 'o'))); }
+        const all = bboxOf(ZM.p.flatMap((f) => f.c)), fb = alt ? (CITY[key].f || all) : [HOME[0][0], HOME[0][1], HOME[1][0], HOME[1][1]];
+        map.setMaxBounds(null); map.setMinZoom(0);
+        const cam = map.cameraForBounds([[fb[0], fb[1]], [fb[2], fb[3]]], { padding: alt ? { top: 110, bottom: 80, left: 30, right: 30 } : 0 }), cAll = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 20 });
+        home = { center: cam.center, zoom: cam.zoom - (alt ? 0 : 0.4) }; map.jumpTo(home);
+        map.setMinZoom(Math.min(home.zoom, (cAll ? cAll.zoom : home.zoom) - 0.3)); map.setMaxBounds([[all[0] - 0.12, all[1] - 0.08], [all[2] + 0.12, all[3] + 0.08]]);
+        const nm = CITY[key].n; $('.mhead .lab', root).textContent = 'Mapa · ' + nm; resetB.textContent = '← ' + nm; resetB.hidden = true;
+        $('.cbtn b', root).textContent = nm; $$('[data-city]', root).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.city === key)));
+        track('ciudad_mapa', key);
+      }
+      root._city = setCity; root._frame = () => (city === 'caracas' ? null : (CITY[city].f || bboxOf(ZM.p.flatMap((f) => f.c))));
       map.on('moveend', () => { if (!inited || !home) return; const c = map.getCenter(); resetB.hidden = Math.abs(map.getZoom() - home.zoom) < 0.05 && Math.abs(c.lng - home.center.lng) < 0.002 && Math.abs(c.lat - home.center.lat) < 0.002; });
     }
+    const cbtn = $('.cbtn', root), cpop = $('.cpop', root);
+    if (cbtn) { const open = (o) => { cpop.hidden = !o; cbtn.setAttribute('aria-expanded', String(o)); };
+      cbtn.addEventListener('click', (e) => { e.stopPropagation(); open(cpop.hidden); });
+      cpop.addEventListener('click', (e) => { const b = e.target.closest('[data-city]'); if (!b) return; open(false); if (root._city) root._city(b.dataset.city); });
+      document.addEventListener('click', (e) => { if (!cpop.hidden && !e.target.closest('.mcity')) open(false); });
+      root.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !cpop.hidden) { open(false); cbtn.focus(); } }); }
     resetB.addEventListener('click', () => { if (map && home) map.flyTo({ ...home, duration: reduce ? 0 : 800 }); resetB.hidden = true; });
     // a minute of free exploring on the full map, then a soft paywall (owners in preview are never locked)
     if (full) {
@@ -4469,7 +4506,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     if (lock) $('button.x', lock).addEventListener('click', () => { lock.hidden = true; });
     // keep Caracas framed when the window changes shape (unless the reader has moved the map)
     let rz = 0;
-    const refit = () => { if (!map || !home || !resetB.hidden) return; const all = bboxOf(GEO.p.flatMap((f) => f.c)), cam = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 16 }); if (!cam) return;
+    const refit = () => { if (!map || !home || !resetB.hidden) return; const all = (root._frame && root._frame()) || bboxOf(GEO.p.flatMap((f) => f.c)), cam = map.cameraForBounds([[all[0], all[1]], [all[2], all[3]]], { padding: 16 }); if (!cam) return;
       home = { center: cam.center, zoom: cam.zoom }; map.setMinZoom(Math.min(map.getMinZoom(), home.zoom - 0.3)); map.jumpTo(home); resetB.hidden = true; };
     if (window.ResizeObserver) new ResizeObserver(() => { if (!map) start(); else { map.resize(); clearTimeout(rz); rz = setTimeout(refit, 120); } }).observe(root);
     return { kick: () => { if (!map) start(); else map.resize(); } };
