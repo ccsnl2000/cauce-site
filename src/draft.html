@@ -4185,8 +4185,8 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const by = {}; list.forEach((f) => { (by[f.m] = by[f.m] || []).push(f); });
     return Object.keys(by).map((m) => {
       const parts = by[m], c = parts.flatMap((f) => f.c), seen = new Map();
-      parts.forEach((f, pi) => f.c.forEach((ring) => { for (let i = 1; i < ring.length; i++) { const k = segKey(ring[i - 1], ring[i]), e = seen.get(k);
-        if (e === undefined) seen.set(k, { pi, s: [ring[i - 1], ring[i]] }); else if (e && e.pi !== pi) seen.set(k, null); } }));
+      parts.forEach((f) => { const pi = f.n; f.c.forEach((ring) => { for (let i = 1; i < ring.length; i++) { const k = segKey(ring[i - 1], ring[i]), e = seen.get(k);
+        if (e === undefined) seen.set(k, { pi, s: [ring[i - 1], ring[i]] }); else if (e && e.pi !== pi) seen.set(k, null); } }); });
       const lab = (GEO.m.find((x) => norm(x.n) === norm(m)) || {}).l;
       const edges = [...seen.values()].filter(Boolean).map((e) => e.s), rings = chain(edges);
       const vs = parts.map((f) => f.v).filter((x) => typeof x === 'number');
@@ -4215,7 +4215,9 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     const list = j.features.filter((f) => f.geometry && METRO.includes(norm(f.properties.municipio)) && ['distrito capital', 'miranda'].includes(norm(f.properties.estado))).map((f) => {
       const g = f.geometry, polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates; const tc = (w) => w.toLowerCase().replace(/(^|\s)\S/g, (c) => c.toUpperCase());
       return { n: tc(f.properties.parroquia), m: tc(f.properties.municipio), c: polys.map((p) => p[0]) };
-    });
+    }).reduce((acc, f) => { const o = acc.find((x) => x.n === f.n && x.m === f.m); if (!o) { acc.push(f); return acc; }
+      const key = (r) => r.length + ':' + r[0].join(',') + ':' + r[Math.floor(r.length / 2)].join(',');
+      f.c.forEach((r) => { if (!o.c.some((q) => key(q) === key(r))) o.c.push(r); }); return acc; }, []);
     return list.length > 20 ? colour(list) : null;
   }).catch(() => null) : Promise.resolve(null);
 
@@ -4262,7 +4264,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
         const L = (o) => map.addLayer(o);
         L({ id: 'building-3d', type: 'fill-extrusion', source: 'omt', 'source-layer': 'building', minzoom: 14, layout: { visibility: 'none' }, paint: { 'fill-extrusion-color': '#2E2F2B', 'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 9], 'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0], 'fill-extrusion-opacity': 0.92 } });
         ['line-p', 'line-m'].forEach((id) => map.moveLayer(id, 'building-3d'));   // borders sit above every fill
-        map._lines = () => ['p', 'm'].forEach((k) => { const on = k === scale; map.setLayoutProperty('line-' + k, 'visibility', 'visible'); map.setPaintProperty('line-' + k, 'line-width', lineW(on ? 1 : 0.55)); map.setPaintProperty('line-' + k, 'line-dasharray', on ? null : ['literal', [2, 2.4]]); map.setPaintProperty('line-' + k, 'line-opacity', on ? 1 : 0.75); if (on) map.moveLayer('line-' + k, 'building-3d'); });
+        map._lines = () => ['p', 'm'].forEach((k) => { const on = k === scale; map.setLayoutProperty('line-' + k, 'visibility', 'visible'); map.setPaintProperty('line-' + k, 'line-width', lineW(on ? 1 : 0.55)); map.setPaintProperty('line-' + k, 'line-dasharray', on ? null : ['step', ['zoom'], ['literal', [6, 5]], 11.5, ['literal', [4.5, 4]], 13, ['literal', [3, 2.6]], 15, ['literal', [2, 1.8]], 17, ['literal', [1.4, 1.3]]]); map.setPaintProperty('line-' + k, 'line-opacity', on ? 1 : 0.75); if (on) map.moveLayer('line-' + k, 'building-3d'); });
         map._lines();
         L({ id: 'water-name', type: 'symbol', source: 'omt', 'source-layer': 'waterway', minzoom: 13, layout: { 'symbol-placement': 'line', 'text-field': ['coalesce', ['get', 'name:es'], ['get', 'name']], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-letter-spacing': 0.1 }, paint: { 'text-color': '#9A9893' } });
         L({ id: 'park-name', type: 'symbol', source: 'omt', 'source-layer': 'park', minzoom: 11, filter: ['!', ['any', ['in', 'area verde', ['downcase', ['coalesce', ['get', 'name:es'], ['get', 'name'], '']]], ['in', 'área verde', ['downcase', ['coalesce', ['get', 'name:es'], ['get', 'name'], '']]]]], layout: { 'text-field': ['coalesce', ['get', 'name:es'], ['get', 'name']], 'text-font': ['Noto Sans Regular'], 'text-size': 10, 'text-max-width': 9 }, paint: { 'text-color': '#9A9893' } });
