@@ -258,7 +258,10 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     $('#traffic').innerHTML = `<div class="chart"><h3>Páginas</h3><table class="mini"><thead><tr><th>Página</th><th>Vistas</th><th>Visitantes</th><th>Interacc.</th></tr></thead><tbody>${[...pg.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 10).map(([k, o]) => `<tr><td title="${esc(k)}">${esc(k)}</td><td>${nf(o.n)}</td><td>${nf(o.s.size)}</td><td>${nf(o.e)}</td></tr>`).join('') || '<tr><td colspan="4" class="sm">Sin datos aún.</td></tr>'}</tbody></table></div>
       <div class="chart"><h3>Interacciones</h3><table class="mini"><thead><tr><th>Qué hicieron</th><th>Veces</th><th>Visitantes</th></tr></thead><tbody>${[...ac.entries()].sort((a, b) => b[1].n - a[1].n).slice(0, 10).map(([k, o]) => { const top = [...o.l.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map((x) => x[0]).join(', '); return `<tr><td title="${esc(top)}">${esc(k)}${top ? `<span class="sub">${esc(top)}</span>` : ''}</td><td>${nf(o.n)}</td><td>${nf(o.s.size)}</td></tr>`; }).join('') || '<tr><td colspan="3" class="sm">Sin datos aún.</td></tr>'}</tbody></table></div>
       ${card('t-ref', 'Llegan desde')}${card('t-ctry', 'Países', 'Por zona horaria')}${card('t-dev', 'Dispositivo e idioma')}`;
-    hbars($('#t-ref'), count(SS, (v) => v.ref || 'Directo'));
+    const srcName = (r) => { r = String(r || '').trim(); if (!r) return 'Directo'; const l = r.toLowerCase();
+      if (/^(ig|insta|instagram)$|(^|\.)instagram\.com$/.test(l)) return 'Instagram'; if (/^(fb|facebook)$|(^|\.)facebook\.com$/.test(l)) return 'Facebook';
+      if (/^(wa|whatsapp)$|(^|\.)whatsapp\.com$|^wa\.me$/.test(l)) return 'WhatsApp'; if (/(^|\.)t\.co$|^(x|twitter)$|(^|\.)(x|twitter)\.com$/.test(l)) return 'X'; if (/(^|\.)linkedin\.com$|^lnkd\.in$|^linkedin$/.test(l)) return 'LinkedIn'; return r; };
+    hbars($('#t-ref'), count(SS, (v) => srcName(v.ref)));
     hbars($('#t-ctry'), count(SS, (v) => country(TZC[v.tz]) || v.tz || 'Desconocido'));
     hbars($('#t-dev'), [...count(SS, (v) => v.device === 'mobile' ? 'Teléfono' : 'Computadora'), ...count(SS, (v) => v.lang === 'en' ? 'Inglés' : 'Español')]);
     users();
