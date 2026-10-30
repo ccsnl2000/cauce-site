@@ -601,6 +601,7 @@ body.auth header.top, body.auth footer { display: none; }
 .fuentes { max-width: 860px; } .fu-lead, .fu-intro { font-size: var(--t-lead); line-height: 1.5; margin: 22px 0; max-width: 40em; } #f-fuentes { max-width: 520px; }
 .fuentes h2 { font-size: var(--t-h3); margin: 40px 0 12px; } .fu { margin: 0; display: grid; gap: 0; } .fu dt { font-weight: 700; padding-top: 16px; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; } .fu dd { margin: 6px 0 16px; color: var(--soft); line-height: 1.55; } .fu a { color: var(--ink); text-decoration: underline; } .fu code { font-family: var(--mono); font-size: .88em; }
 .st { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 3px 8px; border-radius: 999px; background: var(--fill); color: var(--ink); } .st.ok { background: #2F6B4A; color: #fff; } .st.mu { background: #E8B92F; color: #1B1A18; } .st.ej { background: #8E8A83; color: #fff; } .st.pe { background: transparent; border: 1px dashed var(--soft); color: var(--soft); } .fu-key { font-size: var(--t-sm); color: var(--soft); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .4; cursor: not-allowed; }
 .fd { position: fixed; inset: 0; z-index: 2147482000; display: grid; place-items: center; padding: 16px; background: rgba(10,10,10,.42); }
 .fd[hidden] { display: none; }
 .fd-card { position: relative; width: 100%; max-width: 440px; background: var(--card); color: var(--ink); border-radius: 22px; padding: 30px 28px 22px; display: grid; gap: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.35); animation: enter .35s var(--ease); }
@@ -4922,7 +4923,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       $('#fd-t').textContent = FD[tool][0]; $('.fd-d', $('#fd')).textContent = FD[tool][1]; $('.fd-msg', $('#fd')).textContent = ''; $('.fd-f', $('#fd')).hidden = false;
       let saved = ''; try { saved = localStorage.getItem('cauce-fd-email') || ''; } catch (e) {}
       $('#fd-e').value = (typeof user !== 'undefined' && user && user.email) || saved;
-      $('#fd').hidden = false; applyLang(); track('fake_door', tool); setTimeout(() => $('#fd-e').focus(), 50); }, wait);
+      $('#fd').hidden = false; gateFd(); applyLang(); track('fake_door', tool); setTimeout(() => $('#fd-e').focus(), 50); }, wait);
   }
   const fdClose = () => { $('#fd').hidden = true; fdClosedAt = Date.now(); };
   $('#fd').addEventListener('click', (e) => { if (e.target.id === 'fd' || e.target.closest('.fd-x, .fd-skip')) fdClose(); });
@@ -4933,6 +4934,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     msg.textContent = 'Guardando…'; applyLang();
     try { const c = await sb(), r = await c.from('waitlist').insert({ email: em, tool: fdTool, lang, user_id: (typeof user !== 'undefined' && user && user.id) || null, path: (location.hash || '#mercado').slice(0, 200) });
       if (r.error && r.error.code !== '23505') throw r.error;
+      if (!r.error) c.functions.invoke('aviso', { body: { kind: 'espera', email: em } }).catch(() => {});
       try { localStorage.setItem('cauce-fd-' + fdTool, '1'); localStorage.setItem('cauce-fd-email', em); } catch (err) {}
       track('fake_door_email', fdTool); $('.fd-f', $('#fd')).hidden = true;
       msg.textContent = lang === 'en' ? 'Done. We’ll email ' + em + ' as soon as it’s ready, with your 30% off.' : 'Listo. Te avisaremos a ' + em + ' en cuanto esté listo, con tu 30% de descuento.';
@@ -4950,15 +4952,19 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     try { const c = await sb(); await c.auth.getSession(); const r = await c.from('private_pages').select('html').eq('slug', 'fuentes').maybeSingle();
       if (r.data && r.data.html) { body.innerHTML = r.data.html; body.hidden = false; req.hidden = true; return; } } catch (e) {}
     body.hidden = true; body.innerHTML = ''; req.hidden = false;
-    if (typeof user !== 'undefined' && user && !$('#fu-email').value) $('#fu-email').value = user.email; applyLang();
+    if (typeof user !== 'undefined' && user && !$('#fu-email').value) $('#fu-email').value = user.email; try { gateFu(); } catch (e) {} applyLang();
   }
+  const okMail = (v) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(v || '').trim());
+  const gate = (form, test) => { const b = $('button.btn', form), upd = () => { const ok = test(); b.disabled = !ok; b.setAttribute('aria-disabled', String(!ok)); }; form.addEventListener('input', upd); form.addEventListener('change', upd); upd(); return upd; };
+  const gateFu = gate($('#f-fuentes'), () => okMail($('#fu-email').value) && !!$('#fu-motivo').value);
+  const gateFd = gate($('.fd-f', $('#fd')), () => okMail($('#fd-e').value));
   $('#f-fuentes').addEventListener('submit', async (e) => {
     e.preventDefault(); const say = (t) => { $('#fu-msg').textContent = t; applyLang(); }, em = $('#fu-email').value.trim().toLowerCase(), mo = $('#fu-motivo').value;
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Revisa tu correo.'); return; }
     if (!mo) { say('Elige para qué la necesitas.'); return; }
     say('Enviando…');
     try { const c = await sb(), r = await c.from('source_requests').insert({ email: em, motivo: mo, nota: $('#fu-nota').value.trim().slice(0, 500) || null, lang, user_id: (typeof user !== 'undefined' && user && user.id) || null });
-      if (r.error) throw r.error; track('fuentes_solicitud', mo); $('#f-fuentes').reset(); say(lang === 'en' ? 'Thank you. We’ll review your request and get back to you at ' + em + '.' : 'Gracias. Revisaremos tu solicitud y te escribiremos a ' + em + '.');
+      if (r.error) throw r.error; track('fuentes_solicitud', mo); c.functions.invoke('aviso', { body: { kind: 'fuentes', email: em } }).catch(() => {}); $('#f-fuentes').reset(); gateFu(); say(lang === 'en' ? 'Thank you. We’ll review your request and get back to you at ' + em + '.' : 'Gracias. Revisaremos tu solicitud y te escribiremos a ' + em + '.');
     } catch (err) { say('No se pudo enviar. Inténtalo de nuevo o escríbenos a hola@cauce.blog.'); }
   });
 
