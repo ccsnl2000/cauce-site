@@ -161,6 +161,9 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     <p class="sm" style="margin:14px 0">Personas que probaron una herramienta en desarrollo y dejaron su correo. Se les prometió 30% de descuento en cualquier suscripción al lanzarla.</p>
     <div class="kpis" id="k-espera"></div>
     <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Herramienta</th><th>Idioma</th><th>Fecha</th></tr></thead><tbody id="t-espera"></tbody></table></div>
+    <h2 class="sech">Solicitudes de fuentes</h2>
+    <p class="sm" style="margin:0 0 10px">Personas que pidieron ver las fuentes de los mapas (página privada cauce.blog/#fuentes). Se les dijo que revisaríamos y les escribiríamos.</p>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Para qué</th><th>Detalle</th><th>Fecha</th></tr></thead><tbody id="t-fuentes"></tbody></table></div>
   </section>
   <section class="panel" data-p="whatsapp" hidden>
     <div class="card"><b>WhatsApp en vivo</b>
@@ -451,7 +454,9 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   }
   function espera() {
     const W = RAW.wait || [], TN = { mapa: 'Mapa de Inteligencia', analisis: 'Análisis de propiedades', chat: 'Chat de Cauce' }, esc2 = (x) => String(x == null ? '' : x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    $('#n-espera').textContent = W.length || '';
+    const MO = { investigacion: 'Investigación', periodismo: 'Periodismo', inversion: 'Invertir o comprar', profesional: 'Trabajo inmobiliario', institucion: 'Gobierno o institución', otro: 'Otro' }, F = RAW.fuentes || [];
+    $('#t-fuentes').innerHTML = F.map((r) => `<tr><td>${esc2(r.email)}</td><td>${MO[r.motivo] || esc2(r.motivo)}</td><td>${esc2(r.nota || '')}</td><td>${new Date(r.created_at).toLocaleString('es-VE', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}</td></tr>`).join('') || '<tr><td colspan="4" class="sm">Todavía nadie.</td></tr>';
+    $('#n-espera').textContent = (W.length + F.length) || '';
     $('#k-espera').innerHTML = Object.keys(TN).map((k) => `<div class="kpi"><span class="sm">${TN[k]}</span><b>${W.filter((w) => w.tool === k).length}</b></div>`).join('') + `<div class="kpi"><span class="sm">Correos únicos</span><b>${new Set(W.map((w) => w.email)).size}</b></div>`;
     $('#t-espera').innerHTML = W.map((w) => `<tr><td>${esc2(w.email)}</td><td>${TN[w.tool] || esc2(w.tool)}</td><td>${(w.lang || '').toUpperCase()}</td><td>${new Date(w.created_at).toLocaleString('es-VE', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}</td></tr>`).join('') || '<tr><td colspan="4" class="sm">Todavía nadie.</td></tr>';
   }
@@ -465,14 +470,14 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     return out;
   }
   async function load() {
-    const [p, s, b, c, v, a, pr, ik, wl] = await Promise.all([
+    const [p, s, b, c, v, a, pr, ik, wl, sr] = await Promise.all([
       sb.from('profiles').select('*').order('created_at', { ascending: false }),
       sb.from('subscribers').select('*').order('created_at', { ascending: false }),
       sb.from('bookings').select('*').order('start_time', { ascending: false }),
       sb.from('chats').select('*').order('updated_at', { ascending: false }).limit(200), allVisits(),
       sb.from('articles').select('*').order('updated_at', { ascending: false }),
-      sb.from('properties').select('*').order('orden'), sb.from('intakes').select('*').order('created_at', { ascending: false }), sb.from('waitlist').select('*').order('created_at', { ascending: false })]);
-    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [], props: pr.data || [], intakes: ik.data || [], wait: (wl && wl.data) || [] };
+      sb.from('properties').select('*').order('orden'), sb.from('intakes').select('*').order('created_at', { ascending: false }), sb.from('waitlist').select('*').order('created_at', { ascending: false }), sb.from('source_requests').select('*').order('created_at', { ascending: false })]);
+    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [], props: pr.data || [], intakes: ik.data || [], wait: (wl && wl.data) || [], fuentes: (sr && sr.data) || [] };
     apply();
     $('#stamp').textContent = new Date().toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit' });
   }

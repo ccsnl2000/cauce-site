@@ -598,6 +598,9 @@ body.auth header.top, body.auth footer { display: none; }
 .ask:focus-within { box-shadow: 0 0 0 4px var(--fill); }
 .routes ol li::before { content: none !important; display: none !important; }
 .chat-note { font-size: var(--t-xs); color: var(--soft); text-align: center; }
+.fuentes { max-width: 860px; } .fu-lead, .fu-intro { font-size: var(--t-lead); line-height: 1.5; margin: 22px 0; max-width: 40em; } #f-fuentes { max-width: 520px; }
+.fuentes h2 { font-size: var(--t-h3); margin: 40px 0 12px; } .fu { margin: 0; display: grid; gap: 0; } .fu dt { font-weight: 700; padding-top: 16px; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; } .fu dd { margin: 6px 0 16px; color: var(--soft); line-height: 1.55; } .fu a { color: var(--ink); text-decoration: underline; } .fu code { font-family: var(--mono); font-size: .88em; }
+.st { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 3px 8px; border-radius: 999px; background: var(--fill); color: var(--ink); } .st.ok { background: #2F6B4A; color: #fff; } .st.mu { background: #E8B92F; color: #1B1A18; } .st.ej { background: #8E8A83; color: #fff; } .st.pe { background: transparent; border: 1px dashed var(--soft); color: var(--soft); } .fu-key { font-size: var(--t-sm); color: var(--soft); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .fd { position: fixed; inset: 0; z-index: 2147482000; display: grid; place-items: center; padding: 16px; background: rgba(10,10,10,.42); }
 .fd[hidden] { display: none; }
 .fd-card { position: relative; width: 100%; max-width: 440px; background: var(--card); color: var(--ink); border-radius: 22px; padding: 30px 28px 22px; display: grid; gap: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.35); animation: enter .35s var(--ease); }
@@ -1095,6 +1098,23 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   <p class="auth-note">Los pagos y las reservas se activan muy pronto.</p>
 </section>
 
+<!-- FUENTES (private: only the owner sees the list; everyone else can request it) -->
+<section class="view fuentes" id="v-fuentes" hidden>
+  <span class="lab">Fuentes</span>
+  <h1 style="margin-top:14px">Fuentes de los mapas</h1>
+  <div id="fu-body" hidden></div>
+  <div id="fu-req" hidden>
+    <p class="fu-lead">Esta página es privada. Si necesitas conocer las fuentes detrás de nuestros mapas y datos, cuéntanos para qué. Revisaremos tu solicitud y te escribiremos.</p>
+    <form class="f" id="f-fuentes" novalidate>
+      <label>Correo<input id="fu-email" type="email" autocomplete="email" required></label>
+      <label>¿Para qué la necesitas?<select id="fu-motivo" required><option value="">Elige una opción</option><option value="investigacion">Investigación o estudio</option><option value="periodismo">Periodismo o medios</option><option value="inversion">Invertir o comprar un inmueble</option><option value="profesional">Trabajo inmobiliario (agente, desarrollador)</option><option value="institucion">Gobierno o institución</option><option value="otro">Otro</option></select></label>
+      <label>Detalle (opcional)<textarea id="fu-nota" rows="3" maxlength="500"></textarea></label>
+      <button class="btn" style="justify-self:start">Enviar solicitud</button>
+      <p class="sm" id="fu-msg" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
 <!-- SOBRE -->
 <section class="view about" id="v-sobre" hidden>
   <span class="lab">Sobre Cauce</span>
@@ -1124,7 +1144,7 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   <div class="foot">
     <div><div class="big">cauce</div><p class="sm" style="margin-top:12px;max-width:24em">Datos inmobiliarios con fuente. Boletín cada jueves.</p></div>
     <nav aria-label="Leer"><span class="lab">Leer</span><a href="#mercado">Mercado</a><a href="#propiedades">Propiedades</a><a href="#datos">Inteligencia</a><a href="#guia">Guía gratis</a></nav>
-    <nav aria-label="Cauce"><span class="lab">Cauce</span><a href="#sobre">Sobre Cauce</a><a href="#planes">Planes</a><a href="#planes" data-plan="consulta">Llamada de diagnóstico</a><a href="#contacto">Contacto</a></nav>
+    <nav aria-label="Cauce"><span class="lab">Cauce</span><a href="#sobre">Sobre Cauce</a><a href="#fuentes">Fuentes</a><a href="#planes">Planes</a><a href="#planes" data-plan="consulta">Llamada de diagnóstico</a><a href="#contacto">Contacto</a></nav>
   </div>
   <div class="foot-bar"><span class="live"><i></i><span id="clock">Caracas</span> · <span>Dólar BCV</span> <span data-bcv>887,30</span></span><span><a href="/legal.html#aviso">No es asesoría de inversión</a> · <a href="/legal.html">Legal</a></span></div>
 </div></footer>
@@ -3356,6 +3376,23 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'Seguir explorando': 'Keep exploring',
     'Revisa tu correo.': 'Check your email.',
     'No se pudo guardar. Inténtalo de nuevo.': 'Couldn’t save it. Please try again.',
+    'Fuentes': 'Sources',
+    'Fuentes de los mapas': 'Map sources',
+    'Esta página es privada. Si necesitas conocer las fuentes detrás de nuestros mapas y datos, cuéntanos para qué. Revisaremos tu solicitud y te escribiremos.': 'This page is private. If you need the sources behind our maps and data, tell us what for. We’ll review your request and get back to you.',
+    'Correo': 'Email',
+    '¿Para qué la necesitas?': 'What do you need it for?',
+    'Elige una opción': 'Choose an option',
+    'Investigación o estudio': 'Research or study',
+    'Periodismo o medios': 'Journalism or media',
+    'Invertir o comprar un inmueble': 'Investing or buying a property',
+    'Trabajo inmobiliario (agente, desarrollador)': 'Real estate work (agent, developer)',
+    'Gobierno o institución': 'Government or institution',
+    'Otro': 'Other',
+    'Detalle (opcional)': 'Details (optional)',
+    'Enviar solicitud': 'Send request',
+    'Elige para qué la necesitas.': 'Choose what you need it for.',
+    'Enviando…': 'Sending…',
+    'No se pudo enviar. Inténtalo de nuevo o escríbenos a hola@cauce.blog.': 'Couldn’t send it. Try again or write to hola@cauce.blog.',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -3899,6 +3936,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   const fail = (e) => aSay(ERR[e && e.message] || (/rate limit|security purposes/i.test(e && e.message || '') ? 'Demasiados intentos. Espera unos minutos.' : 'Algo falló. Inténtalo de nuevo o escríbenos a hola@cauce.blog.'));
   const back = () => location.origin + '/#entrar';
   function setUser(u) {
+    setTimeout(() => { try { if (location.hash.startsWith('#fuentes')) loadFuentes(); } catch (e) {} }, 0);
     user = u || null;
     $$('.bar .sub').forEach((b) => { b.hidden = !!user; });
     $$('a.in').forEach((l) => { l.textContent = user ? 'Perfil' : 'Iniciar sesión'; l.classList.toggle('btn', !!user); if (user) l.removeAttribute('data-mode'); else l.dataset.mode = 'login'; });
@@ -4805,7 +4843,7 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
       setTimeout(() => { const j = $('[data-m="join"]'); if (j) j.click(); const a = $('#a-email'); if (a) { a.value = v; const pw = $('#a-pass'); if (pw) pw.focus(); } }, 120);
     });
   })();
-  const VIEWS = ['mercado', 'guia', 'articulo', 'propiedades', 'propiedad', 'analizar', 'datos', 'planes', 'entrar', 'sobre', 'contacto', 'cuestionario'];
+  const VIEWS = ['mercado', 'guia', 'articulo', 'propiedades', 'propiedad', 'analizar', 'datos', 'planes', 'entrar', 'sobre', 'contacto', 'cuestionario', 'fuentes'];
   const AREA = { mercado: 'mercado', articulo: 'mercado', propiedades: 'propiedades', propiedad: 'propiedades', analizar: 'inteligencia', datos: 'inteligencia' };
   let current = null, artId = '', backTo = '#mercado';
   function render(h) {
@@ -4820,13 +4858,14 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     $$('#sub a').forEach((a) => { if (a.dataset.s === h) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
     if (h === 'planes') { highlightPlans(); setAbroad(false, false); }
     if (h === 'mercado') countUp();
+    if (h === 'fuentes') loadFuentes();
     if (h === 'articulo') renderArticle(artId);
     chatRoute(h);
     MAPS.forEach((m) => m.kick());
     applyLang();
     window.scrollTo(0, 0);
   }
-  const TITLES = { guia: 'Guía para comprar', articulo: 'Análisis', propiedades: 'Propiedades', propiedad: 'Propiedad', analizar: 'Analizar un precio', datos: 'Inteligencia', planes: 'Planes', entrar: 'Entrar', sobre: 'Sobre Cauce', contacto: 'Contacto', cuestionario: 'Cuestionario' };
+  const TITLES = { fuentes: 'Fuentes', guia: 'Guía para comprar', articulo: 'Análisis', propiedades: 'Propiedades', propiedad: 'Propiedad', analizar: 'Analizar un precio', datos: 'Inteligencia', planes: 'Planes', entrar: 'Entrar', sobre: 'Sobre Cauce', contacto: 'Contacto', cuestionario: 'Cuestionario' };
   function show() {
     let [h, arg] = location.hash.slice(1).split('/'); if (/access_token|error_description/.test(h)) h = 'entrar'; if (VIEWS.indexOf(h) < 0) h = 'mercado';
     if (h !== 'contacto' && h !== 'entrar') backTo = location.hash || '#mercado';
@@ -4904,6 +4943,24 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   ['#f-link', '#f-prop', '#quick'].forEach((q) => { const f = $(q); if (f) f.addEventListener('submit', () => fakeDoor('analisis', 1800)); });
   ['#c-form', '#d-form'].forEach((q) => { const f = $(q); if (f) f.addEventListener('submit', () => fakeDoor('chat', 2500)); });
   $$('#c-chips button').forEach((b) => b.addEventListener('click', () => fakeDoor('chat', 2500)));
+
+  /* Fuentes: the owner sees the private list (protected in the database); everyone else can ask for it */
+  async function loadFuentes() {
+    const body = $('#fu-body'), req = $('#fu-req');
+    try { const c = await sb(); await c.auth.getSession(); const r = await c.from('private_pages').select('html').eq('slug', 'fuentes').maybeSingle();
+      if (r.data && r.data.html) { body.innerHTML = r.data.html; body.hidden = false; req.hidden = true; return; } } catch (e) {}
+    body.hidden = true; body.innerHTML = ''; req.hidden = false;
+    if (typeof user !== 'undefined' && user && !$('#fu-email').value) $('#fu-email').value = user.email; applyLang();
+  }
+  $('#f-fuentes').addEventListener('submit', async (e) => {
+    e.preventDefault(); const say = (t) => { $('#fu-msg').textContent = t; applyLang(); }, em = $('#fu-email').value.trim().toLowerCase(), mo = $('#fu-motivo').value;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { say('Revisa tu correo.'); return; }
+    if (!mo) { say('Elige para qué la necesitas.'); return; }
+    say('Enviando…');
+    try { const c = await sb(), r = await c.from('source_requests').insert({ email: em, motivo: mo, nota: $('#fu-nota').value.trim().slice(0, 500) || null, lang, user_id: (typeof user !== 'undefined' && user && user.id) || null });
+      if (r.error) throw r.error; track('fuentes_solicitud', mo); $('#f-fuentes').reset(); say(lang === 'en' ? 'Thank you. We’ll review your request and get back to you at ' + em + '.' : 'Gracias. Revisaremos tu solicitud y te escribiremos a ' + em + '.');
+    } catch (err) { say('No se pudo enviar. Inténtalo de nuevo o escríbenos a hola@cauce.blog.'); }
+  });
 
   function track(action, label) {
     const k = action + '|' + (label || ''); if (k === lastEv && Date.now() - lastEvAt < 2000) return; lastEv = k; lastEvAt = Date.now();
