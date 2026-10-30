@@ -4895,18 +4895,20 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     analisis: ['El análisis de propiedades está en construcción', 'El resultado es una estimación de ejemplo. Pronto lo calcularemos con datos reales de cada zona.'],
     chat: ['El chat de Cauce está en construcción', 'Por ahora responde un asistente de prueba. Pronto te dará respuestas con nuestros datos.'],
   };
-  const fdDone = (t) => { try { return localStorage.getItem('cauce-fd-' + t) === '1' || sessionStorage.getItem('cauce-fd-' + t) === '1'; } catch (e) { return false; } };
-  let fdTool = '', fdT = 0;
+  // shown up to twice per visit per tool (so someone who closed it gets a second chance); never again once they leave their email
+  const fdSeen = (t) => { try { return +sessionStorage.getItem('cauce-fd-' + t) || 0; } catch (e) { return 0; } };
+  const fdDone = (t) => { try { return localStorage.getItem('cauce-fd-' + t) === '1' || fdSeen(t) >= 2; } catch (e) { return false; } };
+  let fdTool = '', fdT = 0, fdClosedAt = 0;
   function fakeDoor(tool, wait) {
-    if (fdDone(tool) || fdT || !$('#fd').hidden) return;
+    if (fdDone(tool) || fdT || !$('#fd').hidden || Date.now() - fdClosedAt < 20000) return;
     fdT = setTimeout(() => { fdT = 0; if (fdDone(tool)) return; fdTool = tool;
-      try { sessionStorage.setItem('cauce-fd-' + tool, '1'); } catch (e) {}
+      try { sessionStorage.setItem('cauce-fd-' + tool, String(fdSeen(tool) + 1)); } catch (e) {}
       $('#fd-t').textContent = FD[tool][0]; $('.fd-d', $('#fd')).textContent = FD[tool][1]; $('.fd-msg', $('#fd')).textContent = ''; $('.fd-f', $('#fd')).hidden = false;
       let saved = ''; try { saved = localStorage.getItem('cauce-fd-email') || ''; } catch (e) {}
       $('#fd-e').value = (typeof user !== 'undefined' && user && user.email) || saved;
       $('#fd').hidden = false; applyLang(); track('fake_door', tool); setTimeout(() => $('#fd-e').focus(), 50); }, wait);
   }
-  const fdClose = () => { $('#fd').hidden = true; };
+  const fdClose = () => { $('#fd').hidden = true; fdClosedAt = Date.now(); };
   $('#fd').addEventListener('click', (e) => { if (e.target.id === 'fd' || e.target.closest('.fd-x, .fd-skip')) fdClose(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#fd').hidden) fdClose(); });
   $('.fd-f', $('#fd')).addEventListener('submit', async (e) => {
