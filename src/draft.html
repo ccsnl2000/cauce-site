@@ -598,6 +598,12 @@ body.auth header.top, body.auth footer { display: none; }
 .ask:focus-within { box-shadow: 0 0 0 4px var(--fill); }
 .routes ol li::before { content: none !important; display: none !important; }
 .chat-note { font-size: var(--t-xs); color: var(--soft); text-align: center; }
+.fd { position: fixed; inset: 0; z-index: 2147482000; display: grid; place-items: center; padding: 16px; background: rgba(10,10,10,.42); }
+.fd[hidden] { display: none; }
+.fd-card { position: relative; width: 100%; max-width: 440px; background: var(--card); color: var(--ink); border-radius: 22px; padding: 30px 28px 22px; display: grid; gap: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.35); animation: enter .35s var(--ease); }
+.fd-card h3 { font-size: var(--t-h3); line-height: 1.1; letter-spacing: -.02em; margin: 0; } .fd-card p { margin: 0; } .fd-d { color: var(--soft); }
+.fd-x { position: absolute; top: 14px; right: 14px; border: 0; background: none; color: var(--soft); font-size: 16px; cursor: pointer; }
+.fd-f { margin-top: 6px; } .fd-msg:empty { display: none; } .fd-skip { justify-self: start; border: 0; background: none; color: var(--soft); font: inherit; font-size: var(--t-sm); text-decoration: underline; cursor: pointer; padding: 0; }
 .cdock { position: fixed; right: max(20px, env(safe-area-inset-right, 0px)); bottom: calc(126px + env(safe-area-inset-bottom, 0px)); z-index: 40; width: 360px; max-width: calc(100vw - 40px); background: var(--sheet); border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.18); padding: 14px; display: grid; gap: 10px; }
 .cdock .hd { display: flex; justify-content: space-between; align-items: center; cursor: grab; touch-action: none; user-select: none; } .cdock.dragging .hd { cursor: grabbing; } .cdock .hd .acts { display: flex; gap: 12px; }
 @property --cg { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
@@ -1020,6 +1026,16 @@ body.grain::after { content: ""; position: fixed; inset: 0; pointer-events: none
   <aside class="c-res" id="c-res" aria-live="polite"></aside>
 </section>
 
+<div class="fd" id="fd" hidden role="dialog" aria-modal="true" aria-labelledby="fd-t"><div class="fd-card">
+  <button type="button" class="fd-x" aria-label="Cerrar">✕</button>
+  <span class="lab">En desarrollo</span>
+  <h3 id="fd-t"></h3>
+  <p class="fd-d"></p>
+  <p class="fd-o">Déjanos tu correo: te avisamos cuando esté listo y tendrás <b>30% de descuento</b> en cualquier suscripción.</p>
+  <form class="pillfield fd-f" novalidate><label for="fd-e" hidden>Tu correo</label><input id="fd-e" type="email" placeholder="Tu correo" autocomplete="email"><button class="btn">Avísenme</button></form>
+  <p class="sm fd-msg" aria-live="polite"></p>
+  <button type="button" class="fd-skip">Seguir explorando</button>
+</div></div>
 <div class="cdock" id="dock" hidden><div class="hd"><b>Cauce</b><div class="acts"><button type="button" id="d-full" aria-label="Abrir en página">Abrir</button><button type="button" id="d-min" aria-label="Minimizar">—</button><button type="button" id="d-close" aria-label="Cerrar">✕</button></div></div><div class="thread" id="d-thread" aria-live="polite"></div><form class="ask" id="d-form"><label for="d-in" hidden>Tu mensaje</label><input id="d-in" placeholder="Responde…" autocomplete="off"><button type="submit" aria-label="Enviar"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button></form></div>
 <button class="sticker stick-chat" id="pill" type="button" data-grain="flower" data-c="3,5,0" aria-label="Habla con Cauce"><span>Habla<br>con<br>Cauce</span><i class="dot" hidden></i></button>
 
@@ -3325,6 +3341,21 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
     'La contraseña necesita 8 caracteres o más.': 'Your password needs 8 characters or more.',
     'Precio pedido · muestra': 'Asking price · sample', 'Anuncios en la muestra': 'Listings in sample', 'Precio pedido': 'Asking price', 'Sin datos aún': 'No data yet', '¿Cuánto cuesta el m² en Margarita?': 'What does a m² cost in Margarita?', '¿Cuánto cuesta el m² en Lechería?': 'What does a m² cost in Lechería?',
     'Precio estimado · media de la ciudad': 'Estimated price · city median',
+    'En desarrollo': 'In development',
+    'El mapa de Inteligencia está en construcción': 'The Intelligence map is under construction',
+    'Lo que ves es una vista previa con datos de ejemplo. Estamos sumando precios reales, más ciudades y capas.': 'What you see is a preview with sample data. We’re adding real prices, more cities and layers.',
+    'El análisis de propiedades está en construcción': 'Property analysis is under construction',
+    'El resultado es una estimación de ejemplo. Pronto lo calcularemos con datos reales de cada zona.': 'The result is a sample estimate. Soon we’ll calculate it with real data for each area.',
+    'El chat de Cauce está en construcción': 'The Cauce chat is under construction',
+    'Por ahora responde un asistente de prueba. Pronto te dará respuestas con nuestros datos.': 'For now a test assistant replies. Soon it will answer with our data.',
+    'Déjanos tu correo: te avisamos cuando esté listo y tendrás': 'Leave your email: we’ll let you know when it’s ready and you’ll get',
+    '30% de descuento': '30% off',
+    'en cualquier suscripción.': 'any subscription.',
+    'Tu correo': 'Your email',
+    'Avísenme': 'Notify me',
+    'Seguir explorando': 'Keep exploring',
+    'Revisa tu correo.': 'Check your email.',
+    'No se pudo guardar. Inténtalo de nuevo.': 'Couldn’t save it. Please try again.',
     'meses': 'months',
     '/mes': '/mo', 'Soporte prioritario': 'Priority support',
     'Notas por escrito': 'Written notes', 'Se descuenta si encargas un estudio': 'Credited if you order a study', 'Para dueños y agentes': 'For owners and agents', 'por estudio': 'per study',
@@ -4835,6 +4866,43 @@ scene("torre", "A tall tower in Bello Monte among low neighbors, the Ávila behi
   }
   /* interactions: what people touch, by kind (no text they type is sent) */
   let lastEv = '', lastEvAt = 0;
+  /* fake door: tools still in development invite visitors to the waitlist (30% off any plan when they launch) */
+  const FD = {
+    mapa: ['El mapa de Inteligencia está en construcción', 'Lo que ves es una vista previa con datos de ejemplo. Estamos sumando precios reales, más ciudades y capas.'],
+    analisis: ['El análisis de propiedades está en construcción', 'El resultado es una estimación de ejemplo. Pronto lo calcularemos con datos reales de cada zona.'],
+    chat: ['El chat de Cauce está en construcción', 'Por ahora responde un asistente de prueba. Pronto te dará respuestas con nuestros datos.'],
+  };
+  const fdDone = (t) => { try { return localStorage.getItem('cauce-fd-' + t) === '1' || sessionStorage.getItem('cauce-fd-' + t) === '1'; } catch (e) { return false; } };
+  let fdTool = '', fdT = 0;
+  function fakeDoor(tool, wait) {
+    if (fdDone(tool) || fdT || !$('#fd').hidden) return;
+    fdT = setTimeout(() => { fdT = 0; if (fdDone(tool)) return; fdTool = tool;
+      try { sessionStorage.setItem('cauce-fd-' + tool, '1'); } catch (e) {}
+      $('#fd-t').textContent = FD[tool][0]; $('.fd-d', $('#fd')).textContent = FD[tool][1]; $('.fd-msg', $('#fd')).textContent = ''; $('.fd-f', $('#fd')).hidden = false;
+      let saved = ''; try { saved = localStorage.getItem('cauce-fd-email') || ''; } catch (e) {}
+      $('#fd-e').value = (typeof user !== 'undefined' && user && user.email) || saved;
+      $('#fd').hidden = false; applyLang(); track('fake_door', tool); setTimeout(() => $('#fd-e').focus(), 50); }, wait);
+  }
+  const fdClose = () => { $('#fd').hidden = true; };
+  $('#fd').addEventListener('click', (e) => { if (e.target.id === 'fd' || e.target.closest('.fd-x, .fd-skip')) fdClose(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#fd').hidden) fdClose(); });
+  $('.fd-f', $('#fd')).addEventListener('submit', async (e) => {
+    e.preventDefault(); const em = $('#fd-e').value.trim().toLowerCase(), msg = $('.fd-msg', $('#fd'));
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { msg.textContent = 'Revisa tu correo.'; applyLang(); return; }
+    msg.textContent = 'Guardando…'; applyLang();
+    try { const c = await sb(), r = await c.from('waitlist').insert({ email: em, tool: fdTool, lang, user_id: (typeof user !== 'undefined' && user && user.id) || null, path: (location.hash || '#mercado').slice(0, 200) });
+      if (r.error && r.error.code !== '23505') throw r.error;
+      try { localStorage.setItem('cauce-fd-' + fdTool, '1'); localStorage.setItem('cauce-fd-email', em); } catch (err) {}
+      track('fake_door_email', fdTool); $('.fd-f', $('#fd')).hidden = true;
+      msg.textContent = lang === 'en' ? 'Done. We’ll email ' + em + ' as soon as it’s ready, with your 30% off.' : 'Listo. Te avisaremos a ' + em + ' en cuanto esté listo, con tu 30% de descuento.';
+    } catch (err) { msg.textContent = 'No se pudo guardar. Inténtalo de nuevo.'; applyLang(); }
+  });
+  // triggers: shortly after the first real interaction with each tool
+  { const mf = $('#map-full'); if (mf) { const go = (e) => { if (e.target.closest('.mpay, .mlock')) return; fakeDoor('mapa', 2500); }; mf.addEventListener('pointerdown', go); mf.addEventListener('wheel', go, { passive: true }); } }
+  ['#f-link', '#f-prop', '#quick'].forEach((q) => { const f = $(q); if (f) f.addEventListener('submit', () => fakeDoor('analisis', 1800)); });
+  ['#c-form', '#d-form'].forEach((q) => { const f = $(q); if (f) f.addEventListener('submit', () => fakeDoor('chat', 2500)); });
+  $$('#c-chips button').forEach((b) => b.addEventListener('click', () => fakeDoor('chat', 2500)));
+
   function track(action, label) {
     const k = action + '|' + (label || ''); if (k === lastEv && Date.now() - lastEvAt < 2000) return; lastEv = k; lastEvAt = Date.now();
     sendHit({ kind: 'event', path: (location.hash.slice(1) || 'mercado').slice(0, 100), action: action.slice(0, 38), label: label ? String(label).slice(0, 78) : null });

@@ -124,6 +124,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     <button type="button" data-t="llamadas" aria-pressed="false">Llamadas<span class="n" id="n-llamadas"></span></button>
     <button type="button" data-t="chats" aria-pressed="false">Chats<span class="n" id="n-chats"></span></button>
     <button type="button" data-t="boletin" aria-pressed="false">Boletín<span class="n" id="n-boletin"></span></button>
+    <button type="button" data-t="espera" aria-pressed="false">Lista de espera<span class="n" id="n-espera"></span></button>
     <button type="button" data-t="whatsapp" aria-pressed="false">WhatsApp</button>
   </nav>
 
@@ -156,6 +157,11 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   <section class="panel" data-p="boletin" hidden>
     <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Origen</th><th>Bienvenida</th><th>Alta</th></tr></thead><tbody id="t-boletin"></tbody></table></div>
   </section>
+  <section class="panel" data-p="espera" hidden>
+    <p class="sm" style="margin:14px 0">Personas que probaron una herramienta en desarrollo y dejaron su correo. Se les prometió 30% de descuento en cualquier suscripción al lanzarla.</p>
+    <div class="kpis" id="k-espera"></div>
+    <div class="scroll"><table class="tbl"><thead><tr><th>Correo</th><th>Herramienta</th><th>Idioma</th><th>Fecha</th></tr></thead><tbody id="t-espera"></tbody></table></div>
+  </section>
   <section class="panel" data-p="whatsapp" hidden>
     <div class="card"><b>WhatsApp en vivo</b>
       <p class="sm clip">Requiere WhatsApp Business Platform (Meta) con un número de Cauce y la empresa verificada. Mientras tanto, las conversaciones del asistente están en Chats y el botón "Seguir por WhatsApp" abre un chat directo.</p></div>
@@ -187,7 +193,7 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
   const usd = (n) => (n || n === 0 ? '$' + nf(n) : '—');
   const more = (t) => (t ? `<span class="clip">${esc(t)}</span>${t.length > 70 ? '<button type="button" class="more">más</button>' : ''}` : '');   // read-more
   document.addEventListener('click', (e) => { const m = e.target.closest('.more'); if (!m) return; e.stopPropagation(); const c = m.previousElementSibling; c.classList.toggle('open'); m.textContent = c.classList.contains('open') ? 'menos' : 'más'; }, true);
-  let RAW = { people: [], subs: [], calls: [], chats: [], visits: [], arts: [], props: [], intakes: [] }, D = RAW;
+  let RAW = { people: [], subs: [], calls: [], chats: [], visits: [], arts: [], props: [], intakes: [], wait: [] }, D = RAW;
   const QL = { pais: ['País', { us: 'EE. UU.', eu: 'Unión Europea', latam: 'Latinoamérica', otro: 'Otro' }], estatus: ['Estatus en Venezuela', { ninguno: 'Ninguno', turista: 'Turista en Venezuela', transeunte: 'Visa transeúnte', residente: 'Residente' }],
     antecedentes: ['Antecedentes', { si: 'Limpios', no: 'No o no sabe' }], situacion: ['Situación', { capital: 'Capital personal', 'empresa-ext': 'Empresa extranjera', 'empresa-ve': 'Empresa en Venezuela', empleado: 'Empleado en Venezuela', pension: 'Pensión o pasivos', familia: 'Familia venezolana' }],
     presupuesto: ['Presupuesto', { '<50k': '< $50k', '50-150k': '$50–150k', '150-500k': '$150–500k', '500k+': '> $500k' }], inmueble: ['Inmueble', { caracas: 'Caracas o ciudad', margarita: 'Margarita', frontera: 'Estado fronterizo', mirando: 'Solo mirando', ayuda: 'Necesita ayuda' }],
@@ -441,7 +447,13 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     $('#testbar').hidden = !(nt('people') + nt('subs') + nt('calls') + nt('chats') + nt('visits') + nt('props'));
     $('#test-n').textContent = [[nt('people'), 'cuenta', 'cuentas'], [nt('visits'), 'visita', 'visitas'], [nt('props'), 'propiedad', 'propiedades']].filter((x) => x[0]).map(([n, a, b]) => nf(n) + ' ' + (n === 1 ? a : b)).join(' · ');
     $('#n-personas').textContent = D.people.length; $('#n-llamadas').textContent = D.calls.length || ''; $('#n-chats').textContent = D.chats.length || ''; $('#n-boletin').textContent = D.subs.length;
-    overview(); visitsTab(); people(); calls(); subs(); chats(); arts(); props();
+    overview(); visitsTab(); people(); calls(); subs(); chats(); arts(); props(); espera();
+  }
+  function espera() {
+    const W = RAW.wait || [], TN = { mapa: 'Mapa de Inteligencia', analisis: 'Análisis de propiedades', chat: 'Chat de Cauce' }, esc2 = (x) => String(x == null ? '' : x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    $('#n-espera').textContent = W.length || '';
+    $('#k-espera').innerHTML = Object.keys(TN).map((k) => `<div class="kpi"><span class="sm">${TN[k]}</span><b>${W.filter((w) => w.tool === k).length}</b></div>`).join('') + `<div class="kpi"><span class="sm">Correos únicos</span><b>${new Set(W.map((w) => w.email)).size}</b></div>`;
+    $('#t-espera').innerHTML = W.map((w) => `<tr><td>${esc2(w.email)}</td><td>${TN[w.tool] || esc2(w.tool)}</td><td>${(w.lang || '').toUpperCase()}</td><td>${new Date(w.created_at).toLocaleString('es-VE', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' })}</td></tr>`).join('') || '<tr><td colspan="4" class="sm">Todavía nadie.</td></tr>';
   }
   $('#del-test').addEventListener('click', async () => {
     if (!window.confirm('¿Borrar todos los datos de prueba? Lo real no se toca. No se puede deshacer.')) return;
@@ -453,14 +465,14 @@ h1 { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; letter-spacing: -0.0
     return out;
   }
   async function load() {
-    const [p, s, b, c, v, a, pr, ik] = await Promise.all([
+    const [p, s, b, c, v, a, pr, ik, wl] = await Promise.all([
       sb.from('profiles').select('*').order('created_at', { ascending: false }),
       sb.from('subscribers').select('*').order('created_at', { ascending: false }),
       sb.from('bookings').select('*').order('start_time', { ascending: false }),
       sb.from('chats').select('*').order('updated_at', { ascending: false }).limit(200), allVisits(),
       sb.from('articles').select('*').order('updated_at', { ascending: false }),
-      sb.from('properties').select('*').order('orden'), sb.from('intakes').select('*').order('created_at', { ascending: false })]);
-    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [], props: pr.data || [], intakes: ik.data || [] };
+      sb.from('properties').select('*').order('orden'), sb.from('intakes').select('*').order('created_at', { ascending: false }), sb.from('waitlist').select('*').order('created_at', { ascending: false })]);
+    RAW = { people: p.data || [], subs: s.data || [], calls: b.data || [], chats: c.data || [], visits: v || [], arts: a.data || [], props: pr.data || [], intakes: ik.data || [], wait: (wl && wl.data) || [] };
     apply();
     $('#stamp').textContent = new Date().toLocaleTimeString('es-VE', { hour: 'numeric', minute: '2-digit' });
   }
